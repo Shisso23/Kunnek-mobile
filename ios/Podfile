@@ -6,6 +6,8 @@ platform :ios, '10.0'
 target 'kunnek' do
   config = use_native_modules!
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   use_react_native!(:path => config["reactNativePath"])
 
   target 'kunnekTests' do
@@ -17,7 +19,7 @@ target 'kunnek' do
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
   # you should disable these next few lines.
-  use_flipper!
+  use_flipper!({ 'Flipper' => '0.74.0' })
   post_install do |installer|
     flipper_post_install(installer)
   end
