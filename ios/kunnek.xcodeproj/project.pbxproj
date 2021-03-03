@@ -19,6 +19,7 @@
 		7E2FDC6674919E230333E877 /* libPods-kunnek-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBEF2B6C02A70DDD7F5795FC /* libPods-kunnek-tvOS.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		C71A9CAD6AEDB2C0ED91E3B3 /* libPods-kunnek.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DAACE6559748A8FEA54EEC0A /* libPods-kunnek.a */; };
+		DA73AF1C25EF7F71009DA734 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA73AF1B25EF7F71009DA734 /* BootSplash.storyboard */; };
 		E9FEDDEBE0198873F054F392 /* libPods-kunnek-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FAC4F9B2A8C8D52E4B23074F /* libPods-kunnek-tvOSTests.a */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +61,7 @@
 		AB3A6B124A6021F786AD079D /* Pods-kunnek-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-kunnek-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-kunnek-tvOSTests/Pods-kunnek-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		C4B289C50716461CE27D80F1 /* Pods-kunnek.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-kunnek.release.xcconfig"; path = "Target Support Files/Pods-kunnek/Pods-kunnek.release.xcconfig"; sourceTree = "<group>"; };
 		C69B385AF8AD34D03852FE62 /* Pods-kunnek.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-kunnek.debug.xcconfig"; path = "Target Support Files/Pods-kunnek/Pods-kunnek.debug.xcconfig"; sourceTree = "<group>"; };
+		DA73AF1B25EF7F71009DA734 /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = kunnek/BootSplash.storyboard; sourceTree = "<group>"; };
 		DAACE6559748A8FEA54EEC0A /* libPods-kunnek.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-kunnek.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E330960B97316E33F9576F56 /* Pods-kunnek-kunnekTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-kunnek-kunnekTests.release.xcconfig"; path = "Target Support Files/Pods-kunnek-kunnekTests/Pods-kunnek-kunnekTests.release.xcconfig"; sourceTree = "<group>"; };
 		EBEF2B6C02A70DDD7F5795FC /* libPods-kunnek-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-kunnek-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,6 +132,7 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
+				DA73AF1B25EF7F71009DA734 /* BootSplash.storyboard */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
@@ -161,7 +164,6 @@
 				1B21692FE486EB2881584B80 /* Pods-kunnek-tvOSTests.debug.xcconfig */,
 				AB3A6B124A6021F786AD079D /* Pods-kunnek-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -340,6 +342,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA73AF1C25EF7F71009DA734 /* BootSplash.storyboard in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
