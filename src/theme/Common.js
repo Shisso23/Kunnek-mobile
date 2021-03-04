@@ -15,15 +15,10 @@ export default ({ Colors, FontFamily }) =>
       backgroundColor: Colors.transparent,
     },
     errorStyle: {
-      color: Colors.danger,
+      color: Colors.error,
       fontFamily: FontFamily.primary,
       fontSize: 15,
       height: 26,
-      marginBottom: 0,
-      marginLeft: 10,
-      marginTop: 0,
-      paddingBottom: 0,
-      paddingTop: 0,
     },
     headerLogo: {
       width: 200,

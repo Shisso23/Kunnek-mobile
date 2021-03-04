@@ -5,10 +5,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import AuthNavigator from './auth/auth.navigator';
 import AppNavigator from './app/app.navigator';
+import { isAuthenticatedSelector } from '../reducers/user-auth-reducer/user-auth.reducer';
 
 const RootStack = createStackNavigator();
 const AppContainer = () => {
-  const { isAuthenticated } = useSelector((reducer) => reducer.userAuthReducer);
+  const isAuthenticated = useSelector(isAuthenticatedSelector);
   return (
     <NavigationContainer>
       <RootStack.Navigator screenOptions={{ headerShown: false }}>

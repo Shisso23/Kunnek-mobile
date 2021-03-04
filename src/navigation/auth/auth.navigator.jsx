@@ -5,6 +5,7 @@ import SignInScreen from '../../screens/auth/sign-in/sign-in.screen';
 import ForgotPasswordScene from '../../screens/auth/forgot-password/forgot-password.screen';
 import RegisterScene from '../../screens/auth/register/register.screen';
 import useTheme from '../../theme/hooks/useTheme';
+import SignInOtpScreen from '../../screens/auth/sign-in-otp/sign-in-otp.screen';
 
 const AuthStack = createStackNavigator();
 const AuthNavigator = () => {
@@ -16,6 +17,13 @@ const AuthNavigator = () => {
         component={SignInScreen}
         options={{
           title: 'Sign In',
+        }}
+      />
+      <AuthStack.Screen
+        name="SignInOtp"
+        component={SignInOtpScreen}
+        options={{
+          title: 'Sign In Otp',
         }}
       />
       <AuthStack.Screen

@@ -1,32 +1,46 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { RegisterLink, ForgotPasswordLink } from '../../../components/atoms';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import { SignInForm } from '../../../components/forms';
 
-import { userAuthService } from '../../../services';
 import { signInModel } from '../../../models';
 import { isAuthenticatedFlowAction } from '../../../reducers/app-reducer/app.actions';
 import useTheme from '../../../theme/hooks/useTheme';
 import { FormScreenContainer } from '../../../components';
+import { signInAction } from '../../../reducers/user-auth-reducer/user-auth.actions';
+import {
+  setDoneLoadingAppDataAction,
+  userAuthSelector,
+} from '../../../reducers/user-auth-reducer/user-auth.reducer';
+import { AuthStates } from '../../../reducers/user-auth-reducer/user-auth.enums';
 
 const SignInScreen = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  const { authState } = useSelector(userAuthSelector);
 
   const { Gutters, Layout } = useTheme();
 
-  const _onSignInSuccess = () => {
-    dispatch(isAuthenticatedFlowAction());
+  const _handleFormSubmit = (signInForm) => dispatch(signInAction(signInForm));
+
+  const _onSignInSuccess = async () => {
+    if (authState === AuthStates.AUTHENTICATED) {
+      await dispatch(isAuthenticatedFlowAction());
+      dispatch(setDoneLoadingAppDataAction(true));
+    } else {
+      navigation.navigate('SignInOtp');
+    }
   };
+
   return (
     <FormScreenContainer contentContainerStyle={[Layout.scrollCenter]}>
       <SignInForm
-        submitForm={userAuthService.signIn}
+        submitForm={_handleFormSubmit}
         onSuccess={_onSignInSuccess}
         initialValues={signInModel()}
         containerStyle={[Gutters.smallHMargin]}
       />
-      <RegisterLink containerStyle={[Gutters.regularMargin]} />
-      <ForgotPasswordLink containerStyle={[Gutters.largeBMargin]} />
     </FormScreenContainer>
   );
 };

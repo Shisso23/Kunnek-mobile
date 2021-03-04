@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import authUrls from './user-auth.urls';
 import authUtils from './user-auth.utils';
 import networkService from '../network-service/network.service';
@@ -9,6 +8,7 @@ import {
   forgotPasswordModel,
   apiSignInModel,
 } from '../../../models';
+import authNetworkService from '../auth-network-service/auth-network.service';
 
 const signIn = (formData) => {
   const signInUrl = authUrls.tokenUrl();
@@ -17,9 +17,16 @@ const signIn = (formData) => {
   return networkService.post(signInUrl, oAuthData).then(authUtils.storeAccessAndRefreshTokens);
 };
 
-const signOut = () =>
-  // any other signOut logic
-  authUtils.removeAccessAndRefreshTokens();
+const verifySignInOtp = async (otp) => {
+  const verifyOtpUrl = authUrls.verifyOtpUrl();
+  const { data } = await authNetworkService.post(verifyOtpUrl, { otp });
+  if (!data.status) {
+    throw new Error('Invalid OTP');
+  }
+};
+
+const signOut = () => Promise.all([authUtils.removeAccessAndRefreshTokens()]);
+
 const register = ({ formData }) => {
   const registerUrl = authUrls.registerUrl();
   const apiModel = apiRegistrationUserModel(formData);
@@ -39,18 +46,10 @@ const forgotPassword = ({ formData }) => {
   });
 };
 
-const doTokensExistInLocalStorage = () => {
-  const _trueIfBothExist = (accessToken, refreshToken) =>
-    !_.isNull(accessToken) && !_.isNull(refreshToken);
-  return authUtils
-    .getAccessAndRefreshTokens()
-    .then(([accessToken, refreshToken]) => _trueIfBothExist(accessToken, refreshToken));
-};
-
 export default {
   signIn,
+  verifySignInOtp,
   signOut,
   register,
   forgotPassword,
-  doTokensExistInLocalStorage,
 };

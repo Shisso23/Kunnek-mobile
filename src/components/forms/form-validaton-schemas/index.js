@@ -1,6 +1,8 @@
 import * as Yup from 'yup';
 
-export const emailSchema = Yup.string().email('Invalid Email').trim().required('Email is required');
+const numberRegex = /^[0-9]+$/;
+
+export const mobileNumberSchema = Yup.string().required('Mobile number is required');
 export const passwordSchema = Yup.string().required('Password is required');
 
 export const registerPasswordSchema = (edit) =>
@@ -19,3 +21,5 @@ export const confirmPasswordSchema = (edit) =>
 
 export const termsAndConditionsSchema = (edit) =>
   !edit ? Yup.bool().oneOf([true]) : Yup.string().notRequired();
+
+export const numericSchema = Yup.string().matches(numberRegex, 'Can only contain digits');
