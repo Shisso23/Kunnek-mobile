@@ -2,11 +2,11 @@
 import _ from 'lodash';
 
 export const signInModel = (_apiSignInModel = {}) => ({
-  email: _.get(_apiSignInModel, 'email', ''),
+  mobileNumber: _.get(_apiSignInModel, 'mobileNumber', ''),
   password: _.get(_apiSignInModel, 'password', ''),
 });
 
 export const apiSignInModel = (_appSignInModel = {}) => ({
-  email: _.get(_appSignInModel, 'email', ''),
+  username: _.get(_appSignInModel, 'mobileNumber', ''),
   password: _.get(_appSignInModel, 'password', ''),
 });

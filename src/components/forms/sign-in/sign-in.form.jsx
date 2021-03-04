@@ -5,13 +5,15 @@ import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import { Button, Input } from 'react-native-elements';
-import { emailSchema, passwordSchema } from '../form-validaton-schemas';
+import { HelperText, TextInput, Button } from 'react-native-paper';
+import { mobileNumberSchema, passwordSchema } from '../form-validaton-schemas';
 import { getFormError } from '../form-utils';
+import { useTheme } from '../../../theme';
 
 const SignInForm = ({ submitForm, onSuccess, containerStyle, initialValues }) => {
+  const { Common } = useTheme();
   const validationSchema = Yup.object().shape({
-    email: emailSchema,
+    mobileNumber: mobileNumberSchema,
     password: passwordSchema,
   });
 
@@ -21,9 +23,9 @@ const SignInForm = ({ submitForm, onSuccess, containerStyle, initialValues }) =>
       const apiErrors = error.errors;
       actions.resetForm({ values: formData, status: { apiErrors } });
     } else if (error.statusCode === 400) {
-      actions.setFieldError('email', 'Incorrect login credetials provided');
+      actions.setFieldError('mobileNumber', 'Incorrect login credentials provided');
     } else {
-      actions.setFieldError('email', error.message);
+      actions.setFieldError('mobileNumber', error.message);
     }
   };
 
@@ -57,23 +59,31 @@ const SignInForm = ({ submitForm, onSuccess, containerStyle, initialValues }) =>
           const error = (name) => getFormError(name, { touched, status, errors });
           return (
             <>
-              <Input
-                value={values.email}
-                onChangeText={handleChange('email')}
-                label="Email"
-                onBlur={handleBlur('email')}
-                errorMessage={error('email')}
+              <TextInput
+                value={values.mobileNumber}
+                onChangeText={handleChange('mobileNumber')}
+                label="Mobile Number*"
+                onBlur={handleBlur('mobileNumber')}
                 keyboardType="email-address"
               />
-              <Input
+              <HelperText style={[Common.errorStyle]} type="error" visible={error('mobileNumber')}>
+                {error('mobileNumber')}
+              </HelperText>
+
+              <TextInput
                 value={values.password}
                 onChangeText={handleChange('password')}
-                label="Password"
+                label="Password*"
                 onBlur={handleBlur('password')}
                 secureTextEntry
                 errorMessage={error('password')}
               />
-              <Button title="Login" onPress={handleSubmit} loading={isSubmitting} />
+              <HelperText style={[Common.errorStyle]} type="error" visible={error('password')}>
+                {error('password')}
+              </HelperText>
+              <Button mode="contained" onPress={handleSubmit} loading={isSubmitting}>
+                Login
+              </Button>
             </>
           );
         }}

@@ -27,6 +27,12 @@ const theme = {
       fontSize: 18,
     },
   },
+  Divider: {
+    marginTop: 10,
+    marginBottom: 10,
+    backgroundColor: 'transparent',
+  },
+
   Button: {
     raised: true,
     color: Colors.primary,
