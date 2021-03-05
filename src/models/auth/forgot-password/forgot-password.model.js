@@ -2,11 +2,11 @@
 import _ from 'lodash';
 
 export const forgotPasswordModel = (_apiForgotPasswordModel = {}) => ({
-  email: _.get(_apiForgotPasswordModel, 'email', ''),
+  mobileNumber: _.get(_apiForgotPasswordModel, 'mobile_number', ''),
 });
 
 export const apiForgotPasswordModel = (_appForgotPasswordModel = {}) => ({
   user: {
-    email: _.get(_appForgotPasswordModel, 'email', ''),
+    mobile_number: _.get(_appForgotPasswordModel, 'mobileNumber', ''),
   },
 });
