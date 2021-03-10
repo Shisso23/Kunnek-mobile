@@ -39,6 +39,6 @@ export const storeAuthStateAction = (state) => async (dispatch) => {
 export const loadAuthStateAction = () => async (dispatch) => {
   const authState = await storageService.getAuthState();
   if (!_.isNil(authState)) {
-    dispatch(setAuthStateAction(authState));
+    await dispatch(setAuthStateAction(authState));
   }
 };

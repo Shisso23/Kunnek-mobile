@@ -2,17 +2,12 @@ import authNetworkService from '../auth-network-service/auth-network.service';
 import { userModel, apiUserModel } from '../../../models';
 import userUrls from './user.urls';
 
-const getUser = () => {
-  const url = userUrls.userUrl();
+const getUser = async (id) => {
+  const url = userUrls.userUrl(id);
+
   const _createAndReturnUserModel = (apiResponse) => userModel(apiResponse.data);
-  return authNetworkService
-    .get(url)
-    .then(_createAndReturnUserModel)
-    .catch((error) => {
-      // eslint-disable-next-line no-console
-      console.warn(error);
-      return Promise.reject(error);
-    });
+  const apiResponse = await authNetworkService.get(url);
+  return _createAndReturnUserModel(apiResponse);
 };
 
 const updateUser = ({ formData }) => {

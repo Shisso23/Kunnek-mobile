@@ -3,5 +3,5 @@ import appConfig from '../../../config';
 const { apiUrl } = appConfig;
 
 export default {
-  userUrl: (id) => `${apiUrl}/users/${id}`,
+  bankAccountsUrl: () => `${apiUrl}/bank_accounts`,
 };

@@ -7,8 +7,9 @@ import useTheme from '../../theme/hooks/useTheme';
 import { CustomDrawer } from '../../components/molecules';
 
 import SendParcelScreen from '../../screens/app/send-parcel/send-parcel.screen';
+import ParcelDeliveryDetailsScreen from '../../screens/app/parcel-delivery-details/parcel-delivery-details.screen';
 import ViewParcelsScreen from '../../screens/app/view-parcels/view-parcels.screen';
-import HistoryScreen from '../../screens/app/history/history.screen';
+import TransactionHistoryScreen from '../../screens/app/history/history.screen';
 
 const Drawer = createDrawerNavigator();
 const AppStack = createStackNavigator();
@@ -24,6 +25,8 @@ const AppNavigator = () => {
       />
       <AppStack.Screen name="SendParcel" component={SendParcelScreen} />
       <AppStack.Screen name="ViewParcel" component={ViewParcelsScreen} />
+      <AppStack.Screen name="ParcelDeliveryDetails" component={ParcelDeliveryDetailsScreen} />
+      <AppStack.Screen name="TransactionHistory" component={TransactionHistoryScreen} />
     </AppStack.Navigator>
   );
 };
@@ -36,8 +39,8 @@ const DrawerNavigator = () => (
       options={{ headerShown: true, title: 'Home' }}
     />
     <Drawer.Screen
-      name="History"
-      component={HistoryScreen}
+      name="TransactionHistory"
+      component={TransactionHistoryScreen}
       options={{ headerShown: true, title: 'History' }}
     />
     <Drawer.Screen
