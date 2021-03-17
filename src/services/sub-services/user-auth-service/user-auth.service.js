@@ -36,13 +36,13 @@ const register = ({ formData }) => {
   });
 };
 
-const forgotPassword = ({ formData }) => {
+const forgotPassword = (formData) => {
   const forgotPasswordUrl = authUrls.forgotPasswordUrl();
   const apiModel = apiForgotPasswordModel(formData);
 
   return networkService.post(forgotPasswordUrl, apiModel).catch((err) => {
     err.errors = forgotPasswordModel(err.errors);
-    return Promise.reject(err);
+    return err.errors;
   });
 };
 
