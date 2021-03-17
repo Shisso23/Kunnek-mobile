@@ -20,6 +20,10 @@ export const signInAction = (signInForm) => async (dispatch) => {
   await dispatch(storeAuthStateAction(currentState));
 };
 
+export const signUpAction = (form) => async () => {
+  await userAuthService.signUp(form);
+};
+
 export const verifySignInOtpAction = ({ numeric }) => async (dispatch) => {
   await userAuthService.verifySignInOtp(numeric);
   await dispatch(storeAuthStateAction(AuthStates.AUTHENTICATED));
