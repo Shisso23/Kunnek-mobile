@@ -110,7 +110,7 @@ const UserInfoForm = ({ edit, submitForm, onSuccess, initialValues }) => {
                 onPress={() => setFieldValue('termsAndConditions', !values.termsAndConditions)}
               />
             )}
-            {__DEV__ && <Text>{JSON.stringify(values, null, 2)}</Text>}
+            {/*{__DEV__ && <Text>{JSON.stringify(values, null, 2)}</Text>}*/}
           </>
         );
       }}
