@@ -27,7 +27,7 @@ const verifySignInOtp = async (otp) => {
 
 const signOut = () => Promise.all([authUtils.removeAccessAndRefreshTokens()]);
 
-const register = ({ formData }) => {
+const signUp = (formData) => {
   const registerUrl = authUrls.registerUrl();
   const apiModel = apiRegistrationUserModel(formData);
   return networkService.post(registerUrl, apiModel).catch((err) => {
@@ -36,13 +36,13 @@ const register = ({ formData }) => {
   });
 };
 
-const forgotPassword = ({ formData }) => {
+const forgotPassword = (formData) => {
   const forgotPasswordUrl = authUrls.forgotPasswordUrl();
   const apiModel = apiForgotPasswordModel(formData);
 
   return networkService.post(forgotPasswordUrl, apiModel).catch((err) => {
     err.errors = forgotPasswordModel(err.errors);
-    return Promise.reject(err);
+    return err.errors;
   });
 };
 
@@ -50,6 +50,6 @@ export default {
   signIn,
   verifySignInOtp,
   signOut,
-  register,
+  signUp,
   forgotPassword,
 };

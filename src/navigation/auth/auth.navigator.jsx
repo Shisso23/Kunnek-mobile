@@ -6,12 +6,21 @@ import ForgotPasswordScene from '../../screens/auth/forgot-password/forgot-passw
 import RegisterScene from '../../screens/auth/register/register.screen';
 import useTheme from '../../theme/hooks/useTheme';
 import SignInOtpScreen from '../../screens/auth/sign-in-otp/sign-in-otp.screen';
+import InitialScreen from '../../screens/auth/initial/initial.screen';
 
 const AuthStack = createStackNavigator();
 const AuthNavigator = () => {
   const { Custom } = useTheme();
   return (
     <AuthStack.Navigator screenOptions={Custom.globalNavigatorScreenOptions}>
+      <AuthStack.Screen
+        name="InitialScreen"
+        component={InitialScreen}
+        options={{
+          title: 'Sign In',
+          headerShown: false,
+        }}
+      />
       <AuthStack.Screen
         name="SignIn"
         component={SignInScreen}
