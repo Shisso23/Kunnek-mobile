@@ -14,3 +14,7 @@ export const getUserVehiclesAction = () => async (dispatch) => {
     dispatch(setVehiclesLoadingAction(false));
   }
 };
+
+export const createVehicleAction = () => (dispatch) => {
+
+};

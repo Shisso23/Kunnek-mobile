@@ -10,6 +10,8 @@ import SendParcelScreen from '../../screens/app/send-parcel/send-parcel.screen';
 import ParcelDeliveryDetailsScreen from '../../screens/app/parcel-delivery-details/parcel-delivery-details.screen';
 import ViewParcelsScreen from '../../screens/app/view-parcels/view-parcels.screen';
 import TransactionHistoryScreen from '../../screens/app/history/history.screen';
+import AddVehicleScreen from '../../screens/app/vehicles/add-vehicle.screen';
+import ViewVehicleScreen from '../../screens/app/vehicles/view-vehicle.screen';
 
 const Drawer = createDrawerNavigator();
 const AppStack = createStackNavigator();
@@ -27,6 +29,8 @@ const AppNavigator = () => {
       <AppStack.Screen name="ViewParcel" component={ViewParcelsScreen} />
       <AppStack.Screen name="ParcelDeliveryDetails" component={ParcelDeliveryDetailsScreen} />
       <AppStack.Screen name="TransactionHistory" component={TransactionHistoryScreen} />
+      <AppStack.Screen name="AddVehicle" component={AddVehicleScreen} />
+      <AppStack.Screen name="ViewVehicle" component={ViewVehicleScreen} />
     </AppStack.Navigator>
   );
 };

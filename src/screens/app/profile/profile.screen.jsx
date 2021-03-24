@@ -42,6 +42,9 @@ const ProfileScreen = () => {
       <Text>{JSON.stringify(bankAccounts, null, 2)}</Text>
       <Text> {vehiclesLoading ? 'Loading vehicles' : 'My vehicles'}</Text>
       <Text>{JSON.stringify(vehicles, null, 2)}</Text>
+      <Button onPress={() => navigation.push('TransactionHistory')}>Add Card</Button>
+      <Button onPress={() => navigation.push('TransactionHistory')}>Add bank account</Button>
+      <Button onPress={() => navigation.push('AddVehicle')}>Add Vehicle</Button>
       <Button onPress={() => navigation.push('TransactionHistory')}>To History</Button>
     </ScrollView>
   );

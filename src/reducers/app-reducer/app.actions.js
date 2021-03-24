@@ -5,7 +5,11 @@ import {
 } from '../user-auth-reducer/user-auth.reducer';
 import { loadAuthStateAction } from '../user-auth-reducer/user-auth.actions';
 import { AuthStates } from '../user-auth-reducer/user-auth.enums';
-import { getUserAction } from '../user-reducer/user.actions';
+import {
+  getUserAction,
+  getUserDelivererIdAction,
+  getUserSenderIdAction,
+} from '../user-reducer/user.actions';
 
 export const initAppAction = () => async (dispatch, getState) => {
   const { AUTHENTICATED } = AuthStates;
@@ -30,4 +34,8 @@ export const isAuthenticatedFlowAction = () => (dispatch) =>
 export const loadAppDataAction = () => (dispatch) => Promise.all([dispatch(loadAuthStateAction())]);
 
 export const loadAppDataForSignedInUserAction = () => (dispatch) =>
-  Promise.all([dispatch(getUserAction())]);
+  Promise.all([
+    dispatch(getUserAction()),
+    dispatch(getUserDelivererIdAction()),
+    dispatch(getUserSenderIdAction()),
+  ]);

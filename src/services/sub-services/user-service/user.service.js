@@ -21,7 +21,21 @@ const updateUser = ({ formData }) => {
   });
 };
 
+const getDelivererId = async () => {
+  const url = userUrls.getDelivererId();
+  const { data } = await authNetworkService.post(url);
+  return data.id;
+};
+
+const getSenderId = async () => {
+  const url = userUrls.getSenderId();
+  const { data } = await authNetworkService.post(url);
+  return data.id;
+};
+
 export default {
   getUser,
   updateUser,
+  getSenderId,
+  getDelivererId,
 };

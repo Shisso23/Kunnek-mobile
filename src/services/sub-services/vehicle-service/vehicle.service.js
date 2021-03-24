@@ -8,6 +8,7 @@ const getVehicles = async () => {
   return constructUserVehicleModels(apiResponse.data);
 };
 
+
 export default {
   getVehicles,
 };

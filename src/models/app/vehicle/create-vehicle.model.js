@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-export const userVehicleModel = (_apiVehicleModel = {}) => ({
+export const createVehicleModel = (_apiVehicleModel = {}) => ({
   id: _.get(_apiVehicleModel, 'id', ''),
   registrationNumber: _.get(_apiVehicleModel, 'registration_number', ''),
   type: _.get(_apiVehicleModel, 'vehicle_type', ''),
@@ -9,5 +9,9 @@ export const userVehicleModel = (_apiVehicleModel = {}) => ({
   collectorId: _.get(_apiVehicleModel, 'collector_id', ''),
 });
 
-export const constructUserVehicleModels = (apiVehicleModel) =>
-  apiVehicleModel.map((vehicle) => userVehicleModel(vehicle));
+export const apiCreateVehicleModel = (_appUserModel = {}) => ({
+  user: {
+    email: _.get(_appUserModel, 'email', ''),
+    name: _.get(_appUserModel, 'name', ''),
+  },
+});

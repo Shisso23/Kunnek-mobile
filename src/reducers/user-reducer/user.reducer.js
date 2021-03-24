@@ -34,6 +34,12 @@ export const setUserTransactionHistoryAction = setUserTransactionHistory.action;
 const setTransactionHistoryLoading = CreateAction(reducerName, 'SET_TRANSACTION_HISTORY_LOADING');
 export const setTransactionHistoryLoadingAction = setTransactionHistoryLoading.action;
 
+const setUserDelivererId = CreateAction(reducerName, 'SET_USER_DELIVERER_ID');
+export const setUserDelivererIdAction = setUserDelivererId.action;
+
+const setUserSenderId = CreateAction(reducerName, 'SET_USER_SENDER_ID');
+export const setUserSenderIdAction = setUserSenderId.action;
+
 export const userSelector = (reducers) => reducers.userReducer;
 
 const initialState = {
@@ -43,6 +49,8 @@ const initialState = {
   vehicles: null,
   reviews: null,
   transactionHistory: null,
+  delivererId: null,
+  senderId: null,
 
   creditCardsLoading: false,
   bankAccountsLoading: false,
@@ -56,6 +64,17 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         transactionHistory: action.payload,
+      };
+    case setUserSenderId.actionType:
+      console.warn(action.payload);
+      return {
+        ...state,
+        senderId: action.payload,
+      };
+    case setUserDelivererId.actionType:
+      return {
+        ...state,
+        delivererId: action.payload,
       };
     case setUser.actionType:
       return {
