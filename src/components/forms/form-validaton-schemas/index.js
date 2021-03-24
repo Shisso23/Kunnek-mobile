@@ -5,6 +5,8 @@ const numberRegex = /^[0-9]+$/;
 export const mobileNumberSchema = Yup.string().required('Mobile number is required');
 export const passwordSchema = Yup.string().required('Password is required');
 
+export const emailSchema = Yup.string().email('Invalid Email').trim().required('Email is required');
+
 export const registerPasswordSchema = (edit) =>
   !edit
     ? Yup.string()
