@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../../../theme';
@@ -8,7 +8,7 @@ const InitialScreen = () => {
   const navigation = useNavigation();
   const { Gutters } = useTheme();
   return (
-    <View style={[Gutters.smallHMargin]}>
+    <SafeAreaView style={[Gutters.smallHMargin]}>
       <Button mode="contained" onPress={() => navigation.navigate('SignIn')}>
         Login
       </Button>
@@ -18,7 +18,7 @@ const InitialScreen = () => {
       <Button mode="contained" onPress={() => navigation.navigate('ForgotPassword')}>
         Forgot Password
       </Button>
-    </View>
+    </SafeAreaView>
   );
 };
 

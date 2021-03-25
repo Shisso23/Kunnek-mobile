@@ -18,9 +18,9 @@ export const initAppAction = () => async (dispatch, getState) => {
   try {
     if (authState === AUTHENTICATED) {
       await dispatch(isAuthenticatedFlowAction());
+      dispatch(setDoneLoadingAppDataAction(true));
     }
   } finally {
-    dispatch(setDoneLoadingAppDataAction(true));
     setTimeout(() => {
       RNBootSplash.hide({ fade: true });
     }, 10); // force process to run a bit later.
@@ -29,7 +29,7 @@ export const initAppAction = () => async (dispatch, getState) => {
 };
 
 export const isAuthenticatedFlowAction = () => (dispatch) =>
-  Promise.all([dispatch(loadAppDataForSignedInUserAction())]);
+  dispatch(loadAppDataForSignedInUserAction());
 
 export const loadAppDataAction = () => (dispatch) => Promise.all([dispatch(loadAuthStateAction())]);
 
