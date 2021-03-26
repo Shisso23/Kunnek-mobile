@@ -14,15 +14,15 @@ const theme = {
       fontFamily: FontFamily.secondary,
       fontSize: 30,
     },
-    h2style: {
+    h2Style: {
       fontFamily: FontFamily.secondary,
       fontSize: 26,
     },
-    h3style: {
+    h3Style: {
       fontFamily: FontFamily.secondary,
       fontSize: 22,
     },
-    h4style: {
+    h4Style: {
       fontFamily: FontFamily.secondary,
       fontSize: 18,
     },
