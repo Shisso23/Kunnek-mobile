@@ -18,7 +18,7 @@ export default ({ Colors, FontFamily }) =>
       color: Colors.error,
       fontFamily: FontFamily.primary,
       fontSize: 15,
-      height: 26,
+      // height: 26,
     },
     headerLogo: {
       width: 200,
@@ -28,7 +28,7 @@ export default ({ Colors, FontFamily }) =>
       fontWeight: 'bold',
     },
     textInput: {
-      backgroundColor: Colors.inputBackground,
+      backgroundColor: Colors.black,
       borderColor: Colors.text,
       borderWidth: 1,
       color: Colors.text,

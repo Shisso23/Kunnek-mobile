@@ -1,11 +1,11 @@
 import React from 'react';
 import _ from 'lodash';
-import { View, ViewPropTypes } from 'react-native';
+import { SafeAreaView, View, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import { HelperText, TextInput, Button } from 'react-native-paper';
+import { Button, Input } from 'react-native-elements';
 import {
   emailSchema,
   registerPasswordSchema,
@@ -67,91 +67,68 @@ const UserInfoForm = ({ edit, submitForm, onSuccess, initialValues, containerSty
           const error = (name) => getFormError(name, { touched, status, errors });
           return (
             <>
-              <TextInput
+              <Input
                 value={values.name}
                 onChangeText={handleChange('name')}
                 onBlur={handleBlur('name')}
-                label="First Name"
+                placeholder="First Name"
+                errorMessage={error('name')}
               />
 
-              <HelperText type="error" visible={error('name')}>
-                {error('name')}{' '}
-              </HelperText>
-
-              <TextInput
+              <Input
                 value={values.surname}
                 onChangeText={handleChange('surname')}
                 onBlur={handleBlur('surname')}
-                label="Last Name"
+                placeholder="Last Name"
+                errorMessage={error('surname')}
               />
 
-              <HelperText type="error" visible={error('surname')}>
-                {error('surname')}
-              </HelperText>
-
-              <TextInput
+              <Input
                 value={values.email}
                 onChangeText={handleChange('email')}
                 onBlur={handleBlur('email')}
-                label="Email"
+                placeholder="Email"
                 errorMessage={error('email')}
                 keyboardType="email-address"
               />
 
-              <HelperText type="error" visible={error('email')}>
-                {error('email')}{' '}
-              </HelperText>
-
-              <TextInput
+              <Input
                 value={values.idNumber}
                 onChangeText={handleChange('idNumber')}
                 onBlur={handleBlur('idNumber')}
-                label="Id Number"
+                placeholder="Id Number"
                 errorMessage={error('idNumber')}
                 keyboardType="numeric"
               />
 
-              <HelperText type="error" visible={error('idNumber')}>
-                {error('idNumber')}
-              </HelperText>
-
-              <TextInput
+              <Input
                 value={values.mobileNumber}
                 onChangeText={handleChange('mobileNumber')}
                 onBlur={handleBlur('mobileNumber')}
-                label="Mobile Number"
+                placeholder="Mobile Number"
                 errorMessage={error('mobileNumber')}
                 keyboardType="email-address"
               />
 
-              <HelperText type="error" visible={error('mobileNumber')}>
-                {error('mobileNumber')}{' '}
-              </HelperText>
-
               {!edit && (
                 <>
-                  <TextInput
+                  <Input
                     value={values.password}
                     onChangeText={handleChange('password')}
-                    label="Password"
+                    placeholder="Password"
                     secureTextEntry
                     onBlur={handleBlur('password')}
                     errorMessage={error('password')}
                   />
-                  <HelperText type="error" visible={error('password')}>
-                    {error('password')}{' '}
-                  </HelperText>
-                  <TextInput
+
+                  <Input
                     value={values.confirmPassword}
                     onChangeText={handleChange('confirmPassword')}
-                    label="Confirm Password"
+                    placeholder="Confirm Password"
                     secureTextEntry
                     onBlur={handleBlur('confirmPassword')}
                     errorMessage={error('confirmPassword')}
                   />
-                  <HelperText type="error" visible={error('confirmPassword')}>
-                    {error('confirmPassword')}{' '}
-                  </HelperText>
                 </>
               )}
               {!edit && (
@@ -160,9 +137,13 @@ const UserInfoForm = ({ edit, submitForm, onSuccess, initialValues, containerSty
                   onPress={() => setFieldValue('termsAndConditions', !values.termsAndConditions)}
                 />
               )}
-              <Button onPress={handleSubmit} loading={isSubmitting} mode="contained">
-                {!edit ? 'Sign Up' : 'Update'}
-              </Button>
+              <SafeAreaView>
+                <Button
+                  onPress={handleSubmit}
+                  loading={isSubmitting}
+                  title={!edit ? 'Sign Up' : 'Update'}
+                />
+              </SafeAreaView>
             </>
           );
         }}
