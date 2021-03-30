@@ -3,3 +3,4 @@ export { default as userService } from './sub-services/user-service/user.service
 export { default as authNetworkService } from './sub-services/auth-network-service/auth-network.service';
 export { default as userAuthService } from './sub-services/user-auth-service/user-auth.service';
 export { default as flashService } from './sub-services/flash-service/flash.service';
+export { default as parcelRequestService } from './sub-services/parcel-request-service/parcel-request.service';
