@@ -2,17 +2,12 @@ import authNetworkService from '../auth-network-service/auth-network.service';
 import { userModel, apiUserModel } from '../../../models';
 import userUrls from './user.urls';
 
-const getUser = () => {
-  const url = userUrls.userUrl();
+const getUser = async (id) => {
+  const url = userUrls.userUrl(id);
+
   const _createAndReturnUserModel = (apiResponse) => userModel(apiResponse.data);
-  return authNetworkService
-    .get(url)
-    .then(_createAndReturnUserModel)
-    .catch((error) => {
-      // eslint-disable-next-line no-console
-      console.warn(error);
-      return Promise.reject(error);
-    });
+  const apiResponse = await authNetworkService.get(url);
+  return _createAndReturnUserModel(apiResponse);
 };
 
 const updateUser = ({ formData }) => {
@@ -26,7 +21,21 @@ const updateUser = ({ formData }) => {
   });
 };
 
+const getDelivererId = async () => {
+  const url = userUrls.getDelivererId();
+  const { data } = await authNetworkService.post(url);
+  return data.id;
+};
+
+const getSenderId = async () => {
+  const url = userUrls.getSenderId();
+  const { data } = await authNetworkService.post(url);
+  return data.id;
+};
+
 export default {
   getUser,
   updateUser,
+  getSenderId,
+  getDelivererId,
 };

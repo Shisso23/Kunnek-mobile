@@ -1,36 +1,27 @@
-import React, { useEffect } from 'react';
-import { View } from 'react-native';
-import { Button } from 'react-native-elements';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
 import { exitAppOnHardwarePressListener } from '../../../helpers';
-import { signOutAction } from '../../../reducers/user-auth-reducer/user-auth.actions';
-
-const { CancelToken } = axios;
+import { CustomTab } from '../../../components/molecules';
 
 const HomeScreen = () => {
-  const requestSource = CancelToken.source();
-  const dispatch = useDispatch();
-
   useFocusEffect(exitAppOnHardwarePressListener);
 
-  const _signOut = () => {
-    dispatch(signOutAction());
-  };
-
-  useEffect(() => {
-    return () => {
-      requestSource.cancel();
-    };
-  }, []);
-
   return (
-    <View>
-      <Button title="Sign Out" onPress={_signOut} />
+    <View style={styles.navContainer}>
+      <CustomTab />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  navContainer: {
+    bottom: 50,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+  },
+});
 
 HomeScreen.propTypes = {};
 
