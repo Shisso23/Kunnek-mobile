@@ -12,35 +12,18 @@ const AuthStack = createStackNavigator();
 const AuthNavigator = () => {
   const { Custom } = useTheme();
   return (
-    <AuthStack.Navigator screenOptions={Custom.globalNavigatorScreenOptions}>
+    <AuthStack.Navigator screenOptions={Custom.globalPlainNavigatorOptions}>
       <AuthStack.Screen
         name="InitialScreen"
         component={InitialScreen}
         options={{
-          title: 'Sign In',
           headerShown: false,
         }}
       />
-      <AuthStack.Screen
-        name="SignIn"
-        component={SignInScreen}
-        options={{
-          title: 'Sign In',
-        }}
-      />
-      <AuthStack.Screen
-        name="SignInOtp"
-        component={SignInOtpScreen}
-        options={{
-          title: 'Sign In Otp',
-        }}
-      />
-      <AuthStack.Screen
-        name="ForgotPassword"
-        component={ForgotPasswordScene}
-        options={{ title: 'Forgot Password' }}
-      />
-      <AuthStack.Screen name="Register" component={RegisterScene} options={{ title: 'Register' }} />
+      <AuthStack.Screen name="SignIn" component={SignInScreen} />
+      <AuthStack.Screen name="SignInOtp" component={SignInOtpScreen} />
+      <AuthStack.Screen name="ForgotPassword" component={ForgotPasswordScene} />
+      <AuthStack.Screen name="Register" component={RegisterScene} />
     </AuthStack.Navigator>
   );
 };

@@ -1,6 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { View } from 'react-native';
+import { Text } from 'react-native-elements';
 import { UserInfoForm } from '../../../components/forms';
 import { registrationUserModel } from '../../../models';
 import { FormScreenContainer } from '../../../components';
@@ -19,6 +21,10 @@ const RegisterScreen = () => {
 
   return (
     <FormScreenContainer>
+      <View style={[Gutters.smallHMargin]}>
+        <Text h2>Sign Up</Text>
+        <Text style={[Gutters.smallVMargin]}>Add your details to sign up</Text>
+      </View>
       <UserInfoForm
         submitForm={_handleFormSubmit}
         onSuccess={_onFormSuccess}

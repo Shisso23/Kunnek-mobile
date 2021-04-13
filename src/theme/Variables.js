@@ -19,6 +19,9 @@ export const Colors = {
   success: '#95F9E3',
   warning: '#D4B483',
   error: '#C1666B',
+  lightGrey: '#f2f2f2',
+  inputPlaceholderColor: '#b6b8b7',
+  darkGrey: '#333333',
 };
 
 export const NavigationColors = {

@@ -5,15 +5,17 @@ import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import { HelperText, TextInput, Button } from 'react-native-paper';
+import { Text, Input, Button } from 'react-native-elements';
 import { mobileNumberSchema } from '../form-validaton-schemas';
 import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
+import useTheme from '../../../theme/hooks/useTheme';
 
 const ForgotPasswordForm = ({ submitForm, onSuccess, initialValues, containerStyle }) => {
   const validationSchema = Yup.object().shape({
     mobileNumber: mobileNumberSchema,
   });
+  const { Gutters } = useTheme();
 
   const _handleSubmission = (formData, actions) => {
     submitForm(formData)
@@ -56,20 +58,22 @@ const ForgotPasswordForm = ({ submitForm, onSuccess, initialValues, containerSty
           const error = (name) => getFormError(name, { touched, status, errors });
           return (
             <>
-              <TextInput
+              <View>
+                <Text h2>Reset Password</Text>
+                <Text style={[Gutters.smallVMargin]}>
+                  Please enter your mobile number to receive a link to reset your password.
+                </Text>
+              </View>
+
+              <Input
                 value={values.mobileNumber}
                 onChangeText={handleChange('mobileNumber')}
                 onBlur={handleBlur('mobileNumber')}
-                label="Mobile Number"
+                placeholder="Mobile Number"
                 errorMessage={error('mobileNumber')}
               />
-              <HelperText type="error" visible={error('mobileNumber')}>
-                {error('mobileNumber')}
-              </HelperText>
 
-              <Button mode="contained" onPress={handleSubmit} loading={isSubmitting}>
-                Submit
-              </Button>
+              <Button onPress={handleSubmit} loading={isSubmitting} title="Submit" />
             </>
           );
         }}

@@ -10,19 +10,19 @@ const theme = {
       fontFamily: FontFamily.primary,
       fontSize: FontSize.regular,
     },
-    h1style: {
+    h1Style: {
       fontFamily: FontFamily.secondary,
       fontSize: 30,
     },
-    h2style: {
+    h2Style: {
       fontFamily: FontFamily.secondary,
       fontSize: 26,
     },
-    h3style: {
+    h3Style: {
       fontFamily: FontFamily.secondary,
       fontSize: 22,
     },
-    h4style: {
+    h4Style: {
       fontFamily: FontFamily.secondary,
       fontSize: 18,
     },
@@ -34,13 +34,17 @@ const theme = {
   },
 
   Button: {
-    raised: true,
-    color: Colors.primary,
     titleStyle: {
       fontFamily: FontFamily.secondary,
+      fontSize: 20,
+      color: Colors.white,
     },
     buttonStyle: {
-      height: 45,
+      borderRadius: 0,
+      height: 56,
+    },
+    containerStyle: {
+      marginVertical: 10,
     },
   },
   Input: {
@@ -49,6 +53,17 @@ const theme = {
       paddingLeft: 0,
       paddingRight: 0,
     },
+    inputStyle: {
+      backgroundColor: Colors.lightGrey,
+      color: Colors.darkGrey,
+      height: 56,
+      padding: 20,
+      fontSize: 14,
+    },
+    inputContainerStyle: {
+      borderBottomWidth: 0,
+    },
+    placeholderTextColor: Colors.inputPlaceholderColor,
   },
   SearchBar: {
     containerStyle: {
