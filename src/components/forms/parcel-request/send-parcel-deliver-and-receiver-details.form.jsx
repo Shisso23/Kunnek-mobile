@@ -4,13 +4,15 @@ import { SafeAreaView, View, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { Button, Input } from 'react-native-elements';
 import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
 import UploadDocumentButton from '../../molecules/upload-document-button';
+import AddressInput from '../../molecules/address-input';
 
-const SendParcelItemDetailsForm = ({
+const SendParcelDeliverAndReceiverDetailsForm = ({
   edit,
   submitForm,
   onSuccess,
@@ -19,12 +21,8 @@ const SendParcelItemDetailsForm = ({
 }) => {
   const validationSchema = Yup.object().shape({
     description: Yup.string().required('Description is required'),
-    itemHeight: Yup.string().required('Height is required'),
-    itemWidth: Yup.string().required('Width is required'),
-    itemLength: Yup.string().required('Length is required'),
-    itemWeight: Yup.string().required('Weight is required'),
-    offerAmount: Yup.string().required('Offer Amount is required'),
-    photoUri: Yup.string().required('Photo is required'),
+    weight: Yup.number().required('Weight is required'),
+    price: Yup.number().round().required('First Name is required'),
   });
 
   const _handleSubmission = (formData, actions) => {
@@ -66,31 +64,30 @@ const SendParcelItemDetailsForm = ({
           const error = (name) => getFormError(name, { touched, status, errors });
           return (
             <>
-              <Input
-                value={values.description}
-                onChangeText={handleChange('description')}
-                onBlur={handleBlur('description')}
-                placeholder="Item Description"
-                errorMessage={error('description')}
+              <AddressInput
+                value={values.pickUpAddress}
+                onChange={handleChange('pickUpAddress')}
+                onBlur={handleBlur('pickUpAddress')}
+                placeholder="Pick up Address"
+                errorMessage={error('pickUpAddress')}
               />
 
-              <Input
-                value={values.itemHeight}
-                onChangeText={handleChange('itemHeight')}
-                onBlur={handleBlur('itemHeight')}
-                placeholder="Height (cms)"
-                errorMessage={error('itemHeight')}
-                keyboardType="number-pad"
+              <AddressInput
+                value={values.dropOffAddress}
+                onChange={handleChange('dropOffAddress')}
+                onBlur={handleBlur('dropOffAddress')}
+                placeholder="Drop Off Address"
+                errorMessage={error('pickUpAddress')}
               />
 
-              <Input
-                value={values.itemWidth}
-                onChangeText={handleChange('itemWidth')}
-                onBlur={handleBlur('itemWidth')}
-                placeholder="Width (cms)"
-                errorMessage={error('itemWidth')}
-                keyboardType="numeric"
-              />
+              {/*<DateTimePicker*/}
+              {/*  value={values.itemWidth}*/}
+              {/*  onChangeText={handleChange('itemWidth')}*/}
+              {/*  onBlur={handleBlur('itemWidth')}*/}
+              {/*  placeholder="Width (cms)"*/}
+              {/*  errorMessage={error('itemWidth')}*/}
+              {/*  keyboardType="numeric"*/}
+              {/*/>*/}
 
               <Input
                 value={values.itemLength}
@@ -140,7 +137,7 @@ const SendParcelItemDetailsForm = ({
   );
 };
 
-SendParcelItemDetailsForm.propTypes = {
+SendParcelDeliverAndReceiverDetailsForm.propTypes = {
   submitForm: PropTypes.func.isRequired,
   initialValues: PropTypes.object.isRequired,
   onSuccess: PropTypes.func,
@@ -148,10 +145,10 @@ SendParcelItemDetailsForm.propTypes = {
   containerStyle: ViewPropTypes.style,
 };
 
-SendParcelItemDetailsForm.defaultProps = {
+SendParcelDeliverAndReceiverDetailsForm.defaultProps = {
   onSuccess: () => null,
   edit: false,
   containerStyle: {},
 };
 
-export default SendParcelItemDetailsForm;
+export default SendParcelDeliverAndReceiverDetailsForm;

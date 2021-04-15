@@ -22,6 +22,7 @@ export const Colors = {
   lightGrey: '#f2f2f2',
   inputPlaceholderColor: '#b6b8b7',
   darkGrey: '#333333',
+  carouselDotsColour: 'rgba(0, 158, 183, 0.9)',
 };
 
 export const NavigationColors = {

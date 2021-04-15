@@ -3,8 +3,8 @@ import _ from 'lodash';
 
 export const parcelRequestModel = (_apiParcelRequestModel = {}) => ({
   id: _.get(_apiParcelRequestModel, 'id', ''),
-  collectAddress: _.get(_apiParcelRequestModel, 'collect_address', ''),
-  deliverAddress: _.get(_apiParcelRequestModel, 'deliver_address', ''),
+  pickUpAddress: _.get(_apiParcelRequestModel, 'collect_address', ''),
+  dropOffAddress: _.get(_apiParcelRequestModel, 'deliver_address', ''),
   itemName: _.get(_apiParcelRequestModel, 'item_name', ''),
   description: _.get(_apiParcelRequestModel, 'description', ''),
   price: _.get(_apiParcelRequestModel, 'price', 0.0),
@@ -17,13 +17,17 @@ export const parcelRequestModel = (_apiParcelRequestModel = {}) => ({
   latestDeliveryDateTime: _.get(_apiParcelRequestModel, 'latest_delivery_date_time', ''),
   locations: _.get(_apiParcelRequestModel, 'locations', []),
   serviceFee: _.get(_apiParcelRequestModel, 'service_fee', 0),
+  photoUri: _.get(_apiParcelRequestModel, 'photo', ''),
+  receiverFirstName: _.get(_apiParcelRequestModel, 'receiver.first_name', ''),
+  receiverLastName: _.get(_apiParcelRequestModel, 'receiver.last_name', ''),
+  receiverMobileNumber: _.get(_apiParcelRequestModel, 'receiver.mobile_number', ''),
 });
 
 export const apiParcelRequestModel = (_appParcelRequestModel = {}) => ({
   job: {
     id: _.get(_appParcelRequestModel, 'id', ''),
-    collect_address: _.get(_appParcelRequestModel, 'collectAddress', ''),
-    deliver_address: _.get(_appParcelRequestModel, 'deliverAddress', ''),
+    collect_address: _.get(_appParcelRequestModel, 'pickUpAddress', ''),
+    deliver_address: _.get(_appParcelRequestModel, 'dropOffAddress', ''),
     item_name: _.get(_appParcelRequestModel, 'itemName', ''),
     description: _.get(_appParcelRequestModel, 'description', ''),
     price: _.get(_appParcelRequestModel, 'price', 0.0),
@@ -36,5 +40,11 @@ export const apiParcelRequestModel = (_appParcelRequestModel = {}) => ({
     latest_delivery_date_time: _.get(_appParcelRequestModel, 'latestDeliveryDateTime', ''),
     locations: _.get(_appParcelRequestModel, 'locations', []),
     service_fee: _.get(_appParcelRequestModel, 'serviceFee', 0),
+    photo: _.get(_appParcelRequestModel, 'photoUri', ''),
+    receiver: {
+      first_name: _.get(_appParcelRequestModel, 'receiverFirstName', ''),
+      last_name: _.get(_appParcelRequestModel, 'receiverLastName', ''),
+      mobile_number: _.get(_appParcelRequestModel, 'receiverMobileNumber', ''),
+    },
   },
 });

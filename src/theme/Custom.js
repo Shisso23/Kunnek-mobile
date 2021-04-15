@@ -60,4 +60,10 @@ export default ({ Colors, FontFamily }) => ({
     height: 90,
     width: 116,
   },
+
+  // Buttons
+  closeButton: {
+    paddingTop: 14,
+    backgroundColor: Colors.transparent,
+  },
 });

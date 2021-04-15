@@ -1,6 +1,13 @@
 import Config from 'react-native-config';
 
-const { API_LOCATION, CLIENT_ID, CLIENT_SECRET, HOST_URL, ENVIRONMENT } = Config;
+const {
+  API_LOCATION,
+  CLIENT_ID,
+  CLIENT_SECRET,
+  HOST_URL,
+  ENVIRONMENT,
+  GOOGLE_MAPS_API_KEY,
+} = Config;
 
 export default {
   accessTokenKey: 'access_token',
@@ -10,4 +17,11 @@ export default {
   clientId: CLIENT_ID,
   clientSecret: CLIENT_SECRET,
   environment: ENVIRONMENT,
+
+  googleMaps: {
+    apiKey: GOOGLE_MAPS_API_KEY,
+    latitudeDelta: 1.2222,
+    longitudeDelta: 1.0721,
+    maxZoomLevel: 15,
+  },
 };

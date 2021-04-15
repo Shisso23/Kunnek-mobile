@@ -1,5 +1,9 @@
+import { Dimensions } from 'react-native';
 import { Colors, FontFamily, FontSize } from './Variables';
 import Common from './Common';
+
+const { height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const theme = {
   colors: {
@@ -67,11 +71,16 @@ const theme = {
   },
   SearchBar: {
     containerStyle: {
-      backgroundColor: Colors.warning,
+      backgroundColor: '#fff',
       paddingLeft: 0,
       paddingRight: 0,
-      borderBottomWidth: 1,
-      borderBottomColor: '#000',
+      borderBottomWidth: 0,
+    },
+  },
+  Overlay: {
+    overlayStyle: {
+      height: height / 1.3,
+      width: width / 1.3,
     },
   },
 };
