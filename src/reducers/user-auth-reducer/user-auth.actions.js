@@ -37,12 +37,12 @@ export const signOutAction = () => (dispatch) => {
 
 export const storeAuthStateAction = (state) => async (dispatch) => {
   await storageService.storeAuthState(state);
-  dispatch(setAuthStateAction(state));
+  await dispatch(setAuthStateAction(state));
 };
 
 export const loadAuthStateAction = () => async (dispatch) => {
   const authState = await storageService.getAuthState();
   if (!_.isNil(authState)) {
-    dispatch(setAuthStateAction(authState));
+    await dispatch(setAuthStateAction(authState));
   }
 };

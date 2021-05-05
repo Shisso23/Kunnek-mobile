@@ -19,9 +19,13 @@ export const Colors = {
   success: '#95F9E3',
   warning: '#D4B483',
   error: '#C1666B',
-  lightGrey: '#f2f2f2',
   inputPlaceholderColor: '#b6b8b7',
-  darkGrey: '#333333',
+  lightGrey: '#F7F7FA',
+  darkGrey: '#707070',
+  green: '#70FF66',
+  orange: '#FFD766',
+  lynch: '#78849E',
+  darkBackground: '#292e42',
 };
 
 export const NavigationColors = {
@@ -38,8 +42,8 @@ export const FontSize = {
 };
 
 export const FontFamily = {
-  primary: 'system font',
-  secondary: 'system font',
+  primary: 'Poppins-Regular',
+  secondary: 'Poppins-SemiBold',
 };
 
 /**

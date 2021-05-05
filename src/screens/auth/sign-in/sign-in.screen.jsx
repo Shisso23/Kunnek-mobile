@@ -25,11 +25,11 @@ const SignInScreen = () => {
   const _handleFormSubmit = (signInForm) => dispatch(signInAction(signInForm));
 
   const _onSignInSuccess = async () => {
-    if (authState === AuthStates.AUTHENTICATED) {
-      await dispatch(isAuthenticatedFlowAction());
-      dispatch(setDoneLoadingAppDataAction(true));
-    } else {
+    if (authState === AuthStates._2FA_PENDING) {
       navigation.navigate('SignInOtp');
+    } else {
+      await dispatch(isAuthenticatedFlowAction());
+      await dispatch(setDoneLoadingAppDataAction(true));
     }
   };
 
@@ -42,7 +42,7 @@ const SignInScreen = () => {
         <SignInForm
           submitForm={_handleFormSubmit}
           onSuccess={_onSignInSuccess}
-          initialValues={signInModel()}
+          initialValues={signInModel({ mobileNumber: '0827760741', password: 'password' })}
           containerStyle={[Gutters.smallHMargin]}
         />
       </SafeAreaView>
