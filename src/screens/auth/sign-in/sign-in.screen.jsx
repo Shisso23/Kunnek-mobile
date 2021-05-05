@@ -42,7 +42,7 @@ const SignInScreen = () => {
         <SignInForm
           submitForm={_handleFormSubmit}
           onSuccess={_onSignInSuccess}
-          initialValues={signInModel({ mobileNumber: '0827760741', password: 'password' })}
+          initialValues={signInModel()}
           containerStyle={[Gutters.smallHMargin]}
         />
       </SafeAreaView>
