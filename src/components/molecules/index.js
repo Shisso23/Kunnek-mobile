@@ -1,3 +1,12 @@
 export { default as CustomDrawer } from './drawer';
 export { default as CustomTab } from './tab-navigation';
 export { default as UploadDocumentButton } from './upload-document-button';
+export { default as ParallaxView } from './parallax-view';
+export { default as CardsList } from './cards-list';
+export { default as AccountsList } from './accounts-list';
+export { default as VehiclesList } from './vehicles-list';
+export { default as ReviewsList } from './reviews-list';
+export { default as TransactionHistoryCard } from './transaction-history-card';
+export { default as NotificationHistoryCard } from './notification-history-card';
+export { default as LoadingComponent } from './loading';
+export { default as MapViewComponent } from './map-view';

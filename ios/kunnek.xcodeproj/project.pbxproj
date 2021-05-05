@@ -18,6 +18,8 @@
 		3458882A0743CA16E90CEB4B /* libPods-kunnek-kunnekTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 491A35DB0A2BB6F96C18EEE5 /* libPods-kunnek-kunnekTests.a */; };
 		7E2FDC6674919E230333E877 /* libPods-kunnek-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBEF2B6C02A70DDD7F5795FC /* libPods-kunnek-tvOS.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		910A547E261603DB00BAAA32 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 910A547C261603DB00BAAA32 /* Poppins-Regular.ttf */; };
+		910A547F261603DB00BAAA32 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 910A547D261603DB00BAAA32 /* Poppins-SemiBold.ttf */; };
 		C71A9CAD6AEDB2C0ED91E3B3 /* libPods-kunnek.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DAACE6559748A8FEA54EEC0A /* libPods-kunnek.a */; };
 		DA73AF1C25EF7F71009DA734 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA73AF1B25EF7F71009DA734 /* BootSplash.storyboard */; };
 		E9FEDDEBE0198873F054F392 /* libPods-kunnek-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FAC4F9B2A8C8D52E4B23074F /* libPods-kunnek-tvOSTests.a */; };
@@ -58,6 +60,8 @@
 		4CECFCBE4F7EAE629884A2EF /* Pods-kunnek-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-kunnek-tvOS.release.xcconfig"; path = "Target Support Files/Pods-kunnek-tvOS/Pods-kunnek-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		70250F29DB6DE9B27ABE3946 /* Pods-kunnek-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-kunnek-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-kunnek-tvOS/Pods-kunnek-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = kunnek/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		910A547C261603DB00BAAA32 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
+		910A547D261603DB00BAAA32 /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 		AB3A6B124A6021F786AD079D /* Pods-kunnek-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-kunnek-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-kunnek-tvOSTests/Pods-kunnek-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		C4B289C50716461CE27D80F1 /* Pods-kunnek.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-kunnek.release.xcconfig"; path = "Target Support Files/Pods-kunnek/Pods-kunnek.release.xcconfig"; sourceTree = "<group>"; };
 		C69B385AF8AD34D03852FE62 /* Pods-kunnek.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-kunnek.debug.xcconfig"; path = "Target Support Files/Pods-kunnek/Pods-kunnek.debug.xcconfig"; sourceTree = "<group>"; };
@@ -177,6 +181,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				910A547B2616037A00BAAA32 /* fonts */,
 				13B07FAE1A68108700A75B9A /* kunnek */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* kunnekTests */,
@@ -198,6 +203,15 @@
 				2D02E4901E0B4A5D006451C7 /* kunnek-tvOSTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		910A547B2616037A00BAAA32 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				910A547C261603DB00BAAA32 /* Poppins-Regular.ttf */,
+				910A547D261603DB00BAAA32 /* Poppins-SemiBold.ttf */,
+			);
+			path = fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -347,9 +361,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				910A547F261603DB00BAAA32 /* Poppins-SemiBold.ttf in Resources */,
 				DA73AF1C25EF7F71009DA734 /* BootSplash.storyboard in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				910A547E261603DB00BAAA32 /* Poppins-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,6 +430,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-kunnek-kunnekTests/Pods-kunnek-kunnekTests-resources.sh",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
@@ -434,6 +451,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
@@ -580,6 +598,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-kunnek/Pods-kunnek-resources.sh",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
@@ -600,6 +619,7 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",

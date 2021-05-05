@@ -28,11 +28,20 @@ export const setVehiclesLoadingAction = setVehiclesLoading.action;
 const setUserReviews = CreateAction(reducerName, 'SET_USER_REVIEWS');
 export const setUserReviewsAction = setUserReviews.action;
 
+const setReviewsLoading = CreateAction(reducerName, 'SET_REVIEWS_LOADING');
+export const setReviewsLoadingAction = setReviewsLoading.action;
+
 const setUserTransactionHistory = CreateAction(reducerName, 'SET_USER_TRANSACTION_HISTORY');
 export const setUserTransactionHistoryAction = setUserTransactionHistory.action;
 
 const setTransactionHistoryLoading = CreateAction(reducerName, 'SET_TRANSACTION_HISTORY_LOADING');
 export const setTransactionHistoryLoadingAction = setTransactionHistoryLoading.action;
+
+const setUserNotificationHistory = CreateAction(reducerName, 'SET_USER_NOTIFICATION_HISTORY');
+export const setUserNotificationHistoryAction = setUserNotificationHistory.action;
+
+const setNotificationHistoryLoading = CreateAction(reducerName, 'SET_NOTIFICATION_HISTORY_LOADING');
+export const setNotificationHistoryLoadingAction = setNotificationHistoryLoading.action;
 
 const setUserDelivererId = CreateAction(reducerName, 'SET_USER_DELIVERER_ID');
 export const setUserDelivererIdAction = setUserDelivererId.action;
@@ -49,6 +58,7 @@ const initialState = {
   vehicles: null,
   reviews: null,
   transactionHistory: null,
+  notificationHistory: null,
   delivererId: null,
   senderId: null,
 
@@ -56,6 +66,7 @@ const initialState = {
   bankAccountsLoading: false,
   vehiclesLoading: false,
   transactionHistoryLoading: false,
+  notificationHistoryLoading: false,
 };
 
 export default function userReducer(state = initialState, action) {
@@ -65,8 +76,12 @@ export default function userReducer(state = initialState, action) {
         ...state,
         transactionHistory: action.payload,
       };
+    case setUserNotificationHistory.actionType:
+      return {
+        ...state,
+        notificationHistory: action.payload,
+      };
     case setUserSenderId.actionType:
-      console.warn(action.payload);
       return {
         ...state,
         senderId: action.payload,
@@ -107,6 +122,11 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         transactionHistoryLoading: action.payload,
+      };
+    case setNotificationHistoryLoading.actionType:
+      return {
+        ...state,
+        notificationHistoryLoading: action.payload,
       };
     case setUserVehicles.actionType:
       return {

@@ -6,13 +6,27 @@ import { StyleSheet } from 'react-native';
  * @return {*}
  */
 
-export default ({ Colors, FontFamily }) =>
+export default ({ Colors, FontFamily, FontSize }) =>
   StyleSheet.create({
     backgroundPrimary: {
       backgroundColor: Colors.primary,
     },
     backgroundReset: {
       backgroundColor: Colors.transparent,
+    },
+    bottomDrawer: {
+      backgroundColor: Colors.lightGrey,
+      borderTopLeftRadius: 12,
+      borderTopRightRadius: 12,
+      marginTop: -10,
+      padding: 10,
+    },
+    centerText: {
+      textAlign: 'center',
+    },
+    centerWhiteText: {
+      color: Colors.white,
+      textAlign: 'center',
     },
     errorStyle: {
       color: Colors.error,
@@ -26,6 +40,18 @@ export default ({ Colors, FontFamily }) =>
       color: Colors.secondary,
       fontWeight: 'bold',
     },
+    smallDivider: {
+      borderColor: Colors.darkGrey,
+      borderRightWidth: 1,
+      height: 70,
+    },
+    smallGreyText: {
+      color: Colors.lynch,
+      fontSize: FontSize.small,
+    },
+    smallText: {
+      fontSize: FontSize.small,
+    },
     textInput: {
       backgroundColor: Colors.inputBackground,
       borderColor: Colors.text,
@@ -35,5 +61,19 @@ export default ({ Colors, FontFamily }) =>
       marginTop: 10,
       minHeight: 50,
       textAlign: 'center',
+    },
+    viewCard: {
+      backgroundColor: Colors.white,
+      borderRadius: 12,
+      elevation: 9,
+      padding: 10,
+      shadowColor: Colors.grey,
+      shadowOffset: {
+        width: 0,
+        height: 4,
+      },
+      shadowOpacity: 0.32,
+
+      shadowRadius: 5.46,
     },
   });

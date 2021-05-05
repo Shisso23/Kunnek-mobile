@@ -12,6 +12,7 @@ import ViewParcelsScreen from '../../screens/app/view-parcels/view-parcels.scree
 import TransactionHistoryScreen from '../../screens/app/history/history.screen';
 import AddVehicleScreen from '../../screens/app/vehicles/add-vehicle.screen';
 import ViewVehicleScreen from '../../screens/app/vehicles/view-vehicle.screen';
+import NotificationHistoryScreen from '../../screens/app/notifications/notifications.screen';
 
 const Drawer = createDrawerNavigator();
 const AppStack = createStackNavigator();
@@ -19,7 +20,7 @@ const AppStack = createStackNavigator();
 const AppNavigator = () => {
   const { Custom } = useTheme();
   return (
-    <AppStack.Navigator screenOptions={Custom.globalNavigatorScreenOptions}>
+    <AppStack.Navigator screenOptions={Custom.globalPlainNavigatorOptions}>
       <AppStack.Screen
         name="App Home"
         component={DrawerNavigator}
@@ -29,6 +30,7 @@ const AppNavigator = () => {
       <AppStack.Screen name="ViewParcel" component={ViewParcelsScreen} />
       <AppStack.Screen name="ParcelDeliveryDetails" component={ParcelDeliveryDetailsScreen} />
       <AppStack.Screen name="TransactionHistory" component={TransactionHistoryScreen} />
+      <AppStack.Screen name="NotificationHistory" component={NotificationHistoryScreen} />
       <AppStack.Screen name="AddVehicle" component={AddVehicleScreen} />
       <AppStack.Screen name="ViewVehicle" component={ViewVehicleScreen} />
     </AppStack.Navigator>
@@ -41,11 +43,6 @@ const DrawerNavigator = () => (
       name="Home"
       component={HomeScreen}
       options={{ headerShown: true, title: 'Home' }}
-    />
-    <Drawer.Screen
-      name="TransactionHistory"
-      component={TransactionHistoryScreen}
-      options={{ headerShown: true, title: 'History' }}
     />
     <Drawer.Screen
       name="Profile"
