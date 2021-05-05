@@ -4,13 +4,12 @@ import { SafeAreaView, View, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { Button, Input } from 'react-native-elements';
 import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
-import UploadDocumentButton from '../../molecules/upload-document-button';
 import AddressInput from '../../molecules/address-input';
+import DateTimeInput from '../../molecules/date-time-input';
 
 const SendParcelDeliverAndReceiverDetailsForm = ({
   edit,
@@ -20,9 +19,12 @@ const SendParcelDeliverAndReceiverDetailsForm = ({
   containerStyle,
 }) => {
   const validationSchema = Yup.object().shape({
-    description: Yup.string().required('Description is required'),
-    weight: Yup.number().required('Weight is required'),
-    price: Yup.number().round().required('First Name is required'),
+    pickUpAddress: Yup.string().required('Pick up address is required'),
+    dropOffAddress: Yup.string().required('Drop off address is required'),
+    latestDeliveryDateTime: Yup.date().required('Pickup date time is required'),
+    receiverFirstName: Yup.string().required("The receiver's first name is required"),
+    receiverLastName: Yup.string().required("The receiver's last name is required"),
+    receiverMobileNumber: Yup.string().required("The receiver's mobile number is required"),
   });
 
   const _handleSubmission = (formData, actions) => {
@@ -80,54 +82,44 @@ const SendParcelDeliverAndReceiverDetailsForm = ({
                 errorMessage={error('pickUpAddress')}
               />
 
-              {/*<DateTimePicker*/}
-              {/*  value={values.itemWidth}*/}
-              {/*  onChangeText={handleChange('itemWidth')}*/}
-              {/*  onBlur={handleBlur('itemWidth')}*/}
-              {/*  placeholder="Width (cms)"*/}
-              {/*  errorMessage={error('itemWidth')}*/}
-              {/*  keyboardType="numeric"*/}
-              {/*/>*/}
-
-              <Input
-                value={values.itemLength}
-                onChangeText={handleChange('itemLength')}
-                onBlur={handleBlur('itemLength')}
-                placeholder="Length (cms)"
-                errorMessage={error('itemLength')}
-                keyboardType="numeric"
+              <DateTimeInput
+                value={values.latestDeliveryDateTime || new Date('YYYY-MM-DD')}
+                onChange={handleChange('latestDeliveryDateTime')}
+                onBlur={handleBlur('latestDeliveryDateTime')}
+                placeholder="Latest Date of Delivery"
+                errorMessage={error('latestDeliveryDateTime')}
+                label="Latest Date of Delivery"
               />
 
               <Input
-                value={values.itemWeight}
-                onChangeText={handleChange('itemWeight')}
-                onBlur={handleBlur('itemWeight')}
-                placeholder="Weight (kgs)"
-                errorMessage={error('itemWeight')}
-                keyboardType="numeric"
+                value={values.receiverFirstName}
+                label="Receiver's First Name"
+                onChangeText={handleChange('receiverFirstName')}
+                onBlur={handleBlur('receiverFirstName')}
+                placeholder="Receiver's First Name"
+                errorMessage={error('receiverFirstName')}
               />
 
               <Input
-                value={values.price}
-                onChangeText={handleChange('price')}
-                onBlur={handleBlur('price')}
-                placeholder="Offer Amount"
-                errorMessage={error('price')}
-                keyboardType="numeric"
+                value={values.receiverLastName}
+                label="Receiver's Last Name"
+                onChangeText={handleChange('receiverLastName')}
+                onBlur={handleBlur('receiverLastName')}
+                placeholder="Receiver's Last Name"
+                errorMessage={error('receiverLastName')}
               />
 
-              <UploadDocumentButton
-                title="Upload"
-                errorMessage={error('price')}
-                onImageSelect={handleChange('price')}
+              <Input
+                value={values.receiverMobileNumber}
+                label="Receiver's Mobile Number"
+                onChangeText={handleChange('receiverMobileNumber')}
+                onBlur={handleBlur('receiverMobileNumber')}
+                placeholder="Receiver's Mobile Number"
+                errorMessage={error('receiverMobileNumber')}
               />
 
               <SafeAreaView>
-                <Button
-                  onPress={handleSubmit}
-                  loading={isSubmitting}
-                  title={!edit ? 'Sign Up' : 'Update'}
-                />
+                <Button onPress={handleSubmit} loading={isSubmitting} title="Next" />
               </SafeAreaView>
             </>
           );

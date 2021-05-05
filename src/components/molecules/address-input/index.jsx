@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, Text, View, ViewPropTypes } from 'react-native';
-import { Button, ListItem, Overlay, SearchBar } from 'react-native-elements';
+import { FlatList, View, ViewPropTypes } from 'react-native';
+import { Button, ListItem, Overlay, SearchBar, Text } from 'react-native-elements';
 import _ from 'lodash';
 
 import { mapService } from '../../../services';
@@ -11,8 +11,10 @@ import ListLoader from '../../atoms/list-loader';
 import { Colors } from '../../../theme/Variables';
 import { useTheme } from '../../../theme';
 import InputWrapper from '../input-wrapper';
+import theme from '../../../theme/react-native-elements-theme';
 
 const AddressInput = ({ value, errorMessage, onChange, placeholder, style }) => {
+  const { Layout } = useTheme();
   const [modalVisible, setModalVisible] = React.useState(false);
   const [searchText, setSearchText] = React.useState('');
   const [results, setResults] = React.useState([]);
@@ -20,12 +22,12 @@ const AddressInput = ({ value, errorMessage, onChange, placeholder, style }) => 
   const { Custom } = useTheme();
 
   const renderHeader = () => (
-    <View>
-      <Text>{placeholder}</Text>
+    <View style={[Layout.row, Layout.justifyContentBetween, Layout.alignItemsCenter]}>
+      <Text h3>{placeholder}</Text>
       <Button
         icon={{
           name: 'close',
-          color: Colors.inputBackground,
+          color: Colors.darkGrey,
           type: 'material',
           size: 20,
         }}
@@ -36,7 +38,14 @@ const AddressInput = ({ value, errorMessage, onChange, placeholder, style }) => 
   );
 
   const renderSearchBar = () => (
-    <SearchBar value={searchText} placeholder="Enter address" onChangeText={onSearch} />
+    <SearchBar
+      value={searchText}
+      placeholder="Enter address"
+      onChangeText={onSearch}
+      lightTheme
+      inputContainerStyle={theme.Input.inputContainerStyle}
+      inputStyle={theme.Input.inputStyle}
+    />
   );
 
   const renderList = () => (
@@ -111,8 +120,15 @@ const AddressInput = ({ value, errorMessage, onChange, placeholder, style }) => 
       <InputWrapper
         label={placeholder}
         errorMessage={errorMessage}
+        containerStyle={theme.Input.containerStyle}
       >
-        <Button onPress={showModal}>{getResultText()} </Button>
+        <Button
+          onPress={showModal}
+          title={getResultText()}
+          buttonStyle={[theme.Input.inputStyle, Layout.alignItemsStart]}
+          containerStyle={theme.Input.inputContainerStyle}
+          titleStyle={[Custom.buttonTextInput, theme.Input.inputStyle]}
+        />
       </InputWrapper>
       <Overlay onBackdropPress={hideModal} isVisible={modalVisible}>
         <View>

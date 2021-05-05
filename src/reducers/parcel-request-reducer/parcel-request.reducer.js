@@ -6,6 +6,9 @@ const reducerName = 'parcel-request';
 const setParcelRequest = CreateAction(reducerName, 'SET_PARCEL_REQUEST');
 export const setParcelRequestAction = setParcelRequest.action;
 
+const setParcelRequests = CreateAction(reducerName, 'SET_PARCEL_REQUESTS');
+export const setParcelRequestsAction = setParcelRequests.action;
+
 const setId = CreateAction(reducerName, 'SET_ID');
 export const setIdAction = setId.action;
 
@@ -56,6 +59,7 @@ export const setPaginationAction = setPagination.action;
 
 const initialState = {
   parcelRequest: undefined,
+  parcelRequests: [],
   id: undefined,
   collectAddress: '',
   deliverAddress: '',
@@ -80,6 +84,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         parcelRequest: action.payload,
+      };
+    case setParcelRequests.actionType:
+      return {
+        ...state,
+        parcelRequests: action.payload,
       };
     case setId.actionType:
       return {

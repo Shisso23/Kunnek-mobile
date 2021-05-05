@@ -21,13 +21,12 @@ export const parcelRequestModel = (_apiParcelRequestModel = {}) => ({
   receiverFirstName: _.get(_apiParcelRequestModel, 'receiver.first_name', ''),
   receiverLastName: _.get(_apiParcelRequestModel, 'receiver.last_name', ''),
   receiverMobileNumber: _.get(_apiParcelRequestModel, 'receiver.mobile_number', ''),
+  senderId: _.get(_apiParcelRequestModel, 'sender_id', 0),
 });
 
 export const apiParcelRequestModel = (_appParcelRequestModel = {}) => ({
   job: {
     id: _.get(_appParcelRequestModel, 'id', ''),
-    collect_address: _.get(_appParcelRequestModel, 'pickUpAddress', ''),
-    deliver_address: _.get(_appParcelRequestModel, 'dropOffAddress', ''),
     item_name: _.get(_appParcelRequestModel, 'itemName', ''),
     description: _.get(_appParcelRequestModel, 'description', ''),
     price: _.get(_appParcelRequestModel, 'price', 0.0),
@@ -38,9 +37,13 @@ export const apiParcelRequestModel = (_appParcelRequestModel = {}) => ({
     item_length: _.get(_appParcelRequestModel, 'itemLength', 0.0),
     pickup_date_time: _.get(_appParcelRequestModel, 'pickupDateTime', ''),
     latest_delivery_date_time: _.get(_appParcelRequestModel, 'latestDeliveryDateTime', ''),
-    locations: _.get(_appParcelRequestModel, 'locations', []),
+    locations: [
+      { location_type: 'collect', address: _.get(_appParcelRequestModel, 'pickUpAddress', '') },
+      { location_type: 'deliver', address: _.get(_appParcelRequestModel, 'dropOffAddress', '') },
+    ],
     service_fee: _.get(_appParcelRequestModel, 'serviceFee', 0),
     photo: _.get(_appParcelRequestModel, 'photoUri', ''),
+    sender_id: _.get(_appParcelRequestModel, 'senderId', 0),
     receiver: {
       first_name: _.get(_appParcelRequestModel, 'receiverFirstName', ''),
       last_name: _.get(_appParcelRequestModel, 'receiverLastName', ''),

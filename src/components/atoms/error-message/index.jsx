@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Text } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { Colors } from '../../../theme/Variables';
+import theme from '../../../theme/react-native-elements-theme';
 
 /**
  *
@@ -12,7 +12,7 @@ const Error = ({ message }) => {
     return null;
   }
 
-  return <Text style={[styles.errorStyle]}>{message}</Text>;
+  return <Text style={[theme.Input.errorStyle]}>{message}</Text>;
 };
 
 Error.propTypes = {
@@ -24,9 +24,3 @@ Error.defaultProps = {
 };
 
 export default Error;
-
-const styles = StyleSheet.create({
-  errorStyle: {
-    color: Colors.error,
-  },
-});

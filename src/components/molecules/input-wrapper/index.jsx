@@ -4,6 +4,7 @@ import { StyleSheet, View, ViewPropTypes } from 'react-native';
 
 import Error from '../../atoms/error-message';
 import Label from '../../atoms/label';
+import theme from '../../../theme/react-native-elements-theme';
 
 const InputWrapper = ({
   label,
@@ -15,7 +16,7 @@ const InputWrapper = ({
   labelStyle,
 }) => (
   <View style={[styles.containerStyle, containerStyle]}>
-    <Label required={required} label={label} labelStyle={labelStyle} />
+    <Label required={required} label={label} labelStyle={[labelStyle, theme.Input.labelStyle]} />
     <View style={[styles.inputContainerStyle, inputContainerStyle]}>{children}</View>
     <Error message={errorMessage} />
   </View>
@@ -50,7 +51,6 @@ const styles = StyleSheet.create({
   inputContainerStyle: {
     fontSize: 16,
     paddingBottom: 10,
-    paddingLeft: 14,
     paddingTop: 10,
   },
 });

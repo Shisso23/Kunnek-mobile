@@ -19,11 +19,11 @@ const SendParcelItemDetailsForm = ({
 }) => {
   const validationSchema = Yup.object().shape({
     description: Yup.string().required('Description is required'),
-    itemHeight: Yup.string().required('Height is required'),
-    itemWidth: Yup.string().required('Width is required'),
-    itemLength: Yup.string().required('Length is required'),
-    itemWeight: Yup.string().required('Weight is required'),
-    offerAmount: Yup.string().required('Offer Amount is required'),
+    itemHeight: Yup.number().required('Height is required'),
+    itemWidth: Yup.number().required('Width is required'),
+    itemLength: Yup.number().required('Length is required'),
+    itemWeight: Yup.number().required('Weight is required'),
+    price: Yup.number().required('Offer Amount is required'),
     photoUri: Yup.string().required('Photo is required'),
   });
 
@@ -68,6 +68,7 @@ const SendParcelItemDetailsForm = ({
             <>
               <Input
                 value={values.description}
+                label="Item Description"
                 onChangeText={handleChange('description')}
                 onBlur={handleBlur('description')}
                 placeholder="Item Description"
@@ -76,6 +77,7 @@ const SendParcelItemDetailsForm = ({
 
               <Input
                 value={values.itemHeight}
+                label="Height (cms)"
                 onChangeText={handleChange('itemHeight')}
                 onBlur={handleBlur('itemHeight')}
                 placeholder="Height (cms)"
@@ -85,6 +87,7 @@ const SendParcelItemDetailsForm = ({
 
               <Input
                 value={values.itemWidth}
+                label="Width (cms)"
                 onChangeText={handleChange('itemWidth')}
                 onBlur={handleBlur('itemWidth')}
                 placeholder="Width (cms)"
@@ -94,6 +97,7 @@ const SendParcelItemDetailsForm = ({
 
               <Input
                 value={values.itemLength}
+                label="Length (cms)"
                 onChangeText={handleChange('itemLength')}
                 onBlur={handleBlur('itemLength')}
                 placeholder="Length (cms)"
@@ -103,6 +107,7 @@ const SendParcelItemDetailsForm = ({
 
               <Input
                 value={values.itemWeight}
+                label="Weight (kgs)"
                 onChangeText={handleChange('itemWeight')}
                 onBlur={handleBlur('itemWeight')}
                 placeholder="Weight (kgs)"
@@ -112,6 +117,7 @@ const SendParcelItemDetailsForm = ({
 
               <Input
                 value={values.price}
+                label="Offer Amount"
                 onChangeText={handleChange('price')}
                 onBlur={handleBlur('price')}
                 placeholder="Offer Amount"
@@ -120,17 +126,13 @@ const SendParcelItemDetailsForm = ({
               />
 
               <UploadDocumentButton
-                title="Upload"
-                errorMessage={error('price')}
-                onImageSelect={handleChange('price')}
+                label="Upload"
+                errorMessage={error('photoUri')}
+                onImageSelect={handleChange('photoUri')}
               />
 
               <SafeAreaView>
-                <Button
-                  onPress={handleSubmit}
-                  loading={isSubmitting}
-                  title={!edit ? 'Sign Up' : 'Update'}
-                />
+                <Button onPress={handleSubmit} loading={isSubmitting} title="Next" />
               </SafeAreaView>
             </>
           );

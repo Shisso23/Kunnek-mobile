@@ -66,4 +66,13 @@ export default ({ Colors, FontFamily }) => ({
     paddingTop: 14,
     backgroundColor: Colors.transparent,
   },
+
+  buttonTextInput: {
+    alignSelf: 'flex-start',
+    textAlign: 'left',
+    color: Colors.black,
+    flex: 1,
+    fontSize: 18,
+    minHeight: 40,
+  },
 });

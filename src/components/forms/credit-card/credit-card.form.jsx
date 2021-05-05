@@ -1,23 +1,24 @@
 import React from 'react';
 import _ from 'lodash';
-import { Text, View, ViewPropTypes } from 'react-native';
+import { SafeAreaView, StyleSheet, View, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import { TextInput, Button, HelperText } from 'react-native-paper';
+import { Button, Divider, Image, Input, Text } from 'react-native-elements';
 import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
 import { useTheme } from '../../../theme';
+import Index from '../../atoms/title';
 
 const CreditCardForm = ({ submitForm, onSuccess, initialValues, containerStyle }) => {
-  const { Layout } = useTheme();
+  const { Fonts, Gutters, Layout } = useTheme();
 
   const validationSchema = Yup.object().shape({
-    make: Yup.string().required('Length is required'),
-    model: Yup.string().required('Weight is required'),
-    registrationNumber: Yup.string().required('Height is required'),
-    type: Yup.string().required('Width is required'),
+    cardHolder: Yup.string().required('Name on Card'),
+    cardNumber: Yup.string().required('Card Number'),
+    expiryDate: Yup.string().required('Exp. Date'),
+    cvv: Yup.string().required('CVV'),
   });
 
   const _handleSubmission = (formData, actions) => {
@@ -37,70 +38,84 @@ const CreditCardForm = ({ submitForm, onSuccess, initialValues, containerStyle }
   };
 
   return (
-    <Formik
-      initialValues={initialValues}
-      initialStatus={{ apiErrors: {} }}
-      onSubmit={_handleSubmission}
-      validationSchema={validationSchema}
-      enableReinitialize
-    >
-      {({
-        handleChange,
-        handleSubmit,
-        values,
-        errors,
-        isSubmitting,
-        handleBlur,
-        touched,
-        status,
-        setFieldValue,
-      }) => {
-        const error = (name) => getFormError(name, { touched, status, errors });
-        return (
-          <View style={containerStyle}>
-            <TextInput
-              value={values.make}
-              onChangeText={handleChange('make')}
-              onBlur={handleBlur('make')}
-              label="Make"
-              errorMessage={error('make')}
-            />
-            <HelperText type="error" visible={error('make')}>
-              {error('make')}
-            </HelperText>
+    <View style={containerStyle}>
+      <Formik
+        initialValues={initialValues}
+        initialStatus={{ apiErrors: {} }}
+        onSubmit={_handleSubmission}
+        validationSchema={validationSchema}
+        enableReinitialize
+      >
+        {({
+          handleChange,
+          handleSubmit,
+          values,
+          errors,
+          isSubmitting,
+          handleBlur,
+          touched,
+          status,
+          setFieldValue,
+        }) => {
+          const error = (name) => getFormError(name, { touched, status, errors });
+          return (
+            <>
+              <Input
+                value={values.cardHolder}
+                label="Name on Card"
+                onChangeText={handleChange('cardHolder')}
+                onBlur={handleBlur('cardHolder')}
+                placeholder="Name on Card"
+                errorMessage={error('cardHolder')}
+              />
 
-            <TextInput
-              value={values.model}
-              onChangeText={handleChange('model')}
-              onBlur={handleBlur('model')}
-              label="Model"
-              errorMessage={error('model')}
-            />
-            <HelperText type="error" visible={error('model')}>
-              {error('model')}
-            </HelperText>
+              <Input
+                value={values.cardNumber}
+                label="Card Number"
+                onChangeText={handleChange('cardNumber')}
+                onBlur={handleBlur('cardNumber')}
+                placeholder="Card Number"
+                errorMessage={error('cardNumber')}
+                keyboardType="number-pad"
+              />
 
-            <TextInput
-              value={values.registrationNumber}
-              onChangeText={handleChange('registrationNumber')}
-              onBlur={handleBlur('registrationNumber')}
-              label="License Plate"
-              errorMessage={error('registrationNumber')}
-            />
-            <HelperText type="error" visible={error('registrationNumber')}>
-              {error('registrationNumber')}
-            </HelperText>
+              <View style={[Layout.row, Layout.justifyContentAround]}>
+                <Input
+                  containerStyle={styles.halfWidthInput}
+                  label="Exp. Date"
+                  value={values.expiryDate}
+                  onChangeText={handleChange('expiryDate')}
+                  onBlur={handleBlur('expiryDate')}
+                  placeholder="Exp. Date"
+                  errorMessage={error('expiryDate')}
+                  keyboardType="numeric"
+                />
 
-            <Button onPress={handleSubmit} loading={isSubmitting} mode="contained">
-              Add Vehicle
-            </Button>
+                <Input
+                  containerStyle={styles.halfWidthInput}
+                  label="CVV"
+                  value={values.cvv}
+                  onChangeText={handleChange('cvv')}
+                  onBlur={handleBlur('cvv')}
+                  placeholder="CVV"
+                  errorMessage={error('cvv')}
+                  keyboardType="numeric"
+                />
+              </View>
 
-            {__DEV__ && <Text>{JSON.stringify(values, null, 2)}</Text>}
-            {__DEV__ && <Text>{JSON.stringify(errors, null, 2)}</Text>}
-          </View>
-        );
-      }}
-    </Formik>
+              <Image
+                source={require('../../../assets/images/powered-by-peach-payments.png')}
+                containerStyle={styles.peachPaymentsImage}
+              />
+
+              <SafeAreaView>
+                <Button onPress={handleSubmit} loading={isSubmitting} title="Complete" />
+              </SafeAreaView>
+            </>
+          );
+        }}
+      </Formik>
+    </View>
   );
 };
 
@@ -117,3 +132,14 @@ CreditCardForm.defaultProps = {
 };
 
 export default CreditCardForm;
+
+const styles = StyleSheet.create({
+  halfWidthInput: {
+    width: '48%',
+  },
+  peachPaymentsImage: {
+    height: 100,
+    marginHorizontal: 10,
+    width: 200,
+  },
+});

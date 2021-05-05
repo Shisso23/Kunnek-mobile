@@ -10,6 +10,7 @@ import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
 import { useTheme } from '../../../theme';
 import { UploadDocumentButton } from '../../molecules';
+import Label from '../../atoms/label';
 
 const ParcelInfoForm = ({ submitForm, onSuccess, initialValues, containerStyle }) => {
   const { Layout } = useTheme();
@@ -20,8 +21,8 @@ const ParcelInfoForm = ({ submitForm, onSuccess, initialValues, containerStyle }
     width: Yup.string().required('Width is required'),
     length: Yup.string().required('Length is required'),
     weight: Yup.string().required('Weight is required'),
-    offerAmount: Yup.string().required('Offer Amount is required'),
-    // imageUri: Yup.string().required('Image is required'),
+    offerAmount: Yup.number().required('Offer Amount is required'),
+    imageUri: Yup.string().required('Image is required'),
   });
 
   const _handleSubmission = (formData, actions) => {

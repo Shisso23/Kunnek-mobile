@@ -1,7 +1,6 @@
 import _ from 'lodash';
+
 import networkService from '../network-service/network.service';
-import config from '../../../config';
-import { objectToFormData } from '../../../helpers/data.helper';
 import parcelRequestUrls from './parcel-request.urls';
 import authNetworkService from '../auth-network-service/auth-network.service';
 import {
@@ -9,6 +8,7 @@ import {
   parcelRequestModel,
 } from '../../../models/app/parcel-request/parcel-request.model';
 import { getParamString } from '../../../helpers/network.helper';
+import { objectToFormData } from '../../../helpers/data.helper';
 
 const get = () => {
   const url = parcelRequestUrls.parcelRequestsUrl();
@@ -39,9 +39,12 @@ const getAll = (params = {}) => {
 const create = (data = {}) => {
   const url = parcelRequestUrls.parcelRequestsUrl();
   const dataModel = apiParcelRequestModel(data);
+  const formData = objectToFormData(_.get(dataModel, 'job', {}), undefined, 'job');
   const _createAndReturnModel = (apiResponse) => parcelRequestModel(apiResponse.data);
-  return networkService
-    .post(`${url}`, dataModel)
+  return authNetworkService
+    .post(`${url}`, formData, {
+      headers: { Accept: 'multipart/form-data', 'Content-Type': 'multipart/form-data' },
+    })
     .then(_createAndReturnModel)
     .catch((error) => {
       // eslint-disable-next-line no-console

@@ -1,12 +1,13 @@
 import * as ImagePicker from 'react-native-image-picker';
 import * as DocumentPicker from 'react-native-document-picker';
+import _ from 'lodash';
 
-const successfullySelectedImage = (res) => !res.didCancel;
-const errorOccured = (res) => res.errorCode;
+const successfullySelectedImage = (res) => !_.get(res, 'didCancel');
+const errorOccured = (res) => _.get(res, 'errorCode');
 
 const constructFormData = (res) => ({
-  uri: res.uri,
-  type: res.type,
+  uri: _.get(res, 'uri'),
+  type: _.get(res, 'type'),
 });
 
 const imageOptions = {

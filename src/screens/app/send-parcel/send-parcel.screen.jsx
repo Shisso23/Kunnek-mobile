@@ -1,93 +1,147 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
-import { Divider } from 'react-native-elements';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
+import React, { useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Button, Divider, Text } from 'react-native-elements';
+import _ from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
 import { FormScreenContainer } from '../../../components';
-import { parcelRequestModel } from '../../../models/app/parcel-request/parcel-request.model';
 import { useTheme } from '../../../theme';
 import { SendParcelItemDetailsForm } from '../../../components/forms';
 import Index from '../../../components/atoms/title';
 import { Colors } from '../../../theme/Variables';
 import SendParcelDeliverAndReceiverDetailsForm from '../../../components/forms/parcel-request/send-parcel-deliver-and-receiver-details.form';
 import CreditCardForm from '../../../components/forms/credit-card/credit-card.form';
-
-const screenWidth = Dimensions.get('window').width;
+import { createParcelRequestAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
+import {
+  createUserCreditCardAction,
+  getUserCreditCardsAction,
+} from '../../../reducers/user-reducer/user-cards.actions';
+import {
+  deliveryAndReceiverDetailsFormModel,
+  itemDetailsFormModel,
+} from '../../../models/app/parcel-request/parcel-request-form.model';
+import { userCreditCardModel } from '../../../models/app/user/user-credit-card.model';
 
 const SendParcelScreen = () => {
   const navigation = useNavigation();
-  const { Gutters } = useTheme();
+  const { Fonts, Gutters, Layout } = useTheme();
+  const senderId = useSelector((state) => state.userReducer.senderId);
+  const creditCards = useSelector((state) => state.userReducer.creditCards);
+  const dispatch = useDispatch();
   const [formIndex, setFormIndex] = React.useState(0);
-  const [form, setForm] = React.useState({});
-  const isCarousel = React.useRef(null);
+  const [itemDetailsForm, setItemDetailsForm] = React.useState({});
+  const [deliverAndReceiverDetailsForm, setDeliverAndReceiverDetailsForm] = React.useState({});
+  const [creditCardForm, setCreditCardForm] = React.useState({});
 
-  const _handleSubmit = (currentForm) => {
-    console.log(currentForm);
+  const hasCreditCards = Array.isArray(creditCards) ? creditCards.length > 0 : false;
 
-    setForm({ ...form, ...currentForm });
+  useEffect(() => {
+    dispatch(getUserCreditCardsAction());
+  });
+
+  const _handleSubmitItemDetailsForm = (currentForm) => {
+    setItemDetailsForm(currentForm);
+    return Promise.resolve(currentForm);
+  };
+
+  const _handleSubmitDeliverAndReceiverDetailsForm = (currentForm) => {
+    setDeliverAndReceiverDetailsForm(currentForm);
+    const parcelRequestData = { ...itemDetailsForm, ...deliverAndReceiverDetailsForm, senderId };
+    console.log(parcelRequestData);
+    return dispatch(createParcelRequestAction(parcelRequestData));
+  };
+
+  const _handleSubmitCreditCardForm = (currentForm) => {
+    setCreditCardForm(currentForm);
+    return dispatch(createUserCreditCardAction(creditCardForm));
   };
 
   const _handleSuccess = () => {
+    _goToNext();
+  };
+
+  const _handleCreditCardSuccess = () => {
     navigation.navigate('ParcelDeliveryDetails');
   };
 
   // eslint-disable-next-line react/prop-types
-  const _renderCarouselItem = ({ item }) => <View>{item.content}</View>;
+  const _renderItem = () => <View>{_.get(_.nth(formData, formIndex), 'content')}</View>;
+
+  const _goToNext = () => {
+    if (formIndex < formData.length - 1) {
+      setFormIndex(formIndex + 1);
+    } else {
+      setFormIndex(0);
+    }
+  };
+
+  const _renderPagination = () => (
+    <View style={[Layout.row, Layout.justifyContentBetween, Gutters.regularPadding]}>
+      {formData.map((form, index) => {
+        const buttonStyles = [styles.carouselDotStyle];
+        if (index === formIndex) buttonStyles.push(styles.currentCarouselDotStyle);
+        // eslint-disable-next-line react/no-array-index-key
+        return <Button key={index} buttonStyle={buttonStyles} />;
+      })}
+    </View>
+  );
 
   const formData = [
     {
       content: (
-        <SendParcelItemDetailsForm
-          initialValues={parcelRequestModel()}
-          submitForm={_handleSubmit}
-          onSuccess={_handleSuccess}
-          containerStyle={[Gutters.smallHMargin]}
-        />
+        <>
+          <Index title="Send Parcel" />
+          <Divider />
+          <SendParcelItemDetailsForm
+            initialValues={itemDetailsFormModel()}
+            submitForm={_handleSubmitItemDetailsForm}
+            onSuccess={_handleSuccess}
+            containerStyle={[Gutters.smallHMargin]}
+          />
+        </>
       ),
     },
     {
       content: (
-        <SendParcelDeliverAndReceiverDetailsForm
-          initialValues={parcelRequestModel()}
-          submitForm={_handleSubmit}
-          onSuccess={_handleSuccess}
-          containerStyle={[Gutters.smallHMargin]}
-        />
-      ),
-    },
-    {
-      content: (
-        <CreditCardForm
-          initialValues={parcelRequestModel()}
-          submitForm={_handleSubmit}
-          onSuccess={_handleSuccess}
-          containerStyle={[Gutters.smallHMargin]}
-        />
+        <>
+          <Index title="Send Parcel" />
+          <Divider />
+          <SendParcelDeliverAndReceiverDetailsForm
+            initialValues={deliveryAndReceiverDetailsFormModel()}
+            submitForm={_handleSubmitDeliverAndReceiverDetailsForm}
+            onSuccess={_handleSuccess}
+            containerStyle={[Gutters.smallHMargin]}
+          />
+        </>
       ),
     },
   ];
 
+  if (!hasCreditCards) {
+    formData.push({
+      content: (
+        <>
+          <Index title="My Debit/Credit Card" />
+          <Divider />
+          <Text style={[Fonts.textLarge, Gutters.smallHPadding]}>
+            Before you can create a new send request, we will need your payment details.
+          </Text>
+          <Divider />
+          <CreditCardForm
+            initialValues={userCreditCardModel()}
+            submitForm={_handleSubmitCreditCardForm}
+            onSuccess={_handleCreditCardSuccess}
+            containerStyle={[Gutters.smallHMargin]}
+          />
+        </>
+      ),
+    });
+  }
+
   return (
     <FormScreenContainer>
-      <Pagination
-        dotsLength={formData.length}
-        activeDotIndex={formIndex}
-        carouselRef={isCarousel}
-        dotStyle={styles.carouselDotStyle}
-        inactiveDotOpacity={0.4}
-        inactiveDotScale={1}
-      />
-      <Index title="Send Parcel" />
-      <Divider />
-      <Carousel
-        ref={isCarousel}
-        data={formData}
-        renderItem={_renderCarouselItem}
-        sliderWidth={screenWidth}
-        itemWidth={screenWidth}
-        useScrollView
-        onSnapToItem={setFormIndex}
-      />
+      {_renderPagination()}
+      {_renderItem()}
     </FormScreenContainer>
   );
 };
@@ -100,11 +154,14 @@ export default SendParcelScreen;
 
 const styles = StyleSheet.create({
   carouselDotStyle: {
-    backgroundColor: Colors.carouselDotsColour,
+    backgroundColor: Colors.inactiveCarouselDotsColour,
     borderRadius: 5,
     height: 5,
     marginHorizontal: 0,
     paddingHorizontal: 20,
     width: 100,
+  },
+  currentCarouselDotStyle: {
+    backgroundColor: Colors.carouselDotsColour,
   },
 });

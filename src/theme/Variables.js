@@ -23,6 +23,8 @@ export const Colors = {
   inputPlaceholderColor: '#b6b8b7',
   darkGrey: '#333333',
   carouselDotsColour: 'rgba(0, 158, 183, 0.9)',
+  inactiveCarouselDotsColour: 'rgba(0, 158, 183, 0.4)',
+  greyShadow: '#00000029',
 };
 
 export const NavigationColors = {
