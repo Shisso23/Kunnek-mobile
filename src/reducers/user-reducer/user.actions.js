@@ -3,6 +3,10 @@ import jwtDecode from 'jwt-decode';
 import { setUserAction, setUserDelivererIdAction, setUserSenderIdAction } from './user.reducer';
 import { flashService, userService } from '../../services';
 import storageService from '../../services/sub-services/storage-service/storage.service';
+import { getUserCreditCardsAction } from './user-cards.actions';
+import { getUserBankAccountsAction } from './user-bank-account.actions';
+import { getUserVehiclesAction } from './user-vehicles.actions';
+import { getUserReviewsAction } from './user-reviews.actions.';
 
 export const getUserAction = () => async (dispatch) => {
   const jwtToken = await storageService.getAccessToken();
@@ -27,3 +31,11 @@ export const getUserSenderIdAction = () => async (dispatch) => {
   const id = await userService.getSenderId();
   dispatch(setUserSenderIdAction(id));
 };
+
+export const getFullProfileAction = () => (dispatch) =>
+  Promise.all([
+    dispatch(getUserCreditCardsAction()),
+    dispatch(getUserBankAccountsAction()),
+    dispatch(getUserVehiclesAction()),
+    dispatch(getUserReviewsAction()),
+  ]);

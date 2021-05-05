@@ -1,30 +1,28 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import React from 'react';
-import { ScrollView, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, TouchableOpacity, SafeAreaView } from 'react-native';
+import { Text } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button } from 'react-native-paper';
-import { getUserCreditCardsAction } from '../../../reducers/user-reducer/user-cards.actions';
-import { getUserBankAccountsAction } from '../../../reducers/user-reducer/user-bank-account.actions';
+import { IconButton } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
-import { getUserVehiclesAction } from '../../../reducers/user-reducer/user-vehicles.actions';
+import { getFullProfileAction } from '../../../reducers/user-reducer/user.actions';
+import useTheme from '../../../theme/hooks/useTheme';
+import ParallaxView from '../../../components/molecules/parallax-view';
+import CardsList from '../../../components/molecules/cards-list';
+import { AccountsList, LoadingComponent, ReviewsList, VehiclesList } from '../../../components';
 
 const ProfileScreen = () => {
-  const dispatch = useDispatch();
   const navigation = useNavigation();
-  const {
-    user,
-    creditCards,
-    creditCardsLoading,
-    bankAccounts,
-    bankAccountsLoading,
-    vehicles,
-    vehiclesLoading,
-  } = useSelector(userSelector);
+  const dispatch = useDispatch();
+  const { user, creditCards, bankAccounts, vehicles, reviews } = useSelector(userSelector);
+  const { Colors, Common, Layout, Gutters } = useTheme();
+  const [isLoading, setIsLoading] = useState();
 
   const _loadUserMeta = () => {
-    dispatch(getUserCreditCardsAction());
-    dispatch(getUserBankAccountsAction());
-    dispatch(getUserVehiclesAction());
+    setIsLoading(true);
+    dispatch(getFullProfileAction()).then(() => setIsLoading(false));
   };
 
   useFocusEffect(
@@ -33,20 +31,52 @@ const ProfileScreen = () => {
     }, []),
   );
 
-  return (
-    <ScrollView>
-      <Text>{user.fullName}</Text>
-      <Text> {creditCardsLoading ? 'Loading credit cards' : 'My Debit/Credit Cards'}</Text>
-      <Text>{JSON.stringify(creditCards, null, 2)}</Text>
-      <Text> {bankAccountsLoading ? 'Loading bank accounts' : 'My bank accounts'}</Text>
-      <Text>{JSON.stringify(bankAccounts, null, 2)}</Text>
-      <Text> {vehiclesLoading ? 'Loading vehicles' : 'My vehicles'}</Text>
-      <Text>{JSON.stringify(vehicles, null, 2)}</Text>
-      <Button onPress={() => navigation.push('TransactionHistory')}>Add Card</Button>
-      <Button onPress={() => navigation.push('TransactionHistory')}>Add bank account</Button>
-      <Button onPress={() => navigation.push('AddVehicle')}>Add Vehicle</Button>
-      <Button onPress={() => navigation.push('TransactionHistory')}>To History</Button>
-    </ScrollView>
+  return !isLoading ? (
+    <ParallaxView user={user}>
+      <View style={[Common.bottomDrawer]}>
+        <View style={[Layout.rowCenterSpaceBetween]}>
+          <Text h1>{user.fullName}</Text>
+          <IconButton
+            icon={() => <Icon name="pencil-alt" color={Colors.black} size={20} />}
+            onPress={() => {}}
+          />
+        </View>
+        <View
+          style={[
+            Common.viewCard,
+            Layout.rowCenterSpaceAround,
+            Gutters.regularPadding,
+            Gutters.largeTMargin,
+            Gutters.smallBMargin,
+          ]}
+        >
+          <TouchableOpacity
+            style={[Layout.colCenter]}
+            onPress={() => navigation.push('TransactionHistory')}
+          >
+            <Icon name="credit-card" color={Colors.green} size={20} />
+            <Text style={[Gutters.smallTMargin, Common.centerText]}>Transaction History</Text>
+          </TouchableOpacity>
+          <View style={[Common.smallDivider]} />
+          <TouchableOpacity
+            style={[Layout.colCenter]}
+            onPress={() => navigation.push('NotificationHistory')}
+          >
+            <Icon name="bell" color={Colors.orange} size={20} />
+            <Text style={[Gutters.smallTMargin, Common.centerText]}>Notification History</Text>
+          </TouchableOpacity>
+        </View>
+
+        <SafeAreaView>
+          <CardsList items={creditCards} />
+          <AccountsList items={bankAccounts} />
+          <VehiclesList items={vehicles} />
+          <ReviewsList items={reviews} />
+        </SafeAreaView>
+      </View>
+    </ParallaxView>
+  ) : (
+    <LoadingComponent />
   );
 };
 

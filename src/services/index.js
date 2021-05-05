@@ -7,3 +7,5 @@ export { default as creditCardService } from './sub-services/credit-card-service
 export { default as bankAccountService } from './sub-services/bank-account-service/bank-account.service';
 export { default as vehicleService } from './sub-services/vehicle-service/vehicle.service';
 export { default as paymentService } from './sub-services/payment-service/payment.service';
+export { default as reviewService } from './sub-services/review-service/review.service';
+export { default as notificationService } from './sub-services/notification-service/notification.service';

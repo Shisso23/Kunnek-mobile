@@ -25,11 +25,11 @@ const SignInScreen = () => {
   const _handleFormSubmit = (signInForm) => dispatch(signInAction(signInForm));
 
   const _onSignInSuccess = async () => {
-    if (authState === AuthStates.AUTHENTICATED || authState === AuthStates.NO_TOKEN) {
+    if (authState === AuthStates._2FA_PENDING) {
+      navigation.navigate('SignInOtp');
+    } else {
       await dispatch(isAuthenticatedFlowAction());
       await dispatch(setDoneLoadingAppDataAction(true));
-    } else if (authState === AuthStates._2FA_PENDING) {
-      navigation.navigate('SignInOtp');
     }
   };
 

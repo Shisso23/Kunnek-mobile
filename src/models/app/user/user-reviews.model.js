@@ -8,6 +8,7 @@ export const userReviewModel = (_apiReviewModel = {}) => ({
   reviewable_type: _.get(_apiReviewModel, 'reviewable_type', ''),
   rating_options: _.get(_apiReviewModel, 'rating_options', []),
   job: _.get(_apiReviewModel, 'job', {}),
+  reviewer: _.get(_apiReviewModel, 'reviewer', {}),
 });
 
 export const constructUserReviewModels = (apiReviewModel) =>
