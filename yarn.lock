@@ -7136,11 +7136,7 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-<<<<<<< HEAD
-prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
-=======
-prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
->>>>>>> master
+prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.7.2.tgz"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -7328,19 +7324,17 @@ react-native-keyboard-aware-scroll-view@^0.9.2:
     prop-types "^15.6.2"
     react-native-iphone-x-helper "^1.0.3"
 
-<<<<<<< HEAD
+react-native-maps@^0.27.1:
+  version "0.27.1"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.27.1.tgz#2f10cd417bb2fd938c9e015b1c9b6d9b1a44b97f"
+  integrity sha512-HygBkZBecTnIVRYrSiLRAvu4OmXOYso/A7c6Cy73HkOh9CgGV8Ap5eBea24tvmFGptjj5Hg8AJ94/YbmWK1Okw==
+
 react-native-modal-datetime-picker@^9.2.1:
   version "9.2.1"
   resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-9.2.1.tgz#c299f3e263410a5d256143d1a3338168103eadf9"
   integrity sha512-n50oMWu0/01V7Z/RDbb3xe81rduG9nC8NRrwflB1FfD2tPJZ9jYcpVQ1slFF+NIazl3AP3Rn4wzf0o6wH4pilQ==
   dependencies:
     prop-types "^15.7.2"
-=======
-react-native-maps@^0.27.1:
-  version "0.27.1"
-  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.27.1.tgz#2f10cd417bb2fd938c9e015b1c9b6d9b1a44b97f"
-  integrity sha512-HygBkZBecTnIVRYrSiLRAvu4OmXOYso/A7c6Cy73HkOh9CgGV8Ap5eBea24tvmFGptjj5Hg8AJ94/YbmWK1Okw==
->>>>>>> master
 
 react-native-paper@^4.7.1:
   version "4.7.2"

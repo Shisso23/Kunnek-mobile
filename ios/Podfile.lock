@@ -468,7 +468,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-config"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
-<<<<<<< HEAD
   react-native-geolocation-service:
     :path: "../node_modules/react-native-geolocation-service"
   react-native-google-maps:
