@@ -76,10 +76,16 @@ const remove = (id) => {
   });
 };
 
+const getServiceFee = (id) =>
+  networkService
+    .get(`${parcelRequestUrls.parcelRequestsUrl()}/${id}/service_fee`)
+    .then((response) => _.get(response, 'data'));
+
 export default {
   get,
   getAll,
   create,
   update,
   remove,
+  getServiceFee,
 };

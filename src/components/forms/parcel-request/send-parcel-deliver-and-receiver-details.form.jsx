@@ -6,6 +6,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 import { Button, Input } from 'react-native-elements';
+import dayjs from 'dayjs';
 import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
 import AddressInput from '../../molecules/address-input';
@@ -21,7 +22,7 @@ const SendParcelDeliverAndReceiverDetailsForm = ({
   const validationSchema = Yup.object().shape({
     pickUpAddress: Yup.string().required('Pick up address is required'),
     dropOffAddress: Yup.string().required('Drop off address is required'),
-    latestDeliveryDateTime: Yup.date().required('Pickup date time is required'),
+    latestDeliveryDateTime: Yup.date().required('Latest delivery date is required'),
     receiverFirstName: Yup.string().required("The receiver's first name is required"),
     receiverLastName: Yup.string().required("The receiver's last name is required"),
     receiverMobileNumber: Yup.string().required("The receiver's mobile number is required"),
@@ -83,7 +84,7 @@ const SendParcelDeliverAndReceiverDetailsForm = ({
               />
 
               <DateTimeInput
-                value={values.latestDeliveryDateTime || new Date('YYYY-MM-DD')}
+                value={values.latestDeliveryDateTime || dayjs().format('YYYY-MM-DD')}
                 onChange={handleChange('latestDeliveryDateTime')}
                 onBlur={handleBlur('latestDeliveryDateTime')}
                 placeholder="Latest Date of Delivery"

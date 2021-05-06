@@ -62,7 +62,7 @@ const DateTimeInput = ({
         <Button
           onPress={toggleModal}
           title={getValue()}
-          buttonStyle={[theme.Input.inputStyle, Layout.alignItemsStart]}
+          buttonStyle={[theme.Input.inputStyle, Layout.alignItemsStart, Custom.noPaddingLeft]}
           containerStyle={theme.Input.inputContainerStyle}
           titleStyle={[Custom.buttonTextInput, theme.Input.inputStyle]}
         />
@@ -86,7 +86,7 @@ export default DateTimeInput;
 DateTimeInput.propTypes = {
   value: PropTypes.string,
   label: PropTypes.string.isRequired,
-  errorMessage: PropTypes.object,
+  errorMessage: PropTypes.string,
   format: PropTypes.string,
   mode: PropTypes.string,
 

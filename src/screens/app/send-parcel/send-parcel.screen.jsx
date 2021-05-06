@@ -1,9 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import { Button, Divider, Text } from 'react-native-elements';
 import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
+import { getCreditCardNameByNumber } from 'creditcard.js';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+import dayjs from 'dayjs';
 import { FormScreenContainer } from '../../../components';
 import { useTheme } from '../../../theme';
 import { SendParcelItemDetailsForm } from '../../../components/forms';
@@ -15,12 +19,19 @@ import { createParcelRequestAction } from '../../../reducers/parcel-request-redu
 import {
   createUserCreditCardAction,
   getUserCreditCardsAction,
+  tokenizeCard,
 } from '../../../reducers/user-reducer/user-cards.actions';
 import {
   deliveryAndReceiverDetailsFormModel,
   itemDetailsFormModel,
 } from '../../../models/app/parcel-request/parcel-request-form.model';
 import { userCreditCardModel } from '../../../models/app/user/user-credit-card.model';
+import { successful } from '../../../helpers/errors.helper';
+import { getCurrentDate } from '../../../helpers/date.helper';
+import { PAYMENT_TYPES } from '../../../services/sub-services/payment-service/payment.service';
+import { getCurrency } from '../../../helpers/payment.helper';
+
+const screenWidth = Dimensions.get('window').width;
 
 const SendParcelScreen = () => {
   const navigation = useNavigation();
@@ -37,7 +48,7 @@ const SendParcelScreen = () => {
 
   useEffect(() => {
     dispatch(getUserCreditCardsAction());
-  });
+  }, []);
 
   const _handleSubmitItemDetailsForm = (currentForm) => {
     setItemDetailsForm(currentForm);
@@ -46,22 +57,74 @@ const SendParcelScreen = () => {
 
   const _handleSubmitDeliverAndReceiverDetailsForm = (currentForm) => {
     setDeliverAndReceiverDetailsForm(currentForm);
-    const parcelRequestData = { ...itemDetailsForm, ...deliverAndReceiverDetailsForm, senderId };
-    console.log(parcelRequestData);
-    return dispatch(createParcelRequestAction(parcelRequestData));
+    return dispatch(createParcelRequestAction(_getParcelRequest()));
   };
 
   const _handleSubmitCreditCardForm = (currentForm) => {
     setCreditCardForm(currentForm);
-    return dispatch(createUserCreditCardAction(creditCardForm));
+    dayjs.extend(customParseFormat);
+    const expiryDate = _.get(creditCardForm, 'expiryDate');
+    console.log({
+      ...currentForm,
+      expiryMonth: dayjs(expiryDate, 'MM/YY').month() + 1,
+      expiryYear: dayjs(expiryDate, 'MM/YY').year(),
+      cardType: getCreditCardNameByNumber(_.get(creditCardForm, 'cardNumber')),
+    });
+    return dispatch(
+      tokenizeCard({
+        ...creditCardForm,
+        expiryMonth: dayjs(expiryDate, 'MM/YY').month() + 1,
+        expiryYear: dayjs(expiryDate, 'MM/YY').year(),
+        cardType: getCreditCardNameByNumber(_.get(creditCardForm, 'cardNumber')),
+      }),
+    ).then((response) => {
+      const { id, card } = response.data;
+      const finalData = {
+        senderId,
+        obfuscatedCardNumber: `************${_.get(card, 'last4Digits')}`,
+        cardType: _.get(creditCardForm, 'cardType'),
+        tokenizedCard: id,
+        cardHolder: _.get(card, 'holder'),
+        expiryMonth: _.get(card, 'expiryMonth'),
+        expiryYear: _.get(card, 'expiryYear'),
+      };
+
+      return dispatch(createUserCreditCardAction(finalData)).then((creditCardResponse) => {
+        if (successful(creditCardResponse)) {
+          _openVerificationPaymentScreen(finalData);
+        }
+      });
+    });
+  };
+
+  const _getParcelRequest = () => ({
+    ...itemDetailsForm,
+    ...deliverAndReceiverDetailsForm,
+    senderId,
+  });
+
+  const _openVerificationPaymentScreen = (card) => {
+    navigation.navigate('Payment', {
+      message: `We will make a charge of ${getCurrency()}1.00 on your credit card to verify that your card number and details are correct. This charge will be reversed once successful.`,
+      totalAmount: 1,
+      paymentType: PAYMENT_TYPES.verification,
+      card,
+      parcelRequest: _getParcelRequest(),
+    });
   };
 
   const _handleSuccess = () => {
-    _goToNext();
+    if (hasCreditCards && formIndex >= formData.length - 1) {
+      navigation.navigate('ParcelRequests');
+    } else {
+      _goToNext();
+    }
   };
 
-  const _handleCreditCardSuccess = () => {
-    navigation.navigate('ParcelDeliveryDetails');
+  const _handleCreditCardSuccess = (returnedData) => {
+    if (successful(returnedData)) {
+      // navigation.navigate('ParcelDeliveryDetails');
+    }
   };
 
   // eslint-disable-next-line react/prop-types
@@ -78,7 +141,10 @@ const SendParcelScreen = () => {
   const _renderPagination = () => (
     <View style={[Layout.row, Layout.justifyContentBetween, Gutters.regularPadding]}>
       {formData.map((form, index) => {
-        const buttonStyles = [styles.carouselDotStyle];
+        const buttonStyles = [
+          styles.carouselDotStyle,
+          { width: screenWidth / formData.length - 40 },
+        ];
         if (index === formIndex) buttonStyles.push(styles.currentCarouselDotStyle);
         // eslint-disable-next-line react/no-array-index-key
         return <Button key={index} buttonStyle={buttonStyles} />;
@@ -107,7 +173,9 @@ const SendParcelScreen = () => {
           <Index title="Send Parcel" />
           <Divider />
           <SendParcelDeliverAndReceiverDetailsForm
-            initialValues={deliveryAndReceiverDetailsFormModel()}
+            initialValues={deliveryAndReceiverDetailsFormModel({
+              latestDeliveryDateTime: getCurrentDate(),
+            })}
             submitForm={_handleSubmitDeliverAndReceiverDetailsForm}
             onSuccess={_handleSuccess}
             containerStyle={[Gutters.smallHMargin]}
@@ -159,6 +227,7 @@ const styles = StyleSheet.create({
     height: 5,
     marginHorizontal: 0,
     paddingHorizontal: 20,
+    paddingVertical: 0,
     width: 100,
   },
   currentCarouselDotStyle: {

@@ -32,7 +32,7 @@ export const objectToFormData = (obj, form, type) => {
         objectToFormData(obj[name], formData, formKey);
       } else {
         // if it's a string or a File object
-        formData.append(`${type}[${name}]`, obj[name]);
+        formData.append(formKey, obj[name]);
       }
     });
   }

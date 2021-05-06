@@ -75,4 +75,8 @@ export default ({ Colors, FontFamily }) => ({
     fontSize: 18,
     minHeight: 40,
   },
+
+  noPaddingLeft: {
+    paddingLeft: 0,
+  },
 });

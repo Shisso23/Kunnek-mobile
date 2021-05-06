@@ -14,10 +14,19 @@ export const userTransactionModel = (_apiTransactionModel = {}) => ({
   reasonForFailure: _.get(_apiTransactionModel, 'reason_for_failure', true),
 });
 
-export const apiUserTransactionModel = (_appUserModel = {}) => ({
-  user: {
-    email: _.get(_appUserModel, 'email', ''),
-    name: _.get(_appUserModel, 'name', ''),
+export const apiUserTransactionModel = (_appPaymentModel = {}) => ({
+  payment: {
+    id: _.get(_appPaymentModel, 'id', ''),
+    amount: _.get(_appPaymentModel, 'amount', ''),
+    status: _.get(_appPaymentModel, 'status', ''),
+    job_id: _.get(_appPaymentModel, 'jobId', ''),
+    user_id: _.get(_appPaymentModel, 'userId', ''),
+    payable_id: _.get(_appPaymentModel, 'payableId', ''),
+    payable_type: _.get(_appPaymentModel, 'payableType', ''),
+    payment_type: _.get(_appPaymentModel, 'paymentType', ''),
+    created_at: _.get(_appPaymentModel, 'date', false),
+    job: _.get(_appPaymentModel, 'job', false),
+    reason_for_failure: _.get(_appPaymentModel, 'reasonForFailure', true),
   },
 });
 

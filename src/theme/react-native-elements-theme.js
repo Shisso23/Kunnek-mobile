@@ -1,6 +1,5 @@
 import { Dimensions } from 'react-native';
 import { Colors, FontFamily, FontSize } from './Variables';
-import Common from './Common';
 
 const { height } = Dimensions.get('window');
 const { width } = Dimensions.get('window');
@@ -52,7 +51,7 @@ const theme = {
     },
   },
   Input: {
-    errorStyle: Common.errorStyle,
+    errorStyle: { color: Colors.error, fontFamily: FontFamily.primary, fontSize: 15 },
     containerStyle: {
       paddingLeft: 5,
       paddingRight: 5,

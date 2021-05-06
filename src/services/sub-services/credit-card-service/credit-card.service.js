@@ -1,13 +1,13 @@
 import {
   apiUserCreditCardModel,
   constructUserCreditCardModels,
-  userCreditCardModel
+  userCreditCardModel,
 } from '../../../models/app/user/user-credit-card.model';
 import authNetworkService from '../auth-network-service/auth-network.service';
 import creditCardUrls from './credit-card.urls';
-import tripUrls from "../trip-service/trip.urls";
-import {apiParcelRequestModel, parcelRequestModel} from "../../../models/app/parcel-request/parcel-request.model";
-import networkService from "../network-service/network.service";
+import paymentUrls from '../payment-service/payment.urls';
+import appConfig from '../../../config';
+import { networkService } from '../../index';
 
 const getCreditCards = async () => {
   const url = creditCardUrls.cardsUrl();
@@ -19,7 +19,7 @@ const createCreditCard = async (data) => {
   const url = creditCardUrls.cardsUrl();
   const dataModel = apiUserCreditCardModel(data);
   const _createAndReturnModel = (apiResponse) => userCreditCardModel(apiResponse.data);
-  return networkService
+  return authNetworkService
     .post(url, dataModel)
     .then(_createAndReturnModel)
     .catch((error) => {
@@ -29,7 +29,21 @@ const createCreditCard = async (data) => {
     });
 };
 
+const tokenizeCard = (data) =>
+  networkService.post(
+    paymentUrls.registration(),
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${appConfig.peachPayments.ppAuthBearer}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    },
+    false,
+  );
+
 export default {
   getCreditCards,
   createCreditCard,
+  tokenizeCard,
 };

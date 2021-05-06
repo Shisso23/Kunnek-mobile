@@ -1,5 +1,7 @@
+import _ from 'lodash';
 import { creditCardService, flashService } from '../../services';
 import { setCreditCardsLoadingAction, setUserCreditCardsAction } from './user.reducer';
+import appConfig from '../../config';
 
 export const getUserCreditCardsAction = () => async (dispatch) => {
   dispatch(setCreditCardsLoadingAction(true));
@@ -15,16 +17,41 @@ export const getUserCreditCardsAction = () => async (dispatch) => {
   }
 };
 
-export const createUserCreditCardAction = () => async (dispatch) => {
+export const createUserCreditCardAction = (data) => async (dispatch, getState) => {
   dispatch(setCreditCardsLoadingAction(true));
   try {
-    const cards = await creditCardService.createCreditCard();
-    dispatch(setUserCreditCardsAction(cards));
+    const { creditCards } = getState().userReducer;
+    const card = await creditCardService.createCreditCard(data);
+    dispatch(setCreditCardsLoadingAction(false));
+    dispatch(setUserCreditCardsAction([...creditCards, card]));
+    return card;
   } catch (error) {
     flashService.error('Could not create a credit card');
     // eslint-disable-next-line no-console
     console.warn(error.message);
-  } finally {
-    dispatch(setCreditCardsLoadingAction(false));
+    return error;
   }
+};
+
+export const tokenizeCard = (data) => (dispatch) => {
+  dispatch(setCreditCardsLoadingAction(true));
+  return creditCardService
+    .tokenizeCard(
+      new URLSearchParams({
+        entityId: appConfig.peachPayments.pp3dEntityId,
+        paymentBrand: _.get(data, 'cardType', '').toUpperCase(),
+        'card.number': _.get(data, 'cardNumber'),
+        'card.holder': encodeURIComponent(_.get(data, 'cardHolder')),
+        'card.expiryMonth': _.get(data, 'expiryMonth'),
+        'card.expiryYear': _.get(data, 'expiryYear'),
+        'card.cvv': _.get(data, 'cvv'),
+      }).toString(),
+    )
+    .then((response) => response)
+    .catch((error) => {
+      flashService.error('Could not tokenize your credit card.');
+      // eslint-disable-next-line no-console
+      console.warn(error.message);
+    })
+    .finally(() => dispatch(setCreditCardsLoadingAction(false)));
 };

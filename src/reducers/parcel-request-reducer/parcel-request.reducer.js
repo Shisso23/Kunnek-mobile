@@ -57,7 +57,11 @@ export const setServiceFeeAction = setServiceFee.action;
 const setPagination = CreateAction(reducerName, 'SET_PAGINATION');
 export const setPaginationAction = setPagination.action;
 
+const setParcelRequestLoading = CreateAction(reducerName, 'SET_PARCEL_REQUEST_LOADING');
+export const setParcelRequestLoadingAction = setParcelRequestLoading.action;
+
 const initialState = {
+  parcelRequestLoading: false,
   parcelRequest: undefined,
   parcelRequests: [],
   id: undefined,
@@ -164,6 +168,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         serviceFee: action.payload,
+      };
+    case setParcelRequestLoading.actionType:
+      return {
+        ...state,
+        parcelRequestLoading: action.payload,
       };
     default:
       return state;

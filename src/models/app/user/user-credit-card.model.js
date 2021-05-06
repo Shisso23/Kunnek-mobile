@@ -8,14 +8,15 @@ export const userCreditCardModel = (_apiUserModel = {}) => ({
   cardHolder: _.get(_apiUserModel, 'card_holder', ''),
   expiryMonth: _.get(_apiUserModel, 'expiry_month', ''),
   expiryYear: _.get(_apiUserModel, 'expiry_year', ''),
+  senderId: _.get(_apiUserModel, 'sender_id'),
   default: _.get(_apiUserModel, 'default', false),
   verified: _.get(_apiUserModel, 'verified', false),
-  expired: _.get(_apiUserModel, 'expired', true),
+  expired: _.get(_apiUserModel, 'expired', false),
 });
 
 export const apiUserCreditCardModel = (_appUserModel = {}) => ({
-  user: {
-    id: _.get(_appUserModel, 'id', ''),
+  card: {
+    sender_id: _.get(_appUserModel, 'senderId'),
     obfuscated_card_number: _.get(_appUserModel, 'cardNumber', ''),
     card_type: _.get(_appUserModel, 'cardType', ''),
     tokenized_card: _.get(_appUserModel, 'tokenizedCard', ''),
@@ -23,8 +24,6 @@ export const apiUserCreditCardModel = (_appUserModel = {}) => ({
     expiry_month: _.get(_appUserModel, 'expiryMonth', ''),
     expiry_year: _.get(_appUserModel, 'expiryYear', ''),
     default: _.get(_appUserModel, 'default', false),
-    verified: _.get(_appUserModel, 'verified', false),
-    expired: _.get(_appUserModel, 'expired', true),
   },
 });
 

@@ -14,12 +14,11 @@ import InputWrapper from '../input-wrapper';
 import theme from '../../../theme/react-native-elements-theme';
 
 const AddressInput = ({ value, errorMessage, onChange, placeholder, style }) => {
-  const { Layout } = useTheme();
+  const { Custom, Layout } = useTheme();
   const [modalVisible, setModalVisible] = React.useState(false);
   const [searchText, setSearchText] = React.useState('');
   const [results, setResults] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
-  const { Custom } = useTheme();
 
   const renderHeader = () => (
     <View style={[Layout.row, Layout.justifyContentBetween, Layout.alignItemsCenter]}>
@@ -125,7 +124,7 @@ const AddressInput = ({ value, errorMessage, onChange, placeholder, style }) => 
         <Button
           onPress={showModal}
           title={getResultText()}
-          buttonStyle={[theme.Input.inputStyle, Layout.alignItemsStart]}
+          buttonStyle={[theme.Input.inputStyle, Layout.alignItemsStart, Custom.noPaddingLeft]}
           containerStyle={theme.Input.inputContainerStyle}
           titleStyle={[Custom.buttonTextInput, theme.Input.inputStyle]}
         />

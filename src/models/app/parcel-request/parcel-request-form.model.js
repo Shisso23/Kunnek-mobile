@@ -6,7 +6,7 @@ export const itemDetailsFormModel = (_parcelRequestModel = {}) => ({
   itemHeight: _.get(_parcelRequestModel, 'itemHeight', 0.0),
   itemWidth: _.get(_parcelRequestModel, 'itemWidth', 0.0),
   itemLength: _.get(_parcelRequestModel, 'itemLength', 0.0),
-  price: _.get(_parcelRequestModel, 'price', 0.0),
+  price: _.get(_parcelRequestModel, 'price', undefined),
   photoUri: _.get(_parcelRequestModel, 'photoUri', ''),
 });
 
