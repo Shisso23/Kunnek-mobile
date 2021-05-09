@@ -5,20 +5,32 @@ import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import { Button, Divider, Image, Input, Text } from 'react-native-elements';
+import { Button, Image, Input } from 'react-native-elements';
 import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
 import { useTheme } from '../../../theme';
-import Index from '../../atoms/title';
 
 const CreditCardForm = ({ submitForm, onSuccess, initialValues, containerStyle }) => {
-  const { Fonts, Gutters, Layout } = useTheme();
+  const { Layout } = useTheme();
 
   const validationSchema = Yup.object().shape({
     cardHolder: Yup.string().required('Name on Card'),
-    cardNumber: Yup.string().required('Card Number'),
-    expiryDate: Yup.string().required('Exp. Date'),
-    cvv: Yup.string().required('CVV'),
+    cardNumber: Yup.string()
+      .required('Card Number')
+      .length(16, 'Card Number must be 16 characters'),
+    expiryDate: Yup.string()
+      .required('Expiry Date is required')
+      .length(5, 'Expiry needs to be 5 characters long')
+      .matches(
+        /^\d{2}\/\d{2}$/,
+        'Expiry date needs to be in the following format: MM/YY. Eg: 11/25',
+      ),
+    cvv: Yup.string()
+      .required('CVV')
+      .matches(
+        /^\d{3,4}$/,
+        'CVV needs to be between 3 and 4 characters long and only contain digits',
+      ),
   });
 
   const _handleSubmission = (formData, actions) => {

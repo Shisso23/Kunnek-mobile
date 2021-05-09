@@ -25,7 +25,12 @@ const SendParcelDeliverAndReceiverDetailsForm = ({
     latestDeliveryDateTime: Yup.date().required('Latest delivery date is required'),
     receiverFirstName: Yup.string().required("The receiver's first name is required"),
     receiverLastName: Yup.string().required("The receiver's last name is required"),
-    receiverMobileNumber: Yup.string().required("The receiver's mobile number is required"),
+    receiverMobileNumber: Yup.string()
+      .required("The receiver's mobile number is required")
+      .matches(
+        /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
+        "Receiver's Mobile Number needs to be in the following format: 0811111111",
+      ),
   });
 
   const _handleSubmission = (formData, actions) => {

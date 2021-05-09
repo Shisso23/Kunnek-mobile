@@ -19,12 +19,13 @@ const SendParcelItemDetailsForm = ({
 }) => {
   const validationSchema = Yup.object().shape({
     description: Yup.string().required('Description is required'),
-    itemHeight: Yup.number().required('Height is required'),
-    itemWidth: Yup.number().required('Width is required'),
-    itemLength: Yup.number().required('Length is required'),
-    itemWeight: Yup.number().required('Weight is required'),
-    price: Yup.number().required('Offer Amount is required'),
-    photoUri: Yup.string().required('Photo is required'),
+    itemHeight: Yup.number().required('Height is required').positive(),
+    itemWidth: Yup.number().required('Width is required').positive(),
+    itemLength: Yup.number().required('Length is required').positive(),
+    itemWeight: Yup.number().required('Weight is required').positive(),
+    price: Yup.string()
+      .required('Offer Amount is required')
+      .matches(/^\d+(?:\.\d{0,2})$/, 'Offer amount needs to be in this format: 10.00'),
   });
 
   const _handleSubmission = (formData, actions) => {
