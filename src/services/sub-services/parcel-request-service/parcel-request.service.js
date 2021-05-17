@@ -1,6 +1,5 @@
 import _ from 'lodash';
 
-import networkService from '../network-service/network.service';
 import parcelRequestUrls from './parcel-request.urls';
 import authNetworkService from '../auth-network-service/auth-network.service';
 import {
@@ -26,7 +25,7 @@ const get = () => {
 const getAll = (params = {}) => {
   const url = parcelRequestUrls.parcelRequestsUrl();
   const _createAndReturnModel = (apiResponse) => parcelRequestModel(apiResponse.data);
-  return networkService
+  return authNetworkService
     .get(`${url}${getParamString(params)}`)
     .then(_createAndReturnModel)
     .catch((error) => {
@@ -57,7 +56,7 @@ const update = (id, data = {}) => {
   const url = parcelRequestUrls.parcelRequestsUrl();
   const dataModel = apiParcelRequestModel(data);
   const _createAndReturnModel = (apiResponse) => parcelRequestModel(apiResponse.data);
-  return networkService
+  return authNetworkService
     .patch(`${url}/${id}`, dataModel)
     .then(_createAndReturnModel)
     .catch((error) => {
@@ -69,7 +68,7 @@ const update = (id, data = {}) => {
 
 const remove = (id) => {
   const url = parcelRequestUrls.parcelRequestsUrl();
-  return networkService.delete(`${url}/${id}`).catch((error) => {
+  return authNetworkService.delete(`${url}/${id}`).catch((error) => {
     // eslint-disable-next-line no-console
     console.warn(error);
     return Promise.reject(error);
@@ -77,7 +76,7 @@ const remove = (id) => {
 };
 
 const getServiceFee = (id) =>
-  networkService
+  authNetworkService
     .get(`${parcelRequestUrls.parcelRequestsUrl()}/${id}/service_fee`)
     .then((response) => _.get(response, 'data'));
 

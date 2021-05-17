@@ -8,6 +8,7 @@ import { getCreditCardNameByNumber } from 'creditcard.js';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 import dayjs from 'dayjs';
+import { HeaderBackButton } from '@react-navigation/stack';
 import { FormScreenContainer } from '../../../components';
 import { useTheme } from '../../../theme';
 import { SendParcelItemDetailsForm } from '../../../components/forms';
@@ -46,6 +47,13 @@ const SendParcelScreen = () => {
 
   const hasCreditCards = Array.isArray(creditCards) ? creditCards.length > 0 : false;
 
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      // eslint-disable-next-line react/jsx-filename-extension
+      headerLeft: (props) => <HeaderBackButton {...props} onPress={_goToPrevious} />,
+    });
+  }, [navigation, formIndex]);
+
   useEffect(() => {
     dispatch(getUserCreditCardsAction());
   }, []);
@@ -64,15 +72,9 @@ const SendParcelScreen = () => {
     setCreditCardForm(currentForm);
     dayjs.extend(customParseFormat);
     const expiryDate = _.get(creditCardForm, 'expiryDate');
-    console.log({
-      ...currentForm,
-      expiryMonth: dayjs(expiryDate, 'MM/YY').month() + 1,
-      expiryYear: dayjs(expiryDate, 'MM/YY').year(),
-      cardType: getCreditCardNameByNumber(_.get(creditCardForm, 'cardNumber')),
-    });
     return dispatch(
       tokenizeCard({
-        ...creditCardForm,
+        ...currentForm,
         expiryMonth: dayjs(expiryDate, 'MM/YY').month() + 1,
         expiryYear: dayjs(expiryDate, 'MM/YY').year(),
         cardType: getCreditCardNameByNumber(_.get(creditCardForm, 'cardNumber')),
@@ -138,6 +140,20 @@ const SendParcelScreen = () => {
     }
   };
 
+  const _goToPrevious = () => {
+    if (formIndex > 0) {
+      setFormIndex(formIndex - 1);
+    } else {
+      navigation.goBack();
+    }
+  };
+
+  const _goToIndex = (index) => {
+    if (index <= formIndex) {
+      setFormIndex(index);
+    }
+  };
+
   const _renderPagination = () => (
     <View style={[Layout.row, Layout.justifyContentBetween, Gutters.regularPadding]}>
       {formData.map((form, index) => {
@@ -146,8 +162,14 @@ const SendParcelScreen = () => {
           { width: screenWidth / formData.length - 40 },
         ];
         if (index === formIndex) buttonStyles.push(styles.currentCarouselDotStyle);
-        // eslint-disable-next-line react/no-array-index-key
-        return <Button key={index} buttonStyle={buttonStyles} />;
+        return (
+          <Button
+            // eslint-disable-next-line react/no-array-index-key
+            key={index}
+            buttonStyle={buttonStyles}
+            onPress={() => _goToIndex(index)}
+          />
+        );
       })}
     </View>
   );
@@ -159,7 +181,7 @@ const SendParcelScreen = () => {
           <Index title="Send Parcel" />
           <Divider />
           <SendParcelItemDetailsForm
-            initialValues={itemDetailsFormModel()}
+            initialValues={itemDetailsFormModel(itemDetailsForm)}
             submitForm={_handleSubmitItemDetailsForm}
             onSuccess={_handleSuccess}
             containerStyle={[Gutters.smallHMargin]}
@@ -175,6 +197,7 @@ const SendParcelScreen = () => {
           <SendParcelDeliverAndReceiverDetailsForm
             initialValues={deliveryAndReceiverDetailsFormModel({
               latestDeliveryDateTime: getCurrentDate(),
+              ...deliverAndReceiverDetailsForm,
             })}
             submitForm={_handleSubmitDeliverAndReceiverDetailsForm}
             onSuccess={_handleSuccess}
@@ -196,7 +219,7 @@ const SendParcelScreen = () => {
           </Text>
           <Divider />
           <CreditCardForm
-            initialValues={userCreditCardModel()}
+            initialValues={userCreditCardModel(creditCardForm)}
             submitForm={_handleSubmitCreditCardForm}
             onSuccess={_handleCreditCardSuccess}
             containerStyle={[Gutters.smallHMargin]}

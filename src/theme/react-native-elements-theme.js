@@ -82,6 +82,7 @@ const theme = {
   },
   SearchBar: {
     containerStyle: {
+      borderTopWidth: 0,
       backgroundColor: '#fff',
       paddingLeft: 0,
       paddingRight: 0,

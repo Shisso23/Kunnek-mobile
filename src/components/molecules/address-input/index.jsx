@@ -14,7 +14,7 @@ import InputWrapper from '../input-wrapper';
 import theme from '../../../theme/react-native-elements-theme';
 
 const AddressInput = ({ value, errorMessage, onChange, placeholder, style }) => {
-  const { Custom, Layout } = useTheme();
+  const { Custom, Gutters, Layout } = useTheme();
   const [modalVisible, setModalVisible] = React.useState(false);
   const [searchText, setSearchText] = React.useState('');
   const [results, setResults] = React.useState([]);
@@ -42,13 +42,14 @@ const AddressInput = ({ value, errorMessage, onChange, placeholder, style }) => 
       placeholder="Enter address"
       onChangeText={onSearch}
       lightTheme
+      round
       inputContainerStyle={theme.Input.inputContainerStyle}
       inputStyle={theme.Input.inputStyle}
     />
   );
 
   const renderList = () => (
-    <View>
+    <View style={[Gutters.smallVPadding]}>
       <ListLoader isEmpty={results.length === 0} isLoading={isLoading}>
         <FlatList
           keyExtractor={(item, index) => index.toString()}

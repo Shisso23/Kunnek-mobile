@@ -14,7 +14,7 @@ import AddVehicleScreen from '../../screens/app/vehicles/add-vehicle.screen';
 import ViewVehicleScreen from '../../screens/app/vehicles/view-vehicle.screen';
 import NotificationHistoryScreen from '../../screens/app/notifications/notifications.screen';
 import PaymentScreen from '../../screens/app/payment/payment.screen';
-import ParcelRequestsScreen from "../../screens/app/parcel-requests/parcel-requests.screen";
+import ParcelRequestsScreen from '../../screens/app/parcel-requests/parcel-requests.screen';
 
 const Drawer = createDrawerNavigator();
 const AppStack = createStackNavigator();
