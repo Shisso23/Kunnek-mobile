@@ -4,10 +4,7 @@ import { Dimensions, StyleSheet, View } from 'react-native';
 import { Button, Divider, Text } from 'react-native-elements';
 import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCreditCardNameByNumber } from 'creditcard.js';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
 
-import dayjs from 'dayjs';
 import { HeaderBackButton } from '@react-navigation/stack';
 import { FormScreenContainer } from '../../../components';
 import { useTheme } from '../../../theme';
@@ -31,6 +28,7 @@ import { successful } from '../../../helpers/errors.helper';
 import { getCurrentDate } from '../../../helpers/date.helper';
 import { PAYMENT_TYPES } from '../../../services/sub-services/payment-service/payment.service';
 import { getCurrency } from '../../../helpers/payment.helper';
+import { tokenizeCardModel } from '../../../models/app/credit-card/tokenize-card.model';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -65,21 +63,20 @@ const SendParcelScreen = () => {
 
   const _handleSubmitDeliverAndReceiverDetailsForm = (currentForm) => {
     setDeliverAndReceiverDetailsForm(currentForm);
-    return dispatch(createParcelRequestAction(_getParcelRequest()));
+    return dispatch(createParcelRequestAction(_getParcelRequest()))
+      .then((response) => {
+        if (successful(response)) {
+          _openParcelRequestsScreen();
+        }
+      })
+      .catch((error) => {
+        console.warn(error.message);
+      });
   };
 
   const _handleSubmitCreditCardForm = (currentForm) => {
     setCreditCardForm(currentForm);
-    dayjs.extend(customParseFormat);
-    const expiryDate = _.get(creditCardForm, 'expiryDate');
-    return dispatch(
-      tokenizeCard({
-        ...currentForm,
-        expiryMonth: dayjs(expiryDate, 'MM/YY').month() + 1,
-        expiryYear: dayjs(expiryDate, 'MM/YY').year(),
-        cardType: getCreditCardNameByNumber(_.get(creditCardForm, 'cardNumber')),
-      }),
-    ).then((response) => {
+    return dispatch(tokenizeCard(tokenizeCardModel(currentForm))).then((response) => {
       const { id, card } = response.data;
       const finalData = {
         senderId,
@@ -115,6 +112,10 @@ const SendParcelScreen = () => {
     });
   };
 
+  const _openParcelRequestsScreen = () => {
+    navigation.navigate('ParcelRequests');
+  };
+
   const _handleSuccess = () => {
     if (hasCreditCards && formIndex >= formData.length - 1) {
       navigation.navigate('ParcelRequests');
@@ -125,7 +126,7 @@ const SendParcelScreen = () => {
 
   const _handleCreditCardSuccess = (returnedData) => {
     if (successful(returnedData)) {
-      // navigation.navigate('ParcelDeliveryDetails');
+      navigation.navigate('ParcelDeliveryDetails');
     }
   };
 

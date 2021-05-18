@@ -7,9 +7,9 @@ import {
 } from './parcel-request.reducer';
 
 export const getParcelRequestsAction = (params = {}) => (dispatch) => {
-  parcelRequestService
-    .getAll(params)
-    .then((parcelRequests) => dispatch(setParcelRequestsAction(parcelRequests)));
+  parcelRequestService.getAll(params).then((parcelRequests) => {
+    return dispatch(setParcelRequestsAction(parcelRequests));
+  });
 };
 
 export const createParcelRequestAction = (data) => (dispatch, getState) =>

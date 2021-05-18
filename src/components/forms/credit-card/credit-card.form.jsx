@@ -6,6 +6,8 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 import { Button, Image, Input } from 'react-native-elements';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
 import { useTheme } from '../../../theme';
@@ -24,6 +26,16 @@ const CreditCardForm = ({ submitForm, onSuccess, initialValues, containerStyle }
       .matches(
         /^\d{2}\/\d{2}$/,
         'Expiry date needs to be in the following format: MM/YY. Eg: 11/25',
+      )
+      .test(
+        'is-greater-than-today',
+        // eslint-disable-next-line no-template-curly-in-string
+        `Expiry Date needs to be in the future (greater than ${dayjs().format('MM/YY')})`,
+        (value) => {
+          dayjs.extend(customParseFormat);
+          const date = dayjs(value, 'MM/YY');
+          return date > dayjs();
+        },
       ),
     cvv: Yup.string()
       .required('CVV')

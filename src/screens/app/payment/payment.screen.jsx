@@ -18,9 +18,12 @@ import {
 } from '../../../reducers/payment-reducer/payment.actions';
 import { setPaymentsLoadingAction } from '../../../reducers/payment-reducer/payment.reducer';
 import { getServiceFee } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
-import {ScreenContainer} from "../../../components";
+import { ScreenContainer } from '../../../components';
+import { useTheme } from '../../../theme';
+import Index from '../../../components/atoms/title';
 
 const PaymentScreen = ({ isLoading, route, retry = false, payment = {} }) => {
+  const { Gutters, Layout } = useTheme();
   const { message, parcelRequest, totalAmount, paymentType, card } = route.params;
   const dispatch = useDispatch();
   const [cvvNumber, setCvvNumber] = useState('');
@@ -105,9 +108,10 @@ const PaymentScreen = ({ isLoading, route, retry = false, payment = {} }) => {
 
   return (
     <ScreenContainer>
-      <View>
+      <View style={[Gutters.regularHPadding]}>
+        <Index title="Make a Payment" />
         {!_.isEmpty(message) && (
-          <View style={styles.messageContainerStyle}>
+          <View style={[Gutters.regularPadding]}>
             <Text style={styles.messageTextStyle}>{message}</Text>
           </View>
         )}
@@ -166,10 +170,6 @@ const styles = StyleSheet.create({
   },
   headingView: {
     alignItems: 'center',
-  },
-  messageContainerStyle: {
-    paddingBottom: 15,
-    width: '100%',
   },
   messageTextStyle: {
     textAlign: 'center',

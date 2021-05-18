@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FlatList, View, ViewPropTypes } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { Button, ListItem, Overlay, SearchBar, Text } from 'react-native-elements';
 import _ from 'lodash';
 
@@ -13,7 +13,7 @@ import { useTheme } from '../../../theme';
 import InputWrapper from '../input-wrapper';
 import theme from '../../../theme/react-native-elements-theme';
 
-const AddressInput = ({ value, errorMessage, onChange, placeholder, style }) => {
+const AddressInput = ({ value, errorMessage, onChange, placeholder }) => {
   const { Custom, Gutters, Layout } = useTheme();
   const [modalVisible, setModalVisible] = React.useState(false);
   const [searchText, setSearchText] = React.useState('');
@@ -115,6 +115,8 @@ const AddressInput = ({ value, errorMessage, onChange, placeholder, style }) => 
 
   const getResultText = () => (!_.isEmpty(searchText) ? searchText : value);
 
+  const valueLength = getResultText().length;
+
   return (
     <View>
       <InputWrapper
@@ -125,8 +127,13 @@ const AddressInput = ({ value, errorMessage, onChange, placeholder, style }) => 
         <Button
           onPress={showModal}
           title={getResultText()}
-          buttonStyle={[theme.Input.inputStyle, Layout.alignItemsStart, Custom.noPaddingLeft]}
-          containerStyle={theme.Input.inputContainerStyle}
+          buttonStyle={[
+            theme.Input.inputStyle,
+            Layout.alignItemsStart,
+            valueLength > 50 ? Gutters.smallVPadding : undefined,
+            Custom.noPaddingLeft,
+          ]}
+          containerStyle={[theme.Input.inputContainerStyle]}
           titleStyle={[Custom.buttonTextInput, theme.Input.inputStyle]}
         />
       </InputWrapper>
@@ -145,7 +152,6 @@ AddressInput.propTypes = {
   value: PropTypes.string.isRequired,
   errorMessage: PropTypes.string,
   placeholder: PropTypes.string,
-  style: ViewPropTypes.style,
 
   onChange: PropTypes.func.isRequired,
 };
@@ -153,7 +159,6 @@ AddressInput.propTypes = {
 AddressInput.defaultProps = {
   errorMessage: '',
   placeholder: '',
-  style: {},
 };
 
 export default AddressInput;

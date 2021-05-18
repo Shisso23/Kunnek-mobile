@@ -6,8 +6,10 @@ import _ from 'lodash';
 import { Colors } from '../../../theme/Variables';
 import { getCurrency } from '../../../helpers/payment.helper';
 import { PAYMENT_TYPES } from '../../../services/sub-services/payment-service/payment.service';
+import { useTheme } from '../../../theme';
 
 const PaymentSummary = ({ paymentType, amount, parcelRequest, serviceFee }) => {
+  const { Gutters, Layout } = useTheme();
   const renderDelivererAmounts = () => (
     <View>
       {renderRow({
@@ -21,7 +23,7 @@ const PaymentSummary = ({ paymentType, amount, parcelRequest, serviceFee }) => {
       {renderRow({
         label: 'Your Total Earnings:',
         value: Number(getTotalValue()).toFixed(2),
-        extraRowStyles: [styles.totalRowStyle],
+        extraRowStyles: [Gutters.smallVPadding, styles.totalRowStyle],
         extraTextStyles: [styles.totalTextStyle],
       })}
     </View>
@@ -32,7 +34,7 @@ const PaymentSummary = ({ paymentType, amount, parcelRequest, serviceFee }) => {
       {renderRow({
         label: 'Total To Pay',
         value: Number(getTotalValue()).toFixed(2),
-        extraRowStyles: [styles.totalRowStyle],
+        extraRowStyles: [Gutters.smallVPadding, styles.totalRowStyle],
         extraTextStyles: [styles.totalTextStyle],
       })}
     </View>
@@ -51,14 +53,16 @@ const PaymentSummary = ({ paymentType, amount, parcelRequest, serviceFee }) => {
       {renderRow({
         label: 'Total Due by Sender:',
         value: Number(getTotalValue()).toFixed(2),
-        extraRowStyles: [styles.totalRowStyle],
+        extraRowStyles: [Gutters.smallVPadding, styles.totalRowStyle],
         extraTextStyles: [styles.totalTextStyle],
       })}
     </View>
   );
 
   const renderRow = ({ label, value, extraRowStyles = [], extraTextStyles = [] }) => (
-    <View style={[styles.rowStyle, ...extraRowStyles]}>
+    <View
+      style={[Layout.row, Layout.justifyContentBetween, Gutters.regularVMargin, ...extraRowStyles]}
+    >
       <Text style={[styles.leftSideStyle, ...extraTextStyles]}>{label}</Text>
       <Text style={[styles.rightSideStyle, ...extraTextStyles]}>
         {getCurrency()} {value}
@@ -93,7 +97,7 @@ const PaymentSummary = ({ paymentType, amount, parcelRequest, serviceFee }) => {
     return content;
   };
 
-  return <View>{_getContent()}</View>;
+  return <View style={[Gutters.regularPadding]}>{_getContent()}</View>;
 };
 
 PaymentSummary.propTypes = {
@@ -117,18 +121,10 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     color: Colors.teal,
   },
-  rowStyle: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-    marginTop: 10,
-  },
   totalRowStyle: {
     borderBottomWidth: 1,
     borderColor: Colors.backgroundGrey20,
     borderTopWidth: 1,
-    paddingBottom: 10,
-    paddingTop: 10,
   },
   totalTextStyle: {
     fontWeight: 'bold',

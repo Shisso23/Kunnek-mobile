@@ -24,10 +24,11 @@ const get = () => {
 
 const getAll = (params = {}) => {
   const url = parcelRequestUrls.parcelRequestsUrl();
-  const _createAndReturnModel = (apiResponse) => parcelRequestModel(apiResponse.data);
+  const _createAndReturnListModel = (apiResponse) =>
+    _.map(_.get(apiResponse, 'data.data', []), (item) => parcelRequestModel(item));
   return authNetworkService
     .get(`${url}${getParamString(params)}`)
-    .then(_createAndReturnModel)
+    .then(_createAndReturnListModel)
     .catch((error) => {
       // eslint-disable-next-line no-console
       console.warn(error);

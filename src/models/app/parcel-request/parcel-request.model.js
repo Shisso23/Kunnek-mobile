@@ -23,33 +23,40 @@ export const parcelRequestModel = (_apiParcelRequestModel = {}) => ({
   senderId: _.get(_apiParcelRequestModel, 'sender_id', 0),
 });
 
-export const apiParcelRequestModel = (_appParcelRequestModel = {}) => ({
-  job: {
-    id: _.get(_appParcelRequestModel, 'id', ''),
-    description: _.get(_appParcelRequestModel, 'description', ''),
-    price: _.get(_appParcelRequestModel, 'price', 0.0),
-    distance: _.get(_appParcelRequestModel, 'distance', 0.0),
-    item_weight: _.get(_appParcelRequestModel, 'itemWeight', 0.0),
-    item_height: _.get(_appParcelRequestModel, 'itemHeight', 0.0),
-    item_width: _.get(_appParcelRequestModel, 'itemWidth', 0.0),
-    item_length: _.get(_appParcelRequestModel, 'itemLength', 0.0),
-    pickup_date_time: _.get(_appParcelRequestModel, 'pickupDateTime', ''),
-    latest_delivery_date_time: _.get(_appParcelRequestModel, 'latestDeliveryDateTime', ''),
-    locations: [
-      { location_type: 'collect', address: _.get(_appParcelRequestModel, 'pickUpAddress', '') },
-      { location_type: 'deliver', address: _.get(_appParcelRequestModel, 'dropOffAddress', '') },
-    ],
-    service_fee: _.get(_appParcelRequestModel, 'serviceFee', 0),
-    photo: {
-      uri: _.get(_appParcelRequestModel, 'photoUri', ''),
+export const apiParcelRequestModel = (_appParcelRequestModel = {}) => {
+  const data = {
+    job: {
+      id: _.get(_appParcelRequestModel, 'id', ''),
+      description: _.get(_appParcelRequestModel, 'description', ''),
+      price: _.get(_appParcelRequestModel, 'price', 0.0),
+      distance: _.get(_appParcelRequestModel, 'distance', 0.0),
+      item_weight: _.get(_appParcelRequestModel, 'itemWeight', 0.0),
+      item_height: _.get(_appParcelRequestModel, 'itemHeight', 0.0),
+      item_width: _.get(_appParcelRequestModel, 'itemWidth', 0.0),
+      item_length: _.get(_appParcelRequestModel, 'itemLength', 0.0),
+      pickup_date_time: _.get(_appParcelRequestModel, 'pickupDateTime', ''),
+      latest_delivery_date_time: _.get(_appParcelRequestModel, 'latestDeliveryDateTime', ''),
+      locations: [
+        { location_type: 'collect', address: _.get(_appParcelRequestModel, 'pickUpAddress', '') },
+        { location_type: 'deliver', address: _.get(_appParcelRequestModel, 'dropOffAddress', '') },
+      ],
+      service_fee: _.get(_appParcelRequestModel, 'serviceFee', 0),
+      sender_id: _.get(_appParcelRequestModel, 'senderId', 0),
+      receiver: {
+        first_name: _.get(_appParcelRequestModel, 'receiverFirstName', ''),
+        last_name: _.get(_appParcelRequestModel, 'receiverLastName', ''),
+        mobile_number: _.get(_appParcelRequestModel, 'receiverMobileNumber', ''),
+      },
+    },
+  };
+  const photoUri = _.get(_appParcelRequestModel, 'photoUri', '');
+  if (!_.isEmpty(photoUri)) {
+    data.job.photo = {
+      uri: photoUri,
       name: 'photo',
       type: 'image/jpeg',
-    },
-    sender_id: _.get(_appParcelRequestModel, 'senderId', 0),
-    receiver: {
-      first_name: _.get(_appParcelRequestModel, 'receiverFirstName', ''),
-      last_name: _.get(_appParcelRequestModel, 'receiverLastName', ''),
-      mobile_number: _.get(_appParcelRequestModel, 'receiverMobileNumber', ''),
-    },
-  },
-});
+    };
+  }
+
+  return data;
+};

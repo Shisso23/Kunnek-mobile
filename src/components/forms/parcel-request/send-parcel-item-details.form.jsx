@@ -127,7 +127,7 @@ const SendParcelItemDetailsForm = ({
               />
 
               <UploadDocumentButton
-                label="Upload"
+                label="Upload Image"
                 errorMessage={error('photoUri')}
                 onImageSelect={handleChange('photoUri')}
               />

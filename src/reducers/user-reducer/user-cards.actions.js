@@ -36,17 +36,7 @@ export const createUserCreditCardAction = (data) => async (dispatch, getState) =
 export const tokenizeCard = (data) => (dispatch) => {
   dispatch(setCreditCardsLoadingAction(true));
   return creditCardService
-    .tokenizeCard(
-      new URLSearchParams({
-        entityId: appConfig.peachPayments.pp3dEntityId,
-        paymentBrand: _.get(data, 'cardType', '').toUpperCase(),
-        'card.number': _.get(data, 'cardNumber'),
-        'card.holder': encodeURIComponent(_.get(data, 'cardHolder')),
-        'card.expiryMonth': _.get(data, 'expiryMonth'),
-        'card.expiryYear': _.get(data, 'expiryYear'),
-        'card.cvv': _.get(data, 'cvv'),
-      }).toString(),
-    )
+    .tokenizeCard(new URLSearchParams(data).toString())
     .then((response) => response)
     .catch((error) => {
       flashService.error('Could not tokenize your credit card.');
