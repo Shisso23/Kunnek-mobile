@@ -13,6 +13,8 @@ import TransactionHistoryScreen from '../../screens/app/history/history.screen';
 import AddVehicleScreen from '../../screens/app/vehicles/add-vehicle.screen';
 import ViewVehicleScreen from '../../screens/app/vehicles/view-vehicle.screen';
 import NotificationHistoryScreen from '../../screens/app/notifications/notifications.screen';
+import PaymentScreen from '../../screens/app/payment/payment.screen';
+import ParcelRequestsScreen from '../../screens/app/parcel-requests/parcel-requests.screen';
 
 const Drawer = createDrawerNavigator();
 const AppStack = createStackNavigator();
@@ -28,11 +30,13 @@ const AppNavigator = () => {
       />
       <AppStack.Screen name="SendParcel" component={SendParcelScreen} />
       <AppStack.Screen name="ViewParcel" component={ViewParcelsScreen} />
+      <AppStack.Screen name="ParcelRequests" component={ParcelRequestsScreen} />
       <AppStack.Screen name="ParcelDeliveryDetails" component={ParcelDeliveryDetailsScreen} />
       <AppStack.Screen name="TransactionHistory" component={TransactionHistoryScreen} />
       <AppStack.Screen name="NotificationHistory" component={NotificationHistoryScreen} />
       <AppStack.Screen name="AddVehicle" component={AddVehicleScreen} />
       <AppStack.Screen name="ViewVehicle" component={ViewVehicleScreen} />
+      <AppStack.Screen name="Payment" component={PaymentScreen} />
     </AppStack.Navigator>
   );
 };

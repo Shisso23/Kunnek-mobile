@@ -11,7 +11,6 @@
   },
   "plugins": ["react", "react-native", "prettier"],
   "extends": [
-    "airbnb",
     "eslint:recommended",
     "plugin:react/recommended",
     "prettier/react",

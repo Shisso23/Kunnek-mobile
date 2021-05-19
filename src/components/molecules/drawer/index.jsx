@@ -59,17 +59,17 @@ const DrawerContent = (props) => {
           <DrawerItem
             icon={() => <Image source={Images.sendParcelIconBlue} style={styles.icon} />}
             label="Send Parcel"
-            onPress={() => navigation.navigate('Profile')}
+            onPress={() => navigation.navigate('SendParcel')}
           />
           <DrawerItem
             icon={() => <Image source={Images.deliverParcelIconBlue} style={styles.icon} />}
             label="Deliver Parcel"
-            onPress={() => navigation.navigate('Profile')}
+            onPress={() => navigation.navigate('HomeScreen')}
           />
           <DrawerItem
             icon={() => <Image source={Images.parcelsIconBlue} style={styles.icon} />}
             label="My Parcels"
-            onPress={() => navigation.navigate('Profile')}
+            onPress={() => navigation.navigate('ViewParcel')}
           />
           <DrawerItem
             icon={() => <Icon color={Colors.primary} size={20} name="sign-out-alt" />}
@@ -80,7 +80,7 @@ const DrawerContent = (props) => {
         <DrawerItem
           icon={() => <Image source={Images.contactUsIcon} style={styles.icon} />}
           label="Contact Us"
-          onPress={_signOut}
+          onPress={() => navigation.navigate('Home')}
         />
       </DrawerContentScrollView>
     </View>

@@ -1,25 +1,27 @@
 import React, { createRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
-import { Text } from 'react-native-elements';
+import { Button, Text } from 'react-native-elements';
 import ActionSheet from 'react-native-actions-sheet';
-import { Button } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import _ from 'lodash';
+
 import { openUserGallery, openUserCamera } from './upload-document-button-utils';
 import UploadDocumentSelectionItem from './upload-document-selection-item';
 import useTheme from '../../../theme/hooks/useTheme';
+import theme from '../../../theme/react-native-elements-theme';
+import InputWrapper from '../input-wrapper';
 
 const actionSheetRef = createRef();
 
-const UploadDocumentButton = ({ onImageSelect, errorMessage, title, style, disabled }) => {
-  const { Common } = useTheme();
+const UploadDocumentButton = ({ onImageSelect, errorMessage, label, style, disabled }) => {
   const [documentSelected, setDocumentSelected] = useState(false);
 
   const openActionSheet = () => actionSheetRef.current.setModalVisible(true);
   const closeActionSheet = () => actionSheetRef.current.setModalVisible(false);
 
   const _updateFormData = (selectedImage) => {
-    onImageSelect(selectedImage);
+    onImageSelect({ target: { value: _.get(selectedImage, 'uri') } });
     setDocumentSelected(true);
     closeActionSheet();
   };
@@ -38,16 +40,23 @@ const UploadDocumentButton = ({ onImageSelect, errorMessage, title, style, disab
 
   return (
     <>
-      <Button
-        // title={title}
-        onPress={openActionSheet}
-        style={style}
-        icon={!documentSelected ? 'upload' : 'check'}
-        disabled={disabled}
+      <InputWrapper
+        label={label}
+        errorMessage={errorMessage}
+        containerStyle={theme.Input.containerStyle}
       >
-        {title}
-      </Button>
-      <Text style={[Common.errorStyle]}>{errorMessage}</Text>
+        <Button
+          onPress={openActionSheet}
+          buttonStyle={theme.Input.inputStyle}
+          containerStyle={[...style, theme.Input.inputContainerStyle]}
+          icon={{
+            name: !documentSelected ? 'upload' : 'check',
+            type: 'material-community',
+            size: 20,
+          }}
+          disabled={disabled}
+        />
+      </InputWrapper>
       <ActionSheet ref={actionSheetRef} gestureEnabled>
         <View style={safeArea}>
           <UploadDocumentSelectionItem title="Take Photo" onPress={_handleCamera} />
@@ -65,14 +74,14 @@ const UploadDocumentButton = ({ onImageSelect, errorMessage, title, style, disab
 UploadDocumentButton.propTypes = {
   onImageSelect: PropTypes.func.isRequired,
   errorMessage: PropTypes.string,
-  title: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   style: PropTypes.array,
   disabled: PropTypes.bool,
 };
 
 UploadDocumentButton.defaultProps = {
   errorMessage: '',
-  style: {},
+  style: [],
   disabled: false,
 };
 

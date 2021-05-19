@@ -3,9 +3,12 @@ export { default as userService } from './sub-services/user-service/user.service
 export { default as authNetworkService } from './sub-services/auth-network-service/auth-network.service';
 export { default as userAuthService } from './sub-services/user-auth-service/user-auth.service';
 export { default as flashService } from './sub-services/flash-service/flash.service';
+export { default as parcelRequestService } from './sub-services/parcel-request-service/parcel-request.service';
 export { default as creditCardService } from './sub-services/credit-card-service/credit-card.service';
 export { default as bankAccountService } from './sub-services/bank-account-service/bank-account.service';
 export { default as vehicleService } from './sub-services/vehicle-service/vehicle.service';
 export { default as paymentService } from './sub-services/payment-service/payment.service';
+export { default as mapService } from './sub-services/map-service/map.service';
+export { default as permissionsService } from './sub-services/permissions-service/permissions-service';
 export { default as reviewService } from './sub-services/review-service/review.service';
 export { default as notificationService } from './sub-services/notification-service/notification.service';
