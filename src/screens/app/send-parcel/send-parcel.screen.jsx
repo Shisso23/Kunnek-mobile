@@ -4,8 +4,8 @@ import { Dimensions, StyleSheet, View } from 'react-native';
 import { Button, Divider, Text } from 'react-native-elements';
 import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { HeaderBackButton } from '@react-navigation/stack';
+
 import { FormScreenContainer } from '../../../components';
 import { useTheme } from '../../../theme';
 import { SendParcelItemDetailsForm } from '../../../components/forms';
@@ -161,13 +161,7 @@ const SendParcelScreen = () => {
           { width: screenWidth / formData.length - 40 },
         ];
         if (index === formIndex) buttonStyles.push(styles.currentCarouselDotStyle);
-        return (
-          <Button
-            key={_.get(form, 'id', index)}
-            buttonStyle={buttonStyles}
-            onPress={() => _goToIndex(index)}
-          />
-        );
+        return <Button key={index} buttonStyle={buttonStyles} onPress={() => _goToIndex(index)} />;
       })}
     </View>
   );
@@ -179,12 +173,13 @@ const SendParcelScreen = () => {
         <>
           <Index title="Send Parcel" />
           <Divider />
-          <SendParcelItemDetailsForm
-            initialValues={itemDetailsFormModel(itemDetailsForm)}
-            submitForm={_handleSubmitItemDetailsForm}
-            onSuccess={_handleSuccess}
-            containerStyle={[Gutters.smallHMargin]}
-          />
+          <View style={[Gutters.smallHMargin]}>
+            <SendParcelItemDetailsForm
+              initialValues={itemDetailsFormModel(itemDetailsForm)}
+              submitForm={_handleSubmitItemDetailsForm}
+              onSuccess={_handleSuccess}
+            />
+          </View>
         </>
       ),
     },
@@ -194,15 +189,16 @@ const SendParcelScreen = () => {
         <>
           <Index title="Send Parcel" />
           <Divider />
-          <SendParcelDeliverAndReceiverDetailsForm
-            initialValues={deliveryAndReceiverDetailsFormModel({
-              latestDeliveryDateTime: getCurrentDate(),
-              ...deliverAndReceiverDetailsForm,
-            })}
-            submitForm={_handleSubmitDeliverAndReceiverDetailsForm}
-            onSuccess={_handleSuccess}
-            containerStyle={[Gutters.smallHMargin]}
-          />
+          <View style={[Gutters.smallHMargin]}>
+            <SendParcelDeliverAndReceiverDetailsForm
+              initialValues={deliveryAndReceiverDetailsFormModel({
+                latestDeliveryDateTime: getCurrentDate(),
+                ...deliverAndReceiverDetailsForm,
+              })}
+              submitForm={_handleSubmitDeliverAndReceiverDetailsForm}
+              onSuccess={_handleSuccess}
+            />
+          </View>
         </>
       ),
     },
@@ -219,12 +215,13 @@ const SendParcelScreen = () => {
             Before you can create a new send request, we will need your payment details.
           </Text>
           <Divider />
-          <CreditCardForm
-            initialValues={userCreditCardModel(creditCardForm)}
-            submitForm={_handleSubmitCreditCardForm}
-            onSuccess={_handleCreditCardSuccess}
-            containerStyle={[Gutters.smallHMargin]}
-          />
+          <View style={[Gutters.smallHMargin]}>
+            <CreditCardForm
+              initialValues={userCreditCardModel(creditCardForm)}
+              submitForm={_handleSubmitCreditCardForm}
+              onSuccess={_handleCreditCardSuccess}
+            />
+          </View>
         </>
       ),
     });

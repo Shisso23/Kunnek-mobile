@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { getCreditCardNameByNumber } from 'creditcard.js';
 import _ from 'lodash';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+
 import appConfig from '../../../config';
 
 export const tokenizeCardModel = (data = {}) => {

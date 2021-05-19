@@ -3,9 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import PeachMobile from 'react-native-peach-mobile';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-
 import { Button, Input } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { Colors } from '../../../theme/Variables';
 import config from '../../../config';
 import { successful } from '../../../helpers/errors.helper';
@@ -23,7 +23,7 @@ import { useTheme } from '../../../theme';
 import Index from '../../../components/atoms/title';
 
 const PaymentScreen = ({ isLoading, route, retry = false, payment = {} }) => {
-  const { Gutters, Layout } = useTheme();
+  const { Fonts, Gutters, Layout } = useTheme();
   const { message, parcelRequest, totalAmount, paymentType, card } = route.params;
   const dispatch = useDispatch();
   const [cvvNumber, setCvvNumber] = useState('');
@@ -108,11 +108,11 @@ const PaymentScreen = ({ isLoading, route, retry = false, payment = {} }) => {
 
   return (
     <ScreenContainer>
-      <View style={[Gutters.regularHPadding]}>
+      <View style={Gutters.regularHPadding}>
         <Index title="Make a Payment" />
         {!_.isEmpty(message) && (
-          <View style={[Gutters.regularPadding]}>
-            <Text style={styles.messageTextStyle}>{message}</Text>
+          <View style={Gutters.regularPadding}>
+            <Text style={Fonts.textCenter}>{message}</Text>
           </View>
         )}
         <PaymentSummary
@@ -127,7 +127,7 @@ const PaymentScreen = ({ isLoading, route, retry = false, payment = {} }) => {
           returnKeyType="done"
           onChangeText={(value) => setCvvNumber(value)}
         />
-        <View style={styles.headingView}>
+        <View style={Layout.alignItemsCenter}>
           <View>
             <Text style={styles.headingText}>Payment about to be made</Text>
             <Button title="Pay" onPress={onPay} loading={isLoading} />
@@ -167,11 +167,5 @@ const styles = StyleSheet.create({
   headingText: {
     color: Colors.white,
     fontSize: 28,
-  },
-  headingView: {
-    alignItems: 'center',
-  },
-  messageTextStyle: {
-    textAlign: 'center',
   },
 });

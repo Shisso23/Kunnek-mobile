@@ -4,9 +4,6 @@ import PropTypes from 'prop-types';
 
 import theme from '../../../theme/react-native-elements-theme';
 
-/**
- *
- */
 const Error = ({ message }) => {
   if (!message) {
     return null;

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import * as _ from 'lodash';
 import dayjs from 'dayjs';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Button } from 'react-native-elements';
+
 import theme from '../../../theme/react-native-elements-theme';
 import InputWrapper from '../input-wrapper';
 import useTheme from '../../../theme/hooks/useTheme';

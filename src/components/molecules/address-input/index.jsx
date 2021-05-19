@@ -49,7 +49,7 @@ const AddressInput = ({ value, errorMessage, onChange, placeholder }) => {
   );
 
   const renderList = () => (
-    <View style={[Gutters.smallVPadding]}>
+    <View style={Gutters.smallVPadding}>
       <ListLoader isEmpty={results.length === 0} isLoading={isLoading}>
         <FlatList
           keyExtractor={(item, index) => index.toString()}
