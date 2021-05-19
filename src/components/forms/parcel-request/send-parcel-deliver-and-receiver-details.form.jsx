@@ -1,12 +1,12 @@
 import React from 'react';
 import _ from 'lodash';
-import { SafeAreaView, View, ViewPropTypes } from 'react-native';
+import { SafeAreaView, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-
 import { Button, Input } from 'react-native-elements';
 import dayjs from 'dayjs';
+
 import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
 import AddressInput from '../../molecules/address-input';
@@ -17,7 +17,6 @@ const SendParcelDeliverAndReceiverDetailsForm = ({
   submitForm,
   onSuccess,
   initialValues,
-  containerStyle,
 }) => {
   const validationSchema = Yup.object().shape({
     pickUpAddress: Yup.string().required('Pick up address is required'),
@@ -50,88 +49,86 @@ const SendParcelDeliverAndReceiverDetailsForm = ({
   };
 
   return (
-    <View style={containerStyle}>
-      <Formik
-        initialValues={initialValues}
-        initialStatus={{ apiErrors: {} }}
-        onSubmit={_handleSubmission}
-        validationSchema={validationSchema}
-        enableReinitialize
-      >
-        {({
-          handleChange,
-          handleSubmit,
-          values,
-          errors,
-          isSubmitting,
-          handleBlur,
-          touched,
-          status,
-          setFieldValue,
-        }) => {
-          const error = (name) => getFormError(name, { touched, status, errors });
-          return (
-            <>
-              <AddressInput
-                value={values.pickUpAddress}
-                onChange={handleChange('pickUpAddress')}
-                onBlur={handleBlur('pickUpAddress')}
-                placeholder="Pick up Address"
-                errorMessage={error('pickUpAddress')}
-              />
+    <Formik
+      initialValues={initialValues}
+      initialStatus={{ apiErrors: {} }}
+      onSubmit={_handleSubmission}
+      validationSchema={validationSchema}
+      enableReinitialize
+    >
+      {({
+        handleChange,
+        handleSubmit,
+        values,
+        errors,
+        isSubmitting,
+        handleBlur,
+        touched,
+        status,
+        setFieldValue,
+      }) => {
+        const error = (name) => getFormError(name, { touched, status, errors });
+        return (
+          <>
+            <AddressInput
+              value={values.pickUpAddress}
+              onChange={handleChange('pickUpAddress')}
+              onBlur={handleBlur('pickUpAddress')}
+              placeholder="Pick up Address"
+              errorMessage={error('pickUpAddress')}
+            />
 
-              <AddressInput
-                value={values.dropOffAddress}
-                onChange={handleChange('dropOffAddress')}
-                onBlur={handleBlur('dropOffAddress')}
-                placeholder="Drop Off Address"
-                errorMessage={error('pickUpAddress')}
-              />
+            <AddressInput
+              value={values.dropOffAddress}
+              onChange={handleChange('dropOffAddress')}
+              onBlur={handleBlur('dropOffAddress')}
+              placeholder="Drop Off Address"
+              errorMessage={error('pickUpAddress')}
+            />
 
-              <DateTimeInput
-                value={values.latestDeliveryDateTime || dayjs().format('YYYY-MM-DD')}
-                onChange={handleChange('latestDeliveryDateTime')}
-                onBlur={handleBlur('latestDeliveryDateTime')}
-                placeholder="Latest Date of Delivery"
-                errorMessage={error('latestDeliveryDateTime')}
-                label="Latest Date of Delivery"
-              />
+            <DateTimeInput
+              value={values.latestDeliveryDateTime || dayjs().format('YYYY-MM-DD')}
+              onChange={handleChange('latestDeliveryDateTime')}
+              onBlur={handleBlur('latestDeliveryDateTime')}
+              placeholder="Latest Date of Delivery"
+              errorMessage={error('latestDeliveryDateTime')}
+              label="Latest Date of Delivery"
+            />
 
-              <Input
-                value={values.receiverFirstName}
-                label="Receiver's First Name"
-                onChangeText={handleChange('receiverFirstName')}
-                onBlur={handleBlur('receiverFirstName')}
-                placeholder="Receiver's First Name"
-                errorMessage={error('receiverFirstName')}
-              />
+            <Input
+              value={values.receiverFirstName}
+              label="Receiver's First Name"
+              onChangeText={handleChange('receiverFirstName')}
+              onBlur={handleBlur('receiverFirstName')}
+              placeholder="Receiver's First Name"
+              errorMessage={error('receiverFirstName')}
+            />
 
-              <Input
-                value={values.receiverLastName}
-                label="Receiver's Last Name"
-                onChangeText={handleChange('receiverLastName')}
-                onBlur={handleBlur('receiverLastName')}
-                placeholder="Receiver's Last Name"
-                errorMessage={error('receiverLastName')}
-              />
+            <Input
+              value={values.receiverLastName}
+              label="Receiver's Last Name"
+              onChangeText={handleChange('receiverLastName')}
+              onBlur={handleBlur('receiverLastName')}
+              placeholder="Receiver's Last Name"
+              errorMessage={error('receiverLastName')}
+            />
 
-              <Input
-                value={values.receiverMobileNumber}
-                label="Receiver's Mobile Number"
-                onChangeText={handleChange('receiverMobileNumber')}
-                onBlur={handleBlur('receiverMobileNumber')}
-                placeholder="Receiver's Mobile Number"
-                errorMessage={error('receiverMobileNumber')}
-              />
+            <Input
+              value={values.receiverMobileNumber}
+              label="Receiver's Mobile Number"
+              onChangeText={handleChange('receiverMobileNumber')}
+              onBlur={handleBlur('receiverMobileNumber')}
+              placeholder="Receiver's Mobile Number"
+              errorMessage={error('receiverMobileNumber')}
+            />
 
-              <SafeAreaView>
-                <Button onPress={handleSubmit} loading={isSubmitting} title="Next" />
-              </SafeAreaView>
-            </>
-          );
-        }}
-      </Formik>
-    </View>
+            <SafeAreaView>
+              <Button onPress={handleSubmit} loading={isSubmitting} title="Next" />
+            </SafeAreaView>
+          </>
+        );
+      }}
+    </Formik>
   );
 };
 

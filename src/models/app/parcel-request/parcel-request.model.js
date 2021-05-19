@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import _ from 'lodash';
 
 export const parcelRequestModel = (_apiParcelRequestModel = {}) => ({

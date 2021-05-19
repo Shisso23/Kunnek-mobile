@@ -1,24 +1,20 @@
 import React from 'react';
 import { StyleSheet, Text, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 
 import { Colors } from '../../../theme/Variables';
+import theme from '../../../theme/react-native-elements-theme';
 
-const Label = ({ label, required = true, labelStyle, requiredStyle, theme }) => {
+const Label = ({ label, required, labelStyle, requiredStyle }) => {
   if (!label) {
     return null;
   }
 
   return (
-    <Text style={[styles.labelStyle, _.get(theme, 'Input.labelStyle'), labelStyle]}>
+    <Text style={[styles.labelStyle, theme.Input.labelStyle, labelStyle]}>
       {label}
       &nbsp;
-      {required && (
-        <Text style={[styles.requiredStyle, _.get(theme, 'Label.requiredStyle'), requiredStyle]}>
-          *
-        </Text>
-      )}
+      {required && <Text style={[styles.requiredStyle, requiredStyle]}>*</Text>}
     </Text>
   );
 };

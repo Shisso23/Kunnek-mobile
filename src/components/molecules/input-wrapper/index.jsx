@@ -5,6 +5,7 @@ import { StyleSheet, View, ViewPropTypes } from 'react-native';
 import Error from '../../atoms/error-message';
 import Label from '../../atoms/label';
 import theme from '../../../theme/react-native-elements-theme';
+import { useTheme } from '../../../theme';
 
 const InputWrapper = ({
   label,
@@ -14,13 +15,18 @@ const InputWrapper = ({
   containerStyle,
   inputContainerStyle,
   labelStyle,
-}) => (
-  <View style={[styles.containerStyle, containerStyle]}>
-    <Label required={required} label={label} labelStyle={[labelStyle, theme.Input.labelStyle]} />
-    <View style={[styles.inputContainerStyle, inputContainerStyle]}>{children}</View>
-    <Error message={errorMessage} />
-  </View>
-);
+}) => {
+  const { Gutters, Layout } = useTheme();
+  return (
+    <View style={[Layout.fullWidth, Gutters.smallHPadding, containerStyle]}>
+      <Label required={required} label={label} labelStyle={[labelStyle, theme.Input.labelStyle]} />
+      <View style={[styles.inputContainerStyle, Gutters.smallVPadding, inputContainerStyle]}>
+        {children}
+      </View>
+      <Error message={errorMessage} />
+    </View>
+  );
+};
 
 InputWrapper.propTypes = {
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.arrayOf(PropTypes.element)]),
@@ -44,13 +50,7 @@ InputWrapper.defaultProps = {
 export default InputWrapper;
 
 const styles = StyleSheet.create({
-  containerStyle: {
-    paddingHorizontal: 10,
-    width: '100%',
-  },
   inputContainerStyle: {
     fontSize: 16,
-    paddingBottom: 10,
-    paddingTop: 10,
   },
 });

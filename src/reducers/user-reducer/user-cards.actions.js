@@ -1,7 +1,5 @@
-import _ from 'lodash';
 import { creditCardService, flashService } from '../../services';
 import { setCreditCardsLoadingAction, setUserCreditCardsAction } from './user.reducer';
-import appConfig from '../../config';
 
 export const getUserCreditCardsAction = () => async (dispatch) => {
   dispatch(setCreditCardsLoadingAction(true));
@@ -10,7 +8,6 @@ export const getUserCreditCardsAction = () => async (dispatch) => {
     dispatch(setUserCreditCardsAction(cards));
   } catch (error) {
     flashService.error('Could not load credit cards');
-    // eslint-disable-next-line no-console
     console.warn(error.message);
   } finally {
     dispatch(setCreditCardsLoadingAction(false));
@@ -27,7 +24,6 @@ export const createUserCreditCardAction = (data) => async (dispatch, getState) =
     return card;
   } catch (error) {
     flashService.error('Could not create a credit card');
-    // eslint-disable-next-line no-console
     console.warn(error.message);
     return error;
   }
@@ -40,7 +36,6 @@ export const tokenizeCard = (data) => (dispatch) => {
     .then((response) => response)
     .catch((error) => {
       flashService.error('Could not tokenize your credit card.');
-      // eslint-disable-next-line no-console
       console.warn(error.message);
     })
     .finally(() => dispatch(setCreditCardsLoadingAction(false)));

@@ -2,6 +2,7 @@ import _ from 'lodash';
 import * as geolib from 'geolib';
 import Geocoder from 'react-native-geocoding';
 import Geolocation from 'react-native-geolocation-service';
+
 import networkService from '../network-service/network.service';
 import mapUrls from './map.urls';
 import permissionsService from '../permissions-service/permissions-service';
@@ -90,25 +91,22 @@ const getCoordinate = (point) => ({
   longitude: Number(_.get(point, 'longitude', 0)),
 });
 
-const getRegionForCoordinates = (points = []) => {
-  // points should be an array of { latitude: X, longitude: Y }
+const getRegionForCoordinates = (coordinates = []) => {
   let minX;
   let maxX;
   let minY;
   let maxY;
 
-  // init first point
-  const point = _.nth(points, 0);
+  const coordinate = _.nth(coordinates, 0);
 
-  minX = _.get(point, 'latitude', 0);
-  maxX = _.get(point, 'latitude', 0);
-  minY = _.get(point, 'longitude', 0);
-  maxY = _.get(point, 'longitude', 0);
+  minX = _.get(coordinate, 'latitude', 0);
+  maxX = _.get(coordinate, 'latitude', 0);
+  minY = _.get(coordinate, 'longitude', 0);
+  maxY = _.get(coordinate, 'longitude', 0);
 
-  // calculate rect
-  points.forEach((point) => {
-    const latitude = Number(_.get(point, 'latitude', 0));
-    const longitude = Number(_.get(point, 'longitude', 0));
+  coordinates.forEach((currentCoordinate) => {
+    const latitude = Number(_.get(currentCoordinate, 'latitude', 0));
+    const longitude = Number(_.get(currentCoordinate, 'longitude', 0));
     minX = Math.min(minX, latitude);
     maxX = Math.max(maxX, latitude);
     minY = Math.min(minY, longitude);

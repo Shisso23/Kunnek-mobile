@@ -1,12 +1,17 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-const LoadingIndicator = ({ isLoading, size, containerStyle }) => (
-  <View style={[styles.container, styles.horizontal, containerStyle]}>
-    <ActivityIndicator animating={isLoading} size={size} />
-  </View>
-);
+import { useTheme } from '../../../theme';
+
+const LoadingIndicator = ({ isLoading, size, containerStyle }) => {
+  const { Gutters, Layout } = useTheme();
+  return (
+    <View style={[Layout.row, Layout.justifyContentAround, Gutters.smallPadding, containerStyle]}>
+      <ActivityIndicator animating={isLoading} size={size} />
+    </View>
+  );
+};
 
 LoadingIndicator.propTypes = {
   isLoading: PropTypes.bool,
@@ -21,15 +26,3 @@ LoadingIndicator.defaultProps = {
 };
 
 export default LoadingIndicator;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  horizontal: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 10,
-  },
-});

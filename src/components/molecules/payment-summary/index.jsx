@@ -10,6 +10,18 @@ import { useTheme } from '../../../theme';
 
 const PaymentSummary = ({ paymentType, amount, parcelRequest, serviceFee }) => {
   const { Gutters, Layout } = useTheme();
+
+  const renderRow = ({ label, value, extraRowStyles = [], extraTextStyles = [] }) => (
+    <View
+      style={[Layout.row, Layout.justifyContentBetween, Gutters.regularVMargin, ...extraRowStyles]}
+    >
+      <Text style={[styles.leftSideStyle, ...extraTextStyles]}>{label}</Text>
+      <Text style={[styles.rightSideStyle, ...extraTextStyles]}>
+        {getCurrency()} {value}
+      </Text>
+    </View>
+  );
+
   const renderDelivererAmounts = () => (
     <View>
       {renderRow({
@@ -56,17 +68,6 @@ const PaymentSummary = ({ paymentType, amount, parcelRequest, serviceFee }) => {
         extraRowStyles: [Gutters.smallVPadding, styles.totalRowStyle],
         extraTextStyles: [styles.totalTextStyle],
       })}
-    </View>
-  );
-
-  const renderRow = ({ label, value, extraRowStyles = [], extraTextStyles = [] }) => (
-    <View
-      style={[Layout.row, Layout.justifyContentBetween, Gutters.regularVMargin, ...extraRowStyles]}
-    >
-      <Text style={[styles.leftSideStyle, ...extraTextStyles]}>{label}</Text>
-      <Text style={[styles.rightSideStyle, ...extraTextStyles]}>
-        {getCurrency()} {value}
-      </Text>
     </View>
   );
 

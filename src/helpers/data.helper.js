@@ -31,7 +31,6 @@ export const objectToFormData = (obj, form, type) => {
       if (typeof obj[name] === 'object' && !fieldsToExcludeFromRecursion.includes(name)) {
         objectToFormData(obj[name], formData, formKey);
       } else {
-        // if it's a string or a File object
         formData.append(formKey, obj[name]);
       }
     });

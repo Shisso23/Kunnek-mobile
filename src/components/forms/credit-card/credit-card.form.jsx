@@ -4,15 +4,15 @@ import { SafeAreaView, StyleSheet, View, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-
 import { Button, Image, Input } from 'react-native-elements';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+
 import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
 import { useTheme } from '../../../theme';
 
-const CreditCardForm = ({ submitForm, onSuccess, initialValues, containerStyle }) => {
+const CreditCardForm = ({ submitForm, onSuccess, initialValues }) => {
   const { Layout } = useTheme();
 
   const validationSchema = Yup.object().shape({
@@ -29,7 +29,6 @@ const CreditCardForm = ({ submitForm, onSuccess, initialValues, containerStyle }
       )
       .test(
         'is-greater-than-today',
-        // eslint-disable-next-line no-template-curly-in-string
         `Expiry Date needs to be in the future (greater than ${dayjs().format('MM/YY')})`,
         (value) => {
           dayjs.extend(customParseFormat);
@@ -62,7 +61,6 @@ const CreditCardForm = ({ submitForm, onSuccess, initialValues, containerStyle }
   };
 
   return (
-    <View style={containerStyle}>
       <Formik
         initialValues={initialValues}
         initialStatus={{ apiErrors: {} }}
@@ -139,7 +137,6 @@ const CreditCardForm = ({ submitForm, onSuccess, initialValues, containerStyle }
           );
         }}
       </Formik>
-    </View>
   );
 };
 

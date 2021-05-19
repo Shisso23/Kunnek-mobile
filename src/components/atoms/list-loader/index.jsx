@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
+
 import Loading from '../loading-indicator';
 
 const ListLoader = ({ message, isLoading, isEmpty, children, containerStyle }) => {
