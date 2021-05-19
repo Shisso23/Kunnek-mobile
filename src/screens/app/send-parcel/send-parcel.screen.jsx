@@ -47,7 +47,6 @@ const SendParcelScreen = () => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      // eslint-disable-next-line react/jsx-filename-extension
       headerLeft: (props) => <HeaderBackButton {...props} onPress={_goToPrevious} />,
     });
   }, [navigation, formIndex]);
@@ -130,7 +129,6 @@ const SendParcelScreen = () => {
     }
   };
 
-  // eslint-disable-next-line react/prop-types
   const _renderItem = () => <View>{_.get(_.nth(formData, formIndex), 'content')}</View>;
 
   const _goToNext = () => {
@@ -165,8 +163,7 @@ const SendParcelScreen = () => {
         if (index === formIndex) buttonStyles.push(styles.currentCarouselDotStyle);
         return (
           <Button
-            // eslint-disable-next-line react/no-array-index-key
-            key={index}
+            key={_.get(form, 'id', index)}
             buttonStyle={buttonStyles}
             onPress={() => _goToIndex(index)}
           />
@@ -177,6 +174,7 @@ const SendParcelScreen = () => {
 
   const formData = [
     {
+      id: 'itemDetailsForm',
       content: (
         <>
           <Index title="Send Parcel" />
@@ -191,6 +189,7 @@ const SendParcelScreen = () => {
       ),
     },
     {
+      id: 'deliveryAndReceiverDetailsForm',
       content: (
         <>
           <Index title="Send Parcel" />
@@ -211,6 +210,7 @@ const SendParcelScreen = () => {
 
   if (!hasCreditCards) {
     formData.push({
+      id: 'creditCardForm',
       content: (
         <>
           <Index title="My Debit/Credit Card" />

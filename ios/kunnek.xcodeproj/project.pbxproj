@@ -21,6 +21,7 @@
 		910A547E261603DB00BAAA32 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 910A547C261603DB00BAAA32 /* Poppins-Regular.ttf */; };
 		910A547F261603DB00BAAA32 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 910A547D261603DB00BAAA32 /* Poppins-SemiBold.ttf */; };
 		C71A9CAD6AEDB2C0ED91E3B3 /* libPods-kunnek.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DAACE6559748A8FEA54EEC0A /* libPods-kunnek.a */; };
+		D6E17D472653FAA400C213B8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6E17D462653FAA400C213B8 /* MapKit.framework */; };
 		DA73AF1C25EF7F71009DA734 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA73AF1B25EF7F71009DA734 /* BootSplash.storyboard */; };
 		E9FEDDEBE0198873F054F392 /* libPods-kunnek-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FAC4F9B2A8C8D52E4B23074F /* libPods-kunnek-tvOSTests.a */; };
 /* End PBXBuildFile section */
@@ -65,6 +66,8 @@
 		AB3A6B124A6021F786AD079D /* Pods-kunnek-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-kunnek-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-kunnek-tvOSTests/Pods-kunnek-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		C4B289C50716461CE27D80F1 /* Pods-kunnek.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-kunnek.release.xcconfig"; path = "Target Support Files/Pods-kunnek/Pods-kunnek.release.xcconfig"; sourceTree = "<group>"; };
 		C69B385AF8AD34D03852FE62 /* Pods-kunnek.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-kunnek.debug.xcconfig"; path = "Target Support Files/Pods-kunnek/Pods-kunnek.debug.xcconfig"; sourceTree = "<group>"; };
+		D6E17D452653FA9400C213B8 /* kunnek.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = kunnek.entitlements; path = kunnek/kunnek.entitlements; sourceTree = "<group>"; };
+		D6E17D462653FAA400C213B8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		DA73AF1B25EF7F71009DA734 /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = kunnek/BootSplash.storyboard; sourceTree = "<group>"; };
 		DAACE6559748A8FEA54EEC0A /* libPods-kunnek.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-kunnek.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E330960B97316E33F9576F56 /* Pods-kunnek-kunnekTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-kunnek-kunnekTests.release.xcconfig"; path = "Target Support Files/Pods-kunnek-kunnekTests/Pods-kunnek-kunnekTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -88,6 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6E17D472653FAA400C213B8 /* MapKit.framework in Frameworks */,
 				C71A9CAD6AEDB2C0ED91E3B3 /* libPods-kunnek.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -131,6 +135,7 @@
 		13B07FAE1A68108700A75B9A /* kunnek */ = {
 			isa = PBXGroup;
 			children = (
+				D6E17D452653FA9400C213B8 /* kunnek.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -146,6 +151,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D6E17D462653FAA400C213B8 /* MapKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				DAACE6559748A8FEA54EEC0A /* libPods-kunnek.a */,
@@ -783,6 +789,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = kunnek/kunnek.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9DZ2KAL8RW;
 				ENABLE_BITCODE = NO;
@@ -793,7 +800,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kunnek;
 				PRODUCT_NAME = kunnek;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -807,6 +814,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = kunnek/kunnek.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9DZ2KAL8RW;
 				INFOPLIST_FILE = kunnek/Info.plist;
@@ -816,7 +824,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kunnek;
 				PRODUCT_NAME = kunnek;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

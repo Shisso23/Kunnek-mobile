@@ -4,7 +4,7 @@ import Geocoder from 'react-native-geocoding';
 import Geolocation from 'react-native-geolocation-service';
 import networkService from '../network-service/network.service';
 import mapUrls from './map.urls';
-import permissionsService from '../permissions-service/permissions-service';
+import { permissionsService } from '../..';
 import config from '../../../config';
 
 const getDirections = (points = []) => {
@@ -39,12 +39,8 @@ const getGooglePlacesAutocomplete = (inputText, params) => {
   return networkService.get(url).then((response) => _.get(response, 'data', {}));
 };
 
-const requestLocationPermission = async () => {
-  await permissionsService.requestLocationPermission();
-};
-
 const getCurrentLocation = async () => {
-  const hasLocationAccess = await requestLocationPermission();
+  const hasLocationAccess = await permissionsService.requestLocationPermission();
   let coords = {};
   return new Promise((resolve, reject) => {
     if (hasLocationAccess) {
@@ -106,9 +102,9 @@ const getRegionForCoordinates = (points = []) => {
   maxY = _.get(point, 'longitude', 0);
 
   // calculate rect
-  points.forEach((point) => {
-    const latitude = Number(_.get(point, 'latitude', 0));
-    const longitude = Number(_.get(point, 'longitude', 0));
+  points.forEach((currentPoint) => {
+    const latitude = Number(_.get(currentPoint, 'latitude', 0));
+    const longitude = Number(_.get(currentPoint, 'longitude', 0));
     minX = Math.min(minX, latitude);
     maxX = Math.max(maxX, latitude);
     minY = Math.min(minY, longitude);
@@ -132,7 +128,6 @@ export default {
   getDirections,
   snapToRoads,
   geocode,
-  requestLocationPermission,
   getCurrentLocation,
   getDistance,
   obfuscatePoint,
