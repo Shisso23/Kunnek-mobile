@@ -1,26 +1,22 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import MapView, { PROVIDER_GOOGLE, Marker, Polyline, Circle } from 'react-native-maps';
+import MapView, { Circle, Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
-import { Icon } from 'react-native-elements';
+import { Badge, Icon } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
+import _ from 'lodash';
 
 import config from '../../../config';
 import { locationService, mapService } from '../../../services';
 import { Colors } from '../../../theme/Variables';
 import { getCurrentLocation } from '../../../reducers/maps-reducer/maps.actions';
 
-const MapViewComponent = ({
-  startPoint,
-  endPoint,
-  parcelRequests = [],
-  types = [],
-  onPointPress,
-}) => {
+const MapViewComponent = ({ startPoint, endPoint, parcelRequests, onPointPress }) => {
   const dispatch = useDispatch();
   const { currentLocation } = useSelector((state) => state.mapsReducer);
   const regionPoints = [currentLocation];
+  const coordinateTypes = ['collect', 'deliver'];
+
   if (startPoint) {
     regionPoints.push(startPoint);
   }
@@ -33,32 +29,48 @@ const MapViewComponent = ({
     dispatch(getCurrentLocation());
   }, []);
 
-  const _renderParcelRequests = () => {
+  const _renderParcelRequestCoordinates = () => {
     const markers = [];
-    parcelRequests.forEach((item, i) => {
-      markers.push(
-        _renderLine(locationService.getPoints(_.get(item, 'locations', [])), `line-${i}`),
-      );
-      types.forEach((type, j) => {
-        const index = j * types.length + i;
-        markers.push(_renderPoint(item, index, type));
+    parcelRequests.forEach((parcelRequest, i) => {
+      const locations = _.get(parcelRequest, 'locations', {});
+      markers.push(_renderLine(locationService.getCoordinates(locations), `line-${i}`));
+      coordinateTypes.forEach((coordinateType, j) => {
+        const index = j * coordinateTypes.length + i;
+        const coordinate = locationService.getCoordinateFromType(coordinateType, locations);
+        markers.push(_renderCoordinate(coordinate, parcelRequest, coordinateType, index));
       });
     });
     return markers;
   };
 
-  const _renderPoint = (item, type, index) => {
-    const point = locationService.getPoint(item);
-
+  const _renderCoordinate = (coordinate, parcelRequest, coordinateType, index) => {
     return (
-      <Marker key={index} coordinate={point} onPress={_onPress(item)} tracksViewChanges={false}>
-        {_renderPointContent(item, _.get(type, 'name'))}
+      <Marker
+        key={`${coordinateType}-${index}`}
+        coordinate={coordinate}
+        onPress={_onPress(parcelRequest)}
+        tracksViewChanges={false}
+      >
+        {_renderMarkerContent(coordinateType, parcelRequest)}
       </Marker>
     );
   };
 
+  const _renderMarkerContent = (coordinateType, parcelRequest) => {
+    if (coordinateType === 'collect') {
+      return (
+        <>
+          <Badge status="success" value={`R ${_.get(parcelRequest, 'price', 0.0)}`} />
+          <Icon type="font-awesome" name="map-marker" color={Colors.primary} size={40} />
+        </>
+      );
+    }
+
+    return <Icon type="font-awesome" name="circle" color={Colors.darkGrey} size={20} />;
+  };
+
   const _renderCirclePoint = (location, type, radius = 50000) => {
-    const coordinate = locationService.getPoint(location);
+    const coordinate = locationService.getCoordinate(location);
 
     const circle = (
       <Circle
@@ -72,16 +84,10 @@ const MapViewComponent = ({
 
     return (
       <View>
-        <Marker coordinate={locationService.getPoint(location)} tracksViewChanges={false} />
+        <Marker coordinate={locationService.getCoordinate(location)} tracksViewChanges={false} />
         {circle}
       </View>
     );
-  };
-
-  const _renderPointContent = (item) => {
-    const icon = <Icon {..._getIcon(item)} color={Colors.darkGrey} size={40} />;
-
-    return <View>{icon}</View>;
   };
 
   const _renderLine = (points = [], index) => {
@@ -89,30 +95,15 @@ const MapViewComponent = ({
       return <></>;
     }
 
-    const distance = mapService.getDistance(_.nth(points, 0), _.nth(points, 1));
-    const dashInterval = !Number.isNaN(distance) ? distance / 200 : 500;
-    const processedPoints = points.map((point = {}) => locationService.getPoint(point));
+    const processedPoints = points.map((point = {}) => locationService.getCoordinate(point));
 
-    return (
-      <Polyline
-        key={index}
-        coordinates={processedPoints}
-        strokeColor={Colors.mapPlotLine}
-        lineDashPattern={[dashInterval, dashInterval]}
-      />
-    );
+    return <Polyline key={index} coordinates={processedPoints} strokeColor={Colors.mapPlotLine} />;
   };
 
   const _onPress = (item) => () => {
     if (onPointPress) {
       onPointPress(item);
     }
-  };
-
-  const _getIcon = (location) => _.get(location, 'icon', { name: 'map-marker' });
-
-  const _getPointFromType = (item, type) => {
-
   };
 
   return (
@@ -131,7 +122,7 @@ const MapViewComponent = ({
         </>
         {_renderCirclePoint(startPoint, 'start', 50000)}
         {_renderCirclePoint(endPoint, 'end', 50000)}
-        {_renderParcelRequests()}
+        {_renderParcelRequestCoordinates()}
       </MapView>
     </View>
   );

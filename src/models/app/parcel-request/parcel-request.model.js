@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { locationsModel } from '../location/locations.model';
 
 export const parcelRequestModel = (_apiParcelRequestModel = {}) => ({
   id: _.get(_apiParcelRequestModel, 'id', ''),
@@ -13,7 +14,7 @@ export const parcelRequestModel = (_apiParcelRequestModel = {}) => ({
   itemLength: _.get(_apiParcelRequestModel, 'item_length', 0.0),
   pickupDateTime: _.get(_apiParcelRequestModel, 'pickup_date_time', ''),
   latestDeliveryDateTime: _.get(_apiParcelRequestModel, 'latest_delivery_date_time', ''),
-  locations: _.get(_apiParcelRequestModel, 'locations', []),
+  locations: locationsModel(_apiParcelRequestModel),
   serviceFee: _.get(_apiParcelRequestModel, 'service_fee', 0),
   photoUri: _.get(_apiParcelRequestModel, 'photo', ''),
   receiverFirstName: _.get(_apiParcelRequestModel, 'receiver.first_name', ''),

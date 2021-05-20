@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
-const getPoints = (locations = []) => locations.map((location) => getPoint(location));
+const getCoordinates = (locations = []) => locations.map((location) => getCoordinate(location));
 
-const getPoint = (location) => {
+const getCoordinate = (location) => {
   const newLocation = {
     latitude: parseFloat(_.get(location, 'latitude', 0)),
     longitude: parseFloat(_.get(location, 'longitude', 0)),
@@ -16,7 +16,14 @@ const getPoint = (location) => {
   }, {});
 };
 
+const getCoordinateFromType = (type, locations = []) => {
+  const location = locations.find((location) => _.get(location, 'type') === type);
+
+  return getCoordinate(location);
+};
+
 export default {
-  getPoint,
-  getPoints,
+  getCoordinate,
+  getCoordinates,
+  getCoordinateFromType,
 };

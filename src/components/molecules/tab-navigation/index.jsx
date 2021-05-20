@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text } from 'react-native-elements';
 import { useTheme } from '../../../theme';
 
@@ -21,14 +21,14 @@ const BottomNavigationBar = () => {
         </TouchableOpacity>
         <TouchableOpacity
           style={[Layout.fill, Layout.colCenter]}
-          onPress={() => navigation.navigate('SendParcel')}
+          onPress={() => navigation.navigate('Home')}
         >
           <Image source={Images.deliverParcelIcon} style={styles.icon} />
           <Text style={styles.title}>Deliver</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[Layout.fill, Layout.colCenter]}
-          onPress={() => navigation.navigate('SendParcel')}
+          onPress={() => navigation.navigate('ParcelRequests')}
         >
           <Image source={Images.parcelsIcon} style={styles.icon} />
           <Text style={styles.title}>Parcels</Text>

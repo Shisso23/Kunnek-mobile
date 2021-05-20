@@ -15,7 +15,7 @@ const ParcelRequestScreen = () => {
 
   return (
     <View>
-      <Index title="My Parcel Requests" />
+      <Index title="My Parcels" />
       <Text>{JSON.stringify(parcelRequests)}</Text>
     </View>
   );

@@ -30,6 +30,8 @@ export const Colors = {
   orange: '#FFD766',
   lynch: '#78849E',
   darkBackground: '#292e42',
+  mapPlotLine: 'rgba(112,112,112, 0.3)',
+  mapCircleGreen: 'rgba(178, 239, 155, 0.6)',
 };
 
 export const NavigationColors = {
