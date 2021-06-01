@@ -7,10 +7,17 @@ import {
   setServiceFeeAction,
 } from './parcel-request.reducer';
 
-export const getParcelRequestsAction = (params = {}) => (dispatch) =>
-  parcelRequestService.getAll(params).then((parcelRequests) => {
-    return dispatch(setParcelRequestsAction(parcelRequests));
-  });
+export const getParcelRequestsAction = (params = {}) => (dispatch) => {
+  dispatch(setParcelRequestLoadingAction(true));
+  return parcelRequestService
+    .getAll(params)
+    .then((parcelRequests) => {
+      return dispatch(setParcelRequestsAction(parcelRequests));
+    })
+    .finally(() => {
+      dispatch(setParcelRequestLoadingAction(false));
+    });
+};
 
 export const createParcelRequestAction = (data) => (dispatch, getState) =>
   parcelRequestService.create(data).then((parcelRequest) => {

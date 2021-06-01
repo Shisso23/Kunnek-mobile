@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import MapView, { Circle, Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import PropTypes from 'prop-types';
@@ -10,24 +10,27 @@ import config from '../../../config';
 import { locationService, mapService } from '../../../services';
 import { Colors } from '../../../theme/Variables';
 import { getCurrentLocation } from '../../../reducers/maps-reducer/maps.actions';
+import { useTheme } from '../../../theme';
 
-const MapViewComponent = ({ startPoint, endPoint, parcelRequests, onPointPress }) => {
+const MapViewComponent = ({ parcelRequests, onPointPress }) => {
+  const { Layout } = useTheme();
   const dispatch = useDispatch();
   const { currentLocation } = useSelector((state) => state.mapsReducer);
+  const [map, setMap] = useState(undefined);
   const regionPoints = [currentLocation];
   const coordinateTypes = ['collect', 'deliver'];
-
-  if (startPoint) {
-    regionPoints.push(startPoint);
-  }
-
-  if (endPoint) {
-    regionPoints.push(endPoint);
-  }
 
   useEffect(() => {
     dispatch(getCurrentLocation());
   }, []);
+
+  useEffect(() => {
+    const regionPoints = [currentLocation];
+    const region = mapService.getRegionForCoordinates(regionPoints);
+    if (map) {
+      map.animateToRegion(region);
+    }
+  }, [currentLocation]);
 
   const _renderParcelRequestCoordinates = () => {
     const markers = [];
@@ -60,7 +63,11 @@ const MapViewComponent = ({ startPoint, endPoint, parcelRequests, onPointPress }
     if (coordinateType === 'collect') {
       return (
         <>
-          <Badge status="success" value={`R ${_.get(parcelRequest, 'price', 0.0)}`} />
+          <Badge
+            badgeStyle={styles.markerBadgeStyle}
+            status="success"
+            value={`R ${_.get(parcelRequest, 'price', 0.0)}`}
+          />
           <Icon type="font-awesome" name="map-marker" color={Colors.primary} size={40} />
         </>
       );
@@ -106,12 +113,18 @@ const MapViewComponent = ({ startPoint, endPoint, parcelRequests, onPointPress }
     }
   };
 
+  const _assignMap = (ref) => {
+    setMap(ref);
+  };
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, Layout.fill, Layout.alignItemsCenter]}>
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         initalRegion={mapService.getRegionForCoordinates(regionPoints)}
+        loadingEnabled
+        mapRef={_assignMap}
         {...config.googleMaps}
       >
         <>
@@ -120,8 +133,6 @@ const MapViewComponent = ({ startPoint, endPoint, parcelRequests, onPointPress }
             tracksViewChanges={false}
           />
         </>
-        {_renderCirclePoint(startPoint, 'start', 50000)}
-        {_renderCirclePoint(endPoint, 'end', 50000)}
         {_renderParcelRequestCoordinates()}
       </MapView>
     </View>
@@ -152,12 +163,15 @@ MapViewComponent.defaultProps = {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'flex-end',
+    // alignItems: 'center',
+    // flex: 1,
+    // justifyContent: 'flex-end',
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+  },
+  markerBadgeStyle: {
+    backgroundColor: Colors.primary,
   },
 });
 

@@ -1,8 +1,14 @@
 import { tripService } from '../../services';
-import { setTripsAction } from './trip.reducer';
+import { setTripLoadingAction, setTripsAction } from './trip.reducer';
 
 export const getTripsAction = (params = {}) => (dispatch) => {
-  return tripService.getAll(params).then((trips) => {
-    return dispatch(setTripsAction(trips));
-  });
+  dispatch(setTripLoadingAction(true));
+  return tripService
+    .getAll(params)
+    .then((trips) => {
+      return dispatch(setTripsAction(trips));
+    })
+    .finally(() => {
+      dispatch(setTripLoadingAction(false));
+    });
 };

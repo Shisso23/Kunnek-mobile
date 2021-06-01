@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { locationsModel } from '../location/locations.model';
+import { senderDelivererModel } from './sender-deliverer.model';
 
 export const parcelRequestModel = (_apiParcelRequestModel = {}) => ({
   id: _.get(_apiParcelRequestModel, 'id', ''),
@@ -21,6 +22,9 @@ export const parcelRequestModel = (_apiParcelRequestModel = {}) => ({
   receiverLastName: _.get(_apiParcelRequestModel, 'receiver.last_name', ''),
   receiverMobileNumber: _.get(_apiParcelRequestModel, 'receiver.mobile_number', ''),
   senderId: _.get(_apiParcelRequestModel, 'sender_id', 0),
+  status: _.get(_apiParcelRequestModel, 'status', 'In Progress'),
+  sender: senderDelivererModel(_.get(_apiParcelRequestModel, 'sender', {})),
+  deliverer: senderDelivererModel(_.get(_apiParcelRequestModel, 'collector', {})),
 });
 
 export const apiParcelRequestModel = (_appParcelRequestModel = {}) => {
@@ -42,6 +46,7 @@ export const apiParcelRequestModel = (_appParcelRequestModel = {}) => {
       ],
       service_fee: _.get(_appParcelRequestModel, 'serviceFee', 0),
       sender_id: _.get(_appParcelRequestModel, 'senderId', 0),
+      status: _.get(_appParcelRequestModel, 'status', ''),
       receiver: {
         first_name: _.get(_appParcelRequestModel, 'receiverFirstName', ''),
         last_name: _.get(_appParcelRequestModel, 'receiverLastName', ''),

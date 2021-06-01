@@ -79,4 +79,16 @@ export default ({ Colors, FontFamily }) => ({
   noPaddingLeft: {
     paddingLeft: 0,
   },
+
+  headerButton: {
+    backgroundColor: Colors.headerButtonBackgroundWhite,
+    marginHorizontal: 15,
+    borderRadius: 10,
+  },
+  headerButtonIcon: {
+    height: 30,
+    width: 30,
+    margin: 5,
+    resizeMode: 'contain',
+  },
 });

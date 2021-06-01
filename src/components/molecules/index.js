@@ -10,3 +10,4 @@ export { default as TransactionHistoryCard } from './transaction-history-card';
 export { default as NotificationHistoryCard } from './notification-history-card';
 export { default as LoadingComponent } from './loading';
 export { default as MapViewComponent } from './map-view';
+export { default as LoadingOverlay } from './loading-overlay';
