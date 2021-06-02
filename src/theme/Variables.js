@@ -28,6 +28,7 @@ export const Colors = {
   darkerGrey: '#707070',
   green: '#70FF66',
   orange: '#FFD766',
+  darkTangerine: '#FBAD15',
   lynch: '#78849E',
   darkBackground: '#292e42',
   mapPlotLine: 'rgba(112,112,112, 0.3)',

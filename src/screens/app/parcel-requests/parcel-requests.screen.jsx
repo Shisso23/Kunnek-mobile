@@ -3,6 +3,7 @@ import { FlatList, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import { Text } from 'react-native-elements';
+import PropTypes from 'prop-types';
 
 import Index from '../../../components/atoms/title';
 import { getParcelRequestsAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
@@ -10,7 +11,7 @@ import { useTheme } from '../../../theme';
 import ParcelRequestListItem from '../../../components/molecules/parcel-request-list-item';
 
 const ParcelRequestScreen = () => {
-  const { Fonts, Gutters } = useTheme();
+  const { Fonts, Gutters, Layout } = useTheme();
   const { parcelRequests = [] } = useSelector((state) => state.parcelRequestReducer);
   const dispatch = useDispatch();
 
@@ -23,9 +24,9 @@ const ParcelRequestScreen = () => {
   };
 
   return (
-    <View>
+    <View style={[Layout.fill]}>
       <Index title="My Parcels" />
-      <Text style={[Fonts.textLarge, Gutters.smallHPadding]}>See your current orders.</Text>
+      <Text style={[Fonts.textLarge, Gutters.regularHPadding]}>See your current orders.</Text>
       <FlatList
         keyExtractor={(item) => {
           return _.get(item, 'id');
@@ -37,7 +38,9 @@ const ParcelRequestScreen = () => {
   );
 };
 
-ParcelRequestScreen.propTypes = {};
+ParcelRequestScreen.propTypes = {
+  item: PropTypes.object,
+};
 
 ParcelRequestScreen.defaultProps = {};
 

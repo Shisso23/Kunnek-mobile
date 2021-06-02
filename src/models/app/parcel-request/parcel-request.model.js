@@ -6,6 +6,8 @@ export const parcelRequestModel = (_apiParcelRequestModel = {}) => ({
   id: _.get(_apiParcelRequestModel, 'id', ''),
   pickUpAddress: _.get(_apiParcelRequestModel, 'collect_address', ''),
   dropOffAddress: _.get(_apiParcelRequestModel, 'deliver_address', ''),
+  abbreviatedPickUpAddress: _.get(_apiParcelRequestModel, 'abbreviated_collect_address', ''),
+  abbreviatedDropOffAddress: _.get(_apiParcelRequestModel, 'abbreviated_deliver_address', ''),
   description: _.get(_apiParcelRequestModel, 'description', ''),
   price: _.get(_apiParcelRequestModel, 'price', 0.0),
   distance: _.get(_apiParcelRequestModel, 'distance', 0.0),
