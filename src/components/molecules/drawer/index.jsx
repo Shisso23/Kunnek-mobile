@@ -80,7 +80,7 @@ const DrawerContent = (props) => {
         <DrawerItem
           icon={() => <Image source={Images.contactUsIcon} style={styles.icon} />}
           label="Contact Us"
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.navigate('ContactUs')}
         />
       </DrawerContentScrollView>
     </View>
