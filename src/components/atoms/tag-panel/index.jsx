@@ -22,7 +22,7 @@ const TagPanel = ({ userRole }) => {
 };
 
 TagPanel.propTypes = {
-  userRole: PropTypes.string,
+  userRole: PropTypes.string.isRequired,
 };
 
 TagPanel.defaultProps = {};

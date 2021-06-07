@@ -19,7 +19,7 @@ const ProfilePicture = ({ user }) => {
 };
 
 ProfilePicture.propTypes = {
-  user: PropTypes.shape({ profilePictureUri: PropTypes.string }),
+  user: PropTypes.shape({ profilePictureUri: PropTypes.string }).isRequired,
 };
 
 ProfilePicture.defaultProps = {};

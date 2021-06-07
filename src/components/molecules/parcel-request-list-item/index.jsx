@@ -43,34 +43,30 @@ const ParcelRequestListItem = ({ parcelRequest }) => {
   };
 
   return (
-    <>
-      <View style={[styles.parcelRequestListItemContainer]}>
-        <View style={[styles.parcelRequestListItem, Layout.row, Layout.justifyContentBetween]}>
-          <ParcelPhoto parcelRequest={parcelRequest} />
-          <View style={[Gutters.smallHMargin, Layout.fill]}>
-            <View style={[Layout.row, Layout.justifyContentBetween]}>
-              <Text style={[Fonts.titleTiny, Layout.fill]}>{_getTitle()}</Text>
-              <TagPanel userRole={_isDeliverer() ? 'Driver' : 'Sender'} />
-            </View>
-            <View>
-              <Text style={Layout.fill}>{_getOtherUserName()}</Text>
-              <Text>{`R ${_.get(parcelRequest, 'price')}`}</Text>
-              <Text>{`Pick-up: ${_.get(parcelRequest, 'abbreviatedPickUpAddress')}`}</Text>
-              <Text>{`Drop-off: ${_.get(parcelRequest, 'abbreviatedDropOffAddress')}`}</Text>
-              <Text>{`Due date: ${formatDate(
-                _.get(parcelRequest, 'latestDeliveryDateTime'),
-              )}`}</Text>
-              <Text>{`Status: ${_formatStatus(parcelRequest)}`}</Text>
-            </View>
+    <View style={[styles.parcelRequestListItemContainer]}>
+      <View style={[styles.parcelRequestListItem, Layout.row, Layout.justifyContentBetween]}>
+        <ParcelPhoto parcelRequest={parcelRequest} />
+        <View style={[Gutters.smallHMargin, Layout.fill]}>
+          <View style={[Layout.row, Layout.justifyContentBetween]}>
+            <Text style={[Fonts.titleTiny, Layout.fill]}>{_getTitle()}</Text>
+            <TagPanel userRole={_isDeliverer() ? 'Driver' : 'Sender'} />
+          </View>
+          <View>
+            <Text style={Layout.fill}>{_getOtherUserName()}</Text>
+            <Text>{`R ${_.get(parcelRequest, 'price')}`}</Text>
+            <Text>{`Pick-up: ${_.get(parcelRequest, 'abbreviatedPickUpAddress')}`}</Text>
+            <Text>{`Drop-off: ${_.get(parcelRequest, 'abbreviatedDropOffAddress')}`}</Text>
+            <Text>{`Due date: ${formatDate(_.get(parcelRequest, 'latestDeliveryDateTime'))}`}</Text>
+            <Text>{`Status: ${_formatStatus(parcelRequest)}`}</Text>
           </View>
         </View>
       </View>
-    </>
+    </View>
   );
 };
 
 ParcelRequestListItem.propTypes = {
-  parcelRequest: PropTypes.object,
+  parcelRequest: PropTypes.object.isRequired,
 };
 
 ParcelRequestListItem.defaultProps = {};

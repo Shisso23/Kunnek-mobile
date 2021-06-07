@@ -19,7 +19,7 @@ const ParcelPhoto = ({ parcelRequest }) => {
 };
 
 ParcelPhoto.propTypes = {
-  parcelRequest: PropTypes.shape({ PhotoUri: PropTypes.string }),
+  parcelRequest: PropTypes.shape({ PhotoUri: PropTypes.string }).isRequired,
 };
 
 ParcelPhoto.defaultProps = {};
