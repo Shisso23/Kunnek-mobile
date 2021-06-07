@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/core';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
@@ -16,6 +17,7 @@ const ParcelRequestListItem = ({ parcelRequest }) => {
   const { user } = useSelector(userSelector);
   const sender = _.get(parcelRequest, 'sender');
   const deliverer = _.get(parcelRequest, 'deliverer');
+  const navigation = useNavigation();
 
   const _isDeliverer = () => {
     return _.get(user, 'id') === _.get(deliverer, 'userId');
@@ -45,7 +47,12 @@ const ParcelRequestListItem = ({ parcelRequest }) => {
   return (
     <>
       <View style={[styles.parcelRequestListItemContainer]}>
-        <View style={[styles.parcelRequestListItem, Layout.row, Layout.justifyContentBetween]}>
+        <TouchableOpacity
+          style={[styles.parcelRequestListItem, Layout.row, Layout.justifyContentBetween]}
+          onPress={() => {
+            navigation.navigate('ParcelDetails', parcelRequest);
+          }}
+        >
           <ParcelPhoto parcelRequest={parcelRequest} />
           <View style={[Gutters.smallHMargin, Layout.fill]}>
             <View style={[Layout.row, Layout.justifyContentBetween]}>
@@ -63,7 +70,7 @@ const ParcelRequestListItem = ({ parcelRequest }) => {
               <Text>{`Status: ${_formatStatus(parcelRequest)}`}</Text>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
     </>
   );
@@ -85,19 +92,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     elevation: 6,
     shadowColor: Colors.greyShadow,
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.27,
-    shadowRadius: 4.65,
   },
   parcelRequestListItemContainer: {
     padding: 10,
     shadowColor: Colors.greyShadow,
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 5,
     marginHorizontal: 5,
   },
 });

@@ -16,6 +16,7 @@ import NotificationHistoryScreen from '../../screens/app/notifications/notificat
 import PaymentScreen from '../../screens/app/payment/payment.screen';
 import ParcelRequestsScreen from '../../screens/app/parcel-requests/parcel-requests.screen';
 import { Colors } from '../../theme/Variables';
+import ParcelDetailsScreen from '../../screens/app/parcel-details/parcel-details.screen';
 
 const Drawer = createDrawerNavigator();
 const AppStack = createStackNavigator();
@@ -32,6 +33,7 @@ const AppNavigator = () => {
       <AppStack.Screen name="SendParcel" component={SendParcelScreen} />
       <AppStack.Screen name="ViewParcel" component={ViewParcelsScreen} />
       <AppStack.Screen name="ParcelRequests" component={ParcelRequestsScreen} />
+      <AppStack.Screen name="ParcelDetails" component={ParcelDetailsScreen} />
       <AppStack.Screen name="ParcelDeliveryDetails" component={ParcelDeliveryDetailsScreen} />
       <AppStack.Screen name="TransactionHistory" component={TransactionHistoryScreen} />
       <AppStack.Screen name="NotificationHistory" component={NotificationHistoryScreen} />

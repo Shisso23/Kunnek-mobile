@@ -33,7 +33,7 @@ const DrawerContent = (props) => {
               ratingColor="transparent"
               ratingBackgroundColor="transparent"
               readonly
-              startingValue={_.get(user, 'rating', '')}
+              startingValue={Number(_.get(user, 'rating', 0))}
               imageSize={20}
               style={styles.ratingStyle}
             />
