@@ -11,7 +11,7 @@ const createQuery = async (formData) => {
 
 const getAll = async () => {
   const url = queryUrls.getQueriesUrl();
-  const apiResponse = await authNetworkService.get(`$${url}`);
+  const apiResponse = await authNetworkService.get(`${url}`);
   return apiResponse;
 };
 

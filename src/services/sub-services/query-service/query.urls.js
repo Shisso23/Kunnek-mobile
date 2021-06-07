@@ -4,5 +4,5 @@ const { apiUrl } = appConfig;
 
 export default {
   createQueryUrl: () => `${apiUrl}/queries`,
-  getQueriesUrl: () => `${apiUrl}/check_ins`,
+  getQueriesUrl: () => `${apiUrl}/queries`,
 };
