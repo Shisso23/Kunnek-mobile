@@ -1,17 +1,74 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { DrawerActions, useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, View } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 
 import { exitAppOnHardwarePressListener } from '../../../helpers';
-import { CustomTab } from '../../../components/molecules';
-import { MapViewComponent } from '../../../components';
+import { getParcelRequestsAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
+import CustomHeaderButton from '../../../components/atoms/custom-header-button';
+import { CustomTab, LoadingOverlay, MapViewComponent } from '../../../components';
 
 const HomeScreen = () => {
   useFocusEffect(exitAppOnHardwarePressListener);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const { parcelRequests, parcelRequestLoading = false } = useSelector(
+    (reducers) => reducers.parcelRequestReducer,
+  );
+
+  useEffect(() => {
+    _loadParcelRequests();
+  }, []);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: (props) => (
+        <CustomHeaderButton
+          {...props}
+          onPress={_openDrawer}
+          image={require('../../../assets/icons/menu/menu.png')}
+        />
+      ),
+      headerRight: (props) => (
+        <CustomHeaderButton
+          {...props}
+          onPress={_openFilters}
+          image={require('../../../assets/icons/filter/filter.png')}
+        />
+      ),
+    });
+  }, [navigation]);
+
+  const _loadParcelRequests = () => {
+    dispatch(getParcelRequestsAction({ is_open: true }));
+  };
+
+  const _onPressMapMarker = (parcelRequest) => {
+    navigation.navigate('ViewParcel', {
+      parcelRequest,
+    });
+  };
+
+  const _openDrawer = () => {
+    navigation.dispatch(DrawerActions.toggleDrawer());
+  };
+
+  const _openFilters = () => {};
+
+  const _isLoading = () => {
+    return parcelRequestLoading;
+  };
 
   return (
     <>
-      <MapViewComponent />
+      <View style={styles.refreshButton}>
+        <CustomHeaderButton
+          onPress={_loadParcelRequests}
+          image={require('../../../assets/icons/refresh/refresh.png')}
+        />
+      </View>
+      <LoadingOverlay isLoading={_isLoading()} />
+      <MapViewComponent parcelRequests={parcelRequests} onPointPress={_onPressMapMarker} />
       <View style={styles.navContainer}>
         <CustomTab />
       </View>
@@ -25,6 +82,12 @@ const styles = StyleSheet.create({
     left: 0,
     position: 'absolute',
     right: 0,
+    zIndex: 1,
+  },
+  refreshButton: {
+    position: 'absolute',
+    right: 0,
+    top: 110,
     zIndex: 1,
   },
 });

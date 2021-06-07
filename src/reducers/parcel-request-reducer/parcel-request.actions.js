@@ -8,9 +8,15 @@ import {
 } from './parcel-request.reducer';
 
 export const getParcelRequestsAction = (params = {}) => (dispatch) => {
-  parcelRequestService.getAll(params).then((parcelRequests) => {
-    return dispatch(setParcelRequestsAction(parcelRequests));
-  });
+  dispatch(setParcelRequestLoadingAction(true));
+  return parcelRequestService
+    .getAll(params)
+    .then((parcelRequests) => {
+      return dispatch(setParcelRequestsAction(parcelRequests));
+    })
+    .finally(() => {
+      dispatch(setParcelRequestLoadingAction(false));
+    });
 };
 
 export const createParcelRequestAction = (data) => (dispatch, getState) =>

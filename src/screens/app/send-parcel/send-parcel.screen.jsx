@@ -168,6 +168,7 @@ const SendParcelScreen = () => {
 
   const formData = [
     {
+      id: 'itemDetailsForm',
       content: (
         <>
           <Index title="Send Parcel" />
@@ -183,6 +184,7 @@ const SendParcelScreen = () => {
       ),
     },
     {
+      id: 'deliveryAndReceiverDetailsForm',
       content: (
         <>
           <Index title="Send Parcel" />
@@ -204,6 +206,7 @@ const SendParcelScreen = () => {
 
   if (!hasCreditCards) {
     formData.push({
+      id: 'creditCardForm',
       content: (
         <>
           <Index title="My Debit/Credit Card" />

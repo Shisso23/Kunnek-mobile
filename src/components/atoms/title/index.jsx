@@ -3,13 +3,12 @@ import { Text } from 'react-native-elements';
 import React from 'react';
 import PropTypes from 'prop-types';
 import useTheme from '../../../theme/hooks/useTheme';
-import Fonts from '../../../theme/Fonts';
 
 const Index = ({ title }) => {
-  const { Gutters, Layout } = useTheme();
+  const { Gutters, Layout, Fonts, Common } = useTheme();
   return (
     <View style={[Layout.row, Layout.alignItemsCenter, Gutters.regularHPadding]}>
-      <Text h1 style={[Fonts.titleRegular]}>{title}</Text>
+      <Text style={[Fonts.titleRegular, Common.noBold]}>{title}</Text>
     </View>
   );
 };

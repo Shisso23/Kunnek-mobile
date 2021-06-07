@@ -15,6 +15,7 @@ import ViewVehicleScreen from '../../screens/app/vehicles/view-vehicle.screen';
 import NotificationHistoryScreen from '../../screens/app/notifications/notifications.screen';
 import PaymentScreen from '../../screens/app/payment/payment.screen';
 import ParcelRequestsScreen from '../../screens/app/parcel-requests/parcel-requests.screen';
+import { Colors } from '../../theme/Variables';
 
 const Drawer = createDrawerNavigator();
 const AppStack = createStackNavigator();
@@ -46,7 +47,13 @@ const DrawerNavigator = () => (
     <Drawer.Screen
       name="Home"
       component={HomeScreen}
-      options={{ headerShown: true, title: 'Home' }}
+      options={{
+        headerShown: true,
+        title: '',
+        headerStyle: {
+          backgroundColor: Colors.transparent,
+        },
+      }}
     />
     <Drawer.Screen
       name="Profile"

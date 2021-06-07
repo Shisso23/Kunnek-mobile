@@ -9,14 +9,13 @@ import {
 import { getParamString } from '../../../helpers/network.helper';
 import { objectToFormData } from '../../../helpers/data.helper';
 
-const get = () => {
+const get = (id) => {
   const url = parcelRequestUrls.parcelRequestsUrl();
   const _createAndReturnModel = (apiResponse) => parcelRequestModel(apiResponse.data);
   return authNetworkService
-    .get(url)
+    .get(`${url}/${id}`)
     .then(_createAndReturnModel)
     .catch((error) => {
-      // eslint-disable-next-line no-console
       console.warn(error);
       return Promise.reject(error);
     });

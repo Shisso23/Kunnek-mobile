@@ -5,7 +5,7 @@ import Geolocation from 'react-native-geolocation-service';
 
 import networkService from '../network-service/network.service';
 import mapUrls from './map.urls';
-import permissionsService from '../permissions-service/permissions-service';
+import { permissionsService } from '../..';
 import config from '../../../config';
 
 const getDirections = (points = []) => {
@@ -40,12 +40,8 @@ const getGooglePlacesAutocomplete = (inputText, params) => {
   return networkService.get(url).then((response) => _.get(response, 'data', {}));
 };
 
-const requestLocationPermission = async () => {
-  await permissionsService.requestLocationPermission();
-};
-
 const getCurrentLocation = async () => {
-  const hasLocationAccess = await requestLocationPermission();
+  const hasLocationAccess = await permissionsService.requestLocationPermission();
   let coords = {};
   return new Promise((resolve, reject) => {
     if (hasLocationAccess) {
@@ -130,7 +126,6 @@ export default {
   getDirections,
   snapToRoads,
   geocode,
-  requestLocationPermission,
   getCurrentLocation,
   getDistance,
   obfuscatePoint,

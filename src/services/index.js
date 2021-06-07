@@ -12,3 +12,5 @@ export { default as mapService } from './sub-services/map-service/map.service';
 export { default as permissionsService } from './sub-services/permissions-service/permissions-service';
 export { default as reviewService } from './sub-services/review-service/review.service';
 export { default as notificationService } from './sub-services/notification-service/notification.service';
+export { default as locationService } from './sub-services/location-service/location.service';
+export { default as tripService } from './sub-services/trip-service/trip.service';

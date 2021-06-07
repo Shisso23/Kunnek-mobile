@@ -1,5 +1,5 @@
-/* eslint-disable camelcase */
 import _ from 'lodash';
+import { apiLocationsModel, locationsModel } from '../location/locations.model';
 
 export const tripModel = (_apiTripModel = {}) => ({
   id: _.get(_apiTripModel, 'id', ''),
@@ -8,7 +8,7 @@ export const tripModel = (_apiTripModel = {}) => ({
   distance: _.get(_apiTripModel, 'distance', 0),
   startAddress: _.get(_apiTripModel, 'start_address', ''),
   endAddress: _.get(_apiTripModel, 'end_address', 0.0),
-  locations: _.get(_apiTripModel, 'locations', []),
+  locations: locationsModel(_apiTripModel),
 });
 
 export const apiTripModel = (_appTripModel = {}) => ({
@@ -19,6 +19,6 @@ export const apiTripModel = (_appTripModel = {}) => ({
     distance: _.get(_appTripModel, 'distance', ''),
     start_address: _.get(_appTripModel, 'startAddress', ''),
     end_address: _.get(_appTripModel, 'endAddress', 0.0),
-    locations: _.get(_appTripModel, 'locations', 0.0),
+    locations: apiLocationsModel(_appTripModel),
   },
 });
