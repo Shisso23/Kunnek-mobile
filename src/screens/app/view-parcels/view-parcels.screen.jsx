@@ -1,14 +1,36 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import PropTypes from 'prop-types';
 
-const ViewParcelsScreen = () => (
-  <View>
-    <Text>Hello, Component</Text>
-  </View>
-);
+import Index from '../../../components/atoms/title';
+import { useTheme } from '../../../theme';
+import { ScrollView } from 'react-native-gesture-handler';
+import { StyleSheet } from 'react-native';
+import { ViewParcelCard } from '../../../components';
 
-ViewParcelsScreen.propTypes = {};
+const ViewParcelsScreen = ({ route }) => {
+  const { Layout } = useTheme();
+  const parcelRequest = route.params;
+
+  return (
+    <>
+      <Index title="View Parcel" />
+      <ScrollView style={[Layout.fill]} contentContainerStyle={styles.fillScreen}>
+        <ViewParcelCard parcelRequest={parcelRequest} />
+      </ScrollView>
+    </>
+  );
+};
+
+ViewParcelsScreen.propTypes = {
+  route: PropTypes.object,
+};
 
 ViewParcelsScreen.defaultProps = {};
 
 export default ViewParcelsScreen;
+
+const styles = StyleSheet.create({
+  fillScreen: {
+    flexGrow: 1,
+  },
+});
