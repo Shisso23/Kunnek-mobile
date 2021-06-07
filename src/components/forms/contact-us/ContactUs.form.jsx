@@ -14,30 +14,7 @@ import DropDownSelect from '../../molecules/dropdown-select/DropDownSelect';
 import { getParcelRequestsAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 
 const { Common, Colors, Custom } = useTheme();
-const styles = StyleSheet.create({
-  buttonTitle: { color: Colors.white, fontSize: 15 },
-  descriptionText: { color: Colors.black, marginBottom: 10 },
-  headerTileExtraStyle: { color: Colors.black, fontSize: 25, marginBottom: 10 },
-  helpTextStyle: { fontSize: 12, marginBottom: 10 },
-  inputStyle: {
-    height: 120,
-    marginLeft: -3,
-    width: '102%',
-  },
-  smallText: { color: Colors.black, fontSize: 15 },
-  submitButton: {
-    alignItems: 'center',
-    alignSelf: 'center',
-    backgroundColor: Colors.primary,
-    bottom: '12%',
-    position: 'absolute',
-    width: '60%',
-  },
-  texts: {
-    color: Colors.darkGrey,
-    fontSize: 13,
-  },
-});
+
 const ContactUsForm = ({ submitForm, onSuccess, containerStyle, initialValues }) => {
   const { parcelRequests = [] } = useSelector((state) => state.parcelRequestReducer);
   const validationSchema = Yup.object().shape({
@@ -154,3 +131,28 @@ ContactUsForm.defaultProps = {
 };
 
 export default ContactUsForm;
+
+const styles = StyleSheet.create({
+  buttonTitle: { color: Colors.white, fontSize: 15 },
+  descriptionText: { color: Colors.black, marginBottom: 10 },
+  headerTileExtraStyle: { color: Colors.black, fontSize: 25, marginBottom: 10 },
+  helpTextStyle: { fontSize: 12, marginBottom: 10 },
+  inputStyle: {
+    height: 120,
+    marginLeft: -3,
+    width: '102%',
+  },
+  smallText: { color: Colors.black, fontSize: 15 },
+  submitButton: {
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: Colors.primary,
+    bottom: '12%',
+    position: 'absolute',
+    width: '60%',
+  },
+  texts: {
+    color: Colors.darkGrey,
+    fontSize: 13,
+  },
+});
