@@ -68,20 +68,15 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
             <AddressInput
               value={values.startLocation}
               onChangeText={handleChange('startLocation')}
-              onBlur={handleBlur('startLocation')}
               placeholder="Start Location"
               errorMessage={error('startLocation')}
-              keyboardType="number-pad"
             />
 
             <AddressInput
               value={values.endLocation}
-              label="End Location"
               onChangeText={handleChange('endLocation')}
-              onBlur={handleBlur('endLocation')}
               placeholder="End Location"
               errorMessage={error('endLocation')}
-              keyboardType="number-pad"
             />
 
             <Input
