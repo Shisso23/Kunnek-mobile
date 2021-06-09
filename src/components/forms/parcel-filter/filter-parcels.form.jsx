@@ -114,8 +114,6 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
                   display="default"
                   onChange={(event, date) => {
                     setFieldValue('lastDeliveryDate', moment(date).format('D MMMM YYYY, h:mm'));
-                    console.log('last delivery date', date);
-                    console.log('values', values);
                   }}
                   onTouchEnd={() => setShowDatePicker(false)}
                 />
