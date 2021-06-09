@@ -29,7 +29,7 @@ const ParcelRequestScreen = () => {
       <Text style={[Fonts.textLarge, Gutters.regularHPadding]}>See your current orders.</Text>
       <FlatList
         keyExtractor={(item) => {
-          return _.get(item, 'id');
+          return _.get(item, 'id').toString();
         }}
         data={parcelRequests}
         renderItem={_renderItem}

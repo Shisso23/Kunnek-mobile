@@ -2,10 +2,11 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import { StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import Index from '../../../components/atoms/title';
 import { useTheme } from '../../../theme';
-import { ScrollView } from 'react-native-gesture-handler';
 import {
   ParcelDetailsCard,
   ParcelDetailsFooter,
@@ -13,9 +14,8 @@ import {
   ParcelStatusCardSender,
   UserSummaryCard,
 } from '../../../components';
-import { parcelStatus } from '../../../helpers/parce-request-status.helper';
+import { parcelStatus } from '../../../helpers/parcel-request-status.helper';
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
-import { StyleSheet } from 'react-native';
 
 const ParcelDetailsScreen = ({ route }) => {
   const { Layout } = useTheme();
