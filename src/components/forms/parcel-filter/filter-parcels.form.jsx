@@ -17,9 +17,9 @@ import { Colors } from '../../../theme/Variables';
 const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
   const validationSchema = Yup.object().shape({
     startLocation: Yup.string().required('Start location is required'),
-    endLocation: Yup.number().required('End location is required').positive(),
+    endLocation: Yup.string().required('End location is required'),
     maximumDistance: Yup.number().required('Maximum distance is required').positive(),
-    lastDeliveryDate: Yup.date().required('Last delivery date is required'),
+    lastDeliveryDate: Yup.string().required('Last delivery date is required'),
   });
 
   const { Custom } = useTheme();
@@ -96,7 +96,7 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
 
             <View>
               <Input
-                value={values.lastDeliveryDate}
+                value={`${values.lastDeliveryDate}`}
                 label="Latest Delivery Date"
                 onChangeText={handleChange('lastDeliveryDate')}
                 onEndEditing={() => setShowDatePicker(false)}
@@ -113,7 +113,10 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
                   mode="datetime"
                   display="default"
                   onChange={(event, date) => {
-                    setFieldValue('lastDeliveryDate', moment(date).format('D MMMM YYYY, h:mm'));
+                    setFieldValue(
+                      'lastDeliveryDate',
+                      `${moment(date).format('D MMMM YYYY, h:mm')}`,
+                    );
                   }}
                   onTouchEnd={() => setShowDatePicker(false)}
                 />
