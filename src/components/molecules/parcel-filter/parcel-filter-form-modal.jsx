@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import FilterParcel from '../../forms/parcel-filter/filter-parcels.form';
 import FormScreenContainer from '../../containers/form-screen-container/form-screen.container';
+import { filtersFormModel } from '../../../models/app/parcel-filter/parcel-filter-form.model';
 
 const ParcelFilterFormModal = ({ visible, setFilterClosed }) => {
   const [isVisible, setIsVisible] = useState(visible);
@@ -33,7 +34,7 @@ const ParcelFilterFormModal = ({ visible, setFilterClosed }) => {
           <Icon name="times-circle" size={25} />
         </TouchableOpacity>
         <FilterParcel
-          initialValues={{ lastDeliveryDate: new Date(1598051730000) }}
+          initialValues={filtersFormModel()}
           submitForm={submitForm}
           onSuccess={onSuccess}
         />
