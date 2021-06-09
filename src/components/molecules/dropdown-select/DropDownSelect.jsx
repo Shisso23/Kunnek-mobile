@@ -1,38 +1,12 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { HelperText, Menu, TextInput, List } from 'react-native-paper';
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet, Platform } from 'react-native';
 
 import useTheme from '../../../theme/hooks/useTheme';
+import { Colors } from '../../../theme/Variables';
+import _ from 'lodash';
 
-const styles = StyleSheet.create({
-  menu: {
-    marginTop: '12%',
-    shadowOffset: {
-      height: 0.2,
-      width: 0.2,
-    },
-    shadowOpacity: 0.7,
-    shadowRadius: 2,
-  },
-  textInputExtraStyle: {
-    borderRadius: 12,
-    borderTopEndRadius: 12,
-    borderTopLeftRadius: 12,
-    borderWidth: 0,
-    height: 41,
-    marginBottom: 0,
-    marginTop: 8,
-    minHeight: 30,
-    shadowOffset: {
-      height: 0.2,
-      width: 0.2,
-    },
-    shadowOpacity: 0.4,
-    shadowRadius: 2,
-    textAlign: 'left',
-  },
-});
 const { width } = Dimensions.get('window');
 
 const DropdownSelect = ({
@@ -48,7 +22,7 @@ const DropdownSelect = ({
   label,
   onBlur,
 }) => {
-  const [visible, setVisible] = React.useState(false);
+  const [visible, setVisible] = useState(false);
   const textRef = useRef(null);
   const hide = () => {
     setVisible(false);
@@ -65,6 +39,15 @@ const DropdownSelect = ({
     onChange(newItem);
   };
 
+  const renderListItem = (item, index) => (
+    <List.Item
+      key={keyExtractor(item, index)}
+      onPress={() => _handleChange(item, index)}
+      title={valueExtractor(item, index)}
+      style={{ width: width * 0.92 }}
+      titleNumberOfLines={5}
+    />
+  );
   return (
     <Menu
       visible={visible}
@@ -103,15 +86,7 @@ const DropdownSelect = ({
         </>
       }
     >
-      {items?.map((item, index) => (
-        <List.Item
-          key={keyExtractor(item, index)}
-          onPress={() => _handleChange(item, index)}
-          title={valueExtractor(item, index)}
-          style={{ width: width * 0.92 }}
-          titleNumberOfLines={5}
-        />
-      ))}
+      {_.map(items, renderListItem)}
     </Menu>
   );
 };
@@ -145,3 +120,36 @@ DropdownSelect.defaultProps = {
 };
 
 export default DropdownSelect;
+
+const styles = StyleSheet.create({
+  menu: {
+    ...Platform.select({
+      android: { elevation: 3, backgroundColor: Colors.white },
+      ios: {},
+    }),
+    marginTop: '12%',
+    shadowOffset: {
+      height: 0.2,
+      width: 0.2,
+    },
+    shadowOpacity: 0.7,
+    shadowRadius: 2,
+  },
+  textInputExtraStyle: {
+    borderRadius: 12,
+    borderTopEndRadius: 12,
+    borderTopLeftRadius: 12,
+    borderWidth: 0,
+    height: 41,
+    marginBottom: 0,
+    marginTop: 8,
+    minHeight: 30,
+    shadowOffset: {
+      height: 0.2,
+      width: 0.2,
+    },
+    shadowOpacity: 0.4,
+    shadowRadius: 2,
+    textAlign: 'left',
+  },
+});

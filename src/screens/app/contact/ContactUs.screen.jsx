@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import _ from 'lodash';
 
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
 import ContactUsForm from '../../../components/forms/contact-us/ContactUs.form';
@@ -16,7 +17,7 @@ const ContactUsScreen = () => {
   const submitForm = async (formData) => {
     return await queryService.createQuery({
       ...formData,
-      userId: user.id,
+      userId: _.get(user, 'id', ''),
     });
   };
   const onSuccess = (query) => {

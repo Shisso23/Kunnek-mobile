@@ -13,6 +13,7 @@ import { getFormError } from '../form-utils';
 import DropDownSelect from '../../molecules/dropdown-select/DropDownSelect';
 import { getParcelRequestsAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 
+const issueTypes = ['Bug', 'complaint', 'general'];
 const { Common, Colors, Custom } = useTheme();
 
 const ContactUsForm = ({ submitForm, onSuccess, containerStyle, initialValues }) => {
@@ -73,7 +74,7 @@ const ContactUsForm = ({ submitForm, onSuccess, containerStyle, initialValues })
                 value={values.issueType}
                 keyExtractor={(item, index) => `${item}${index}`}
                 onChange={handleChange('issueType')}
-                items={['Bug', 'complaint', 'general']}
+                items={issueTypes}
                 valueExtractor={(issue) => issue}
                 error={error('issueType')}
                 placeholder="Select issue"
