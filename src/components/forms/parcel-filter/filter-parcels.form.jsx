@@ -13,6 +13,7 @@ import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
 import { useTheme } from '../../../theme';
 import { Colors } from '../../../theme/Variables';
+import AddressInput from '../../molecules/address-input';
 
 const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
   const validationSchema = Yup.object().shape({
@@ -64,22 +65,21 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
         return (
           <>
             <Text style={[Custom.headerTitleStyle, styles.headerText]}>Filters</Text>
-            <Input
+            <AddressInput
               value={values.startLocation}
-              label="Start Location"
               onChangeText={handleChange('startLocation')}
               onBlur={handleBlur('startLocation')}
-              placeholder="0"
+              placeholder="Start Location"
               errorMessage={error('startLocation')}
               keyboardType="number-pad"
             />
 
-            <Input
+            <AddressInput
               value={values.endLocation}
               label="End Location"
               onChangeText={handleChange('endLocation')}
               onBlur={handleBlur('endLocation')}
-              placeholder="0"
+              placeholder="End Location"
               errorMessage={error('endLocation')}
               keyboardType="number-pad"
             />
