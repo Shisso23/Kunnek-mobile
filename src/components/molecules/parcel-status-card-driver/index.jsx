@@ -49,7 +49,7 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
 };
 
 ParcelStatusCardDriver.propTypes = {
-  parcelRequest: PropTypes.object,
+  parcelRequest: PropTypes.object.isRequired,
 };
 
 ParcelStatusCardDriver.defaultProps = {};

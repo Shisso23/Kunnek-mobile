@@ -49,7 +49,7 @@ const ParcelStatusCardSender = ({ parcelRequest }) => {
 };
 
 ParcelStatusCardSender.propTypes = {
-  parcelRequest: PropTypes.object,
+  parcelRequest: PropTypes.object.isRequired,
 };
 
 ParcelStatusCardSender.defaultProps = {};

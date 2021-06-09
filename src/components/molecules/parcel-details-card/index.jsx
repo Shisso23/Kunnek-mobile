@@ -28,7 +28,7 @@ const ParcelDetailsCard = ({ parcelRequest }) => {
 };
 
 ParcelDetailsCard.propTypes = {
-  parcelRequest: PropTypes.object,
+  parcelRequest: PropTypes.object.isRequired,
 };
 
 ParcelDetailsCard.defaultProps = {};

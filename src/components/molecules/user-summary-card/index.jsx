@@ -27,7 +27,7 @@ const UserSummaryCard = ({ user }) => {
 };
 
 UserSummaryCard.propTypes = {
-  user: PropTypes.object,
+  user: PropTypes.object.isRequired,
 };
 
 UserSummaryCard.defaultProps = {};

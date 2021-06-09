@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import PropTypes from 'prop-types';
 
 import { useTheme } from '../../../theme';
 import { Colors } from '../../../theme/Variables';
@@ -29,9 +28,7 @@ const ParcelDetailsFooter = () => {
   );
 };
 
-ParcelDetailsFooter.propTypes = {
-  item: PropTypes.object,
-};
+ParcelDetailsFooter.propTypes = {};
 
 ParcelDetailsFooter.defaultProps = {};
 

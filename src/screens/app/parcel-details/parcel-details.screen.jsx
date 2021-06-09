@@ -55,7 +55,7 @@ const ParcelDetailsScreen = ({ route }) => {
 };
 
 ParcelDetailsScreen.propTypes = {
-  route: PropTypes.object,
+  route: PropTypes.object.isRequired,
 };
 
 ParcelDetailsScreen.defaultProps = {};
