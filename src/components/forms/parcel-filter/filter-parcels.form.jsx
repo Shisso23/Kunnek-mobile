@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
-import { SafeAreaView, TouchableOpacity, ViewPropTypes, StyleSheet } from 'react-native';
+import { SafeAreaView, ViewPropTypes, StyleSheet, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Button, Input, Text } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -21,7 +22,7 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
     lastDeliveryDate: Yup.date().required('Last delivery date is required'),
   });
 
-  const { Custom, Layout } = useTheme();
+  const { Custom } = useTheme();
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const _handleSubmission = (formData, actions) => {
@@ -54,6 +55,7 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
         values,
         errors,
         isSubmitting,
+        setFieldValue,
         handleBlur,
         touched,
         status,
@@ -61,9 +63,6 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
         const error = (name) => getFormError(name, { touched, status, errors });
         return (
           <>
-            <TouchableOpacity style={[Custom.closeButton, Layout.alignSelfEnd]}>
-              <Icon name="times-circle" size={25} />
-            </TouchableOpacity>
             <Text style={[Custom.headerTitleStyle, styles.headerText]}>Filters</Text>
             <Input
               value={values.startLocation}
@@ -95,26 +94,33 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
               keyboardType="number-pad"
             />
 
-            <Input
-              value={values.lastDeliveryDate}
-              label="Latest Delivery Date"
-              onChangeText={handleChange('lastDeliveryDate')}
-              onBlur={handleBlur('lastDeliveryDate')}
-              placeholder="YYYY-MM-D HH:MM"
-              errorMessage={error('lastDeliveryDate')}
-              keyboardType="numeric"
-              onFocus={() => setShowDatePicker(true)}
-              rightIcon={<Icon name="calendar-alt" size={25} color={Colors.primary} />}
-            />
-            {showDatePicker && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={values.lastDeliveryDate || new Date()}
-                is24Hour={true}
-                display="default"
-                onChange={handleChange('lastDeliveryDate')}
+            <View>
+              <Input
+                value={values.lastDeliveryDate}
+                label="Latest Delivery Date"
+                onChangeText={handleChange('lastDeliveryDate')}
+                onEndEditing={() => setShowDatePicker(false)}
+                placeholder="YYYY-MM-D HH:MM"
+                errorMessage={error('lastDeliveryDate')}
+                onFocus={() => setShowDatePicker(true)}
+                rightIcon={<Icon name="calendar-alt" size={25} color={Colors.primary} />}
               />
-            )}
+              {showDatePicker && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={new Date()}
+                  is24Hour={true}
+                  mode="datetime"
+                  display="default"
+                  onChange={(event, date) => {
+                    setFieldValue('lastDeliveryDate', moment(date).format('D MMMM YYYY, h:mm'));
+                    console.log('last delivery date', date);
+                    console.log('values', values);
+                  }}
+                  onTouchEnd={() => setShowDatePicker(false)}
+                />
+              )}
+            </View>
 
             <SafeAreaView>
               <Button onPress={handleSubmit} loading={isSubmitting} title="Search" />

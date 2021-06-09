@@ -9,7 +9,6 @@ import Index from '../../../components/atoms/title';
 import { getParcelRequestsAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 import { useTheme } from '../../../theme';
 import ParcelRequestListItem from '../../../components/molecules/parcel-request-list-item';
-import ParcelFilterFormModal from '../../../components/molecules/parcel-filter/parcel-filter-form-modal';
 
 const ParcelRequestScreen = () => {
   const { Fonts, Gutters, Layout } = useTheme();
@@ -35,7 +34,6 @@ const ParcelRequestScreen = () => {
         data={parcelRequests}
         renderItem={_renderItem}
       />
-      <ParcelFilterFormModal visible={true} />
     </View>
   );
 };

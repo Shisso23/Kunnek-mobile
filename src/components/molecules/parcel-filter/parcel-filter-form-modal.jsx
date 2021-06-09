@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { Overlay } from 'react-native-elements';
+import { useTheme } from '../../../theme';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import FilterParcel from '../../forms/parcel-filter/filter-parcels.form';
 import FormScreenContainer from '../../containers/form-screen-container/form-screen.container';
 
-const ParcelFilterFormModal = ({ visible }) => {
-  const [isVisible, setIsVisible] = useState(false);
+const ParcelFilterFormModal = ({ visible, setFilterClosed }) => {
+  const [isVisible, setIsVisible] = useState(visible);
+  const { Custom, Layout } = useTheme();
   const submitForm = () => {};
   const onSuccess = () => {};
 
@@ -15,9 +18,20 @@ const ParcelFilterFormModal = ({ visible }) => {
     setIsVisible(visible);
   }, [visible]);
 
+  const closeModal = () => {
+    setIsVisible(false);
+    setFilterClosed();
+  };
+
   return (
     <Overlay isVisible={isVisible} onBackdropPress={() => {}} overlayStyle={styles.overlay}>
       <FormScreenContainer>
+        <TouchableOpacity
+          onPress={closeModal}
+          style={[Custom.closeButton, Layout.alignSelfEnd, styles.closeButton]}
+        >
+          <Icon name="times-circle" size={25} />
+        </TouchableOpacity>
         <FilterParcel
           initialValues={{ lastDeliveryDate: new Date(1598051730000) }}
           submitForm={submitForm}
@@ -30,6 +44,7 @@ const ParcelFilterFormModal = ({ visible }) => {
 
 ParcelFilterFormModal.propTypes = {
   visible: PropTypes.bool.isRequired,
+  setFilterClosed: PropTypes.func.isRequired,
 };
 
 ParcelFilterFormModal.defaultProps = {};
@@ -37,8 +52,13 @@ ParcelFilterFormModal.defaultProps = {};
 export default ParcelFilterFormModal;
 
 const styles = StyleSheet.create({
+  closeButton: {
+    marginRight: 5,
+  },
   overlay: {
     borderRadius: 15,
+    bottom: 0,
+    position: 'absolute',
     width: '99%',
   },
 });
