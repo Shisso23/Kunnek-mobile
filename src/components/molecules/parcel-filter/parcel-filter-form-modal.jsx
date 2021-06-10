@@ -4,17 +4,20 @@ import PropTypes from 'prop-types';
 import { Overlay } from 'react-native-elements';
 import { useTheme } from '../../../theme';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { useDispatch } from 'react-redux';
 
 import FilterParcel from '../../forms/parcel-filter/filter-parcels.form';
 import FormScreenContainer from '../../containers/form-screen-container/form-screen.container';
 import { filtersFormModel } from '../../../models/app/parcel-filter/parcel-filter-form.model';
-import { filterService } from '../../../services';
+import { getParcelRequestsAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 
 const ParcelFilterFormModal = ({ visible, setFilterClosed }) => {
   const [isVisible, setIsVisible] = useState(visible);
   const { Custom, Layout } = useTheme();
+  const dispatch = useDispatch();
+
   const submitForm = async (formData) => {
-    return await filterService.filterParcels(formData);
+    return dispatch(getParcelRequestsAction(formData));
   };
   const onSuccess = () => {
     closeModal();
