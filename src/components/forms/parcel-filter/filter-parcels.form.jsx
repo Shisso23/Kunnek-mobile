@@ -67,14 +67,14 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
             <Text style={[Custom.headerTitleStyle, styles.headerText]}>Filters</Text>
             <AddressInput
               value={values.startLocation}
-              onChangeText={handleChange('startLocation')}
+              onChange={handleChange('startLocation')}
               placeholder="Start Location"
               errorMessage={error('startLocation')}
             />
 
             <AddressInput
               value={values.endLocation}
-              onChangeText={handleChange('endLocation')}
+              onChange={handleChange('endLocation')}
               placeholder="End Location"
               errorMessage={error('endLocation')}
             />
