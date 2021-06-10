@@ -60,6 +60,8 @@ export const setPaginationAction = setPagination.action;
 const setParcelRequestLoading = CreateAction(reducerName, 'SET_PARCEL_REQUEST_LOADING');
 export const setParcelRequestLoadingAction = setParcelRequestLoading.action;
 
+export const parcelRequestSelector = (reducers) => reducers.parcelRequestReducer;
+
 const initialState = {
   parcelRequestLoading: false,
   parcelRequest: undefined,

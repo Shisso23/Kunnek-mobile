@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -16,6 +16,7 @@ import {
 } from '../../../components';
 import { parcelStatus } from '../../../helpers/parcel-request-status.helper';
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
+import { parcelRequestSelector } from '../../../reducers/parcel-request-reducer/parcel-request.reducer';
 
 const ParcelDetailsScreen = ({ route }) => {
   const { Layout } = useTheme();
@@ -23,6 +24,7 @@ const ParcelDetailsScreen = ({ route }) => {
   const deliverer = _.get(parcelRequest, 'deliverer');
   const parcelStatusIndex = parcelStatus[_.get(parcelRequest, 'status')];
   const { user } = useSelector(userSelector);
+  const { parcelRequests } = useSelector(parcelRequestSelector);
 
   const _isDeliverer = () => {
     return _.get(user, 'id') === _.get(deliverer, 'userId');
@@ -41,14 +43,28 @@ const ParcelDetailsScreen = ({ route }) => {
     return <ParcelStatusCardSender parcelRequest={parcelRequest} />;
   };
 
+  const _renderOtherUser = () => {
+    if (parcelStatusIndex >= parcelStatus['accepted_by_sender'])
+      return <UserSummaryCard user={_getOtherUser()} />;
+  };
+
+  const _renderFooter = () => {
+    if (parcelStatusIndex >= parcelStatus['pending_acceptance_from_sender'])
+      return <ParcelDetailsFooter />;
+  };
+
+  useEffect(() => {
+    _renderDetailsCard();
+  }, [parcelRequests]);
+
   return (
     <>
       <Index title="Parcel Details" />
       <ScrollView style={[Layout.fill]} contentContainerStyle={styles.fillScreen}>
         {_renderDetailsCard()}
         <ParcelDetailsCard parcelRequest={parcelRequest} />
-        {parcelStatusIndex >= 4 && <UserSummaryCard user={_getOtherUser()} />}
-        {parcelStatusIndex >= 2 && <ParcelDetailsFooter />}
+        {_renderOtherUser()}
+        {_renderFooter()}
       </ScrollView>
     </>
   );

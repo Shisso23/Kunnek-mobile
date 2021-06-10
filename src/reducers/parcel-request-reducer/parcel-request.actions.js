@@ -29,14 +29,15 @@ export const updateParcelStatus = (parcelRequest, newStatus) => (dispatch, getSt
 
   return parcelRequestService
     .updateStatus(_.get(parcelRequest, 'id'), { next_status: newStatus })
-    .then(() => {
+    .then((response) => {
+      console.log(response.status);
       parcelRequest.status = newStatus;
       parcelRequests[parcelRequestIndex] = parcelRequest;
 
       return dispatch(setParcelRequestsAction(parcelRequests));
     })
     .finally(() => {
-      dispatch(setParcelRequestLoadingAction(true));
+      dispatch(setParcelRequestLoadingAction(false));
     });
 };
 

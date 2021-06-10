@@ -18,3 +18,4 @@ export { default as ParcelDetailsCard } from './parcel-details-card';
 export { default as UserSummaryCard } from './user-summary-card';
 export { default as ParcelDetailsFooter } from './parcel-details-footer';
 export { default as ViewParcelCard } from './view-parcel-card';
+export { default as OTPInputField } from './otp-input-fields';
