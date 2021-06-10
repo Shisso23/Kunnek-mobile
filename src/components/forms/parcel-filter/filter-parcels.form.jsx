@@ -17,10 +17,10 @@ import AddressInput from '../../molecules/address-input';
 
 const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
   const validationSchema = Yup.object().shape({
-    startLocation: Yup.string().required('Start location is required'),
-    endLocation: Yup.string().required('End location is required'),
-    maximumDistance: Yup.number().required('Maximum distance is required').positive(),
-    lastDeliveryDate: Yup.string().required('Last delivery date is required'),
+    startLocation: Yup.string(),
+    endLocation: Yup.string(),
+    maximumDistance: Yup.number().positive(),
+    lastDeliveryDate: Yup.string(),
   });
 
   const { Custom } = useTheme();
