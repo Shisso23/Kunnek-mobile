@@ -8,12 +8,17 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import FilterParcel from '../../forms/parcel-filter/filter-parcels.form';
 import FormScreenContainer from '../../containers/form-screen-container/form-screen.container';
 import { filtersFormModel } from '../../../models/app/parcel-filter/parcel-filter-form.model';
+import { default as filterService } from '../../../services/sub-services/parcel-filter/parcel-filter.service';
 
 const ParcelFilterFormModal = ({ visible, setFilterClosed }) => {
   const [isVisible, setIsVisible] = useState(visible);
   const { Custom, Layout } = useTheme();
-  const submitForm = () => {};
-  const onSuccess = () => {};
+  const submitForm = (formData) => {
+    filterService.filterParcels(formData);
+  };
+  const onSuccess = () => {
+    console.log('Success');
+  };
 
   useEffect(() => {
     setIsVisible(visible);
