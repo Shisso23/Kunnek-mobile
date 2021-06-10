@@ -1,17 +1,20 @@
 import _ from 'lodash';
 
-import { filtersFormModelApi } from '../../../models/app/parcel-filter/parcel-filter-form.model';
+import { apiFiltersFormModel } from '../../../models/app/parcel-filter/parcel-filter-form.model';
 import authNetworkService from '../auth-network-service/auth-network.service';
 import parcelRequestsUrls from '../../sub-services/parcel-request-service/parcel-request.urls';
 import { parcelRequestModel } from '../../../models/app/parcel-request/parcel-request.model';
 
-const filterParcels = async ({ params }) => {
+const filterParcels = async (params) => {
   const url = parcelRequestsUrls.parcelRequestsUrl(params);
-  const apiModal = filtersFormModelApi(params);
+  const apiModal = apiFiltersFormModel(params);
   const nonEmptyParams = _.reduce(
     apiModal,
-    (parameters = '?', value, field) => (parameters += `${field}=${value}&`),
+    (parameters, value, field) => (parameters += `${field}=${value}&`),
+    '?',
   );
+
+  console.log('sent request', `${url}${nonEmptyParams.substring(0, nonEmptyParams.length - 1)}`);
 
   const _createAndReturnListModel = (apiResponse) =>
     _.map(_.get(apiResponse, 'data.data', []), (item) => parcelRequestModel(item));

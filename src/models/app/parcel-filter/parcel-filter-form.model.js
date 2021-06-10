@@ -7,17 +7,24 @@ export const filtersFormModel = (filterModal = {}) => ({
   lastDeliveryDate: _.get(filterModal, 'lastDeliveryDate', ''),
 });
 
-export const filtersFormModelApi = (filterModal = {}) => {
-  const empyFields = _.filter(Object.keys(filterModal), (key) => {
-    return `${filterModal[`${key}`]}` === '0' || `${filterModal[`${key}`]}`.length === 0;
+export const apiFiltersFormModel = (filterModal = {}) => {
+  const nonEmptyFields = _.filter(Object.keys(filterModal), (key) => {
+    return `${filterModal[`${key}`]}`.length > 0 && `${filterModal[`${key}`]}` !== '0';
   });
-  return _.unset(
-    {
-      start_point: _.get(filterModal, 'startLocation', ''),
-      end_point: _.get(filterModal, 'endLocation', ''),
-      max_distance_deviation: _.get(filterModal, 'maximumDistance', 0),
-      latest_delivery_date: _.get(filterModal, 'lastDeliveryDate', ''),
+
+  let apiModel = {
+    start_point: _.get(filterModal, 'startLocation', ''),
+    end_point: _.get(filterModal, 'endLocation', ''),
+    max_distance_deviation: _.get(filterModal, 'maximumDistance', 0),
+    latest_delivery_date: _.get(filterModal, 'lastDeliveryDate', ''),
+  };
+  apiModel = _.reduce(
+    nonEmptyFields,
+    (finalObject, field) => {
+      finalObject[`${field}`] = `${filterModal[field]}`;
+      return finalObject;
     },
-    empyFields,
+    {},
   );
+  return apiModel;
 };

@@ -8,12 +8,14 @@ import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Button, Input, Text } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useDispatch } from 'react-redux';
 
 import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
 import { useTheme } from '../../../theme';
 import { Colors } from '../../../theme/Variables';
 import AddressInput from '../../molecules/address-input';
+import { dispatchParcels } from '../../../reducers/parcel-filter/parcel-filter-actions';
 
 const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
   const validationSchema = Yup.object().shape({
@@ -24,16 +26,20 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
   });
 
   const { Custom } = useTheme();
+  const dispatch = useDispatch();
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const _handleSubmission = (formData, actions) => {
     submitForm(formData)
-      .then(() => {
+      .then((response) => {
         actions.setSubmitting(false);
+        dispatch(dispatchParcels(response));
         onSuccess();
+        console.log('response', response);
       })
       .catch((error) => {
         actions.setSubmitting(false);
+        flashService.error('Form Submission Error');
         if (_.get(error, 'statusCode') === 422) {
           const apiErrors = error.errors;
           flashService.error('Form Submission Error');
