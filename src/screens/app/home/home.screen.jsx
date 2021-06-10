@@ -26,6 +26,8 @@ const HomeScreen = () => {
     _loadParcelRequests();
   }, []);
 
+  useEffect(() => {}, [parcelRequests]);
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: (props) => (

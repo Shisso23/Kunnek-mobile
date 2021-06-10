@@ -15,7 +15,7 @@ import { flashService } from '../../../services';
 import { useTheme } from '../../../theme';
 import { Colors } from '../../../theme/Variables';
 import AddressInput from '../../molecules/address-input';
-import { dispatchParcels } from '../../../reducers/parcel-filter/parcel-filter-actions';
+import { dispatchFilterParcels } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 
 const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
   const validationSchema = Yup.object().shape({
@@ -33,9 +33,8 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
     submitForm(formData)
       .then((response) => {
         actions.setSubmitting(false);
-        dispatch(dispatchParcels(response));
+        dispatch(dispatchFilterParcels(response));
         onSuccess();
-        console.log('response', response);
       })
       .catch((error) => {
         actions.setSubmitting(false);

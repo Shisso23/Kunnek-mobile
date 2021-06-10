@@ -17,8 +17,7 @@ const ParcelFilterFormModal = ({ visible, setFilterClosed }) => {
     return await filterService.filterParcels(formData);
   };
   const onSuccess = () => {
-    console.log('Success');
-    setIsVisible(false);
+    closeModal();
   };
 
   useEffect(() => {

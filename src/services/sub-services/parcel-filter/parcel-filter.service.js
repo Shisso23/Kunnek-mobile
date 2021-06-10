@@ -14,8 +14,6 @@ const filterParcels = async (params) => {
     '?',
   );
 
-  console.log('sent request', `${url}${nonEmptyParams.substring(0, nonEmptyParams.length - 1)}`);
-
   const _createAndReturnListModel = (apiResponse) =>
     _.map(_.get(apiResponse, 'data.data', []), (item) => parcelRequestModel(item));
   const apiResponse = await authNetworkService.get(
