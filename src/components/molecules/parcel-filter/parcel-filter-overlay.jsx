@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import FilterParcel from '../../forms/parcel-filter/filter-parcels.form';
 import FormScreenContainer from '../../containers/form-screen-container/form-screen.container';
 import { filtersFormModel } from '../../../models/app/parcel-filter/parcel-filter-form.model';
-import { getParcelRequestsAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
+import { filterParcelRquestsAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 
 const ParcelFilterFormModal = ({ visible, setFilterClosed }) => {
   const [isVisible, setIsVisible] = useState(visible);
@@ -17,7 +17,7 @@ const ParcelFilterFormModal = ({ visible, setFilterClosed }) => {
   const dispatch = useDispatch();
 
   const submitForm = async (formData) => {
-    return dispatch(getParcelRequestsAction(formData));
+    return dispatch(filterParcelRquestsAction(formData));
   };
   const onSuccess = () => {
     closeModal();
