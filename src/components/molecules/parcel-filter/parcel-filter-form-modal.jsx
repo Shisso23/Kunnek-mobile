@@ -18,6 +18,7 @@ const ParcelFilterFormModal = ({ visible, setFilterClosed }) => {
   };
   const onSuccess = () => {
     console.log('Success');
+    setIsVisible(false);
   };
 
   useEffect(() => {
