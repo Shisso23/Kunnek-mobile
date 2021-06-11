@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
-import { SafeAreaView, ViewPropTypes, StyleSheet, View } from 'react-native';
+import { SafeAreaView, ViewPropTypes, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -19,7 +19,7 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
   const validationSchema = Yup.object().shape({
     startLocation: Yup.string(),
     endLocation: Yup.string(),
-    maximumDistance: Yup.number().positive(),
+    maximumDistance: Yup.number(),
     lastDeliveryDate: Yup.string(),
   });
 
@@ -87,36 +87,34 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
               placeholder="0"
               errorMessage={error('maximumDistance')}
               keyboardType="number-pad"
+              labelStyle={styles.labelStyle}
             />
 
-            <View>
-              <Input
-                value={`${values.lastDeliveryDate}`}
-                label="Latest Delivery Date"
-                onChangeText={handleChange('lastDeliveryDate')}
-                onEndEditing={() => setShowDatePicker(false)}
-                placeholder="YYYY-MM-D HH:MM"
-                errorMessage={error('lastDeliveryDate')}
-                onFocus={() => setShowDatePicker(true)}
-                rightIcon={<Icon name="calendar-alt" size={25} color={Colors.primary} />}
+            <Input
+              value={`${values.lastDeliveryDate}`}
+              label="Latest Delivery Date"
+              onChangeText={handleChange('lastDeliveryDate')}
+              onEndEditing={() => setShowDatePicker(false)}
+              placeholder="YYYY-MM-D HH:MM"
+              errorMessage={error('lastDeliveryDate')}
+              onFocus={() => setShowDatePicker(true)}
+              rightIcon={<Icon name="calendar-alt" size={25} color={Colors.primary} />}
+              containerStyle={styles.containerStyle}
+              labelStyle={styles.labelStyle}
+            />
+            {showDatePicker && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={new Date(values.lastDeliveryDate)}
+                is24Hour={true}
+                mode="datetime"
+                display="default"
+                onChange={(event, date) => {
+                  setFieldValue('lastDeliveryDate', `${moment(date).format('D MMMM YYYY, h:mm')}`);
+                }}
+                onTouchEnd={() => setShowDatePicker(false)}
               />
-              {showDatePicker && (
-                <DateTimePicker
-                  testID="dateTimePicker"
-                  value={new Date()}
-                  is24Hour={true}
-                  mode="datetime"
-                  display="default"
-                  onChange={(event, date) => {
-                    setFieldValue(
-                      'lastDeliveryDate',
-                      `${moment(date).format('D MMMM YYYY, h:mm')}`,
-                    );
-                  }}
-                  onTouchEnd={() => setShowDatePicker(false)}
-                />
-              )}
-            </View>
+            )}
 
             <SafeAreaView>
               <Button onPress={handleSubmit} loading={isSubmitting} title="Search" />
@@ -143,9 +141,11 @@ FilterParcels.defaultProps = {
 export default FilterParcels;
 
 const styles = StyleSheet.create({
+  containerStyle: { backgroundColor: Colors.white, marginTop: -13 },
   headerText: {
     fontSize: 30,
     marginBottom: 15,
     marginLeft: 6,
   },
+  labelStyle: { paddingBottom: 15 },
 });
