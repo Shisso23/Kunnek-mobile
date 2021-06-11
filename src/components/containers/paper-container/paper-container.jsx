@@ -14,7 +14,7 @@ const PaperContainer = ({ children }) => {
 };
 
 PaperContainer.propTypes = {
-  children: PropTypes.object,
+  children: PropTypes.array.isRequired,
 };
 
 PaperContainer.defaultProps = {};

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
@@ -17,14 +17,16 @@ import {
 import { parcelStatus } from '../../../helpers/parcel-request-status.helper';
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
 import { parcelRequestSelector } from '../../../reducers/parcel-request-reducer/parcel-request.reducer';
+import { getActionId } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 
 const ParcelDetailsScreen = ({ route }) => {
-  const { Layout } = useTheme();
+  const { Layout, Images } = useTheme();
   const parcelRequest = route.params;
   const deliverer = _.get(parcelRequest, 'deliverer');
   const parcelStatusIndex = parcelStatus[_.get(parcelRequest, 'status')];
   const { user } = useSelector(userSelector);
   const { parcelRequests } = useSelector(parcelRequestSelector);
+  const dispatch = useDispatch();
 
   const _isDeliverer = () => {
     return _.get(user, 'id') === _.get(deliverer, 'userId');
@@ -49,13 +51,29 @@ const ParcelDetailsScreen = ({ route }) => {
   };
 
   const _renderFooter = () => {
-    if (parcelStatusIndex >= parcelStatus['pending_acceptance_from_sender'])
-      return <ParcelDetailsFooter />;
+    if (parcelStatusIndex >= parcelStatus['pending_acceptance_from_sender']) {
+      var icons = [];
+
+      icons.push({
+        icon: Images.messageIconGreen,
+        caption: `Contact ${_isDeliverer() ? 'Sender' : ''}`,
+      });
+      if (_isDeliverer()) {
+        icons.push({ icon: Images.messageIconBlue, caption: 'Contact Recipient' });
+      } else {
+        icons.push({ icon: Images.mapIcon, caption: 'Track Parcel' });
+      }
+      return <ParcelDetailsFooter buttons={icons} />;
+    }
   };
 
   useEffect(() => {
     _renderDetailsCard();
   }, [parcelRequests]);
+
+  useEffect(() => {
+    dispatch(getActionId(parcelRequest));
+  }, []);
 
   return (
     <>

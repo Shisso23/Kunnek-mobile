@@ -57,6 +57,9 @@ export const setServiceFeeAction = setServiceFee.action;
 const setPagination = CreateAction(reducerName, 'SET_PAGINATION');
 export const setPaginationAction = setPagination.action;
 
+const setActionId = CreateAction(reducerName, 'SET_ACTION_ID');
+export const setActionIdAction = setActionId.action;
+
 const setParcelRequestLoading = CreateAction(reducerName, 'SET_PARCEL_REQUEST_LOADING');
 export const setParcelRequestLoadingAction = setParcelRequestLoading.action;
 
@@ -82,6 +85,7 @@ const initialState = {
   locations: [],
   serviceFee: 0,
   pagination: getDefaultPaginationObject(),
+  actionId: undefined,
 };
 
 export default (state = initialState, action) => {
@@ -170,6 +174,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         serviceFee: action.payload,
+      };
+    case setActionId.actionType:
+      return {
+        ...state,
+        actionId: action.payload,
       };
     case setParcelRequestLoading.actionType:
       return {

@@ -10,7 +10,7 @@ const IconButton = ({ icon, text }) => {
   const { Common, Layout, Gutters } = useTheme();
   return (
     <TouchableOpacity style={[Layout.center, Gutters.largeVPadding, Gutters.smallHPadding]}>
-      <Image source={icon} style={styles.iconSize} />
+      <Image source={icon} style={[styles.iconSize, Gutters.smallBMargin]} />
       <Text style={[Common.centerText]}>{text}</Text>
     </TouchableOpacity>
   );
@@ -23,8 +23,8 @@ IconButton.propTypes = {
 
 const styles = StyleSheet.create({
   iconSize: {
-    width: 25,
-    height: 25,
+    width: 20,
+    height: 20,
     resizeMode: 'contain',
   },
 });

@@ -27,8 +27,8 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
   };
 
   const _renderOTP = () => {
-    const mobileNumber = _.get(parcelRequest, 'receiverMobileNumber');
-    navigation.navigate('OTP', mobileNumber);
+    _buttonClick();
+    navigation.navigate('OTP', parcelRequest);
   };
 
   return (

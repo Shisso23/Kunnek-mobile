@@ -1,7 +1,8 @@
 import _ from 'lodash';
 
-import { parcelRequestService } from '../../services';
+import { actionsService, parcelRequestService } from '../../services';
 import {
+  setActionIdAction,
   setParcelRequestLoadingAction,
   setParcelRequestsAction,
   setServiceFeeAction,
@@ -29,8 +30,7 @@ export const updateParcelStatus = (parcelRequest, newStatus) => (dispatch, getSt
 
   return parcelRequestService
     .updateStatus(_.get(parcelRequest, 'id'), { next_status: newStatus })
-    .then((response) => {
-      console.log(response.status);
+    .then(() => {
       parcelRequest.status = newStatus;
       parcelRequests[parcelRequestIndex] = parcelRequest;
 
@@ -39,6 +39,29 @@ export const updateParcelStatus = (parcelRequest, newStatus) => (dispatch, getSt
     .finally(() => {
       dispatch(setParcelRequestLoadingAction(false));
     });
+};
+
+export const getActionId = (parcelRequest) => (dispatch) => {
+  dispatch(setParcelRequestLoadingAction(true));
+  const jobId = _.get(parcelRequest, 'id');
+  return actionsService
+    .getActionId(jobId)
+    .then((response) => {
+      return dispatch(setActionIdAction(response));
+    })
+    .finally(() => {
+      dispatch(setParcelRequestLoadingAction(false));
+    });
+};
+
+export const verifyParcelDelivery = (id, otpValue) => () => {
+  return actionsService.verifyOTP(id, { otp: otpValue }).then((otpResponse) => {
+    return _.get(otpResponse, 'status');
+  });
+};
+
+export const sendOTP = (id) => () => {
+  return actionsService.sendOtp(id);
 };
 
 export const createParcelRequestAction = (data) => (dispatch, getState) =>
