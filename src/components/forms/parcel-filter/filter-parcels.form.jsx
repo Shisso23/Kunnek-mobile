@@ -14,6 +14,8 @@ import { flashService } from '../../../services';
 import { useTheme } from '../../../theme';
 import { Colors } from '../../../theme/Variables';
 import AddressInput from '../../molecules/address-input';
+import theme from '../../../theme/react-native-elements-theme';
+import InputWrapper from '../../molecules/input-wrapper';
 
 const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
   const validationSchema = Yup.object().shape({
@@ -23,7 +25,7 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
     lastDeliveryDate: Yup.string(),
   });
 
-  const { Custom } = useTheme();
+  const { Custom, Layout, Gutters } = useTheme();
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const _handleSubmission = (formData, actions) => {
@@ -90,23 +92,43 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
               keyboardType="number-pad"
               labelStyle={styles.labelStyle}
             />
-
-            <Input
-              value={`${values.lastDeliveryDate}`}
+            <InputWrapper
               label="Latest Delivery Date"
-              onChangeText={handleChange('lastDeliveryDate')}
-              onEndEditing={() => setShowDatePicker(false)}
-              placeholder="YYYY-MM-D HH:MM"
               errorMessage={error('lastDeliveryDate')}
-              onFocus={() => setShowDatePicker(true)}
-              rightIcon={<Icon name="calendar-alt" size={25} color={Colors.primary} />}
-              containerStyle={styles.containerStyle}
-              labelStyle={styles.labelStyle}
-            />
+              containerStyle={[theme.Input.containerStyle, styles.containerStyle]}
+            >
+              <Button
+                onPress={() => setShowDatePicker(true)}
+                title={`${values.lastDeliveryDate}`}
+                buttonStyle={[
+                  theme.Input.inputStyle,
+                  Layout.alignItemsStart,
+                  Gutters.smallVPadding,
+
+                  styles.inputStyle,
+                ]}
+                icon={
+                  <Icon
+                    name="calendar-alt"
+                    size={25}
+                    color={Colors.primary}
+                    style={styles.calendarIcon}
+                  />
+                }
+                iconRight
+                containerStyle={[theme.Input.inputContainerStyle]}
+                titleStyle={[Custom.buttonTextInput, styles.texts]}
+              />
+            </InputWrapper>
+
             {showDatePicker && (
               <DateTimePicker
                 testID="dateTimePicker"
-                value={new Date(values.lastDeliveryDate)}
+                value={
+                  values.lastDeliveryDate.length === 0
+                    ? new Date(`${moment(new Date()).format('D MMMM YYYY, h:mm')}`)
+                    : new Date(values.lastDeliveryDate)
+                }
                 is24Hour={true}
                 mode="datetime"
                 display="default"
@@ -114,6 +136,7 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
                   setFieldValue('lastDeliveryDate', `${moment(date).format('D MMMM YYYY, h:mm')}`);
                 }}
                 onTouchEnd={() => setShowDatePicker(false)}
+                style={styles.datePicker}
               />
             )}
 
@@ -142,11 +165,22 @@ FilterParcels.defaultProps = {
 export default FilterParcels;
 
 const styles = StyleSheet.create({
+  calendarIcon: { alignSelf: 'center', left: 10, position: 'absolute' },
   containerStyle: { backgroundColor: Colors.white, marginTop: -13 },
+  datePicker: { marginLeft: 6 },
   headerText: {
     fontSize: 30,
     marginBottom: 15,
     marginLeft: 6,
   },
-  labelStyle: { paddingBottom: 15 },
+  inputStyle: {
+    alignSelf: 'flex-start',
+    paddingLeft: 10,
+    paddingTop: 15,
+    width: '100%',
+  },
+  labelStyle: {
+    paddingBottom: 15,
+  },
+  texts: { fontSize: 15 },
 });
