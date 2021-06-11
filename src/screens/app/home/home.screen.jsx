@@ -23,13 +23,10 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    console.log('Parcels1', parcelRequests);
     _loadParcelRequests();
   }, []);
 
-  useEffect(() => {
-    console.log('Parcels2', parcelRequests);
-  }, [parcelRequests]);
+  useEffect(() => {}, [parcelRequests]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

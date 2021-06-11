@@ -26,7 +26,6 @@ const getAll = (params = {}) => {
   const url = parcelRequestUrls.parcelRequestsUrl();
   const _createAndReturnListModel = (apiResponse) =>
     _.map(_.get(apiResponse, 'data.data', []), (item) => parcelRequestModel(item));
-  console.log('request url', `${url}${getParamString(params)}`);
   return authNetworkService
     .get(`${url}${getParamString(params)}`)
     .then(_createAndReturnListModel)
@@ -37,16 +36,14 @@ const getAll = (params = {}) => {
     });
 };
 
-const filterParcels = async ({ params }) => {
+const filterParcels = async (params) => {
   const url = parcelRequestUrls.parcelRequestsUrl();
   const apiModal = apiFiltersFormModel(params);
-  const nonEmptyParams = _.reduce(
-    apiModal,
-    (parameters = '?', value, field) => (parameters += `${field}=${value}&`),
-  );
+  const _createAndReturnListModel = (apiResponse) =>
+    _.map(_.get(apiResponse, 'data.data', []), (item) => parcelRequestModel(item));
+  const apiResponse = await authNetworkService.get(`${url}${getParamString(apiModal)}`);
 
-  const apiResponse = await authNetworkService.get(`${url}${getParamString(nonEmptyParams)}`);
-  return apiResponse;
+  return _createAndReturnListModel(apiResponse);
 };
 
 const create = (data = {}) => {

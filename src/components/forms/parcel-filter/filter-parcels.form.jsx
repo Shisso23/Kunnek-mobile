@@ -28,9 +28,8 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
 
   const _handleSubmission = (formData, actions) => {
     submitForm(formData)
-      .then((response) => {
+      .then(() => {
         actions.setSubmitting(false);
-        console.log('response', response);
         onSuccess();
       })
       .catch((error) => {

@@ -20,8 +20,13 @@ export const getParcelRequestsAction = (params = {}) => (dispatch) => {
     });
 };
 
-export const filterParcelRquestsAction = (formData = {}) => (dispatch) =>
-  dispatch(filterParcelsAction(parcelRequestService.filterParcels(formData)));
+export const filterParcelRquestsAction = (formData) => {
+  return async (dispatch) => {
+    return parcelRequestService.filterParcels(formData).then((parcelRequests) => {
+      return dispatch(filterParcelsAction(parcelRequests));
+    });
+  };
+};
 
 export const createParcelRequestAction = (data) => (dispatch, getState) =>
   parcelRequestService.create(data).then((parcelRequest) => {
