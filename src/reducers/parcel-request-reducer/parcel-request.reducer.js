@@ -60,8 +60,8 @@ export const setPaginationAction = setPagination.action;
 const setParcelRequestLoading = CreateAction(reducerName, 'SET_PARCEL_REQUEST_LOADING');
 export const setParcelRequestLoadingAction = setParcelRequestLoading.action;
 
-const filterParcels = new CreateAction(reducerName, 'SET_FILTER_PARCELS');
-export const filterParcelsAction = filterParcels.action;
+const setFilterParcels = new CreateAction(reducerName, 'SET_FILTER_PARCELS');
+export const setFilterParcelsAction = setFilterParcels.action;
 
 const initialState = {
   parcelRequestLoading: false,
@@ -97,7 +97,7 @@ export default (state = initialState, action) => {
         ...state,
         parcelRequests: action.payload,
       };
-    case filterParcels.actionType:
+    case setFilterParcels.actionType:
       return {
         ...state,
         parcelRequests: action.payload,
