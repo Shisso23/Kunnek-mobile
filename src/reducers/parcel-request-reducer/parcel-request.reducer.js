@@ -60,7 +60,7 @@ export const setPaginationAction = setPagination.action;
 const setParcelRequestLoading = CreateAction(reducerName, 'SET_PARCEL_REQUEST_LOADING');
 export const setParcelRequestLoadingAction = setParcelRequestLoading.action;
 
-const filterParcels = new CreateAction(reducerName, 'SET_FILTERED_PARCELS');
+const filterParcels = new CreateAction(reducerName, 'SET_FILTER_PARCELS');
 export const filterParcelsAction = filterParcels.action;
 
 const initialState = {
