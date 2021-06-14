@@ -13,7 +13,7 @@ import { filterParcelRquestsAction } from '../../../reducers/parcel-request-redu
 
 const ParcelFilterFormModal = ({ visible, setFilterClosed }) => {
   const [isVisible, setIsVisible] = useState(visible);
-  const { Custom, Layout } = useTheme();
+  const { Custom, Layout, Gutters } = useTheme();
   const dispatch = useDispatch();
 
   const submitForm = async (formData) => {
@@ -33,11 +33,11 @@ const ParcelFilterFormModal = ({ visible, setFilterClosed }) => {
   };
 
   return (
-    <Overlay isVisible={isVisible} onBackdropPress={() => {}} overlayStyle={styles.overlay}>
+    <Overlay isVisible={isVisible} overlayStyle={styles.overlay}>
       <FormScreenContainer>
         <TouchableOpacity
           onPress={closeModal}
-          style={[Custom.closeButton, Layout.alignSelfEnd, styles.closeButton]}
+          style={[Custom.closeButton, Layout.alignSelfEnd, Gutters.tinyMargin]}
         >
           <Icon name="times-circle" size={25} />
         </TouchableOpacity>
@@ -61,9 +61,6 @@ ParcelFilterFormModal.defaultProps = {};
 export default ParcelFilterFormModal;
 
 const styles = StyleSheet.create({
-  closeButton: {
-    marginRight: 5,
-  },
   overlay: {
     borderRadius: 15,
     bottom: 0,
