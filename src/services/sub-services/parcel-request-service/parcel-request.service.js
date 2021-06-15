@@ -8,6 +8,7 @@ import {
 } from '../../../models/app/parcel-request/parcel-request.model';
 import { getParamString } from '../../../helpers/network.helper';
 import { objectToFormData } from '../../../helpers/data.helper';
+import { apiFiltersFormModel } from '../../../models/app/parcel-filter/parcel-filter-form.model';
 
 const get = (id) => {
   const url = parcelRequestUrls.parcelRequestsUrl();
@@ -33,6 +34,16 @@ const getAll = (params = {}) => {
       console.warn(error);
       return Promise.reject(error);
     });
+};
+
+const filterParcels = async (params) => {
+  const url = parcelRequestUrls.parcelRequestsUrl();
+  const apiModal = apiFiltersFormModel(params);
+  const _createAndReturnListModel = (apiResponse) =>
+    _.map(_.get(apiResponse, 'data.data', []), (item) => parcelRequestModel(item));
+  const apiResponse = await authNetworkService.get(`${url}${getParamString(apiModal)}`);
+
+  return _createAndReturnListModel(apiResponse);
 };
 
 const create = (data = {}) => {
@@ -83,6 +94,7 @@ const getServiceFee = (id) =>
 export default {
   get,
   getAll,
+  filterParcels,
   create,
   update,
   remove,
