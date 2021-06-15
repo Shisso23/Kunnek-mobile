@@ -113,7 +113,7 @@ const AddressInput = ({ value, errorMessage, onChange, placeholder }) => {
     debouncedSearch(currentValue);
   };
 
-  const getResultText = () => (!_.isEmpty(searchText) ? searchText : value) || {};
+  const getResultText = () => (!_.isEmpty(searchText) ? searchText : value);
 
   const valueLength = getResultText().length;
 
