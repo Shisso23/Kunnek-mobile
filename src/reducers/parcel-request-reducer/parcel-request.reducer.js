@@ -63,6 +63,9 @@ export const setParcelRequestLoadingAction = setParcelRequestLoading.action;
 const setFilterParcels = new CreateAction(reducerName, 'SET_FILTER_PARCELS');
 export const setFilterParcelsAction = setFilterParcels.action;
 
+const setParcelFilterFields = new CreateAction(reducerName, 'SET_PARCEL_FILTER_FIELDS');
+export const setParcelsFilterFieldsAction = setParcelFilterFields.action;
+
 const initialState = {
   parcelRequestLoading: false,
   parcelRequest: undefined,
@@ -101,6 +104,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         parcelRequests: action.payload,
+      };
+    case setParcelFilterFields.actionType:
+      return {
+        ...state,
+        fields: action.payload,
       };
     case setId.actionType:
       return {

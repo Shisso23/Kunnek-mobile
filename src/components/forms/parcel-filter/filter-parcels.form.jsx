@@ -92,7 +92,7 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
             />
 
             <Input
-              value={values.maximumDistance}
+              value={`${values.maximumDistance}`}
               label="Maximum Distance Deviation (km's)"
               onChangeText={handleChange('maximumDistance')}
               onBlur={handleBlur('maximumDistance')}
@@ -178,5 +178,5 @@ export default FilterParcels;
 const styles = StyleSheet.create({
   calendarIcon: { left: 10, position: 'absolute' },
   containerStyle: { backgroundColor: Colors.white, marginTop: -13 },
-  texts: { fontSize: FontSize.regular },
+  texts: { color: Colors.darkGrey, fontSize: FontSize.regular },
 });

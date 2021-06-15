@@ -6,6 +6,7 @@ import {
   setParcelRequestsAction,
   setServiceFeeAction,
   setFilterParcelsAction,
+  setParcelsFilterFieldsAction,
 } from './parcel-request.reducer';
 
 export const getParcelRequestsAction = (params = {}) => (dispatch) => {
@@ -25,6 +26,12 @@ export const filterParcelRquestsAction = (formData) => {
     return parcelRequestService.filterParcels(formData).then((parcelRequests) => {
       return dispatch(setFilterParcelsAction(parcelRequests));
     });
+  };
+};
+
+export const setFilters = (formData) => {
+  return (dispatch) => {
+    return dispatch(setParcelsFilterFieldsAction(formData));
   };
 };
 
