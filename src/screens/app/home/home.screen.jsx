@@ -7,7 +7,7 @@ import { exitAppOnHardwarePressListener } from '../../../helpers';
 import { getParcelRequestsAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 import CustomHeaderButton from '../../../components/atoms/custom-header-button';
 import { CustomTab, LoadingOverlay, MapViewComponent } from '../../../components';
-import ParcelFilterFormModal from '../../../components/molecules/parcel-filter/parcel-filter-form-modal';
+import ParcelFilterFormModal from '../../../components/molecules/parcel-filter/parcel-filter-overlay';
 
 const HomeScreen = () => {
   useFocusEffect(exitAppOnHardwarePressListener);
@@ -25,6 +25,8 @@ const HomeScreen = () => {
   useEffect(() => {
     _loadParcelRequests();
   }, []);
+
+  useEffect(() => {}, [parcelRequests]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

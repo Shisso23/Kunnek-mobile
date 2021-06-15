@@ -5,6 +5,7 @@ import {
   setParcelRequestLoadingAction,
   setParcelRequestsAction,
   setServiceFeeAction,
+  setFilterParcelsAction,
 } from './parcel-request.reducer';
 
 export const getParcelRequestsAction = (params = {}) => (dispatch) => {
@@ -17,6 +18,14 @@ export const getParcelRequestsAction = (params = {}) => (dispatch) => {
     .finally(() => {
       dispatch(setParcelRequestLoadingAction(false));
     });
+};
+
+export const filterParcelRquestsAction = (formData) => {
+  return async (dispatch) => {
+    return parcelRequestService.filterParcels(formData).then((parcelRequests) => {
+      return dispatch(setFilterParcelsAction(parcelRequests));
+    });
+  };
 };
 
 export const createParcelRequestAction = (data) => (dispatch, getState) =>
