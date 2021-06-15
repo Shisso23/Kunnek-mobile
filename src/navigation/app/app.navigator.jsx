@@ -3,6 +3,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../../screens/app/home/home.screen';
 import ProfileScreen from '../../screens/app/profile/profile.screen';
+import ContactUsScreen from '../../screens/app/contact/ContactUs.screen';
 import useTheme from '../../theme/hooks/useTheme';
 import { CustomDrawer } from '../../components/molecules';
 
@@ -40,6 +41,7 @@ const AppNavigator = () => {
       <AppStack.Screen name="AddVehicle" component={AddVehicleScreen} />
       <AppStack.Screen name="ViewVehicle" component={ViewVehicleScreen} />
       <AppStack.Screen name="Payment" component={PaymentScreen} />
+      <AppStack.Screen name="ContactUs" component={ContactUsScreen} />
     </AppStack.Navigator>
   );
 };
