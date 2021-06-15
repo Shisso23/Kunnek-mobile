@@ -27,6 +27,9 @@ const ParcelFilterFormModal = ({ visible, setFilterClosed }) => {
     dispatch(setFilters(formData));
     return dispatch(filterParcelRquestsAction(formData));
   };
+  const clearForm = () => {
+    dispatch(setFilters(filtersFormModel()));
+  };
   const onSuccess = () => {
     closeModal();
   };
@@ -53,6 +56,7 @@ const ParcelFilterFormModal = ({ visible, setFilterClosed }) => {
           initialValues={initialFilters}
           submitForm={submitForm}
           onSuccess={onSuccess}
+          clearForm={clearForm}
         />
       </FormScreenContainer>
     </Overlay>
