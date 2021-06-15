@@ -44,6 +44,13 @@ IconListItem.propTypes = {
   action: PropTypes.func,
 };
 
+IconListItem.defaultProps = {
+  description: '',
+  date: '',
+  divider: false,
+  activeMessage: '',
+};
+
 export default IconListItem;
 
 const styles = StyleSheet.create({

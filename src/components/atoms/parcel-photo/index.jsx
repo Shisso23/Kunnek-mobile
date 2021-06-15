@@ -17,7 +17,7 @@ const ParcelPhoto = ({ parcelRequest, style }) => {
 };
 
 ParcelPhoto.propTypes = {
-  parcelRequest: PropTypes.shape({ PhotoUri: PropTypes.string }),
+  parcelRequest: PropTypes.shape({ PhotoUri: PropTypes.string }).isRequired,
   style: PropTypes.object,
 };
 
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   ParcelPhoto: {
     borderRadius: 3,
     height: 75,
-    width: 75,
     marginTop: 5,
+    width: 75,
   },
 });

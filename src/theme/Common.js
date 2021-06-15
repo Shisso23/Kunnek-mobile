@@ -62,6 +62,9 @@ export default ({ Colors, FontFamily, FontSize }) =>
       minHeight: 50,
       textAlign: 'center',
     },
+    noBold: {
+      fontWeight: 'normal',
+    },
     viewCard: {
       backgroundColor: Colors.white,
       borderRadius: 12,

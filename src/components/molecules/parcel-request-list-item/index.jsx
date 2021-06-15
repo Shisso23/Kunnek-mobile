@@ -77,7 +77,7 @@ const ParcelRequestListItem = ({ parcelRequest }) => {
 };
 
 ParcelRequestListItem.propTypes = {
-  parcelRequest: PropTypes.object,
+  parcelRequest: PropTypes.object.isRequired,
 };
 
 ParcelRequestListItem.defaultProps = {};
@@ -86,19 +86,19 @@ export default ParcelRequestListItem;
 
 const styles = StyleSheet.create({
   parcelRequestListItem: {
-    overflow: 'hidden',
-    borderRadius: 10,
-    padding: 10,
     backgroundColor: Colors.white,
+    borderRadius: 10,
     elevation: 6,
+    overflow: 'hidden',
+    padding: 10,
     shadowColor: Colors.greyShadow,
   },
   parcelRequestListItemContainer: {
+    marginHorizontal: 5,
     padding: 10,
     shadowColor: Colors.greyShadow,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 1,
     shadowRadius: 5,
-    marginHorizontal: 5,
   },
 });

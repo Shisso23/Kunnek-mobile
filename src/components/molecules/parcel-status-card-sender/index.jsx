@@ -36,7 +36,7 @@ const ParcelStatusCardSender = ({ parcelRequest }) => {
         activeMessage={_.get(parcelStatusDecoded.status, 'interaction')}
         date={_.get(parcelStatusDecoded.status, 'date')}
         divider={true}
-        action={!!_.get(parcelStatusDecoded.status, 'action') ? _viewParcel : _buttonClick}
+        action={_.get(parcelStatusDecoded.status, 'action') ? _viewParcel : _buttonClick}
       />
       <IconListItem
         icon={_.get(parcelStatusDecoded.pickUp, 'icon') ? Images.truckBlue : Images.truck}
@@ -68,8 +68,12 @@ const ParcelStatusCardSender = ({ parcelRequest }) => {
 };
 
 ParcelStatusCardSender.propTypes = {
-  parcelRequest: PropTypes.object,
+  parcelRequest: PropTypes.object.isRequired,
   action: PropTypes.func,
+};
+
+ParcelStatusCardSender.defaultProps = {
+  action: null,
 };
 
 ParcelStatusCardSender.defaultProps = {};

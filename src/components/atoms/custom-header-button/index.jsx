@@ -48,6 +48,12 @@ CustomHeaderButton.propTypes = {
   onPress: PropTypes.func,
 };
 
-CustomHeaderButton.defaultProps = {};
+CustomHeaderButton.defaultProps = {
+  headerLeftAccessibilityLabel: '',
+  headerPressColorAndroid: '',
+  image: 0,
+  tintColor: '',
+  onPress: () => {},
+};
 
 export default CustomHeaderButton;
