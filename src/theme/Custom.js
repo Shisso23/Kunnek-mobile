@@ -66,6 +66,10 @@ export default ({ Colors, FontFamily }) => ({
     paddingTop: 14,
     backgroundColor: Colors.transparent,
   },
+  headerTitle: {
+    fontFamily: FontFamily.primary,
+    fontSize: 30,
+  },
 
   buttonTextInput: {
     alignSelf: 'flex-start',

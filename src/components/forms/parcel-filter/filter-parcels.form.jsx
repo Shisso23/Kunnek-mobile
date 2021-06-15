@@ -12,7 +12,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
 import { useTheme } from '../../../theme';
-import { Colors } from '../../../theme/Variables';
+import { Colors, FontSize } from '../../../theme/Variables';
 import AddressInput from '../../molecules/address-input';
 import theme from '../../../theme/react-native-elements-theme';
 import InputWrapper from '../../molecules/input-wrapper';
@@ -67,7 +67,16 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
         const error = (name) => getFormError(name, { touched, status, errors });
         return (
           <>
-            <Text style={[Custom.headerTitleStyle, styles.headerText]}>Filters</Text>
+            <Text
+              style={[
+                Custom.headerTitleStyle,
+                Gutters.regularBMargin,
+                Gutters.tinyLMargin,
+                Custom.headerTitle,
+              ]}
+            >
+              Filters
+            </Text>
             <AddressInput
               value={values.startLocation}
               onChange={handleChange('startLocation')}
@@ -90,7 +99,7 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
               placeholder="0"
               errorMessage={error('maximumDistance')}
               keyboardType="number-pad"
-              labelStyle={styles.labelStyle}
+              labelStyle={Gutters.regularBPadding}
             />
             <InputWrapper
               label="Latest Delivery Date"
@@ -102,17 +111,19 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
                 title={`${values.lastDeliveryDate}`}
                 buttonStyle={[
                   theme.Input.inputStyle,
+                  Gutters.smallLPadding,
+                  Gutters.regularTPadding,
                   Layout.alignItemsStart,
                   Gutters.smallVPadding,
-
-                  styles.inputStyle,
+                  Layout.fullWidth,
+                  Layout.alignSelfStart,
                 ]}
                 icon={
                   <Icon
                     name="calendar-alt"
                     size={25}
                     color={Colors.primary}
-                    style={styles.calendarIcon}
+                    style={[styles.calendarIcon, Layout.alignSelfCenter]}
                   />
                 }
                 iconRight
@@ -136,7 +147,7 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
                   setFieldValue('lastDeliveryDate', `${moment(date).format('D MMMM YYYY, h:mm')}`);
                 }}
                 onTouchEnd={() => setShowDatePicker(false)}
-                style={styles.datePicker}
+                style={[Gutters.tinyLMargin]}
               />
             )}
 
@@ -165,22 +176,7 @@ FilterParcels.defaultProps = {
 export default FilterParcels;
 
 const styles = StyleSheet.create({
-  calendarIcon: { alignSelf: 'center', left: 10, position: 'absolute' },
+  calendarIcon: { left: 10, position: 'absolute' },
   containerStyle: { backgroundColor: Colors.white, marginTop: -13 },
-  datePicker: { marginLeft: 6 },
-  headerText: {
-    fontSize: 30,
-    marginBottom: 15,
-    marginLeft: 6,
-  },
-  inputStyle: {
-    alignSelf: 'flex-start',
-    paddingLeft: 10,
-    paddingTop: 15,
-    width: '100%',
-  },
-  labelStyle: {
-    paddingBottom: 15,
-  },
-  texts: { fontSize: 15 },
+  texts: { fontSize: FontSize.regular },
 });
