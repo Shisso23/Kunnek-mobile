@@ -16,7 +16,7 @@ import { filtersFormModel } from '../../../models/app/parcel-filter/parcel-filte
 
 const ParcelFilterFormModal = ({ visible, setFilterClosed }) => {
   const initialFilters = useSelector(
-    (reducers) => reducers.parcelRequestReducer.fields || filtersFormModel(),
+    (reducers) => reducers.parcelRequestReducer.parcelFilterFields || filtersFormModel(),
   );
 
   const [isVisible, setIsVisible] = useState(visible);
@@ -27,7 +27,7 @@ const ParcelFilterFormModal = ({ visible, setFilterClosed }) => {
     dispatch(setFilters(formData));
     return dispatch(filterParcelRquestsAction(formData));
   };
-  const clearForm = () => {
+  const clearInitialFormValues = () => {
     dispatch(setFilters(filtersFormModel()));
   };
   const onSuccess = () => {
@@ -56,7 +56,7 @@ const ParcelFilterFormModal = ({ visible, setFilterClosed }) => {
           initialValues={initialFilters}
           submitForm={submitForm}
           onSuccess={onSuccess}
-          clearForm={clearForm}
+          clearInitialFormValues={clearInitialFormValues}
         />
       </FormScreenContainer>
     </Overlay>

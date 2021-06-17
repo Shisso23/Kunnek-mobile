@@ -17,7 +17,7 @@ import AddressInput from '../../molecules/address-input';
 import theme from '../../../theme/react-native-elements-theme';
 import InputWrapper from '../../molecules/input-wrapper';
 
-const FilterParcels = ({ submitForm, onSuccess, initialValues, clearForm }) => {
+const FilterParcels = ({ submitForm, onSuccess, initialValues, clearInitialFormValues }) => {
   const validationSchema = Yup.object().shape({
     startLocation: Yup.string(),
     endLocation: Yup.string(),
@@ -27,6 +27,13 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues, clearForm }) => {
 
   const { Custom, Common, Layout, Gutters } = useTheme();
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [formReseted, setFormReseted] = useState(false);
+
+  const resetFormData = (resetForm) => {
+    clearInitialFormValues();
+    resetForm();
+    setFormReseted(true);
+  };
 
   const _handleSubmission = (formData, actions) => {
     submitForm(formData)
@@ -63,6 +70,7 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues, clearForm }) => {
         handleBlur,
         touched,
         status,
+        resetForm,
       }) => {
         const error = (name) => getFormError(name, { touched, status, errors });
         return (
@@ -82,6 +90,7 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues, clearForm }) => {
               onChange={handleChange('startLocation')}
               placeholder="Start Location"
               errorMessage={error('startLocation')}
+              reseted={formReseted}
             />
 
             <AddressInput
@@ -89,6 +98,7 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues, clearForm }) => {
               onChange={handleChange('endLocation')}
               placeholder="End Location"
               errorMessage={error('endLocation')}
+              reseted={formReseted}
             />
 
             <Input
@@ -154,7 +164,7 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues, clearForm }) => {
             <SafeAreaView>
               <Button onPress={handleSubmit} loading={isSubmitting} title="Search" />
               <TouchableOpacity
-                onPress={clearForm}
+                onPress={() => resetFormData(resetForm)}
                 style={[Gutters.tinyPadding, styles.clearButton]}
               >
                 <Text style={[Common.smallText, Gutters.tinyPadding, styles.clearText]}>
@@ -174,7 +184,7 @@ FilterParcels.propTypes = {
   initialValues: PropTypes.object.isRequired,
   onSuccess: PropTypes.func,
   containerStyle: ViewPropTypes.style,
-  clearForm: PropTypes.func.isRequired,
+  clearInitialFormValues: PropTypes.func.isRequired,
 };
 
 FilterParcels.defaultProps = {
