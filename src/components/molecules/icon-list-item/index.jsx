@@ -2,6 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import { Image, Text } from 'react-native-elements';
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import useTheme from '../../../theme/hooks/useTheme';
 import { Colors } from '../../../theme/Variables';
@@ -26,7 +27,7 @@ const IconListItem = ({ icon, title, description, date, divider, activeMessage, 
         </View>
       </View>
       <View style={[Layout.colVCenter]}>
-        {activeMessage && (
+        {!_.isNil(activeMessage) && !_.isEmpty(activeMessage) && (
           <StatusButton status={activeMessage} color={Colors.primary} action={action} />
         )}
       </View>

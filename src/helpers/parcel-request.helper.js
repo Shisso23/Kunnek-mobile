@@ -73,6 +73,7 @@ export const parcelStatusSender = (parcelRequest) => {
 
   if (parcelStatusNumber > parcelStatus['pending_pickup']) {
     parcelDetailsMessages.pickUp.title = 'Pick-up Completed';
+    parcelDetailsMessages.status.date = formatDate(_.get(parcelRequest, 'pickupDateTime'));
     parcelDetailsMessages.pickUp.description = 'Driver has collected the parcel';
   }
 
@@ -82,6 +83,12 @@ export const parcelStatusSender = (parcelRequest) => {
   }
 
   if (parcelStatusNumber === parcelStatus['pending_delivery']) {
+    parcelDetailsMessages.delivery.title = 'Pending Delivery';
+    parcelDetailsMessages.delivery.description =
+      "Driver is at the delivery location and waiting for receiver's OTP";
+  }
+
+  if (parcelStatusNumber === parcelStatus['initiated_delivery']) {
     parcelDetailsMessages.delivery.title = 'Initiated Delivery';
     parcelDetailsMessages.delivery.description =
       'Driver is at the delivery location and waiting for receivers OTP';
@@ -166,7 +173,14 @@ export const parcelStatusDeliverer = (parcelRequest) => {
     parcelDetailsMessages.delivery.interaction = 'Initiate Delivery';
   }
 
-  if (parcelStatusNumber > parcelStatus['pending_delivery']) {
+  if (parcelStatusNumber === parcelStatus['initiated_delivery']) {
+    parcelDetailsMessages.delivery.title = 'Delivery Initiated';
+    parcelDetailsMessages.delivery.description =
+        'Once you have arrived at the delivery location initiate delivery to receive the OTP pin for payment';
+    parcelDetailsMessages.delivery.interaction = 'Enter OTP';
+  }
+
+  if (parcelStatusNumber > parcelStatus['initiated_delivery']) {
     parcelDetailsMessages.delivery.title = 'Delivery Completed';
     parcelDetailsMessages.delivery.description = 'Parcel Delivered';
     parcelDetailsMessages.delivery.interaction = null;

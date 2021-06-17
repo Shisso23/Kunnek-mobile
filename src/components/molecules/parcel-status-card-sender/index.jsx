@@ -61,7 +61,6 @@ const ParcelStatusCardSender = ({ parcelRequest }) => {
         title={_.get(parcelStatusDecoded.review, 'title')}
         description={_.get(parcelStatusDecoded.review, 'description')}
         activeMessage={_.get(parcelStatusDecoded.review, 'interaction')}
-        // action={}
       />
     </View>
   );

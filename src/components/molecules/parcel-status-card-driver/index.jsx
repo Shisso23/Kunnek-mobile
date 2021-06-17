@@ -13,7 +13,6 @@ import {
   progressPackageStatus,
 } from '../../../helpers/parcel-request-status.helper';
 import { updateParcelStatus } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
-import ParcelStatusCardSender from '../parcel-status-card-sender';
 
 const ParcelStatusCardDriver = ({ parcelRequest }) => {
   const { Gutters, Layout, Common, Images } = useTheme();

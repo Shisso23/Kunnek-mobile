@@ -8,26 +8,23 @@ export const parcelStatus = Object.freeze({
   pending_pickup: 4, //driver arrives and initiates pick up
   completed_pickup: 5, //sender confirms pickup
   pending_delivery: 6, //driver initiates delivery (sends OTP)
-  completed_delivery: 7, //driver submits OTP
-  sender_opted_out: 8, //sender cancelled
-  deliverer_opted_out: 9, //driver cancelled
+  initiated_delivery: 7, //delivery has been initiated but the OTP is required
+  completed_delivery: 8, //driver submits OTP
+  sender_opted_out: 9, //sender cancelled
+  deliverer_opted_out: 10, //driver cancelled
 });
 
 export const parcelStatusKeys = Object.keys(parcelStatus);
 
 export const progressPackageStatus = (parcelRequest) => {
   const parcelStatusIndex = parcelStatus[_.get(parcelRequest, 'status')];
-  const nextStatus = parcelStatusKeys[parcelStatusIndex];
-
-  return nextStatus;
+  return parcelStatusKeys[parcelStatusIndex];
 };
 
 export const cancelJobSender = () => {
-  const status = 'sender_opted_out';
-  return status;
+  return 'sender_opted_out';
 };
 
 export const cancelJobDeliverer = () => {
-  const status = 'deliverer_opted_out';
-  return status;
+  return 'deliverer_opted_out';
 };
