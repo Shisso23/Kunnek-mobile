@@ -19,7 +19,11 @@ const InputWrapper = ({
   const { Gutters, Layout } = useTheme();
   return (
     <View style={[Layout.fullWidth, Gutters.smallHPadding, containerStyle]}>
-      <Label required={required} label={label} labelStyle={[labelStyle, theme.Input.labelStyle]} />
+      <Label
+        required={required}
+        label={label}
+        labelStyle={{ ...labelStyle, ...theme.Input.labelStyle }}
+      />
       <View style={[styles.inputContainerStyle, Gutters.smallVPadding, inputContainerStyle]}>
         {children}
       </View>
