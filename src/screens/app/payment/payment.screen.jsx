@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PeachMobile from 'react-native-peach-mobile';
 import PropTypes from 'prop-types';
@@ -27,7 +27,7 @@ const PaymentScreen = ({ isLoading, route, retry = false, payment = {} }) => {
   const { message, parcelRequest, totalAmount, paymentType, card } = route.params;
   const dispatch = useDispatch();
   const [cvvNumber, setCvvNumber] = useState('');
-  const [peachMobile, setPeachMobile] = useState(undefined);
+  const peachMobile = useRef(PeachMobile);
   const { checkoutId } = useSelector((state) => state.paymentReducer);
   const { serviceFee } = useSelector((state) => state.parcelRequestReducer);
 
@@ -35,9 +35,9 @@ const PaymentScreen = ({ isLoading, route, retry = false, payment = {} }) => {
     dispatch(getServiceFee(_.get(parcelRequest, 'id')));
   }, [parcelRequest]);
 
-  const renderPeachPayment = () => (
-    <PeachMobile mode={config.peachPaymentMode} urlScheme="kunnekp2p" ref={setPeachMobile} />
-  );
+  const renderPeachPayment = () => {
+    return <PeachMobile mode={config.peachPaymentMode} urlScheme="kunnekp2p" />;
+  };
 
   const onPay = async () => {
     let result = { success: false };
@@ -72,14 +72,10 @@ const PaymentScreen = ({ isLoading, route, retry = false, payment = {} }) => {
   const createTransaction = async () => {
     if (!_.isNil(card)) {
       setIsLoading(true);
-      PeachMobile.createTransactionWithToken(
-        checkoutId,
-        card.tokenized_card,
-        card.card_type,
-        cvvNumber,
-      )
+      peachMobile.current
+        .createTransactionWithToken(checkoutId, card.tokenized_card, card.card_type, cvvNumber)
         .then((transaction) => {
-          peachMobile
+          peachMobile.current
             .submitTransaction(transaction, config.peachPaymentMode)
             .then(async (response) => {
               if (response) {
