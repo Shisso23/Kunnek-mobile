@@ -13,8 +13,8 @@ import { getFormError } from '../form-utils';
 import DropDownSelect from '../../molecules/dropdown-select/DropDownSelect';
 import { getParcelRequestsAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 
-const issueTypes = ['Bug', 'complaint', 'general'];
-const { Common, Colors, Custom } = useTheme();
+const issueTypes = ['Bug', 'Complaint', 'General'];
+const { Common, Colors, Custom, Gutters } = useTheme();
 
 const ContactUsForm = ({ submitForm, onSuccess, containerStyle, initialValues }) => {
   const { parcelRequests = [] } = useSelector((state) => state.parcelRequestReducer);
@@ -34,6 +34,7 @@ const ContactUsForm = ({ submitForm, onSuccess, containerStyle, initialValues })
     submitForm(formData)
       .then((response) => {
         actions.setSubmitting(false);
+        flashService.success('Query submitted successfully.');
         onSuccess(response);
       })
       .catch((error) => {
@@ -93,8 +94,11 @@ const ContactUsForm = ({ submitForm, onSuccess, containerStyle, initialValues })
                 valueExtractor={(item) => item.description}
                 error={error('connectedParcel')}
                 placeholder="Select parcel"
+                contentStyle={styles.parcelsContent}
               />
-              <Text style={[styles.texts, styles.descriptionText]}>Description</Text>
+              <Text style={[Common.smallText, styles.smallText, Gutters.smallBMargin]}>
+                Description
+              </Text>
 
               <Input
                 value={values.description}
@@ -135,7 +139,6 @@ export default ContactUsForm;
 
 const styles = StyleSheet.create({
   buttonTitle: { color: Colors.white, fontSize: 15 },
-  descriptionText: { color: Colors.black, marginBottom: 10 },
   headerTileExtraStyle: { color: Colors.black, fontSize: 25, marginBottom: 10 },
   helpTextStyle: { fontSize: 12, marginBottom: 10 },
   inputStyle: {
@@ -143,6 +146,7 @@ const styles = StyleSheet.create({
     marginLeft: -3,
     width: '102%',
   },
+  parcelsContent: { maxHeight: '80%' },
   smallText: { color: Colors.black, fontSize: 15 },
   submitButton: {
     alignItems: 'center',

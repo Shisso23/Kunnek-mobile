@@ -21,6 +21,7 @@ const DropdownSelect = ({
   disabled,
   label,
   onBlur,
+  contentStyle,
 }) => {
   const [visible, setVisible] = useState(false);
   const textRef = useRef(null);
@@ -53,6 +54,7 @@ const DropdownSelect = ({
       visible={visible}
       onDismiss={hide}
       style={styles.menu}
+      contentStyle={contentStyle}
       anchor={
         <>
           <TextInput
@@ -103,6 +105,7 @@ DropdownSelect.propTypes = {
   label: PropTypes.string,
   disabled: PropTypes.bool,
   onBlur: PropTypes.func,
+  contentStyle: PropTypes.object,
 };
 
 DropdownSelect.defaultProps = {
@@ -117,6 +120,7 @@ DropdownSelect.defaultProps = {
   label: '',
   disabled: false,
   onBlur: () => {},
+  contentStyle: {},
 };
 
 export default DropdownSelect;

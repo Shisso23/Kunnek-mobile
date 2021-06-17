@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
-import { SafeAreaView, ViewPropTypes, StyleSheet } from 'react-native';
+import { SafeAreaView, ViewPropTypes, StyleSheet, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -17,7 +17,7 @@ import AddressInput from '../../molecules/address-input';
 import theme from '../../../theme/react-native-elements-theme';
 import InputWrapper from '../../molecules/input-wrapper';
 
-const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
+const FilterParcels = ({ submitForm, onSuccess, initialValues, clearInitialFormValues }) => {
   const validationSchema = Yup.object().shape({
     startLocation: Yup.string(),
     endLocation: Yup.string(),
@@ -25,8 +25,15 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
     lastDeliveryDate: Yup.string(),
   });
 
-  const { Custom, Layout, Gutters } = useTheme();
+  const { Custom, Common, Layout, Gutters } = useTheme();
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [formReseted, setFormReseted] = useState(false);
+
+  const resetFormData = (resetForm) => {
+    clearInitialFormValues();
+    resetForm();
+    setFormReseted(true);
+  };
 
   const _handleSubmission = (formData, actions) => {
     submitForm(formData)
@@ -63,6 +70,7 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
         handleBlur,
         touched,
         status,
+        resetForm,
       }) => {
         const error = (name) => getFormError(name, { touched, status, errors });
         return (
@@ -82,6 +90,7 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
               onChange={handleChange('startLocation')}
               placeholder="Start Location"
               errorMessage={error('startLocation')}
+              reseted={formReseted}
             />
 
             <AddressInput
@@ -89,14 +98,14 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
               onChange={handleChange('endLocation')}
               placeholder="End Location"
               errorMessage={error('endLocation')}
+              reseted={formReseted}
             />
 
             <Input
-              value={values.maximumDistance}
+              value={`${values.maximumDistance}`}
               label="Maximum Distance Deviation (km's)"
               onChangeText={handleChange('maximumDistance')}
               onBlur={handleBlur('maximumDistance')}
-              placeholder="0"
               errorMessage={error('maximumDistance')}
               keyboardType="number-pad"
               labelStyle={Gutters.regularBPadding}
@@ -148,11 +157,20 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues }) => {
                 }}
                 onTouchEnd={() => setShowDatePicker(false)}
                 style={[Gutters.tinyLMargin]}
+                minimumDate={new Date()}
               />
             )}
 
             <SafeAreaView>
               <Button onPress={handleSubmit} loading={isSubmitting} title="Search" />
+              <TouchableOpacity
+                onPress={() => resetFormData(resetForm)}
+                style={[Gutters.tinyPadding, styles.clearButton]}
+              >
+                <Text style={[Common.smallText, Gutters.tinyPadding, styles.clearText]}>
+                  Clear form
+                </Text>
+              </TouchableOpacity>
             </SafeAreaView>
           </>
         );
@@ -166,6 +184,7 @@ FilterParcels.propTypes = {
   initialValues: PropTypes.object.isRequired,
   onSuccess: PropTypes.func,
   containerStyle: ViewPropTypes.style,
+  clearInitialFormValues: PropTypes.func.isRequired,
 };
 
 FilterParcels.defaultProps = {
@@ -177,6 +196,12 @@ export default FilterParcels;
 
 const styles = StyleSheet.create({
   calendarIcon: { left: 10, position: 'absolute' },
+  clearButton: {
+    alignSelf: 'flex-end',
+    borderRadius: 10,
+    borderWidth: 0.3,
+  },
+  clearText: { color: Colors.primary, fontWeight: 'bold' },
   containerStyle: { backgroundColor: Colors.white, marginTop: -13 },
-  texts: { fontSize: FontSize.regular },
+  texts: { color: Colors.darkGrey, fontSize: FontSize.regular },
 });
