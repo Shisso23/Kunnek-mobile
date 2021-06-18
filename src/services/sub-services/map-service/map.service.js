@@ -5,8 +5,8 @@ import Geolocation from 'react-native-geolocation-service';
 
 import networkService from '../network-service/network.service';
 import mapUrls from './map.urls';
-import { permissionsService } from '../..';
 import config from '../../../config';
+import permissionsService from '../permissions-service/permissions-service';
 
 const getDirections = (points = []) => {
   const origin = _.nth(points, 0);

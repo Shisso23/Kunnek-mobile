@@ -11,3 +11,9 @@ export { default as NotificationHistoryCard } from './notification-history-card'
 export { default as LoadingComponent } from './loading';
 export { default as MapViewComponent } from './map-view';
 export { default as LoadingOverlay } from './loading-overlay';
+export { default as IconListItem } from './icon-list-item';
+export { default as ParcelStatusCardSender } from './parcel-status-card-sender';
+export { default as ParcelStatusCardDriver } from './parcel-status-card-driver';
+export { default as ParcelDetailsCard } from './parcel-details-card';
+export { default as UserSummaryCard } from './user-summary-card';
+export { default as ParcelDetailsFooter } from './parcel-details-footer';

@@ -17,4 +17,10 @@ export default () => ({
   contactUsIcon: require('../assets/images/contact-us-icon.png'),
   drawerGradient: require('../assets/images/drawer-gradient.png'),
   star: require('../assets/images/star-fill.png'),
+  timer: require('../assets/images/timer-icon.png'),
+  truck: require('../assets/images/truck-icon.png'),
+  writeComment: require('../assets/images/write-comment-icon.png'),
+  timerBlue: require('../assets/images/timer-icon-blue.png'),
+  truckBlue: require('../assets/images/truck-icon-blue.png'),
+  writeCommentBlue: require('../assets/images/write-comment-icon-blue.png'),
 });

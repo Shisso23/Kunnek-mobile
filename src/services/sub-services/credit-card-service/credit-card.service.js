@@ -7,7 +7,7 @@ import authNetworkService from '../auth-network-service/auth-network.service';
 import creditCardUrls from './credit-card.urls';
 import paymentUrls from '../payment-service/payment.urls';
 import appConfig from '../../../config';
-import { networkService } from '../../index';
+import networkService from '../network-service/network.service';
 
 const getCreditCards = async () => {
   const url = creditCardUrls.cardsUrl();
