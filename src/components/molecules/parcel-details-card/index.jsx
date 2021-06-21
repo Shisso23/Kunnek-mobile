@@ -18,7 +18,7 @@ const ParcelDetailsCard = ({ parcelRequest }) => {
     <TouchableOpacity
       style={[Layout.row, Layout.justifyContentBetween, Common.viewCard, Gutters.regularMargin]}
       onPress={() => {
-        navigation.navigate('ViewParcel', parcelRequest);
+        navigation.navigate('ViewParcel', { parcelRequest });
       }}
     >
       <ParcelPhoto parcelRequest={parcelRequest} />

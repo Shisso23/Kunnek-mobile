@@ -24,7 +24,7 @@ const ParcelStatusCardSender = ({ parcelRequest }) => {
   };
 
   const _viewParcel = () => {
-    navigation.navigate('ViewParcel', parcelRequest);
+    navigation.navigate('ViewParcel', { parcelRequest });
   };
 
   return (
