@@ -55,24 +55,24 @@ IconListItem.defaultProps = {
 export default IconListItem;
 
 const styles = StyleSheet.create({
-  noBold: {
-    fontWeight: 'normal',
+  horizontalDivider: {
+    borderBottomWidth: 1,
+    borderColor: Colors.greyShadow,
+    marginTop: 8,
+    width: '95%',
+  },
+  iconSize: {
+    height: 30,
+    resizeMode: 'contain',
+    width: 30,
   },
   leftAlign: {
     alignSelf: 'flex-start',
   },
-  horizontalDivider: {
-    marginTop: 8,
-    borderColor: Colors.greyShadow,
-    borderBottomWidth: 1,
-    width: '95%',
-  },
-  iconSize: {
-    width: 30,
-    height: 30,
-    resizeMode: 'contain',
-  },
   lightText: {
     color: Colors.inputPlaceholderColor,
+  },
+  noBold: {
+    fontWeight: 'normal',
   },
 });

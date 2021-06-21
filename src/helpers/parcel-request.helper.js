@@ -176,7 +176,7 @@ export const parcelStatusDeliverer = (parcelRequest) => {
   if (parcelStatusNumber === parcelStatus['initiated_delivery']) {
     parcelDetailsMessages.delivery.title = 'Delivery Initiated';
     parcelDetailsMessages.delivery.description =
-        'Once you have arrived at the delivery location initiate delivery to receive the OTP pin for payment';
+      'Once you have arrived at the delivery location initiate delivery to receive the OTP pin for payment';
     parcelDetailsMessages.delivery.interaction = 'Enter OTP';
   }
 

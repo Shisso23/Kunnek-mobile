@@ -9,7 +9,7 @@ import { ViewParcelCard } from '../../../components';
 
 const ViewParcelsScreen = ({ route }) => {
   const { Layout } = useTheme();
-  const parcelRequest = route.params;
+  const { parcelRequest } = route.params;
 
   return (
     <>
