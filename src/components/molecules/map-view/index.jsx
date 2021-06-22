@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import MapView, { Circle, Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import PropTypes from 'prop-types';
 import { Badge, Icon } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
@@ -35,13 +35,16 @@ const MapViewComponent = ({ parcelRequests, onPointPress }) => {
   const _renderParcelRequestCoordinates = () => {
     const markers = [];
     parcelRequests.forEach((parcelRequest, i) => {
-      const locations = _.get(parcelRequest, 'locations', {});
-      markers.push(_renderLine(locationService.getCoordinates(locations), `line-${i}`));
-      coordinateTypes.forEach((coordinateType, j) => {
-        const index = j * coordinateTypes.length + i;
-        const coordinate = locationService.getCoordinateFromType(coordinateType, locations);
-        markers.push(_renderCoordinate(coordinate, parcelRequest, coordinateType, index));
-      });
+      if (markers.length < 1000) {
+        //still to investigate
+        const locations = _.get(parcelRequest, 'locations', {});
+        markers.push(_renderLine(locationService.getCoordinates(locations), `line-${i}`));
+        coordinateTypes.forEach((coordinateType, j) => {
+          const index = j * coordinateTypes.length + i;
+          const coordinate = locationService.getCoordinateFromType(coordinateType, locations);
+          markers.push(_renderCoordinate(coordinate, parcelRequest, coordinateType, index));
+        });
+      }
     });
     return markers;
   };
@@ -76,30 +79,30 @@ const MapViewComponent = ({ parcelRequests, onPointPress }) => {
     return <Icon type="font-awesome" name="circle" color={Colors.darkGrey} size={20} />;
   };
 
-  const _renderCirclePoint = (location, type, radius = 50000) => {
-    const coordinate = locationService.getCoordinate(location);
+  // const _renderCirclePoint = (location, type, radius = 50000) => {
+  //   const coordinate = locationService.getCoordinate(location);
 
-    const circle = (
-      <Circle
-        center={coordinate}
-        radius={radius}
-        fillColor={Colors.mapCircleGreen}
-        strokeWidth={1}
-        strokeColor={Colors.transparent}
-      />
-    );
+  //   const circle = (
+  //     <Circle
+  //       center={coordinate}
+  //       radius={radius}
+  //       fillColor={Colors.mapCircleGreen}
+  //       strokeWidth={1}
+  //       strokeColor={Colors.transparent}
+  //     />
+  //   );
 
-    return (
-      <View>
-        <Marker coordinate={locationService.getCoordinate(location)} tracksViewChanges={false} />
-        {circle}
-      </View>
-    );
-  };
+  //   return (
+  //     <View>
+  //       <Marker coordinate={locationService.getCoordinate(location)} tracksViewChanges={false} />
+  //       {circle}
+  //     </View>
+  //   );
+  // };
 
   const _renderLine = (points = [], index) => {
     if (points.length < 2) {
-      return <></>;
+      return <React.Fragment key={index}></React.Fragment>;
     }
 
     const processedPoints = points.map((point = {}) => locationService.getCoordinate(point));
@@ -127,12 +130,10 @@ const MapViewComponent = ({ parcelRequests, onPointPress }) => {
         mapRef={_assignMap}
         {...config.googleMaps}
       >
-        <>
-          <Marker
-            coordinate={locationService.getCoordinate(currentLocation)}
-            tracksViewChanges={false}
-          />
-        </>
+        <Marker
+          coordinate={locationService.getCoordinate(currentLocation)}
+          tracksViewChanges={false}
+        />
         {_renderParcelRequestCoordinates()}
       </MapView>
     </View>
@@ -163,9 +164,6 @@ MapViewComponent.defaultProps = {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    // alignItems: 'center',
-    // flex: 1,
-    // justifyContent: 'flex-end',
   },
   map: {
     ...StyleSheet.absoluteFillObject,

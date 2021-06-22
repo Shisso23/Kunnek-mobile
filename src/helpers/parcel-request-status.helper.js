@@ -13,6 +13,25 @@ export const parcelStatus = Object.freeze({
   deliverer_opted_out: 9, //driver cancelled
 });
 
+export const activeParcelParams = () => {
+  const onlyActiveStatusses = _.difference(parcelStatusKeys, [
+    'completed_delivery',
+    'sender_opted_out',
+    'deliverer_opted_out',
+  ]);
+  return _.join(onlyActiveStatusses, ',');
+};
+
+export const abbreviatedStatus = (parcelRequest) => {
+  const detailedStatus = _.get(parcelRequest, 'status');
+  if (parcelStatus[detailedStatus] < parcelStatus['accepted_by_sender']) {
+    return 'not started';
+  } else {
+    if (parcelStatus[detailedStatus] < parcelStatus['completed_delivery']) return 'in progress';
+  }
+  return 'completed';
+};
+
 export const parcelStatusKeys = Object.keys(parcelStatus);
 
 export const progressPackageStatus = (parcelRequest) => {
