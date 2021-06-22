@@ -6,11 +6,15 @@ import { Text, ButtonGroup } from 'react-native-elements';
 import PropTypes from 'prop-types';
 
 import Index from '../../../components/atoms/title';
-import { getUserParcelRequestsAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
+import {
+  checkUserParcelRequestsAction,
+  getUserParcelRequestsAction,
+} from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 import { useTheme } from '../../../theme';
 import ParcelRequestListItem from '../../../components/molecules/parcel-request-list-item';
 import { Colors } from '../../../theme/Variables';
 import { activeParcelParams } from '../../../helpers/parcel-request-status.helper';
+import { useInterval } from '../../../services';
 
 const ParcelRequestScreen = () => {
   const { Fonts, Gutters, Layout } = useTheme();
@@ -19,10 +23,16 @@ const ParcelRequestScreen = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUserParcelRequestsAction({ for_current_user: true, status: activeParcelParams() }));
+    dispatch(getUserParcelRequestsAction(_requestParams()));
   }, []);
 
   const buttons = ['active parcels only', 'all parcels'];
+  const _requestParams = () => {
+    if (buttons[buttonIndex] === 'all parcels') {
+      return { for_current_user: true };
+    }
+    return { for_current_user: true, status: activeParcelParams() };
+  };
 
   const _changefilter = (newIndex) => {
     if (!(buttonIndex === newIndex)) {
@@ -36,6 +46,11 @@ const ParcelRequestScreen = () => {
       }
     }
   };
+
+  useInterval(() => {
+    console.log('Testing useInterval Hook', _requestParams());
+    dispatch(checkUserParcelRequestsAction(_requestParams()));
+  }, 10000);
 
   const _renderItem = ({ item }) => {
     return <ParcelRequestListItem parcelRequest={item} />;

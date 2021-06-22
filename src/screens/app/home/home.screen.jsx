@@ -8,6 +8,7 @@ import { getParcelRequestsAction } from '../../../reducers/parcel-request-reduce
 import CustomHeaderButton from '../../../components/atoms/custom-header-button';
 import { CustomTab, LoadingOverlay, MapViewComponent } from '../../../components';
 import ParcelFilterFormModal from '../../../components/molecules/parcel-filter/parcel-filter-overlay';
+import { useTheme } from '../../../theme';
 
 const HomeScreen = () => {
   useFocusEffect(exitAppOnHardwarePressListener);
@@ -17,6 +18,7 @@ const HomeScreen = () => {
   const { parcelRequests, parcelRequestLoading = false } = useSelector(
     (reducers) => reducers.parcelRequestReducer,
   );
+  const { Layout } = useTheme();
 
   const closeFilters = () => {
     setFilterVisible(false);
@@ -30,20 +32,7 @@ const HomeScreen = () => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: (props) => (
-        <CustomHeaderButton
-          {...props}
-          onPress={_openDrawer}
-          image={require('../../../assets/icons/menu/menu.png')}
-        />
-      ),
-      headerRight: (props) => (
-        <CustomHeaderButton
-          {...props}
-          onPress={_openFilters}
-          image={require('../../../assets/icons/filter/filter.png')}
-        />
-      ),
+      header: () => {},
     });
   }, [navigation]);
 
@@ -69,20 +58,38 @@ const HomeScreen = () => {
     return parcelRequestLoading;
   };
 
-  return (
-    <>
-      <View style={styles.refreshButton}>
+  const _customHeader = (props) => {
+    return (
+      <View style={[Layout.row, Layout.justifyContentBetween, styles.header]}>
         <CustomHeaderButton
-          onPress={_loadParcelRequests}
-          image={require('../../../assets/icons/refresh/refresh.png')}
+          {...props}
+          onPress={_openDrawer}
+          image={require('../../../assets/icons/menu/menu.png')}
+        />
+        <CustomHeaderButton
+          {...props}
+          onPress={_openFilters}
+          image={require('../../../assets/icons/filter/filter.png')}
         />
       </View>
+    );
+  };
+
+  return (
+    <>
       <LoadingOverlay isLoading={_isLoading()} />
       <MapViewComponent parcelRequests={parcelRequests} onPointPress={_onPressMapMarker} />
       <View style={styles.navContainer}>
         <CustomTab />
       </View>
       <ParcelFilterFormModal visible={filterVisible} setFilterClosed={closeFilters} />
+      {_customHeader()}
+      <View style={styles.refreshButton}>
+        <CustomHeaderButton
+          onPress={_loadParcelRequests}
+          image={require('../../../assets/icons/refresh/refresh.png')}
+        />
+      </View>
     </>
   );
 };
@@ -99,6 +106,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     top: 110,
+    zIndex: 1,
+  },
+  header: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 10,
     zIndex: 1,
   },
 });
