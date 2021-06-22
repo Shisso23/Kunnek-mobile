@@ -4,10 +4,14 @@ import PropTypes from 'prop-types';
 
 import { useTheme } from '../../../theme';
 
-const PaperContainer = ({ children }) => {
+const PaperContainer = (props) => {
   const { Gutters, Layout, Common } = useTheme();
+  const { children, style, ...rest } = props;
   return (
-    <View style={[Layout.justifyContentBetween, Common.viewCard, Gutters.regularMargin]}>
+    <View
+      style={[Layout.justifyContentBetween, Common.viewCard, Gutters.regularMargin, style]}
+      {...rest}
+    >
       {children}
     </View>
   );
@@ -15,8 +19,11 @@ const PaperContainer = ({ children }) => {
 
 PaperContainer.propTypes = {
   children: PropTypes.array.isRequired,
+  style: PropTypes.array,
 };
 
-PaperContainer.defaultProps = {};
+PaperContainer.defaultProps = {
+  style: [],
+};
 
 export default PaperContainer;

@@ -9,6 +9,9 @@ export const setParcelRequestAction = setParcelRequest.action;
 const setParcelRequests = CreateAction(reducerName, 'SET_PARCEL_REQUESTS');
 export const setParcelRequestsAction = setParcelRequests.action;
 
+const setUserParcelRequests = CreateAction(reducerName, 'SET_USER_PARCEL_REQUESTS');
+export const setUserParcelRequestsAction = setUserParcelRequests.action;
+
 const setId = CreateAction(reducerName, 'SET_ID');
 export const setIdAction = setId.action;
 
@@ -75,6 +78,7 @@ const initialState = {
   parcelRequestLoading: false,
   parcelRequest: undefined,
   parcelRequests: [],
+  userParcelRequests: [],
   id: undefined,
   collectAddress: '',
   deliverAddress: '',
@@ -111,6 +115,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         parcelRequests: action.payload,
+      };
+    case setUserParcelRequests.actionType:
+      return {
+        ...state,
+        userParcelRequests: action.payload,
       };
     case setFilterParcels.actionType:
       return {

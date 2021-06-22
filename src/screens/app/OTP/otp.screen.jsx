@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Modal } from 'react-native-paper';
 import _ from 'lodash';
 
 import Index from '../../../components/atoms/title';
@@ -25,6 +26,7 @@ const OTPScreen = ({ route }) => {
   const parcelRequest = route.params;
   const [otpValue, setOTPValue] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [popUpView, setPopUpView] = useState(false);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { actionId } = useSelector(parcelRequestSelector);
@@ -47,7 +49,11 @@ const OTPScreen = ({ route }) => {
   };
 
   const _sendOTP = () => {
-    dispatch(sendOTP(actionId));
+    dispatch(sendOTP(actionId)).then((result) => {
+      if (_.get(result, 'status') === true) {
+        setPopUpView(true);
+      }
+    });
   };
 
   return (
@@ -82,6 +88,17 @@ const OTPScreen = ({ route }) => {
           </Button>
         </PaperContainer>
       </ScrollView>
+      <Modal visible={popUpView} transparent={true}>
+        <PaperContainer style={[Layout.center, Layout.alignSelfCenter, styles.halfWidth]}>
+          <Text>OTP sent successfully</Text>
+          <Button
+            style={[styles.buttonSize, Gutters.regularTMargin]}
+            onPress={() => setPopUpView(!popUpView)}
+          >
+            Close
+          </Button>
+        </PaperContainer>
+      </Modal>
     </>
   );
 };
@@ -103,5 +120,8 @@ const styles = StyleSheet.create({
     height: 130,
     resizeMode: 'contain',
     alignSelf: 'center',
+  },
+  halfWidth: {
+    width: '50%',
   },
 });

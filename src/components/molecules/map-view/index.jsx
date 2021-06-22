@@ -35,16 +35,13 @@ const MapViewComponent = ({ parcelRequests, onPointPress }) => {
   const _renderParcelRequestCoordinates = () => {
     const markers = [];
     parcelRequests.forEach((parcelRequest, i) => {
-      if (markers.length < 1000) {
-        //still to investigate
-        const locations = _.get(parcelRequest, 'locations', {});
-        markers.push(_renderLine(locationService.getCoordinates(locations), `line-${i}`));
-        coordinateTypes.forEach((coordinateType, j) => {
-          const index = j * coordinateTypes.length + i;
-          const coordinate = locationService.getCoordinateFromType(coordinateType, locations);
-          markers.push(_renderCoordinate(coordinate, parcelRequest, coordinateType, index));
-        });
-      }
+      const locations = _.get(parcelRequest, 'locations', {});
+      markers.push(_renderLine(locationService.getCoordinates(locations), `line-${i}`));
+      coordinateTypes.forEach((coordinateType, j) => {
+        const index = j * coordinateTypes.length + i;
+        const coordinate = locationService.getCoordinateFromType(coordinateType, locations);
+        markers.push(_renderCoordinate(coordinate, parcelRequest, coordinateType, index));
+      });
     });
     return markers;
   };

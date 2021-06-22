@@ -25,7 +25,7 @@ const ParcelDetailsScreen = ({ route }) => {
   const deliverer = _.get(parcelRequest, 'deliverer');
   const parcelStatusIndex = parcelStatus[_.get(parcelRequest, 'status')];
   const { user } = useSelector(userSelector);
-  const { parcelRequests } = useSelector(parcelRequestSelector);
+  const { userParcelRequests } = useSelector(parcelRequestSelector);
   const dispatch = useDispatch();
 
   const _isDeliverer = () => {
@@ -69,7 +69,7 @@ const ParcelDetailsScreen = ({ route }) => {
 
   useEffect(() => {
     _renderDetailsCard();
-  }, [parcelRequests]);
+  }, [userParcelRequests]);
 
   useEffect(() => {
     dispatch(getActionId(parcelRequest));
