@@ -13,7 +13,7 @@ import { useTheme } from '../../../theme';
 import InputWrapper from '../input-wrapper';
 import theme from '../../../theme/react-native-elements-theme';
 
-const AddressInput = ({ value, errorMessage, onChange, placeholder }) => {
+const AddressInput = ({ value, errorMessage, onChange, placeholder, reseted }) => {
   const { Custom, Gutters, Layout } = useTheme();
   const [modalVisible, setModalVisible] = React.useState(false);
   const [searchText, setSearchText] = React.useState('');
@@ -91,6 +91,9 @@ const AddressInput = ({ value, errorMessage, onChange, placeholder }) => {
     if (onChange) {
       onChange(currentValue);
     }
+    if (reseted) {
+      setSearchText('');
+    }
   };
 
   const search = (currentValue) => {
@@ -154,11 +157,13 @@ AddressInput.propTypes = {
   placeholder: PropTypes.string,
 
   onChange: PropTypes.func.isRequired,
+  reseted: PropTypes.bool,
 };
 
 AddressInput.defaultProps = {
   errorMessage: '',
   placeholder: '',
+  reseted: false,
 };
 
 export default AddressInput;

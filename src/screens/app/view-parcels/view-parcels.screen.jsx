@@ -12,7 +12,7 @@ import { userSelector } from '../../../reducers/user-reducer/user.reducer';
 
 const ViewParcelsScreen = ({ route }) => {
   const { Layout, Images } = useTheme();
-  const parcelRequest = route.params;
+  const { parcelRequest } = route.params;
   const deliverer = _.get(parcelRequest, 'deliverer');
   const { user } = useSelector(userSelector);
 

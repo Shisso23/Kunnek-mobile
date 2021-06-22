@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DrawerActions, useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, View } from 'react-native';
@@ -7,18 +7,26 @@ import { exitAppOnHardwarePressListener } from '../../../helpers';
 import { getParcelRequestsAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 import CustomHeaderButton from '../../../components/atoms/custom-header-button';
 import { CustomTab, LoadingOverlay, MapViewComponent } from '../../../components';
+import ParcelFilterFormModal from '../../../components/molecules/parcel-filter/parcel-filter-overlay';
 
 const HomeScreen = () => {
   useFocusEffect(exitAppOnHardwarePressListener);
   const dispatch = useDispatch();
+  const [filterVisible, setFilterVisible] = useState(false);
   const navigation = useNavigation();
   const { parcelRequests, parcelRequestLoading = false } = useSelector(
     (reducers) => reducers.parcelRequestReducer,
   );
 
+  const closeFilters = () => {
+    setFilterVisible(false);
+  };
+
   useEffect(() => {
     _loadParcelRequests();
   }, []);
+
+  useEffect(() => {}, [parcelRequests]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -53,7 +61,9 @@ const HomeScreen = () => {
     navigation.dispatch(DrawerActions.toggleDrawer());
   };
 
-  const _openFilters = () => {};
+  const _openFilters = () => {
+    setFilterVisible(true);
+  };
 
   const _isLoading = () => {
     return parcelRequestLoading;
@@ -72,6 +82,7 @@ const HomeScreen = () => {
       <View style={styles.navContainer}>
         <CustomTab />
       </View>
+      <ParcelFilterFormModal visible={filterVisible} setFilterClosed={closeFilters} />
     </>
   );
 };

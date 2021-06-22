@@ -15,3 +15,4 @@ export { default as notificationService } from './sub-services/notification-serv
 export { default as locationService } from './sub-services/location-service/location.service';
 export { default as tripService } from './sub-services/trip-service/trip.service';
 export { default as actionsService } from './sub-services/actions-service/actions.service';
+export { default as queryService } from './sub-services/query-service/query.service';

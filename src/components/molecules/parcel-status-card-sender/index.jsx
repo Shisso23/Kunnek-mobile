@@ -24,7 +24,7 @@ const ParcelStatusCardSender = ({ parcelRequest }) => {
   };
 
   const _viewParcel = () => {
-    navigation.navigate('ViewParcel', parcelRequest);
+    navigation.navigate('ViewParcel', { parcelRequest });
   };
 
   return (
@@ -36,7 +36,7 @@ const ParcelStatusCardSender = ({ parcelRequest }) => {
         activeMessage={_.get(parcelStatusDecoded.status, 'interaction')}
         date={_.get(parcelStatusDecoded.status, 'date')}
         divider={true}
-        action={!!_.get(parcelStatusDecoded.status, 'action') ? _viewParcel : _buttonClick}
+        action={_.get(parcelStatusDecoded.status, 'action') ? _viewParcel : _buttonClick}
       />
       <IconListItem
         icon={_.get(parcelStatusDecoded.pickUp, 'icon') ? Images.truckBlue : Images.truck}
@@ -61,15 +61,18 @@ const ParcelStatusCardSender = ({ parcelRequest }) => {
         title={_.get(parcelStatusDecoded.review, 'title')}
         description={_.get(parcelStatusDecoded.review, 'description')}
         activeMessage={_.get(parcelStatusDecoded.review, 'interaction')}
-        // action={}
       />
     </View>
   );
 };
 
 ParcelStatusCardSender.propTypes = {
-  parcelRequest: PropTypes.object,
+  parcelRequest: PropTypes.object.isRequired,
   action: PropTypes.func,
+};
+
+ParcelStatusCardSender.defaultProps = {
+  action: null,
 };
 
 ParcelStatusCardSender.defaultProps = {};

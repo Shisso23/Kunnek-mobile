@@ -79,27 +79,6 @@ const MapViewComponent = ({ parcelRequests, onPointPress }) => {
     return <Icon type="font-awesome" name="circle" color={Colors.darkGrey} size={20} />;
   };
 
-  // const _renderCirclePoint = (location, type, radius = 50000) => {
-  //   const coordinate = locationService.getCoordinate(location);
-
-  //   const circle = (
-  //     <Circle
-  //       center={coordinate}
-  //       radius={radius}
-  //       fillColor={Colors.mapCircleGreen}
-  //       strokeWidth={1}
-  //       strokeColor={Colors.transparent}
-  //     />
-  //   );
-
-  //   return (
-  //     <View>
-  //       <Marker coordinate={locationService.getCoordinate(location)} tracksViewChanges={false} />
-  //       {circle}
-  //     </View>
-  //   );
-  // };
-
   const _renderLine = (points = [], index) => {
     if (points.length < 2) {
       return <React.Fragment key={index}></React.Fragment>;

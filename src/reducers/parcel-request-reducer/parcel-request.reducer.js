@@ -63,6 +63,12 @@ export const setActionIdAction = setActionId.action;
 const setParcelRequestLoading = CreateAction(reducerName, 'SET_PARCEL_REQUEST_LOADING');
 export const setParcelRequestLoadingAction = setParcelRequestLoading.action;
 
+const setFilterParcels = new CreateAction(reducerName, 'SET_FILTER_PARCELS');
+export const setFilterParcelsAction = setFilterParcels.action;
+
+const setParcelFilterFields = new CreateAction(reducerName, 'SET_PARCEL_FILTER_FIELDS');
+export const setParcelsFilterFieldsAction = setParcelFilterFields.action;
+
 export const parcelRequestSelector = (reducers) => reducers.parcelRequestReducer;
 
 const initialState = {
@@ -86,6 +92,12 @@ const initialState = {
   serviceFee: 0,
   pagination: getDefaultPaginationObject(),
   actionId: undefined,
+  parcelFilterFields: {
+    startLocation: '',
+    endLocation: '',
+    maximumDistance: 50,
+    lastDeliveryDate: '',
+  },
 };
 
 export default (state = initialState, action) => {
@@ -99,6 +111,16 @@ export default (state = initialState, action) => {
       return {
         ...state,
         parcelRequests: action.payload,
+      };
+    case setFilterParcels.actionType:
+      return {
+        ...state,
+        parcelRequests: action.payload,
+      };
+    case setParcelFilterFields.actionType:
+      return {
+        ...state,
+        parcelFilterFields: action.payload,
       };
     case setId.actionType:
       return {

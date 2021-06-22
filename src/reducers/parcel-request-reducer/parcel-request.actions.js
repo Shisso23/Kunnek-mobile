@@ -6,6 +6,8 @@ import {
   setParcelRequestLoadingAction,
   setParcelRequestsAction,
   setServiceFeeAction,
+  setFilterParcelsAction,
+  setParcelsFilterFieldsAction,
 } from './parcel-request.reducer';
 
 export const getParcelRequestsAction = (params = {}) => (dispatch) => {
@@ -62,6 +64,20 @@ export const verifyParcelDelivery = (id, otpValue) => () => {
 
 export const sendOTP = (id) => () => {
   return actionsService.sendOtp(id);
+};
+
+export const filterParcelRquestsAction = (formData) => {
+  return async (dispatch) => {
+    return parcelRequestService.filterParcels(formData).then((parcelRequests) => {
+      return dispatch(setFilterParcelsAction(parcelRequests));
+    });
+  };
+};
+
+export const setFilters = (formData) => {
+  return (dispatch) => {
+    return dispatch(setParcelsFilterFieldsAction(formData));
+  };
 };
 
 export const createParcelRequestAction = (data) => (dispatch, getState) =>
