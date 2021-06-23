@@ -48,9 +48,8 @@ const ParcelRequestScreen = () => {
   };
 
   useInterval(() => {
-    console.log('Testing useInterval Hook', _requestParams());
     dispatch(checkUserParcelRequestsAction(_requestParams()));
-  }, 10000);
+  }, 30000);
 
   const _renderItem = ({ item }) => {
     return <ParcelRequestListItem parcelRequest={item} />;

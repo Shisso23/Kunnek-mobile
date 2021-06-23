@@ -38,7 +38,6 @@ export const getUserParcelRequestsAction = (params = {}) => (dispatch) => {
 export const checkUserParcelRequestsAction = (params = {}) => (dispatch, getState) => {
   const { userParcelRequests } = getState().parcelRequestReducer;
   return parcelRequestService.getAll(params).then((parcelRequests) => {
-    console.log(parcelRequests !== userParcelRequests);
     if (parcelRequests !== userParcelRequests) {
       return dispatch(setUserParcelRequestsAction(parcelRequests));
     }

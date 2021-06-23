@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DrawerActions, useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 
 import { exitAppOnHardwarePressListener } from '../../../helpers';
 import { getParcelRequestsAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
@@ -105,14 +105,14 @@ const styles = StyleSheet.create({
   refreshButton: {
     position: 'absolute',
     right: 0,
-    top: 110,
+    top: Platform.OS === 'ios' ? 110 : 60,
     zIndex: 1,
   },
   header: {
     position: 'absolute',
     left: 0,
     right: 0,
-    top: 10,
+    top: Platform.OS === 'ios' ? 50 : 10,
     zIndex: 1,
   },
 });
