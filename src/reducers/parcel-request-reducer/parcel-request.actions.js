@@ -44,6 +44,10 @@ export const checkUserParcelRequestsAction = (params = {}) => (dispatch, getStat
   });
 };
 
+export const checkParcelRequestAction = (id) => () => {
+  return parcelRequestService.get(id);
+};
+
 export const updateParcelStatus = (parcelRequest, newStatus) => (dispatch, getState) => {
   dispatch(setParcelRequestLoadingAction(true));
 

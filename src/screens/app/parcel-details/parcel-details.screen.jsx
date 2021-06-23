@@ -17,7 +17,12 @@ import {
 import { parcelStatus } from '../../../helpers/parcel-request-status.helper';
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
 import { parcelRequestSelector } from '../../../reducers/parcel-request-reducer/parcel-request.reducer';
-import { getActionId } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
+import {
+  checkParcelRequestAction,
+  getActionId,
+} from '../../../reducers/parcel-request-reducer/parcel-request.actions';
+import { useInterval } from '../../../services';
+import { useState } from 'react';
 
 const ParcelDetailsScreen = ({ route }) => {
   const { Layout, Images } = useTheme();
@@ -27,6 +32,15 @@ const ParcelDetailsScreen = ({ route }) => {
   const { user } = useSelector(userSelector);
   const { userParcelRequests } = useSelector(parcelRequestSelector);
   const dispatch = useDispatch();
+  const [parcelRequestUpdated, updateParcelRequest] = useState(parcelRequest);
+
+  useInterval(() => {
+    dispatch(checkParcelRequestAction(_.get(parcelRequestUpdated, 'id'))).then((response) => {
+      if (_.get(response, 'status') !== _.get(parcelRequestUpdated, 'status')) {
+        updateParcelRequest(response);
+      }
+    });
+  }, 10000);
 
   const _isDeliverer = () => {
     return _.get(user, 'id') === _.get(deliverer, 'userId');
@@ -41,8 +55,8 @@ const ParcelDetailsScreen = ({ route }) => {
   };
 
   const _renderDetailsCard = () => {
-    if (_isDeliverer()) return <ParcelStatusCardDriver parcelRequest={parcelRequest} />;
-    return <ParcelStatusCardSender parcelRequest={parcelRequest} />;
+    if (_isDeliverer()) return <ParcelStatusCardDriver parcelRequest={parcelRequestUpdated} />;
+    return <ParcelStatusCardSender parcelRequest={parcelRequestUpdated} />;
   };
 
   const _renderOtherUser = () => {
