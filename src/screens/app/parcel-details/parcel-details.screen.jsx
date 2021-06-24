@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -16,7 +16,6 @@ import {
 } from '../../../components';
 import { parcelStatus } from '../../../helpers/parcel-request-status.helper';
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
-import { parcelRequestSelector } from '../../../reducers/parcel-request-reducer/parcel-request.reducer';
 
 const ParcelDetailsScreen = ({ route }) => {
   const { Layout } = useTheme();
@@ -24,7 +23,6 @@ const ParcelDetailsScreen = ({ route }) => {
   const deliverer = _.get(parcelRequest, 'deliverer');
   const parcelStatusIndex = parcelStatus[_.get(parcelRequest, 'status')];
   const { user } = useSelector(userSelector);
-  const { parcelRequests } = useSelector(parcelRequestSelector);
 
   const _isDeliverer = () => {
     return _.get(user, 'id') === _.get(deliverer, 'userId');
@@ -52,10 +50,6 @@ const ParcelDetailsScreen = ({ route }) => {
     if (parcelStatusIndex >= parcelStatus['pending_acceptance_from_sender'])
       return <ParcelDetailsFooter />;
   };
-
-  useEffect(() => {
-    _renderDetailsCard();
-  }, [parcelRequests]);
 
   return (
     <>

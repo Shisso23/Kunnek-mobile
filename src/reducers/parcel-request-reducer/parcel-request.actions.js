@@ -31,8 +31,7 @@ export const updateParcelStatus = (parcelRequest, newStatus) => (dispatch, getSt
 
   return parcelRequestService
     .updateStatus(_.get(parcelRequest, 'id'), { next_status: newStatus })
-    .then((response) => {
-      console.log(response.status);
+    .then(() => {
       parcelRequest.status = newStatus;
       parcelRequests[parcelRequestIndex] = parcelRequest;
 
