@@ -49,7 +49,7 @@ const ParcelRequestScreen = () => {
 
   useInterval(() => {
     dispatch(checkUserParcelRequestsAction(_requestParams()));
-  }, 30000);
+  }, 5000);
 
   const _renderItem = ({ item }) => {
     return <ParcelRequestListItem parcelRequest={item} />;

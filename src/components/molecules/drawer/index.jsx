@@ -69,7 +69,7 @@ const DrawerContent = (props) => {
           <DrawerItem
             icon={() => <Image source={Images.parcelsIconBlue} style={styles.icon} />}
             label="My Parcels"
-            onPress={() => navigation.navigate('ViewParcel')}
+            onPress={() => navigation.navigate('ParcelRequests')}
           />
           <DrawerItem
             icon={() => <Icon color={Colors.primary} size={20} name="sign-out-alt" />}

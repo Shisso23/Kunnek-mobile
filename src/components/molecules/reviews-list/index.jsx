@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, FlatList } from 'react-native';
+import { View } from 'react-native';
 import _ from 'lodash';
 import { ListItem, Text, Avatar, Rating } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import useTheme from '../../../theme/hooks/useTheme';
+import { FlatList } from '../../containers';
 
 const getAvatar = (picture) => {
   if (picture !== null) {
@@ -27,7 +28,7 @@ const ReviewsList = ({ items }) => {
         <FlatList
           data={items}
           ListHeaderComponent={ListHeader}
-          renderItem={({ item, index }) => (
+          renderItem={(item, index) => (
             <ListItem key={index}>
               {getAvatar(_.get(item, 'reviewer.profile_picture', ''))}
               <ListItem.Content>

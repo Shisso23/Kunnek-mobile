@@ -49,7 +49,6 @@ export const parcelStatusSender = (parcelRequest) => {
   if (parcelStatusNumber === parcelStatus['pending_acceptance_from_sender']) {
     parcelDetailsMessages.status.title = 'Pending Acceptance';
     parcelDetailsMessages.status.interaction = 'Accept/Decline Driver';
-    parcelDetailsMessages.status.action = 'DriverReview';
   }
 
   if (parcelStatusNumber === parcelStatus['accepted_by_sender']) {

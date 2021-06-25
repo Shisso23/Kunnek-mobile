@@ -20,6 +20,7 @@ import { Colors } from '../../theme/Variables';
 import ParcelDetailsScreen from '../../screens/app/parcel-details/parcel-details.screen';
 import OTPScreen from '../../screens/app/OTP/otp.screen';
 import EditParcelScreen from '../../screens/app/edit-parcel/edit-parcel.screen';
+import OtherUserProfileScreen from '../../screens/app/other-user-profile/other-user-profile.screen';
 
 const Drawer = createDrawerNavigator();
 const AppStack = createStackNavigator();
@@ -46,6 +47,7 @@ const AppNavigator = () => {
       <AppStack.Screen name="Payment" component={PaymentScreen} />
       <AppStack.Screen name="OTP" component={OTPScreen} />
       <AppStack.Screen name="ContactUs" component={ContactUsScreen} />
+      <AppStack.Screen name="UserDetails" component={OtherUserProfileScreen} />
     </AppStack.Navigator>
   );
 };

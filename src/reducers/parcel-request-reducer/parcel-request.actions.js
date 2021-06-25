@@ -74,16 +74,10 @@ export const updateParcelStatus = (parcelRequest, newStatus) => (dispatch, getSt
 };
 
 export const getActionId = (parcelRequest) => (dispatch) => {
-  dispatch(setParcelRequestLoadingAction(true));
   const jobId = _.get(parcelRequest, 'id');
-  return actionsService
-    .getActionId(jobId)
-    .then((response) => {
-      return dispatch(setActionIdAction(response));
-    })
-    .finally(() => {
-      dispatch(setParcelRequestLoadingAction(false));
-    });
+  return actionsService.getActionId(jobId).then((response) => {
+    return dispatch(setActionIdAction(response));
+  });
 };
 
 export const verifyParcelDelivery = (id, otpValue) => () => {

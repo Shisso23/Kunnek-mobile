@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, FlatList, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import _ from 'lodash';
 import { ListItem, Text } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import useTheme from '../../../theme/hooks/useTheme';
+import { FlatList } from '../../containers';
 
 const getIcon = () => <Icon name="money-check" size={26} />;
 
@@ -30,7 +31,7 @@ const AccountsList = ({ items }) => {
           data={items}
           ListHeaderComponent={ListHeader}
           ListFooterComponent={ListFooter}
-          renderItem={({ item, index }) => (
+          renderItem={(item, index) => (
             <ListItem key={index}>
               {getIcon()}
               <ListItem.Content>

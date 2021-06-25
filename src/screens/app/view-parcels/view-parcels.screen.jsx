@@ -48,7 +48,6 @@ const ViewParcelsScreen = ({ route }) => {
   };
 
   const _edit = () => {
-    console.log('edit clicked');
     navigation.navigate('EditParcel', parcelRequest);
   };
   const _cancel = () => {
@@ -59,9 +58,7 @@ const ViewParcelsScreen = ({ route }) => {
       .then(navigation.navigate('ParcelRequests'))
       .then(dispatch(setUserParcelRequestsAction(userParcelRequests)));
   };
-  const _contact = () => {
-    console.log('cancel clicked');
-  };
+  const _contact = () => {};
 
   const _renderFooter = () => {
     var icons = [];

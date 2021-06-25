@@ -23,6 +23,13 @@ const ParcelStatusCardSender = ({ parcelRequest }) => {
     dispatch(updateParcelStatus(parcelRequest, newStatus));
   };
 
+  const _driverReview = () => {
+    navigation.navigate('UserDetails', {
+      user: _.get(parcelRequest, 'deliverer'),
+      approval: parcelRequest,
+    });
+  };
+
   const _viewParcel = () => {
     navigation.navigate('ViewParcel', { parcelRequest });
   };
@@ -36,7 +43,7 @@ const ParcelStatusCardSender = ({ parcelRequest }) => {
         activeMessage={_.get(parcelStatusDecoded.status, 'interaction')}
         date={_.get(parcelStatusDecoded.status, 'date')}
         divider={true}
-        action={_.get(parcelStatusDecoded.status, 'action') ? _viewParcel : _buttonClick}
+        action={_.get(parcelStatusDecoded.status, 'action') ? _viewParcel : _driverReview}
       />
       <IconListItem
         icon={_.get(parcelStatusDecoded.pickUp, 'icon') ? Images.truckBlue : Images.truck}

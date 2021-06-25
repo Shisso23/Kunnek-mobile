@@ -8,7 +8,7 @@ import useTheme from '../../../theme/hooks/useTheme';
 
 const Button = (props) => {
   const { Common, Layout, Gutters, Colors } = useTheme();
-  const { children, style, ...rest } = props;
+  const { children, style, textStyle, ...rest } = props;
 
   return (
     <TouchableOpacity
@@ -22,7 +22,7 @@ const Button = (props) => {
       ]}
       {...rest}
     >
-      <Text style={[Common.centerWhiteText]}>{children}</Text>
+      <Text style={[Common.centerWhiteText, textStyle]}>{children}</Text>
     </TouchableOpacity>
   );
 };
@@ -30,10 +30,12 @@ const Button = (props) => {
 Button.propTypes = {
   children: PropTypes.string.isRequired,
   style: PropTypes.array,
+  textStyle: PropTypes.array,
 };
 
 Button.defaultProps = {
   style: [],
+  textStyle: [],
 };
 
 const styles = StyleSheet.create({
