@@ -9,3 +9,4 @@ export { default as UserRating } from './user-rating';
 export { default as Statusbutton } from './status-button';
 export { default as IconButton } from './icon-button';
 export { default as Button } from './button';
+export { default as StarRating } from './star-rating';

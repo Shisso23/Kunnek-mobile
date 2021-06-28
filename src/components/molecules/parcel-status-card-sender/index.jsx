@@ -3,14 +3,13 @@ import { View } from 'react-native';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/core';
 
 import { useTheme } from '../../../theme';
 import { parcelStatusSender } from '../../../helpers/parcel-request.helper';
 import IconListItem from '../icon-list-item';
 import { progressPackageStatus } from '../../../helpers/parcel-request-status.helper';
 import { updateParcelStatus } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
-import { useNavigation } from '@react-navigation/core';
-
 const ParcelStatusCardSender = ({ parcelRequest }) => {
   const { Gutters, Layout, Common, Images } = useTheme();
   const dispatch = useDispatch();
@@ -32,6 +31,10 @@ const ParcelStatusCardSender = ({ parcelRequest }) => {
 
   const _viewParcel = () => {
     navigation.navigate('ViewParcel', { parcelRequest });
+  };
+
+  const _reviewUser = () => {
+    navigation.navigate('Review', { parcelRequest });
   };
 
   return (
@@ -68,6 +71,7 @@ const ParcelStatusCardSender = ({ parcelRequest }) => {
         title={_.get(parcelStatusDecoded.review, 'title')}
         description={_.get(parcelStatusDecoded.review, 'description')}
         activeMessage={_.get(parcelStatusDecoded.review, 'interaction')}
+        action={_reviewUser}
       />
     </View>
   );

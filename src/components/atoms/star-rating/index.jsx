@@ -1,12 +1,12 @@
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+
 import { useTheme } from '../../../theme';
 
-const UserRating = ({ user, onStarChange, style = {} }) => {
+const StarRating = ({ value, onStarChange, style = {} }) => {
   const { Layout } = useTheme();
-  const starCount = _.get(user, 'rating', 0);
+  const starCount = value;
   let count = Number(starCount);
 
   const _renderStars = () => {
@@ -17,11 +17,10 @@ const UserRating = ({ user, onStarChange, style = {} }) => {
           ? require('../../../assets/images/star-fill.png')
           : require('../../../assets/images/star.png');
       stars.push(
-        <TouchableOpacity onPress={onStarChange ? _setStars(i) : null} key={i}>
-          <Image style={[styles.ratingStyle, style]} source={image} />
+        <TouchableOpacity onPress={_setStars(i)} key={i}>
+          <Image style={[styles.StarratingStyle, style]} source={image} />
         </TouchableOpacity>,
       );
-      count--;
     }
 
     return stars;
@@ -29,7 +28,6 @@ const UserRating = ({ user, onStarChange, style = {} }) => {
 
   const _setStars = (index) => {
     return () => {
-      const { onStarChange } = this.props;
       onStarChange(index + 1);
     };
   };
@@ -37,23 +35,22 @@ const UserRating = ({ user, onStarChange, style = {} }) => {
   return <View style={[Layout.row]}>{_renderStars()}</View>;
 };
 
-UserRating.propTypes = {
-  user: PropTypes.object.isRequired,
+StarRating.propTypes = {
+  value: PropTypes.number.isRequired,
   style: PropTypes.object,
   onStarChange: PropTypes.func,
 };
 
-UserRating.defaultProps = {
-  user: {},
+StarRating.defaultProps = {
   style: {},
   onStarChange: null,
 };
 
-export default UserRating;
+export default StarRating;
 
 const styles = StyleSheet.create({
-  ratingStyle: {
-    height: 20,
-    width: 20,
+  StarratingStyle: {
+    height: 15,
+    width: 15,
   },
 });

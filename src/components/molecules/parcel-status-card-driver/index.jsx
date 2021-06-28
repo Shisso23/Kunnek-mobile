@@ -35,6 +35,10 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
     dispatch(cancelParcelStatus(parcelRequest));
   };
 
+  const _reviewUser = () => {
+    navigation.navigate('Review', { parcelRequest });
+  };
+
   return (
     <View style={[Common.viewCard, Layout.colVCenter, Gutters.regularMargin]}>
       <IconListItem
@@ -44,7 +48,7 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
         activeMessage={_.get(parcelStatusDecoded.status, 'interaction')}
         date={_.get(parcelStatusDecoded.status, 'date')}
         divider={true}
-        action={_cancelRequest()}
+        action={_cancelRequest}
       />
       <IconListItem
         icon={_.get(parcelStatusDecoded.pickUp, 'icon') ? Images.truckBlue : Images.truck}
@@ -69,7 +73,7 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
         title={_.get(parcelStatusDecoded.review, 'title')}
         description={_.get(parcelStatusDecoded.review, 'description')}
         activeMessage={_.get(parcelStatusDecoded.review, 'interaction')}
-        action={_buttonClick}
+        action={_reviewUser}
       />
     </View>
   );
