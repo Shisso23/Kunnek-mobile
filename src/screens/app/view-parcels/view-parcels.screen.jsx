@@ -8,31 +8,36 @@ import Index from '../../../components/atoms/title';
 import { useTheme } from '../../../theme';
 import { ScrollView } from 'react-native-gesture-handler';
 import { StyleSheet } from 'react-native';
-import { ParcelDetailsFooter, ViewParcelCard } from '../../../components';
+import { Button, ParcelDetailsFooter, ViewParcelCard } from '../../../components';
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
-import { parcelStatus } from '../../../helpers/parcel-request-status.helper';
-import { removeParcelRequest } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
+import { parcelStatus, progressPackageStatus } from '../../../helpers/parcel-request-status.helper';
+import {
+  removeParcelRequest,
+  updateParcelStatus,
+} from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 import {
   parcelRequestSelector,
   setUserParcelRequestsAction,
 } from '../../../reducers/parcel-request-reducer/parcel-request.reducer';
+import { View } from 'react-native';
 
 const ViewParcelsScreen = ({ route }) => {
   const navigation = useNavigation();
   const { Layout, Images } = useTheme();
   const { parcelRequest } = route.params;
+  const sender = _.get(parcelRequest, 'sender');
   const deliverer = _.get(parcelRequest, 'deliverer');
   const thisParcelStatus = _.get(parcelRequest, 'status');
   const { user } = useSelector(userSelector);
   const { userParcelRequests } = useSelector(parcelRequestSelector);
   const dispatch = useDispatch();
 
-  const _isDeliverer = () => {
-    return _.get(user, 'id') === _.get(deliverer, 'userId');
+  const _isSender = () => {
+    return _.get(user, 'id') === _.get(sender, 'userId');
   };
 
   const _canCancel = () => {
-    if (!_isDeliverer()) {
+    if (_isSender()) {
       if (parcelStatus[thisParcelStatus] <= parcelStatus['pending_acceptance_from_sender'])
         return true;
     }
@@ -50,6 +55,7 @@ const ViewParcelsScreen = ({ route }) => {
   const _edit = () => {
     navigation.navigate('EditParcel', parcelRequest);
   };
+
   const _cancel = () => {
     _.remove(userParcelRequests, (request) => {
       return request === parcelRequest;
@@ -58,22 +64,46 @@ const ViewParcelsScreen = ({ route }) => {
       .then(navigation.navigate('ParcelRequests'))
       .then(dispatch(setUserParcelRequestsAction(userParcelRequests)));
   };
+
   const _contact = () => {};
 
+  const _deliveryRequest = () => {
+    const newStatus = progressPackageStatus(parcelRequest);
+    dispatch(updateParcelStatus(parcelRequest, newStatus));
+    navigation.navigate('ParcelRequests');
+  };
+
   const _renderFooter = () => {
-    var icons = [];
+    let icons = [];
 
     if (_canCancel()) {
       icons.push({ icon: Images.editIconGreen, caption: `Edit`, onPress: _edit });
       icons.push({ icon: Images.cancelIconOrange, caption: `Cancel`, onPress: _cancel });
     }
 
-    if (_canContact())
+    if (_canContact()) {
       icons.push({ icon: Images.messageIconGreen, caption: `Contact`, onPress: _contact });
+    }
+
     if (icons.length)
       return (
         <ParcelDetailsFooter buttons={icons} style={[icons.length === 1 && styles.footerWidth]} />
       );
+    return <></>;
+  };
+
+  const _RequestToDeliver = () => {
+    if (!_canCancel() && !_.get(deliverer, 'id')) {
+      return (
+        <>
+          <View style={[Layout.fill]} />
+          <Button style={[styles.buttonStyle]} onPress={_deliveryRequest}>
+            Request to deliver
+          </Button>
+        </>
+      );
+    }
+
     return <></>;
   };
 
@@ -83,6 +113,7 @@ const ViewParcelsScreen = ({ route }) => {
       <ScrollView style={[Layout.fill]} contentContainerStyle={[styles.fillScreen]}>
         <ViewParcelCard parcelRequest={parcelRequest} />
         {_renderFooter()}
+        {_RequestToDeliver()}
       </ScrollView>
     </>
   );
@@ -103,5 +134,9 @@ const styles = StyleSheet.create({
   footerWidth: {
     alignSelf: 'center',
     width: 150,
+  },
+  buttonStyle: {
+    width: '90%',
+    marginBottom: 20,
   },
 });

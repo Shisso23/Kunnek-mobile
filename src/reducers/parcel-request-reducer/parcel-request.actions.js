@@ -73,6 +73,26 @@ export const updateParcelStatus = (parcelRequest, newStatus) => (dispatch, getSt
     });
 };
 
+export const cancelParcelStatus = (parcelRequest) => (dispatch, getState) => {
+  dispatch(setParcelRequestLoadingAction(true));
+
+  const { parcelRequests = [] } = getState().parcelRequestReducer;
+  const parcelRequestIndex = _.findIndex(parcelRequests, (parcel) => {
+    return parcel.id === parcelRequest.id;
+  });
+
+  return parcelRequestService
+    .updateStatus(_.get(parcelRequest, 'id'), parcelRequest)
+    .then((response) => {
+      parcelRequests[parcelRequestIndex] = response;
+
+      return dispatch(setParcelRequestsAction(parcelRequests));
+    })
+    .finally(() => {
+      dispatch(setParcelRequestLoadingAction(false));
+    });
+};
+
 export const getActionId = (parcelRequest) => (dispatch) => {
   const jobId = _.get(parcelRequest, 'id');
   return actionsService.getActionId(jobId).then((response) => {

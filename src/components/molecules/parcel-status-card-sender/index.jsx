@@ -26,7 +26,7 @@ const ParcelStatusCardSender = ({ parcelRequest }) => {
   const _driverReview = () => {
     navigation.navigate('UserDetails', {
       user: _.get(parcelRequest, 'deliverer'),
-      approval: parcelRequest,
+      parcelRequest: parcelRequest,
     });
   };
 

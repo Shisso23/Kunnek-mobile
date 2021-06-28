@@ -109,3 +109,15 @@ export const apiParcelStatusUpdateModel = (_appParcelStatusUpdateModel = {}) => 
   };
   return data;
 };
+
+export const apiParcelStatusCancelModel = (_appParcelStatusCancelModel = {}) => {
+  const data = {
+    job: {
+      status: _.get(_appParcelStatusCancelModel, 'status'),
+      next_status: 'pending',
+      trip_id: null,
+      collector_id: null,
+    },
+  };
+  return data;
+};

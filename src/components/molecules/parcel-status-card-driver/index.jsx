@@ -8,11 +8,11 @@ import { useTheme } from '../../../theme';
 import { parcelStatusDeliverer } from '../../../helpers/parcel-request.helper';
 import IconListItem from '../icon-list-item';
 import { useDispatch } from 'react-redux';
+import { progressPackageStatus } from '../../../helpers/parcel-request-status.helper';
 import {
-  cancelJobSender,
-  progressPackageStatus,
-} from '../../../helpers/parcel-request-status.helper';
-import { updateParcelStatus } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
+  cancelParcelStatus,
+  updateParcelStatus,
+} from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 
 const ParcelStatusCardDriver = ({ parcelRequest }) => {
   const { Gutters, Layout, Common, Images } = useTheme();
@@ -31,6 +31,10 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
     navigation.navigate('OTP', parcelRequest);
   };
 
+  const _cancelRequest = () => {
+    dispatch(cancelParcelStatus(parcelRequest));
+  };
+
   return (
     <View style={[Common.viewCard, Layout.colVCenter, Gutters.regularMargin]}>
       <IconListItem
@@ -40,7 +44,7 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
         activeMessage={_.get(parcelStatusDecoded.status, 'interaction')}
         date={_.get(parcelStatusDecoded.status, 'date')}
         divider={true}
-        action={cancelJobSender}
+        action={_cancelRequest()}
       />
       <IconListItem
         icon={_.get(parcelStatusDecoded.pickUp, 'icon') ? Images.truckBlue : Images.truck}

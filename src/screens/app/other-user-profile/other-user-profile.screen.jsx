@@ -9,29 +9,45 @@ import ParallaxView from '../../../components/molecules/parallax-view';
 import { Button, IdNumber, VehiclesList } from '../../../components';
 import { StyleSheet } from 'react-native';
 import { Colors } from '../../../theme/Variables';
+import { useDispatch } from 'react-redux';
+import { progressPackageStatus } from '../../../helpers/parcel-request-status.helper';
+import { cancelParcelStatus } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
+import { useNavigation } from '@react-navigation/native';
 
 const OtherUserProfileScreen = ({ route }) => {
-  const { user, approval } = route.params;
+  const { user, parcelRequest } = route.params;
   const { Common, Layout } = useTheme();
   const vehicle = _.get(user, 'vehicle', undefined);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const _renderApproval = () => {
-    if (approval) {
+    if (parcelRequest) {
       return (
         <>
-          <Button style={[styles.buttonStyle]} onPress={() => {}}>
+          <Button style={[styles.buttonStyle]} onPress={_accept()}>
             Accept
           </Button>
           <Button
             style={[styles.buttonStyle, styles.clearButtonStyle]}
             textStyle={[styles.clearButtonTextStyle]}
-            onPress={() => {}}
+            onPress={_reject()}
           >
             Reject
           </Button>
         </>
       );
     }
+  };
+
+  const _accept = () => {
+    dispatch(progressPackageStatus());
+    navigation.navigate('ParcelDetails', parcelRequest);
+  };
+
+  const _reject = () => {
+    dispatch(cancelParcelStatus(parcelRequest));
+    navigation.navigate('ParcelDetails', parcelRequest);
   };
 
   return (
