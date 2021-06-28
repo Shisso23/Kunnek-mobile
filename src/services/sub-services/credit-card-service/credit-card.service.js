@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import {
   apiUserCreditCardModel,
   constructUserCreditCardModels,
@@ -15,9 +17,23 @@ const getCreditCards = async () => {
   return constructUserCreditCardModels(apiResponse.data);
 };
 
+const createCheckoutId = async () =>
+  authNetworkService
+    .post(creditCardUrls.createCheckoutUrl())
+    .then((response) => _.get(response, 'data'));
+
+const submitCardTransaction = async (checkoutID) => {
+  const url = creditCardUrls.cardsUrl();
+  const apiResponse = await authNetworkService.get(
+    `${url}/registration_status?checkout_id=${checkoutID}`,
+  );
+  return apiResponse.data;
+};
+
 const createCreditCard = async (data) => {
   const url = creditCardUrls.cardsUrl();
   const dataModel = apiUserCreditCardModel(data);
+  console.warn({ dataModel });
   const _createAndReturnModel = (apiResponse) => userCreditCardModel(apiResponse.data);
   return authNetworkService
     .post(url, dataModel)
@@ -29,8 +45,8 @@ const createCreditCard = async (data) => {
     });
 };
 
-const tokenizeCard = (data) =>
-  networkService.post(
+const tokenizeCard = (data) => {
+  return networkService.post(
     paymentUrls.registration(),
     data,
     {
@@ -41,9 +57,12 @@ const tokenizeCard = (data) =>
     },
     false,
   );
+};
 
 export default {
   getCreditCards,
   createCreditCard,
   tokenizeCard,
+  submitCardTransaction,
+  createCheckoutId,
 };

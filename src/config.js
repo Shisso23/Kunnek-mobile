@@ -9,7 +9,6 @@ const {
   GOOGLE_MAPS_API_KEY,
   PP_AUTH_BEARER,
   PP_3D_ENTITY_ID,
-  PEACH_PAYMENT_MODE,
   PEACH_PAYMENT_URL,
 } = Config;
 
@@ -32,7 +31,7 @@ export default {
   peachPayments: {
     ppAuthBearer: PP_AUTH_BEARER,
     pp3dEntityId: PP_3D_ENTITY_ID,
-    peachPaymentMode: PEACH_PAYMENT_MODE,
+    peachPaymentMode: 'test',
     peachPaymentUrl: PEACH_PAYMENT_URL,
   },
 };

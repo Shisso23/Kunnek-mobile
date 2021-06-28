@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, FlatList, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import _ from 'lodash';
 import { ListItem, Text } from 'react-native-elements';
@@ -15,11 +16,14 @@ const getIcon = (type) => {
 
 const CardsList = ({ items }) => {
   const { Common, Layout, Gutters } = useTheme();
-
+  const navigation = useNavigation();
   const ListHeader = () => <Text>My Debit/Credit Cards</Text>;
 
   const ListFooter = () => (
-    <TouchableOpacity style={[Layout.rowCenter]}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('AddCardScreen')}
+      style={[Layout.rowCenter]}
+    >
       <Text>Add card</Text>
     </TouchableOpacity>
   );

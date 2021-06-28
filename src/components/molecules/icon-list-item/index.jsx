@@ -1,6 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import { Image, Text } from 'react-native-elements';
 import React from 'react';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import useTheme from '../../../theme/hooks/useTheme';
 import { Colors } from '../../../theme/Variables';
@@ -25,7 +26,9 @@ const IconListItem = ({ icon, title, description, date, divider, activeMessage }
         </View>
       </View>
       <View style={[Layout.colVCenter]}>
-        {activeMessage && <StatusButton status={activeMessage} color={Colors.primary} />}
+        {!_.isNil(activeMessage) && !_.isEmpty(activeMessage) && (
+          <StatusButton status={activeMessage} color={Colors.primary} />
+        )}
       </View>
     </>
   );
@@ -50,24 +53,24 @@ IconListItem.defaultProps = {
 export default IconListItem;
 
 const styles = StyleSheet.create({
-  noBold: {
-    fontWeight: 'normal',
+  horizontalDivider: {
+    borderBottomWidth: 1,
+    borderColor: Colors.greyShadow,
+    marginTop: 8,
+    width: '95%',
+  },
+  iconSize: {
+    height: 30,
+    resizeMode: 'contain',
+    width: 30,
   },
   leftAlign: {
     alignSelf: 'flex-start',
   },
-  horizontalDivider: {
-    marginTop: 8,
-    borderColor: Colors.greyShadow,
-    borderBottomWidth: 1,
-    width: '95%',
-  },
-  iconSize: {
-    width: 30,
-    height: 30,
-    resizeMode: 'contain',
-  },
   lightText: {
     color: Colors.inputPlaceholderColor,
+  },
+  noBold: {
+    fontWeight: 'normal',
   },
 });

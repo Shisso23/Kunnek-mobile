@@ -16,6 +16,7 @@ import ViewVehicleScreen from '../../screens/app/vehicles/view-vehicle.screen';
 import NotificationHistoryScreen from '../../screens/app/notifications/notifications.screen';
 import PaymentScreen from '../../screens/app/payment/payment.screen';
 import ParcelRequestsScreen from '../../screens/app/parcel-requests/parcel-requests.screen';
+import AddCardScreen from '../../screens/app/credit-card/add-card.screen';
 import { Colors } from '../../theme/Variables';
 import ParcelDetailsScreen from '../../screens/app/parcel-details/parcel-details.screen';
 
@@ -42,6 +43,7 @@ const AppNavigator = () => {
       <AppStack.Screen name="ViewVehicle" component={ViewVehicleScreen} />
       <AppStack.Screen name="Payment" component={PaymentScreen} />
       <AppStack.Screen name="ContactUs" component={ContactUsScreen} />
+      <AppStack.Screen name="AddCardScreen" component={AddCardScreen} />
     </AppStack.Navigator>
   );
 };
