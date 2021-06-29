@@ -29,10 +29,11 @@ const create = (data = {}) => {
     });
 };
 
-const fetchCheckoutId = (id, data) =>
-  authNetworkService()
-    .post(paymentUrls.createCheckout(id), data)
-    .then((response) => paymentModel(_.get(response, 'data')));
+const fetchCheckoutId = (id, data) => {
+  return authNetworkService.post(paymentUrls.createCheckout(id), data).then((response) => {
+    return paymentModel(_.get(response, 'data'));
+  });
+};
 
 export default {
   getTransactions,

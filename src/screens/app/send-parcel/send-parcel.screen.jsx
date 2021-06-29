@@ -1,12 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { Button, Divider, Text } from 'react-native-elements';
 import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { HeaderBackButton } from '@react-navigation/stack';
+import PeachMobile from 'react-native-peach-mobile';
 
 import { FormScreenContainer } from '../../../components';
+import { tokenizeCardModel } from '../../../models/app/credit-card/tokenize-card.model';
 import { useTheme } from '../../../theme';
 import { SendParcelItemDetailsForm } from '../../../components/forms';
 import Index from '../../../components/atoms/title';
@@ -17,8 +19,10 @@ import { createParcelRequestAction } from '../../../reducers/parcel-request-redu
 import {
   createUserCreditCardAction,
   getUserCreditCardsAction,
+  submitCardTransactionAction,
   tokenizeCard,
 } from '../../../reducers/user-reducer/user-cards.actions';
+import { createCheckoutIdAction } from '../../../reducers/user-reducer/user-cards.actions';
 import {
   deliveryAndReceiverDetailsFormModel,
   itemDetailsFormModel,
@@ -28,7 +32,8 @@ import { successful } from '../../../helpers/errors.helper';
 import { getCurrentDate } from '../../../helpers/date.helper';
 import { PAYMENT_TYPES } from '../../../services/sub-services/payment-service/payment.service';
 import { getCurrency } from '../../../helpers/payment.helper';
-import { tokenizeCardModel } from '../../../models/app/credit-card/tokenize-card.model';
+import config from '../../../config';
+import { flashService } from '../../../services';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -42,7 +47,8 @@ const SendParcelScreen = () => {
   const [itemDetailsForm, setItemDetailsForm] = React.useState({});
   const [deliverAndReceiverDetailsForm, setDeliverAndReceiverDetailsForm] = React.useState({});
   const [creditCardForm, setCreditCardForm] = React.useState({});
-
+  const [checkoutID, setCheckoutID] = useState({});
+  const peachMobileRef = useRef(null);
   const hasCreditCards = Array.isArray(creditCards) ? creditCards.length > 0 : false;
 
   React.useLayoutEffect(() => {
@@ -53,6 +59,10 @@ const SendParcelScreen = () => {
 
   useEffect(() => {
     dispatch(getUserCreditCardsAction());
+    dispatch(createCheckoutIdAction()).then((id) => {
+      setCheckoutID(`${id}`);
+      return id;
+    });
   }, []);
 
   const _handleSubmitItemDetailsForm = (currentForm) => {
@@ -73,26 +83,61 @@ const SendParcelScreen = () => {
       });
   };
 
-  const _handleSubmitCreditCardForm = (currentForm) => {
-    setCreditCardForm(currentForm);
-    return dispatch(tokenizeCard(tokenizeCardModel(currentForm))).then((response) => {
-      const { id, card } = response.data;
-      const finalData = {
-        senderId,
-        obfuscatedCardNumber: `************${_.get(card, 'last4Digits')}`,
-        cardType: _.get(creditCardForm, 'cardType'),
-        tokenizedCard: id,
-        cardHolder: _.get(card, 'holder'),
-        expiryMonth: _.get(card, 'expiryMonth'),
-        expiryYear: _.get(card, 'expiryYear'),
-      };
+  const _handleSubmitCreditCardForm = async (cardFormValues) => {
+    setCreditCardForm(cardFormValues);
+    if (peachMobileRef) {
+      setCreditCardForm(cardFormValues);
+      const cardModel = tokenizeCardModel(cardFormValues);
+      const tokenizedCard = await dispatch(
+        tokenizeCard({
+          entityId: _.get(cardModel, 'entityId', ''),
+          paymentBrand: _.get(cardModel, 'paymentBrand'),
+          'card.holder': _.get(cardModel, 'card.holder'),
+          'card.number': _.get(cardModel, 'card.number'),
+          'card.expiryMonth': _.get(cardModel, 'card.expiryMonth'),
+          'card.expiryYear': _.get(cardModel, 'card.expiryYear', ''),
+          'card.cvv': _.get(cardModel, 'card.cvv'),
+        }),
+      );
 
-      return dispatch(createUserCreditCardAction(finalData)).then((creditCardResponse) => {
-        if (successful(creditCardResponse)) {
-          _openVerificationPaymentScreen(finalData);
-        }
-      });
-    });
+      return PeachMobile.createTransaction(
+        checkoutID,
+        _.get(cardModel, 'paymentBrand'),
+        _.get(cardModel, 'card.holder'),
+        _.get(cardModel, 'card.number'),
+        _.get(cardModel, 'card.expiryMonth'),
+        _.get(cardModel, 'card.expiryYear', ''),
+        _.get(cardModel, 'card.cvv'),
+      )
+        .then(async (transaction) => {
+          await PeachMobile.submitTransaction(transaction).then(async () => {
+            await dispatch(submitCardTransactionAction(checkoutID))
+              .then(() => {
+                const finalData = {
+                  cardNumber: _.get(cardModel, 'obfuscatedCardNumber'),
+                  cardType: _.get(cardModel, 'paymentBrand'),
+                  cardHolder: _.get(cardModel, 'card.holder'),
+                  expiryMonth: _.get(cardModel, 'card.expiryMonth'),
+                  expiryYear: _.get(cardModel, 'card.expiryYear'),
+                  senderId,
+                  tokenizedCard: _.get(tokenizedCard, 'data.id', ''),
+                };
+                return dispatch(createUserCreditCardAction(finalData))
+                  .then((creditCardResponse) => {
+                    console.warn({ creditCardResponse });
+                    if (successful(creditCardResponse)) {
+                      _openVerificationPaymentScreen(creditCardResponse);
+                    }
+                  })
+                  .catch((error) => console.warn('Create card error', { error }));
+              })
+              .catch((error) => {
+                return error;
+              });
+          });
+        })
+        .catch(() => flashService.error('Could not add card!'));
+    }
   };
 
   const _getParcelRequest = () => ({
@@ -154,7 +199,9 @@ const SendParcelScreen = () => {
   };
 
   const _renderPagination = () => (
-    <View style={[Layout.row, Layout.justifyContentBetween, Gutters.regularPadding]}>
+    <View
+      style={[Layout.row, Layout.justifyContentBetween, Gutters.regularPadding, styles.pagination]}
+    >
       {formData.map((form, index) => {
         const buttonStyles = [
           styles.carouselDotStyle,
@@ -209,17 +256,28 @@ const SendParcelScreen = () => {
       id: 'creditCardForm',
       content: (
         <>
-          <Index title="My Debit/Credit Card" />
-          <Divider />
-          <Text style={[Fonts.textLarge, Gutters.smallHPadding]}>
-            Before you can create a new send request, we will need your payment details.
-          </Text>
-          <Divider />
-          <View style={[Gutters.smallHMargin]}>
+          <View style={[Gutters.smallHMargin, styles.creditCardForm]}>
+            <Index title="My Debit/Credit Card" />
+            <Divider />
+            <Text style={[Fonts.textLarge, Gutters.smallHPadding]}>
+              Before you can create a new send request, we will need your payment details.
+            </Text>
+            <Divider />
             <CreditCardForm
               initialValues={userCreditCardModel(creditCardForm)}
               submitForm={_handleSubmitCreditCardForm}
               onSuccess={_handleCreditCardSuccess}
+            />
+            <PeachMobile
+              mode={config.peachPayments.peachPaymentMode}
+              urlScheme="com.kunnek.payments"
+              cardHolder={_.get(creditCardForm, 'cardHolder')}
+              cardNumber={_.get(creditCardForm, 'cardNumber')}
+              cardExpiryYear={`20${_.get(creditCardForm, 'expiryDate', '').slice(3)}`}
+              cardExpiryMonth={_.get(creditCardForm, 'expiryDate', '').slice(0, 2)}
+              cardCVV={_.get(creditCardForm, 'cvv')}
+              checkoutID={checkoutID}
+              ref={peachMobileRef}
             />
           </View>
         </>
@@ -228,7 +286,7 @@ const SendParcelScreen = () => {
   }
 
   return (
-    <FormScreenContainer>
+    <FormScreenContainer contentContainerStyle={formIndex === 2 ? styles.formContainer : {}}>
       {_renderPagination()}
       {_renderItem()}
     </FormScreenContainer>
@@ -251,7 +309,12 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
     width: 100,
   },
+  creditCardForm: { height: '95%' },
   currentCarouselDotStyle: {
     backgroundColor: Colors.carouselDotsColour,
   },
+  formContainer: {
+    flex: 1,
+  },
+  pagination: { flex: 0.1 },
 });

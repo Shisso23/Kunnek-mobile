@@ -1,13 +1,15 @@
 import _ from 'lodash';
 
-import { flashService, parcelRequestService, paymentService } from '../../services';
+import { flashService, paymentService } from '../../services';
 import { setCheckoutIdAction, setPaymentAction, setPaymentsLoadingAction } from './payment.reducer';
 
 export const createPaymentAction = (data) => async (dispatch) => {
   dispatch(setPaymentsLoadingAction(true));
-  parcelRequestService
+  return paymentService
     .create(data)
-    .then((payment) => dispatch(setPaymentAction(payment)))
+    .then((payment) => {
+      return dispatch(setPaymentAction(payment));
+    })
     .finally(() => {
       dispatch(setPaymentsLoadingAction(false));
     });
@@ -22,7 +24,9 @@ export const fetchCheckoutId = (id, data) => (dispatch) => {
       dispatch(setCheckoutIdAction(checkoutId));
       return checkoutId;
     })
-    .catch((error) => flashService.error(error.message))
+    .catch((error) => {
+      return flashService.error(error.message);
+    })
     .finally(() => {
       dispatch(setPaymentsLoadingAction(false));
     });

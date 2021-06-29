@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { Divider } from 'react-native-elements';
 import _ from 'lodash';
@@ -8,7 +8,10 @@ import PeachMobile from 'react-native-peach-mobile';
 import {
   createUserCreditCardAction,
   submitCardTransactionAction,
+  tokenizeCard,
 } from '../../../reducers/user-reducer/user-cards.actions';
+import { tokenizeCardModel } from '../../../models/app/credit-card/tokenize-card.model';
+import { successful } from '../../../helpers/errors.helper';
 import { createCheckoutIdAction } from '../../../reducers/user-reducer/user-cards.actions';
 import Index from '../../../components/atoms/title';
 import { FormScreenContainer } from '../../../components';
@@ -16,72 +19,91 @@ import CreditCardForm from '../../../components/forms/credit-card/credit-card.fo
 import { userCreditCardModel } from '../../../models/app/user/user-credit-card.model';
 import config from '../../../config';
 import { StyleSheet } from 'react-native';
+import { PAYMENT_TYPES } from '../../../services/sub-services/payment-service/payment.service';
+import { getCurrency } from '../../../helpers/payment.helper';
+import { flashService } from '../../../services';
 
 const AddCardScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const senderId = useSelector((state) => state.userReducer.senderId);
   const [creditCardForm, setCreditCardForm] = useState({});
-  const [checkoutID, setCheckoutID] = useState({});
+  const [checkoutID, setCheckoutID] = useState('');
   const peachMobileRef = useRef(null);
 
   useEffect(() => {
-    dispatch(createCheckoutIdAction())
-      .then((id) => {
-        console.log('create token', id);
-        setCheckoutID(`${id}`);
-        return id;
-      })
-      .catch((error) => console.log('error', { error }));
+    dispatch(createCheckoutIdAction()).then((id) => {
+      setCheckoutID(id);
+    });
   }, []);
 
-  const _onSubmit = (cardFormValues) => {
+  const _openVerificationPaymentScreen = (card) => {
+    navigation.navigate('Payment', {
+      message: `We will make a charge of ${getCurrency()}1.00 on your credit card to verify that your card number and details are correct. This charge will be reversed once successful.`,
+      totalAmount: 1,
+      paymentType: PAYMENT_TYPES.verification,
+      card,
+    });
+  };
+
+  const _onSubmit = async (cardFormValues) => {
     if (peachMobileRef) {
       setCreditCardForm(cardFormValues);
+      const cardModel = tokenizeCardModel(cardFormValues);
+      const tokenizedCard = await dispatch(
+        tokenizeCard({
+          entityId: _.get(cardModel, 'entityId', ''),
+          paymentBrand: _.get(cardModel, 'paymentBrand'),
+          'card.holder': _.get(cardModel, 'card.holder'),
+          'card.number': _.get(cardModel, 'card.number'),
+          'card.expiryMonth': _.get(cardModel, 'card.expiryMonth'),
+          'card.expiryYear': _.get(cardModel, 'card.expiryYear', ''),
+          'card.cvv': _.get(cardModel, 'card.cvv'),
+        }),
+      );
+
       return PeachMobile.createTransaction(
         checkoutID,
-        null,
-        _.get(cardFormValues, 'cardHolder'),
-        _.get(cardFormValues, 'cardNumber'),
-        _.get(cardFormValues, 'expiryDate').slice(0, 2),
-        `20${_.get(creditCardForm, 'expiryDate', '').slice(3)}`,
-        _.get(cardFormValues, 'cvv'),
+        _.get(cardModel, 'paymentBrand'),
+        _.get(cardModel, 'card.holder'),
+        _.get(cardModel, 'card.number'),
+        _.get(cardModel, 'card.expiryMonth'),
+        _.get(cardModel, 'card.expiryYear', ''),
+        _.get(cardModel, 'card.cvv'),
       )
         .then(async (transaction) => {
-          console.log('Transaction', { transaction });
-          await PeachMobile.submitTransaction(transaction)
-            .then(async () => {
-              console.log('submitted transaction! Peach Mobile');
-              await dispatch(submitCardTransactionAction(checkoutID))
-                .then(() => {
-                  console.log('submitted transaction! Action');
-                  const finalData = {
-                    cardNumber: `************${_.get(cardFormValues, 'cardNumber').slice(
-                      _.get(cardFormValues, 'cardNumber').length - 4,
-                    )}`,
-                    cardType: _.get(cardFormValues, 'cardType'),
-                    cardHolder: _.get(cardFormValues, 'cardHolder'),
-                    expiryMonth: _.get(cardFormValues, 'expiryDate').slice(0, 2),
-                    expiryYear: _.get(cardFormValues, 'expiryDate').slice(3),
-                    senderId: [],
-                  };
-                  return dispatch(createUserCreditCardAction(finalData))
-                    .then(() => {
-                      console.log('create user card success');
-                      navigation.goBack();
-                    })
-                    .catch((error) => console.log('error creating card', { error }));
-                })
-                .catch((error) => {
-                  console.log('error message1: ' + error.message);
-                  return error;
-                });
-            })
-            .catch((error) => {
-              console.log('error message2: ' + error);
-            });
+          await PeachMobile.submitTransaction(transaction).then(async () => {
+            await dispatch(submitCardTransactionAction(checkoutID))
+              .then(() => {
+                const finalData = {
+                  cardNumber: _.get(cardModel, 'obfuscatedCardNumber'),
+                  cardType: _.get(cardModel, 'paymentBrand'),
+                  cardHolder: _.get(cardModel, 'card.holder'),
+                  expiryMonth: _.get(cardModel, 'card.expiryMonth'),
+                  expiryYear: _.get(cardModel, 'card.expiryYear'),
+                  senderId,
+                  tokenizedCard: _.get(tokenizedCard, 'data.id', ''),
+                };
+                return dispatch(createUserCreditCardAction(finalData))
+                  .then((creditCardResponse) => {
+                    console.warn({ creditCardResponse });
+                    if (successful(creditCardResponse)) {
+                      _openVerificationPaymentScreen(creditCardResponse);
+                    }
+                  })
+                  .catch((error) => console.warn('Create card error', { error }));
+              })
+              .catch((error) => {
+                return error;
+              });
+          });
         })
-        .catch((error) => console.log('create transaction error', { error }));
+        .catch(() => flashService.error('Could not add card!'));
     }
+  };
+
+  const onSuccess = () => {
+    flashService.success('added card successfully!');
   };
 
   return (
@@ -92,18 +114,12 @@ const AddCardScreen = () => {
         <CreditCardForm
           initialValues={userCreditCardModel(creditCardForm)}
           submitForm={_onSubmit}
-          onSuccess={() => {}}
+          onSuccess={onSuccess}
         />
       </FormScreenContainer>
       <PeachMobile
         mode={config.peachPayments.peachPaymentMode}
         urlScheme="com.kunnek.payments"
-        cardHolder={_.get(creditCardForm, 'cardHolder')}
-        cardNumber={_.get(creditCardForm, 'cardNumber')}
-        cardExpiryYear={`20${_.get(creditCardForm, 'expiryDate', '').slice(3)}`}
-        cardExpiryMonth={_.get(creditCardForm, 'expiryDate', '').slice(0, 2)}
-        cardCVV={_.get(creditCardForm, 'cvv')}
-        checkoutID={checkoutID}
         ref={peachMobileRef}
       />
     </>

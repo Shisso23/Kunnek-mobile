@@ -16,18 +16,19 @@ import {
   createPaymentAction,
   fetchCheckoutId,
 } from '../../../reducers/payment-reducer/payment.actions';
+
 import { setPaymentsLoadingAction } from '../../../reducers/payment-reducer/payment.reducer';
 import { getServiceFee } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 import { ScreenContainer } from '../../../components';
 import { useTheme } from '../../../theme';
 import Index from '../../../components/atoms/title';
 
-const PaymentScreen = ({ isLoading, route, retry = false, payment = {} }) => {
+const PaymentScreen = ({ isLoading, route, retry = false }) => {
   const { Fonts, Gutters, Layout } = useTheme();
   const { message, parcelRequest, totalAmount, paymentType, card } = route.params;
   const dispatch = useDispatch();
   const [cvvNumber, setCvvNumber] = useState('');
-  const peachMobile = useRef(PeachMobile);
+  const peachMobileRef = useRef(null);
   const { checkoutId } = useSelector((state) => state.paymentReducer);
   const { serviceFee } = useSelector((state) => state.parcelRequestReducer);
 
@@ -36,7 +37,9 @@ const PaymentScreen = ({ isLoading, route, retry = false, payment = {} }) => {
   }, [parcelRequest]);
 
   const renderPeachPayment = () => {
-    return <PeachMobile mode={config.peachPaymentMode} urlScheme="kunnekp2p" />;
+    return (
+      <PeachMobile mode={config.peachPaymentMode} urlScheme="kunnekp2p" ref={peachMobileRef} />
+    );
   };
 
   const onPay = async () => {
@@ -53,11 +56,11 @@ const PaymentScreen = ({ isLoading, route, retry = false, payment = {} }) => {
     );
     if (successful(finalPayment)) {
       const peachPaymentType =
-        retry && !_.isNil(_.get(payment, 'peach_payment_type'))
-          ? _.get(payment, 'peach_payment_type')
+        retry && !_.isNil(_.get(finalPayment, 'peach_payment_type'))
+          ? _.get(finalPayment, 'peach_payment_type')
           : 'DB';
       await dispatch(
-        fetchCheckoutId(_.get(finalPayment, 'id'), {
+        fetchCheckoutId(_.get(finalPayment.payload, 'id'), {
           payment_type: peachPaymentType,
         }),
       );
@@ -72,29 +75,34 @@ const PaymentScreen = ({ isLoading, route, retry = false, payment = {} }) => {
   const createTransaction = async () => {
     if (!_.isNil(card)) {
       setIsLoading(true);
-      peachMobile.current
-        .createTransactionWithToken(checkoutId, card.tokenized_card, card.card_type, cvvNumber)
-        .then((transaction) => {
-          peachMobile.current
-            .submitTransaction(transaction, config.peachPaymentMode)
-            .then(async (response) => {
-              if (response) {
-                flashService.success('Payment Processing...');
-              } else {
-                flashService.error('Sorry, something went wrong with payment. Please try again.');
-              }
-            })
-            .catch((error) => {
-              flashService.error(error.message);
-            })
-            .finally(() => {
-              setIsLoading(false);
-            });
-        })
-        .catch((error) => {
-          flashService.error(error.message);
-          setIsLoading(false);
-        });
+      if (peachMobileRef) {
+        PeachMobile.createTransactionWithToken(
+          checkoutId,
+          _.get(card, 'tokenizedCard', ''),
+          _.get(card, 'cardType'),
+          cvvNumber,
+        )
+          .then((transaction) => {
+            PeachMobile.submitTransaction(transaction, config.peachPaymentMode)
+              .then(async (response) => {
+                if (response) {
+                  flashService.success('Payment Processing...');
+                } else {
+                  flashService.error('Sorry, something went wrong with payment. Please try again.');
+                }
+              })
+              .catch((error) => {
+                flashService.error(error.message);
+              })
+              .finally(() => {
+                setIsLoading(false);
+              });
+          })
+          .catch((error) => {
+            flashService.error(error.message);
+            setIsLoading(false);
+          });
+      }
     }
   };
 
@@ -139,7 +147,6 @@ PaymentScreen.key = 'paymentScene';
 
 PaymentScreen.propTypes = {
   route: PropTypes.object.isRequired,
-  payment: PropTypes.object.isRequired,
   message: PropTypes.string,
   parcelRequest: PropTypes.object,
   totalAmount: PropTypes.number,
