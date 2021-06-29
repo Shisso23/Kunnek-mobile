@@ -22,7 +22,6 @@ export const userModel = (_apiUserModel = {}) => ({
   get fullName() {
     return `${this.firstName} ${this.lastName}`;
   },
-  id: _.get(_apiUserModel, 'id', ''),
 });
 
 export const apiUserModel = (_appUserModel = {}) => ({

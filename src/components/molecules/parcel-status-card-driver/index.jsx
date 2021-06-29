@@ -10,7 +10,6 @@ import IconListItem from '../icon-list-item';
 import { useDispatch } from 'react-redux';
 import {
   cancelJobSender,
-  parcelStatus,
   progressPackageStatus,
 } from '../../../helpers/parcel-request-status.helper';
 import { updateParcelStatus } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
@@ -21,7 +20,6 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
   const navigation = useNavigation();
 
   const parcelStatusDecoded = parcelStatusDeliverer(parcelRequest);
-  const parcelStatusNumber = parcelStatus[_.get(parcelRequest, 'status')];
 
   const _buttonClick = () => {
     const newStatus = progressPackageStatus(parcelRequest);
@@ -29,8 +27,8 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
   };
 
   const _renderOTP = () => {
-    const mobileNumber = _.get(parcelRequest, 'receiverMobileNumber');
-    navigation.navigate('OTP', mobileNumber);
+    _buttonClick();
+    navigation.navigate('OTP', parcelRequest);
   };
 
   return (
