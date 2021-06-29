@@ -271,12 +271,6 @@ const SendParcelScreen = () => {
             <PeachMobile
               mode={config.peachPayments.peachPaymentMode}
               urlScheme="com.kunnek.payments"
-              cardHolder={_.get(creditCardForm, 'cardHolder')}
-              cardNumber={_.get(creditCardForm, 'cardNumber')}
-              cardExpiryYear={`20${_.get(creditCardForm, 'expiryDate', '').slice(3)}`}
-              cardExpiryMonth={_.get(creditCardForm, 'expiryDate', '').slice(0, 2)}
-              cardCVV={_.get(creditCardForm, 'cvv')}
-              checkoutID={checkoutID}
               ref={peachMobileRef}
             />
           </View>
