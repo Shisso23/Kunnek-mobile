@@ -129,7 +129,7 @@ const CreditCardForm = ({ submitForm, onSuccess, initialValues }) => {
               containerStyle={styles.peachPaymentsImage}
             />
             <SafeAreaView style={styles.submitButton}>
-              <Button onPress={handleSubmit} loading={isSubmitting} title="Continue" />
+              <Button onPress={handleSubmit} loading={isSubmitting} title="Add Card" />
             </SafeAreaView>
           </>
         );
