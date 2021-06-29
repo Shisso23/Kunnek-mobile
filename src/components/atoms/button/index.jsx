@@ -6,8 +6,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import useTheme from '../../../theme/hooks/useTheme';
 
-const StatusButton = ({ status, color, action }) => {
-  const { Common, Layout, Gutters } = useTheme();
+const Button = (props) => {
+  const { Common, Layout, Gutters, Colors } = useTheme();
+  const { children, style, ...rest } = props;
 
   return (
     <TouchableOpacity
@@ -16,27 +17,31 @@ const StatusButton = ({ status, color, action }) => {
         Layout.center,
         Gutters.smallVMargin,
         Gutters.smallHPadding,
-        { backgroundColor: color },
+        { backgroundColor: Colors.primary },
+        style,
       ]}
-      onPress={action}
+      {...rest}
     >
-      <Text style={[Common.centerWhiteText]}>{status}</Text>
+      <Text style={[Common.centerWhiteText]}>{children}</Text>
     </TouchableOpacity>
   );
 };
 
-StatusButton.propTypes = {
-  color: PropTypes.string.isRequired,
-  status: PropTypes.string.isRequired,
-  action: PropTypes.func,
+Button.propTypes = {
+  children: PropTypes.string.isRequired,
+  style: PropTypes.array,
+};
+
+Button.defaultProps = {
+  style: [],
 };
 
 const styles = StyleSheet.create({
   box: {
-    borderRadius: 12,
-    minWidth: 100,
-    height: 30,
+    minWidth: 120,
+    height: 60,
+    alignSelf: 'center',
   },
 });
 
-export default StatusButton;
+export default Button;

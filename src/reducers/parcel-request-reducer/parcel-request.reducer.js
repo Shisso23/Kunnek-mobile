@@ -66,6 +66,8 @@ export const setFilterParcelsAction = setFilterParcels.action;
 const setParcelFilterFields = new CreateAction(reducerName, 'SET_PARCEL_FILTER_FIELDS');
 export const setParcelsFilterFieldsAction = setParcelFilterFields.action;
 
+export const parcelRequestSelector = (reducers) => reducers.parcelRequestReducer;
+
 const initialState = {
   parcelRequestLoading: false,
   parcelRequest: undefined,

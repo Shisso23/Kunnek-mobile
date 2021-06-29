@@ -21,6 +21,27 @@ export const getParcelRequestsAction = (params = {}) => (dispatch) => {
     });
 };
 
+export const updateParcelStatus = (parcelRequest, newStatus) => (dispatch, getState) => {
+  dispatch(setParcelRequestLoadingAction(true));
+
+  const { parcelRequests = [] } = getState().parcelRequestReducer;
+  const parcelRequestIndex = _.findIndex(parcelRequests, (parcel) => {
+    return parcel.id === parcelRequest.id;
+  });
+
+  return parcelRequestService
+    .updateStatus(_.get(parcelRequest, 'id'), { next_status: newStatus })
+    .then(() => {
+      parcelRequest.status = newStatus;
+      parcelRequests[parcelRequestIndex] = parcelRequest;
+
+      return dispatch(setParcelRequestsAction(parcelRequests));
+    })
+    .finally(() => {
+      dispatch(setParcelRequestLoadingAction(false));
+    });
+};
+
 export const filterParcelRquestsAction = (formData) => {
   return async (dispatch) => {
     return parcelRequestService.filterParcels(formData).then((parcelRequests) => {

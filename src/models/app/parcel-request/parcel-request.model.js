@@ -67,3 +67,12 @@ export const apiParcelRequestModel = (_appParcelRequestModel = {}) => {
 
   return data;
 };
+
+export const apiParcelStatusUpdateModel = (_appParcelStatusUpdateModel = {}) => {
+  const data = {
+    job: {
+      next_status: _.get(_appParcelStatusUpdateModel, 'next_status'),
+    },
+  };
+  return data;
+};

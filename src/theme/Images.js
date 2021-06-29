@@ -23,4 +23,5 @@ export default () => ({
   timerBlue: require('../assets/images/timer-icon-blue.png'),
   truckBlue: require('../assets/images/truck-icon-blue.png'),
   writeCommentBlue: require('../assets/images/write-comment-icon-blue.png'),
+  mailIcon: require('../assets/images/mail-icon-black.png'),
 });

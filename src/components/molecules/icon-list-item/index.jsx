@@ -2,11 +2,13 @@ import { StyleSheet, View } from 'react-native';
 import { Image, Text } from 'react-native-elements';
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
+
 import useTheme from '../../../theme/hooks/useTheme';
 import { Colors } from '../../../theme/Variables';
 import StatusButton from '../../atoms/status-button';
 
-const IconListItem = ({ icon, title, description, date, divider, activeMessage }) => {
+const IconListItem = ({ icon, title, description, date, divider, activeMessage, action }) => {
   const { Gutters, Layout, Fonts } = useTheme();
 
   return (
@@ -25,7 +27,9 @@ const IconListItem = ({ icon, title, description, date, divider, activeMessage }
         </View>
       </View>
       <View style={[Layout.colVCenter]}>
-        {activeMessage && <StatusButton status={activeMessage} color={Colors.primary} />}
+        {!_.isNil(activeMessage) && !_.isEmpty(activeMessage) && (
+          <StatusButton status={activeMessage} color={Colors.primary} action={action} />
+        )}
       </View>
     </>
   );
@@ -38,6 +42,7 @@ IconListItem.propTypes = {
   date: PropTypes.string,
   divider: PropTypes.bool,
   activeMessage: PropTypes.string,
+  action: PropTypes.func,
 };
 
 IconListItem.defaultProps = {
@@ -50,24 +55,24 @@ IconListItem.defaultProps = {
 export default IconListItem;
 
 const styles = StyleSheet.create({
-  noBold: {
-    fontWeight: 'normal',
+  horizontalDivider: {
+    borderBottomWidth: 1,
+    borderColor: Colors.greyShadow,
+    marginTop: 8,
+    width: '95%',
+  },
+  iconSize: {
+    height: 30,
+    resizeMode: 'contain',
+    width: 30,
   },
   leftAlign: {
     alignSelf: 'flex-start',
   },
-  horizontalDivider: {
-    marginTop: 8,
-    borderColor: Colors.greyShadow,
-    borderBottomWidth: 1,
-    width: '95%',
-  },
-  iconSize: {
-    width: 30,
-    height: 30,
-    resizeMode: 'contain',
-  },
   lightText: {
     color: Colors.inputPlaceholderColor,
+  },
+  noBold: {
+    fontWeight: 'normal',
   },
 });

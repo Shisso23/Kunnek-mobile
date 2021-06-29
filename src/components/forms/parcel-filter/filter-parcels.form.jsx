@@ -197,9 +197,7 @@ export default FilterParcels;
 const styles = StyleSheet.create({
   calendarIcon: { left: 10, position: 'absolute' },
   clearButton: {
-    alignSelf: 'flex-end',
-    borderRadius: 10,
-    borderWidth: 0.3,
+    alignSelf: 'center',
   },
   clearText: { color: Colors.primary, fontWeight: 'bold' },
   containerStyle: { backgroundColor: Colors.white, marginTop: -13 },
