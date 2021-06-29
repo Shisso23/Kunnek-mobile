@@ -161,13 +161,21 @@ export const parcelStatusDeliverer = (parcelRequest) => {
     parcelDetailsMessages.pickUp.interaction = 'Initiate Pick-up';
   }
 
-  if (parcelStatusNumber > parcelStatus['accepted_by_sender']) {
+  if (parcelStatusNumber === parcelStatus['pending_pickup']) {
+    parcelDetailsMessages.pickUp.description =
+      "Awaiting sender approval (Don't proceed while this message shows!).";
+  }
+
+  if (parcelStatusNumber > parcelStatus['pending_pickup']) {
     parcelDetailsMessages.pickUp.title = 'Pick-up';
     parcelDetailsMessages.pickUp.description = 'Pick-up Completed';
   }
 
-  if (parcelStatusNumber >= parcelStatus['completed_pickup']) {
-    parcelDetailsMessages.delivery.title = 'Pending';
+  if (
+    parcelStatusNumber >= parcelStatus['completed_pickup'] &&
+    parcelStatusNumber <= parcelStatus['pending_delivery']
+  ) {
+    parcelDetailsMessages.delivery.title = 'Delivery';
     parcelDetailsMessages.delivery.description =
       'Once you have arrived at the delivery location initiate delivery to receive the OTP pin for payment';
     parcelDetailsMessages.delivery.interaction = 'Initiate Delivery';
