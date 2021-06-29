@@ -24,6 +24,7 @@ const VehiclesList = ({ items, readOnly }) => {
           <Text>Add vehicle</Text>
         </TouchableOpacity>
       );
+    return null;
   };
 
   if (_.isEmpty(items)) {

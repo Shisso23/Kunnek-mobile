@@ -44,7 +44,7 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
         activeMessage={_.get(parcelStatusDecoded.status, 'interaction')}
         date={_.get(parcelStatusDecoded.status, 'date')}
         divider={true}
-        action={_cancelRequest()}
+        action={_cancelRequest}
       />
       <IconListItem
         icon={_.get(parcelStatusDecoded.pickUp, 'icon') ? Images.truckBlue : Images.truck}

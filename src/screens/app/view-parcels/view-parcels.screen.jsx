@@ -89,7 +89,7 @@ const ViewParcelsScreen = ({ route }) => {
       return (
         <ParcelDetailsFooter buttons={icons} style={[icons.length === 1 && styles.footerWidth]} />
       );
-    return <></>;
+    return null;
   };
 
   const _RequestToDeliver = () => {
@@ -104,7 +104,7 @@ const ViewParcelsScreen = ({ route }) => {
       );
     }
 
-    return <></>;
+    return null;
   };
 
   return (
@@ -122,8 +122,6 @@ const ViewParcelsScreen = ({ route }) => {
 ViewParcelsScreen.propTypes = {
   route: PropTypes.object,
 };
-
-ViewParcelsScreen.defaultProps = {};
 
 export default ViewParcelsScreen;
 
