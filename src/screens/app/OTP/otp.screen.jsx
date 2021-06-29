@@ -4,14 +4,14 @@ import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Modal } from 'react-native-paper';
 import _ from 'lodash';
+import { useNavigation } from '@react-navigation/core';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Index from '../../../components/atoms/title';
 import { useTheme } from '../../../theme';
 import { Image, Text } from 'react-native-elements';
 import { OTPInputField } from '../../../components/molecules';
 import { Button, PaperContainer } from '../../../components';
-import { useNavigation } from '@react-navigation/core';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   sendOTP,
   updateParcelStatus,
@@ -41,8 +41,9 @@ const OTPScreen = ({ route }) => {
     dispatch(verifyParcelDelivery(actionId, otpValue)).then((result) => {
       if (result === true) {
         const newStatus = progressPackageStatus(parcelRequest);
-        dispatch(updateParcelStatus(parcelRequest, newStatus));
-        return navigation.navigate('ParcelDetails');
+        return dispatch(updateParcelStatus(parcelRequest, newStatus)).then(
+          navigation.navigate('ParcelDetails'),
+        );
       }
       setErrorMessage('please fill in the correct OTP');
     });
@@ -70,7 +71,7 @@ const OTPScreen = ({ route }) => {
           <Text>Verification</Text>
           <Text> </Text>
           <Text>{`Enter OTP code sent to the receiver (${_getMobileNumber()})`}</Text>
-          <Text style={{ color: Colors.primary }} onPress={() => _sendOTP()}>
+          <Text style={{ color: Colors.primary }} onPress={_sendOTP}>
             Resend OTP
           </Text>
         </View>
