@@ -7,62 +7,60 @@ import { ListItem, Text } from 'react-native-elements';
 import PropTypes from 'prop-types';
 
 import useTheme from '../../../theme/hooks/useTheme';
-import { FlatList } from '../../containers';
-
-const getIcon = () => <Icon name="car-side" size={26} />;
 
 const VehiclesList = ({ items, readOnly }) => {
   const navigation = useNavigation();
   const { Common, Layout, Gutters } = useTheme();
 
-  const ListHeader = () => <Text>{`${readOnly ? 'V' : 'My v'}ehicles`}</Text>;
+  if (_.isEmpty(items)) {
+    return null;
+  }
 
-  const ListFooter = () => {
+  const _renderItems = () => {
+    return _.map(items, (item, index) => (
+      <ListItem key={`vehicle-${index}`}>
+        <Icon name="car-side" size={26} />
+        <ListItem.Content>
+          <ListItem.Title>{`${_.get(item, 'make', '')} ${_.get(
+            item,
+            'model',
+            '',
+          )}`}</ListItem.Title>
+          <ListItem.Subtitle>{_.get(item, 'registrationNumber', '')}</ListItem.Subtitle>
+        </ListItem.Content>
+        <ListItem.Chevron />
+      </ListItem>
+    ));
+  };
+
+  const _listFooter = () => {
     if (!readOnly)
       return (
         <TouchableOpacity style={[Layout.rowCenter]} onPress={() => navigation.push('AddVehicle')}>
           <Text>Add vehicle</Text>
         </TouchableOpacity>
       );
-  };
-
-  if (_.isEmpty(items)) {
     return null;
-  }
+  };
 
   return (
     <>
       <View style={[Common.viewCard, Gutters.smallVMargin]}>
-        <FlatList
-          data={items}
-          ListHeaderComponent={ListHeader}
-          ListFooterComponent={ListFooter}
-          renderItem={(item, index) => (
-            <ListItem key={index}>
-              {getIcon()}
-              <ListItem.Content>
-                <ListItem.Title>{`${_.get(item, 'make', '')} ${_.get(
-                  item,
-                  'model',
-                  '',
-                )}`}</ListItem.Title>
-                <ListItem.Subtitle>{_.get(item, 'registrationNumber', '')}</ListItem.Subtitle>
-              </ListItem.Content>
-              <ListItem.Chevron />
-            </ListItem>
-          )}
-        />
+        <Text>{`${readOnly ? 'V' : 'My v'}ehicles`}</Text>
+        {_renderItems()}
+        {_listFooter()}
       </View>
     </>
   );
 };
 
 VehiclesList.propTypes = {
-  items: PropTypes.array.isRequired,
+  items: PropTypes.array,
   readOnly: PropTypes.bool,
 };
 
 VehiclesList.defaultProps = {
+  items: [],
   readOnly: false,
 };
 

@@ -9,9 +9,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Index from '../../../components/atoms/title';
 import { useTheme } from '../../../theme';
-import { Image, Text } from 'react-native-elements';
+import { Button, Image, Text } from 'react-native-elements';
 import { OTPInputField } from '../../../components/molecules';
-import { Button, PaperContainer } from '../../../components';
+import { PaperContainer } from '../../../components';
 import {
   sendOTP,
   updateParcelStatus,
@@ -84,20 +84,22 @@ const OTPScreen = ({ route }) => {
             }}
             error={errorMessage}
           />
-          <Button style={[styles.buttonSize, Gutters.regularTMargin]} onPress={_submitOTP}>
-            Continue
-          </Button>
+          <Button
+            style={[styles.buttonSize, Gutters.regularTMargin, styles.box]}
+            onPress={_submitOTP}
+            title="Continue"
+          />
         </PaperContainer>
       </ScrollView>
       <Modal visible={popUpView} transparent={true}>
         <PaperContainer style={[Layout.center, Layout.alignSelfCenter, styles.halfWidth]}>
           <Text>OTP sent successfully</Text>
           <Button
+            containerStyle={Layout.fullWidth}
             style={[styles.buttonSize, Gutters.regularTMargin]}
             onPress={() => setPopUpView(!popUpView)}
-          >
-            Close
-          </Button>
+            title="Close"
+          />
         </PaperContainer>
       </Modal>
     </>

@@ -155,8 +155,6 @@ EditParcelScreen.propTypes = {
   route: PropTypes.object.isRequired,
 };
 
-EditParcelScreen.defaultProps = {};
-
 export default EditParcelScreen;
 
 const styles = StyleSheet.create({
