@@ -110,8 +110,8 @@ const SendParcelScreen = () => {
         _.get(cardModel, 'card.cvv'),
       )
         .then(async (transaction) => {
-          await PeachMobile.submitTransaction(transaction).then(async () => {
-            await dispatch(submitCardTransactionAction(checkoutID))
+          return await PeachMobile.submitTransaction(transaction).then(async () => {
+            return await dispatch(submitCardTransactionAction(checkoutID))
               .then(() => {
                 const finalData = {
                   cardNumber: _.get(cardModel, 'obfuscatedCardNumber'),
@@ -128,6 +128,7 @@ const SendParcelScreen = () => {
                     if (successful(creditCardResponse)) {
                       _openVerificationPaymentScreen(creditCardResponse);
                     }
+                    return creditCardResponse;
                   })
                   .catch((error) => console.warn('Create card error', { error }));
               })
@@ -170,7 +171,7 @@ const SendParcelScreen = () => {
 
   const _handleCreditCardSuccess = (returnedData) => {
     if (successful(returnedData)) {
-      navigation.navigate('ParcelDeliveryDetails');
+      flashService.success('Card created successfully.');
     }
   };
 

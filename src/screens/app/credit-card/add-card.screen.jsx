@@ -72,8 +72,8 @@ const AddCardScreen = () => {
         _.get(cardModel, 'card.cvv'),
       )
         .then(async (transaction) => {
-          await PeachMobile.submitTransaction(transaction).then(async () => {
-            await dispatch(submitCardTransactionAction(checkoutID))
+          return await PeachMobile.submitTransaction(transaction).then(async () => {
+            return await dispatch(submitCardTransactionAction(checkoutID))
               .then(() => {
                 const finalData = {
                   cardNumber: _.get(cardModel, 'obfuscatedCardNumber'),
@@ -90,6 +90,7 @@ const AddCardScreen = () => {
                     if (successful(creditCardResponse)) {
                       _openVerificationPaymentScreen(creditCardResponse);
                     }
+                    return creditCardResponse;
                   })
                   .catch((error) => console.warn('Create card error', { error }));
               })

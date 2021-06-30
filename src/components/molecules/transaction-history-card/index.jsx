@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, FlatList, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import _ from 'lodash';
 import { Text } from 'react-native-elements';
@@ -11,6 +12,7 @@ import StatusBox from '../../atoms/status-box';
 
 const TransactionHistoryCard = ({ items }) => {
   const { Colors, Layout, Gutters } = useTheme();
+  const navigation = useNavigation();
 
   if (_.isEmpty(items)) {
     return null;
@@ -24,6 +26,7 @@ const TransactionHistoryCard = ({ items }) => {
           <TouchableOpacity
             key={index}
             style={[Layout.rowCenterSpaceBetween, Gutters.smallVMargin]}
+            onPress={() => navigation.navigate('TransactionDetails', { payment: item })}
           >
             <View style={[Layout.rowCenterSpaceAround]}>
               <Icon name="user" size={26} color={Colors.primary} />

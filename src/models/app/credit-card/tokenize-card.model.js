@@ -10,7 +10,7 @@ export const tokenizeCardModel = (data = {}) => {
 
   return {
     entityId: _.get(config.peachPayments, 'pp3dEntityId', ''),
-    paymentBrand: getCreditCardNameByNumber(_.get(data, 'cardNumber')).toUpperCase(),
+    paymentBrand: getCreditCardNameByNumber(_.get(data, 'cardNumber', '')).toUpperCase(),
     'card.number': _.get(data, 'cardNumber'),
     obfuscatedCardNumber: `************${_.get(data, 'cardNumber').slice(
       _.get(data, 'cardNumber').length - 4,

@@ -19,6 +19,7 @@ import ParcelRequestsScreen from '../../screens/app/parcel-requests/parcel-reque
 import AddCardScreen from '../../screens/app/credit-card/add-card.screen';
 import { Colors } from '../../theme/Variables';
 import ParcelDetailsScreen from '../../screens/app/parcel-details/parcel-details.screen';
+import TransactionDetailScreen from '../../screens/app/transactions/transaction-details.screen';
 
 const Drawer = createDrawerNavigator();
 const AppStack = createStackNavigator();
@@ -44,6 +45,7 @@ const AppNavigator = () => {
       <AppStack.Screen name="Payment" component={PaymentScreen} />
       <AppStack.Screen name="ContactUs" component={ContactUsScreen} />
       <AppStack.Screen name="AddCardScreen" component={AddCardScreen} />
+      <AppStack.Screen name="TransactionDetails" component={TransactionDetailScreen} />
     </AppStack.Navigator>
   );
 };

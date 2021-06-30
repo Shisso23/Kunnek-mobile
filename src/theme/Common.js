@@ -40,6 +40,12 @@ export default ({ Colors, FontFamily, FontSize }) =>
       color: Colors.secondary,
       fontWeight: 'bold',
     },
+    noBold: {
+      fontWeight: 'normal',
+    },
+    rightAlignText: {
+      textAlign: 'right',
+    },
     smallDivider: {
       borderColor: Colors.darkGrey,
       borderRightWidth: 1,
@@ -61,9 +67,6 @@ export default ({ Colors, FontFamily, FontSize }) =>
       marginTop: 10,
       minHeight: 50,
       textAlign: 'center',
-    },
-    noBold: {
-      fontWeight: 'normal',
     },
     viewCard: {
       backgroundColor: Colors.white,
