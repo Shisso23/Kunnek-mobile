@@ -27,4 +27,6 @@ export default () => ({
   messageIconBlue: require('../assets/images/message-icon-blue.png'),
   messageIconGreen: require('../assets/images/message-icon-green.png'),
   mapIcon: require('../assets/images/map-icon.png'),
+  editIconGreen: require('../assets/images/edit-icon-green.png'),
+  cancelIconOrange: require('../assets/images/cancel-icon-orange.png'),
 });

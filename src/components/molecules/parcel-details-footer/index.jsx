@@ -14,7 +14,11 @@ const ParcelDetailsFooter = (props) => {
     return (
       <React.Fragment key={index}>
         {index > 0 && <View style={styles.verticalDivider} />}
-        <IconButton icon={_.get(button, 'icon')} text={_.get(button, 'caption')} />
+        <IconButton
+          icon={_.get(button, 'icon')}
+          text={_.get(button, 'caption')}
+          onPress={_.get(button, 'onPress')}
+        />
       </React.Fragment>
     );
   });

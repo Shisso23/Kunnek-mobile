@@ -4,6 +4,7 @@ import parcelRequestUrls from './parcel-request.urls';
 import authNetworkService from '../auth-network-service/auth-network.service';
 import {
   apiParcelRequestModel,
+  apiParcelRequestUpdateModel,
   apiParcelStatusUpdateModel,
   parcelRequestModel,
 } from '../../../models/app/parcel-request/parcel-request.model';
@@ -66,7 +67,7 @@ const create = (data = {}) => {
 
 const update = (id, data = {}) => {
   const url = parcelRequestUrls.parcelRequestsUrl();
-  const dataModel = apiParcelRequestModel(data);
+  const dataModel = apiParcelRequestUpdateModel(data);
   const _createAndReturnModel = (apiResponse) => parcelRequestModel(apiResponse.data);
   return authNetworkService
     .patch(`${url}/${id}`, dataModel)

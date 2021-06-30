@@ -48,6 +48,10 @@ export const checkParcelRequestAction = (id) => () => {
   return parcelRequestService.get(id);
 };
 
+export const removeParcelRequest = (id) => () => {
+  return parcelRequestService.remove(id);
+};
+
 export const updateParcelStatus = (parcelRequest, newStatus) => (dispatch, getState) => {
   dispatch(setParcelRequestLoadingAction(true));
 
@@ -69,17 +73,31 @@ export const updateParcelStatus = (parcelRequest, newStatus) => (dispatch, getSt
     });
 };
 
-export const getActionId = (parcelRequest) => (dispatch) => {
+export const cancelParcelStatus = (parcelRequest) => (dispatch, getState) => {
   dispatch(setParcelRequestLoadingAction(true));
-  const jobId = _.get(parcelRequest, 'id');
-  return actionsService
-    .getActionId(jobId)
+
+  const { parcelRequests = [] } = getState().parcelRequestReducer;
+  const parcelRequestIndex = _.findIndex(parcelRequests, (parcel) => {
+    return parcel.id === parcelRequest.id;
+  });
+
+  return parcelRequestService
+    .updateStatus(_.get(parcelRequest, 'id'), parcelRequest)
     .then((response) => {
-      return dispatch(setActionIdAction(response));
+      parcelRequests[parcelRequestIndex] = response;
+
+      return dispatch(setParcelRequestsAction(parcelRequests));
     })
     .finally(() => {
       dispatch(setParcelRequestLoadingAction(false));
     });
+};
+
+export const getActionId = (parcelRequest) => (dispatch) => {
+  const jobId = _.get(parcelRequest, 'id');
+  return actionsService.getActionId(jobId).then((response) => {
+    return dispatch(setActionIdAction(response));
+  });
 };
 
 export const verifyParcelDelivery = (id, otpValue) => () => {
@@ -108,9 +126,27 @@ export const setFilters = (formData) => {
 
 export const createParcelRequestAction = (data) => (dispatch, getState) =>
   parcelRequestService.create(data).then((parcelRequest) => {
-    const { parcelRequests = [] } = getState().parcelRequestReducer;
-    return dispatch(setParcelRequestsAction([...parcelRequests, parcelRequest]));
+    const { userParcelRequests = [] } = getState().parcelRequestReducer;
+    return dispatch(setUserParcelRequestsAction([...userParcelRequests, parcelRequest]));
   });
+
+export const updateParcelRequestAction = (id, parcelRequest) => (dispatch, getState) => {
+  dispatch(setParcelRequestLoadingAction(true));
+
+  const { userParcelRequests = [] } = getState().parcelRequestReducer;
+  const parcelRequestIndex = _.findIndex(userParcelRequests, (parcel) => {
+    return parcel.id === parcelRequest.id;
+  });
+  return parcelRequestService
+    .update(id, parcelRequest)
+    .then((response) => {
+      userParcelRequests[parcelRequestIndex] = response;
+      return dispatch(setUserParcelRequestsAction(userParcelRequests));
+    })
+    .finally(() => {
+      dispatch(setParcelRequestLoadingAction(false));
+    });
+};
 
 export const getServiceFee = (parcelRequestId) => (dispatch) => {
   dispatch(setParcelRequestLoadingAction(true));

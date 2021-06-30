@@ -16,7 +16,6 @@ import {
 } from '../../../components';
 import { parcelStatus } from '../../../helpers/parcel-request-status.helper';
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
-import { parcelRequestSelector } from '../../../reducers/parcel-request-reducer/parcel-request.reducer';
 import {
   checkParcelRequestAction,
   getActionId,
@@ -30,7 +29,6 @@ const ParcelDetailsScreen = ({ route }) => {
   const deliverer = _.get(parcelRequest, 'deliverer');
   const parcelStatusIndex = parcelStatus[_.get(parcelRequest, 'status')];
   const { user } = useSelector(userSelector);
-  const { userParcelRequests } = useSelector(parcelRequestSelector);
   const dispatch = useDispatch();
   const [parcelRequestUpdated, updateParcelRequest] = useState(parcelRequest);
 
@@ -40,7 +38,7 @@ const ParcelDetailsScreen = ({ route }) => {
         updateParcelRequest(response);
       }
     });
-  }, 10000);
+  }, 5000);
 
   const _isDeliverer = () => {
     return _.get(user, 'id') === _.get(deliverer, 'userId');
@@ -80,10 +78,6 @@ const ParcelDetailsScreen = ({ route }) => {
       return <ParcelDetailsFooter buttons={icons} />;
     }
   };
-
-  useEffect(() => {
-    _renderDetailsCard();
-  }, [userParcelRequests]);
 
   useEffect(() => {
     dispatch(getActionId(parcelRequest));

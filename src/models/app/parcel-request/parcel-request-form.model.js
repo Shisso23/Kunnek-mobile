@@ -2,11 +2,11 @@ import _ from 'lodash';
 
 export const itemDetailsFormModel = (_parcelRequestModel = {}) => ({
   description: _.get(_parcelRequestModel, 'description', ''),
-  itemWeight: _.get(_parcelRequestModel, 'itemWeight', 0.0),
-  itemHeight: _.get(_parcelRequestModel, 'itemHeight', 0.0),
-  itemWidth: _.get(_parcelRequestModel, 'itemWidth', 0.0),
-  itemLength: _.get(_parcelRequestModel, 'itemLength', 0.0),
-  price: _.get(_parcelRequestModel, 'price', undefined),
+  itemWeight: _.get(_parcelRequestModel, 'itemWeight', ''),
+  itemHeight: _.get(_parcelRequestModel, 'itemHeight', ''),
+  itemWidth: _.get(_parcelRequestModel, 'itemWidth', ''),
+  itemLength: _.get(_parcelRequestModel, 'itemLength', ''),
+  price: _.get(_parcelRequestModel, 'price', '').toString(),
   photoUri: _.get(_parcelRequestModel, 'photoUri', ''),
 });
 
