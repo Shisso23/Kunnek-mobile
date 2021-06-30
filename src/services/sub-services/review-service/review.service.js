@@ -16,7 +16,7 @@ const reviewTheDriver = (data = {}) => {
   const url = reviewUrls.reviewsUrl();
   const dataModel = apiReviewTheDriverModel(data);
   return authNetworkService
-    .post(`${url}`, dataModel)
+    .post(url, dataModel)
     .then((response) => response)
     .catch((error) => {
       // eslint-disable-next-line no-console
@@ -29,7 +29,7 @@ const reviewTheSender = (data = {}) => {
   const url = reviewUrls.reviewsUrl();
   const dataModel = apiReviewTheSenderModel(data);
   return authNetworkService
-    .post(`${url}`, dataModel)
+    .post(url, dataModel)
     .then((response) => response)
     .catch((error) => {
       // eslint-disable-next-line no-console

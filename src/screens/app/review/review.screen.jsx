@@ -80,7 +80,7 @@ const ReviewScreen = ({ route }) => {
   return (
     <>
       <Index title={`Review ${_.get(_otherUser(), 'type')}`} />
-      <ScrollView Style={[Layout.fill]} contentContainerStyle={[Layout.scrollCenter]}>
+      <ScrollView Style={Layout.fill} contentContainerStyle={Layout.scrollCenter}>
         <Text style={[Gutters.regularHMargin, Fonts.subtitleRegular]}>
           {`Please rate the ${_.get(
             _otherUser(),

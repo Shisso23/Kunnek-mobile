@@ -61,10 +61,10 @@ const ReviewSenderForm = ({ submitForm, user, parcelRequest }) => {
         return (
           <>
             <PaperContainer>
-              <View style={[Layout.center]}>
+              <View style={Layout.center}>
                 <ProfilePicture user={user} />
-                <Text style={[Gutters.regularHMargin]}>{_.get(user, 'fullName')}</Text>
-                <Text style={[Fonts.secondaryRegular]}>{_.get(parcelRequest, 'description')}</Text>
+                <Text style={Gutters.regularHMargin}>{_.get(user, 'fullName')}</Text>
+                <Text style={Fonts.secondaryRegular}>{_.get(parcelRequest, 'description')}</Text>
               </View>
               <ReviewItem
                 value={values.easeOfPickup}
@@ -91,8 +91,8 @@ const ReviewSenderForm = ({ submitForm, user, parcelRequest }) => {
               numberOfLines={5}
               style={[Common.viewCard, Gutters.regularHMargin]}
             />
-            <View style={[Layout.fill]} />
-            <SafeAreaView style={[Gutters.largeMargin]}>
+            <View style={Layout.fill} />
+            <SafeAreaView style={Gutters.largeMargin}>
               <Button onPress={handleSubmit} loading={isSubmitting} title="Submit" />
             </SafeAreaView>
           </>

@@ -6,8 +6,7 @@ import { useTheme } from '../../../theme';
 
 const StarRating = ({ value, onStarChange, style = {} }) => {
   const { Layout } = useTheme();
-  const starCount = value;
-  let count = Number(starCount);
+  let count = Number(value);
 
   const _renderStars = () => {
     const stars = [];
@@ -17,7 +16,7 @@ const StarRating = ({ value, onStarChange, style = {} }) => {
           ? require('../../../assets/images/star-fill.png')
           : require('../../../assets/images/star.png');
       stars.push(
-        <TouchableOpacity onPress={_setStars(i)} key={i}>
+        <TouchableOpacity onPress={() => onStarChange(i + 1)} key={i}>
           <Image style={[styles.StarratingStyle, style]} source={image} />
         </TouchableOpacity>,
       );
@@ -26,13 +25,7 @@ const StarRating = ({ value, onStarChange, style = {} }) => {
     return stars;
   };
 
-  const _setStars = (index) => {
-    return () => {
-      onStarChange(index + 1);
-    };
-  };
-
-  return <View style={[Layout.row]}>{_renderStars()}</View>;
+  return <View style={Layout.row}>{_renderStars()}</View>;
 };
 
 StarRating.propTypes = {
