@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, SafeAreaView } from 'react-native';
-import { Text } from 'react-native-elements';
+import { Button, Text } from 'react-native-elements';
 import _ from 'lodash';
 
 import useTheme from '../../../theme/hooks/useTheme';
 import ParallaxView from '../../../components/molecules/parallax-view';
-import { Button, IdNumber, VehiclesList } from '../../../components';
+import { IdNumber, VehiclesList } from '../../../components';
 import { StyleSheet } from 'react-native';
 import { Colors } from '../../../theme/Variables';
 import { useDispatch } from 'react-redux';
@@ -25,16 +25,19 @@ const OtherUserProfileScreen = ({ route }) => {
     if (parcelRequest) {
       return (
         <>
-          <Button style={[styles.buttonStyle]} onPress={_accept()}>
-            Accept
-          </Button>
           <Button
-            style={[styles.buttonStyle, styles.clearButtonStyle]}
-            textStyle={[styles.clearButtonTextStyle]}
-            onPress={_reject()}
-          >
-            Reject
-          </Button>
+            containerStyle={Layout.center}
+            buttonStyle={[styles.buttonStyle]}
+            onPress={_accept}
+            title="Accept"
+          />
+          <Button
+            containerStyle={Layout.center}
+            buttonStyle={[styles.buttonStyle, styles.clearButtonStyle]}
+            onPress={_reject}
+            title="Reject"
+            titleStyle={[styles.clearButtonTextStyle]}
+          />
         </>
       );
     }
