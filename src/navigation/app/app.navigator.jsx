@@ -22,6 +22,7 @@ import OTPScreen from '../../screens/app/OTP/otp.screen';
 import EditParcelScreen from '../../screens/app/edit-parcel/edit-parcel.screen';
 import OtherUserProfileScreen from '../../screens/app/other-user-profile/other-user-profile.screen';
 import ReviewScreen from '../../screens/app/review/review.screen';
+import DeliverParcelScreen from '../../screens/app/deliver-parcel/deliver-parcel.screen';
 
 const Drawer = createDrawerNavigator();
 const AppStack = createStackNavigator();
@@ -36,6 +37,7 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
       />
       <AppStack.Screen name="SendParcel" component={SendParcelScreen} />
+      <AppStack.Screen name="DeliveryRequest" component={DeliverParcelScreen} />
       <AppStack.Screen name="EditParcel" component={EditParcelScreen} />
       <AppStack.Screen name="ViewParcel" component={ViewParcelsScreen} />
       <AppStack.Screen name="ParcelRequests" component={ParcelRequestsScreen} />
