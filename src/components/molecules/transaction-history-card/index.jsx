@@ -17,6 +17,20 @@ const TransactionHistoryCard = ({ items }) => {
   if (_.isEmpty(items)) {
     return null;
   }
+  const getPaymentType = (item) => {
+    switch (item) {
+      case 'paid_by_sender':
+        return 'From sender';
+
+      case 'paid_to_deliverer':
+        return 'To Driver';
+
+      case 'verification':
+        return 'Verification';
+      default:
+        return '';
+    }
+  };
 
   return (
     <View style={[Gutters.smallMargin]}>
@@ -33,6 +47,7 @@ const TransactionHistoryCard = ({ items }) => {
               <View style={[Gutters.regularLMargin]}>
                 <Text>R{_.get(item, 'amount', '').toFixed(2)}</Text>
                 <Text>{moment(_.get(item, 'date', '')).format('D MMMM YYYY, h:mm')}</Text>
+                <Text>{getPaymentType(_.get(item, 'paymentType', ''))}</Text>
               </View>
             </View>
             <StatusBox color={Colors.primary} status={_.get(item, 'status', '')} />
