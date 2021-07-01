@@ -7,12 +7,23 @@ import PropTypes from 'prop-types';
 import { useTheme } from '../../../theme';
 import { UserRating } from '../../../components/atoms';
 import ProfilePicture from '../../../components/atoms/profile-picture';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
-const UserSummaryCard = ({ user }) => {
+const UserSummaryCard = (props) => {
   const { Fonts, Gutters, Layout, Common } = useTheme();
+  const { user } = props;
+  const navigation = useNavigation();
+
+  const _goToUserDetails = () => {
+    navigation.navigate('UserDetails', props);
+  };
 
   return (
-    <View style={[Common.viewCard, Layout.row, Gutters.regularMargin]}>
+    <TouchableOpacity
+      style={[Common.viewCard, Layout.row, Gutters.regularMargin]}
+      onPress={_goToUserDetails}
+    >
       <ProfilePicture user={user} />
       <View style={Layout.fill}>
         <Text style={[Fonts.tinyTitle, Gutters.smallLMargin]}>{_.get(user, 'fullName')}</Text>
@@ -22,7 +33,7 @@ const UserSummaryCard = ({ user }) => {
           <UserRating user={user} />
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

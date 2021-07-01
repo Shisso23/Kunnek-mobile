@@ -2,15 +2,38 @@ import React from 'react';
 import { View } from 'react-native';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import { useNavigation } from '@react-navigation/core';
 
 import { useTheme } from '../../../theme';
 import { parcelStatusDeliverer } from '../../../helpers/parcel-request.helper';
 import IconListItem from '../icon-list-item';
+import { useDispatch } from 'react-redux';
+import { progressPackageStatus } from '../../../helpers/parcel-request-status.helper';
+import {
+  cancelParcelStatus,
+  updateParcelStatus,
+} from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 
 const ParcelStatusCardDriver = ({ parcelRequest }) => {
   const { Gutters, Layout, Common, Images } = useTheme();
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const parcelStatusDecoded = parcelStatusDeliverer(parcelRequest);
+
+  const _buttonClick = () => {
+    const newStatus = progressPackageStatus(parcelRequest);
+    dispatch(updateParcelStatus(parcelRequest, newStatus));
+  };
+
+  const _renderOTP = () => {
+    _buttonClick();
+    navigation.navigate('OTP', parcelRequest);
+  };
+
+  const _cancelRequest = () => {
+    dispatch(cancelParcelStatus(parcelRequest));
+  };
 
   return (
     <View style={[Common.viewCard, Layout.colVCenter, Gutters.regularMargin]}>
@@ -21,6 +44,7 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
         activeMessage={_.get(parcelStatusDecoded.status, 'interaction')}
         date={_.get(parcelStatusDecoded.status, 'date')}
         divider={true}
+        action={_cancelRequest}
       />
       <IconListItem
         icon={_.get(parcelStatusDecoded.pickUp, 'icon') ? Images.truckBlue : Images.truck}
@@ -28,6 +52,7 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
         description={_.get(parcelStatusDecoded.pickUp, 'description')}
         activeMessage={_.get(parcelStatusDecoded.pickUp, 'interaction')}
         divider={true}
+        action={_buttonClick}
       />
       <IconListItem
         icon={_.get(parcelStatusDecoded.delivery, 'icon') ? Images.truckBlue : Images.truck}
@@ -35,6 +60,7 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
         description={_.get(parcelStatusDecoded.delivery, 'description')}
         activeMessage={_.get(parcelStatusDecoded.delivery, 'interaction')}
         divider={true}
+        action={_renderOTP}
       />
       <IconListItem
         icon={
@@ -43,6 +69,7 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
         title={_.get(parcelStatusDecoded.review, 'title')}
         description={_.get(parcelStatusDecoded.review, 'description')}
         activeMessage={_.get(parcelStatusDecoded.review, 'interaction')}
+        action={_buttonClick}
       />
     </View>
   );
@@ -50,6 +77,11 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
 
 ParcelStatusCardDriver.propTypes = {
   parcelRequest: PropTypes.object.isRequired,
+  action: PropTypes.func,
+};
+
+ParcelStatusCardDriver.defaultProps = {
+  action: null,
 };
 
 ParcelStatusCardDriver.defaultProps = {};

@@ -3,11 +3,12 @@ import { Image, Text } from 'react-native-elements';
 import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+
 import useTheme from '../../../theme/hooks/useTheme';
 import { Colors } from '../../../theme/Variables';
 import StatusButton from '../../atoms/status-button';
 
-const IconListItem = ({ icon, title, description, date, divider, activeMessage }) => {
+const IconListItem = ({ icon, title, description, date, divider, activeMessage, action }) => {
   const { Gutters, Layout, Fonts } = useTheme();
 
   return (
@@ -27,7 +28,7 @@ const IconListItem = ({ icon, title, description, date, divider, activeMessage }
       </View>
       <View style={[Layout.colVCenter]}>
         {!_.isNil(activeMessage) && !_.isEmpty(activeMessage) && (
-          <StatusButton status={activeMessage} color={Colors.primary} />
+          <StatusButton status={activeMessage} color={Colors.primary} action={action} />
         )}
       </View>
     </>
@@ -41,6 +42,7 @@ IconListItem.propTypes = {
   date: PropTypes.string,
   divider: PropTypes.bool,
   activeMessage: PropTypes.string,
+  action: PropTypes.func,
 };
 
 IconListItem.defaultProps = {
