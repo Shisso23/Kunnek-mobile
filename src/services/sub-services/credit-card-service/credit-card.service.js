@@ -33,7 +33,6 @@ const submitCardTransaction = async (checkoutID) => {
 const createCreditCard = async (data) => {
   const url = creditCardUrls.cardsUrl();
   const dataModel = apiUserCreditCardModel(data);
-  console.warn({ dataModel });
   const _createAndReturnModel = (apiResponse) => userCreditCardModel(apiResponse.data);
   return authNetworkService
     .post(url, dataModel)
