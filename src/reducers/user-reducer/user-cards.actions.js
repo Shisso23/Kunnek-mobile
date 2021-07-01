@@ -49,8 +49,9 @@ export const createUserCreditCardAction = (data) => async (dispatch, getState) =
 
 export const submitCardTransactionAction = (checkoutID) => async (dispatch) => {
   dispatch(setSubmitCardTransactionLoadingAction(true));
-  await creditCardService.submitCardTransaction(checkoutID);
+  const response = await creditCardService.submitCardTransaction(checkoutID);
   dispatch(setSubmitCardTransactionLoadingAction(false));
+  return response;
 };
 
 export const tokenizeCard = (data) => (dispatch) => {

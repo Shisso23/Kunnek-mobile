@@ -103,7 +103,7 @@ const SendParcelScreen = () => {
             config.peachPayments.peachPaymentMode,
           ).then(() => {
             return dispatch(submitCardTransactionAction(checkoutID))
-              .then(() => {
+              .then((response) => {
                 const finalData = {
                   cardNumber: _.get(cardModel, 'obfuscatedCardNumber'),
                   cardType: _.get(cardModel, 'paymentBrand'),
@@ -111,6 +111,7 @@ const SendParcelScreen = () => {
                   expiryMonth: _.get(cardModel, 'expiryMonth'),
                   expiryYear: _.get(cardModel, 'expiryYear'),
                   senderId,
+                  tokenizedCard: _.get(response, 'id', ''),
                 };
                 return dispatch(createUserCreditCardAction(finalData))
                   .then((creditCardResponse) => {
