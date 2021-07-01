@@ -11,10 +11,10 @@ export const userTransactionModel = (_apiTransactionModel = {}) => ({
   paymentType: _.get(_apiTransactionModel, 'payment_type', ''),
   date: _.get(_apiTransactionModel, 'created_at', false),
   job: _.get(_apiTransactionModel, 'job', false),
-  reasonForFailure: _.get(_apiTransactionModel, 'reason_for_failure', true),
-  invoiceNumber: _.get(_apiTransactionModel, 'invoice_number', true),
+  reasonForFailure: _.get(_apiTransactionModel, 'reason_for_failure', ''),
+  invoiceNumber: _.get(_apiTransactionModel, 'invoice_number', ''),
   sender: _.get(_apiTransactionModel, 'sender', {}),
-  driver: _.get(_apiTransactionModel, 'driver', true),
+  driver: _.get(_apiTransactionModel, 'driver', {}),
 });
 
 export const apiUserTransactionModel = (_appPaymentModel = {}) => ({
