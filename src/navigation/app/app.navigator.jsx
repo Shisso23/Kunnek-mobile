@@ -49,7 +49,6 @@ const AppNavigator = () => {
       <AppStack.Screen name="Payment" component={PaymentScreen} />
       <AppStack.Screen name="OTP" component={OTPScreen} />
       <AppStack.Screen name="ContactUs" component={ContactUsScreen} />
-      <AppStack.Screen name="AddCardScreen" component={AddCardScreen} />
       <AppStack.Screen name="TransactionDetails" component={TransactionDetailScreen} />
       <AppStack.Screen name="AddCard" component={AddCardScreen} />
       <AppStack.Screen name="UserDetails" component={OtherUserProfileScreen} />
