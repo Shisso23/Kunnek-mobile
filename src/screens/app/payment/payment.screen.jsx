@@ -4,6 +4,7 @@ import PeachMobile from 'react-native-peach-mobile';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Button, Input } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Colors } from '../../../theme/Variables';
@@ -28,6 +29,7 @@ const PaymentScreen = ({ isLoading, route, retry = false }) => {
   const { message, parcelRequest, totalAmount, paymentType, card } = route.params;
   const dispatch = useDispatch();
   const [cvvNumber, setCvvNumber] = useState('');
+  const navigation = useNavigation();
   const peachMobileRef = useRef(null);
   const { checkoutId } = useSelector((state) => state.paymentReducer);
   const { serviceFee } = useSelector((state) => state.parcelRequestReducer);
@@ -87,6 +89,7 @@ const PaymentScreen = ({ isLoading, route, retry = false }) => {
               .then(async (response) => {
                 if (response) {
                   flashService.success('Payment Processing...');
+                  navigation.navigate('Home');
                 } else {
                   flashService.error('Sorry, something went wrong with payment. Please try again.');
                 }
