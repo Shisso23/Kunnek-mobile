@@ -102,12 +102,22 @@ export const apiParcelRequestUpdateModel = (_appParcelRequestModel = {}) => {
 };
 
 export const apiParcelStatusUpdateModel = (_appParcelStatusUpdateModel = {}) => {
-  const data = {
-    job: {
-      next_status: _.get(_appParcelStatusUpdateModel, 'next_status'),
-    },
-  };
-  return data;
+  if (_.get(_appParcelStatusUpdateModel, 'nextStatus', false)) {
+    return {
+      job: {
+        next_status: _.get(_appParcelStatusUpdateModel, 'nextStatus'),
+      },
+    };
+  } else {
+    return {
+      job: {
+        pickup_date_time: _.get(_appParcelStatusUpdateModel, 'latestArrivalDateTime'),
+        collector_id: _.get(_appParcelStatusUpdateModel, 'collectorId'),
+        trip_id: _.get(_appParcelStatusUpdateModel, 'id'),
+        next_status: 'pending_acceptance_from_sender',
+      },
+    };
+  }
 };
 
 export const apiParcelStatusCancelModel = (_appParcelStatusCancelModel = {}) => {

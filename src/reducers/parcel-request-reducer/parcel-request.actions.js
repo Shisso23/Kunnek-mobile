@@ -52,22 +52,13 @@ export const removeParcelRequest = (id) => () => {
   return parcelRequestService.remove(id);
 };
 
-export const updateParcelStatus = (parcelRequest, newStatus) => (dispatch, getState) => {
+export const updateParcelStatus = (parcelRequest, newStatus) => (dispatch) => {
   dispatch(setParcelRequestLoadingAction(true));
-
-  const { parcelRequests = [] } = getState().parcelRequestReducer;
-  const parcelRequestIndex = _.findIndex(parcelRequests, (parcel) => {
-    return parcel.id === parcelRequest.id;
-  });
+  const id = _.get(parcelRequest, 'id');
 
   return parcelRequestService
-    .updateStatus(_.get(parcelRequest, 'id'), { next_status: newStatus })
-    .then(() => {
-      parcelRequest.status = newStatus;
-      parcelRequests[parcelRequestIndex] = parcelRequest;
-
-      return dispatch(setParcelRequestsAction(parcelRequests));
-    })
+    .updateStatus(id, newStatus)
+    .then((response) => response)
     .finally(() => {
       dispatch(setParcelRequestLoadingAction(false));
     });
@@ -82,7 +73,7 @@ export const cancelParcelStatus = (parcelRequest) => (dispatch, getState) => {
   });
 
   return parcelRequestService
-    .updateStatus(_.get(parcelRequest, 'id'), parcelRequest)
+    .cancelDeliveryRequest(_.get(parcelRequest, 'id'), parcelRequest)
     .then((response) => {
       parcelRequests[parcelRequestIndex] = response;
 

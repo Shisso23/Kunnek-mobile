@@ -11,22 +11,16 @@ import { FormScreenContainer, UserSummaryCard, ViewParcelCard } from '../../../c
 import { useTheme } from '../../../theme';
 import Index from '../../../components/atoms/title';
 import { Colors } from '../../../theme/Variables';
-import SendParcelDeliverAndReceiverDetailsForm from '../../../components/forms/parcel-request/send-parcel-deliver-and-receiver-details.form';
-import CreditCardForm from '../../../components/forms/credit-card/credit-card.form';
-import { createParcelRequestAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
-import {
-  createUserCreditCardAction,
-  tokenizeCard,
-} from '../../../reducers/user-reducer/user-cards.actions';
-import { deliveryAndReceiverDetailsFormModel } from '../../../models/app/parcel-request/parcel-request-form.model';
-import { userCreditCardModel } from '../../../models/app/user/user-credit-card.model';
+import { deliveryTripDetailsDetailsFormModel } from '../../../models/app/parcel-request/parcel-request-form.model';
 import { successful } from '../../../helpers/errors.helper';
-import { getCurrentDate } from '../../../helpers/date.helper';
-import { PAYMENT_TYPES } from '../../../services/sub-services/payment-service/payment.service';
-import { getCurrency } from '../../../helpers/payment.helper';
-import { tokenizeCardModel } from '../../../models/app/credit-card/tokenize-card.model';
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
 import { getUserBankAccountsAction } from '../../../reducers/user-reducer/user-bank-account.actions';
+import DeliverParcelDetailsForm from '../../../components/forms/parcel-request/deliver-parcel-details.form';
+import { getUserVehiclesAction } from '../../../reducers/user-reducer/user-vehicles.actions';
+import { createTripAction } from '../../../reducers/trip-reducer/trip.actions';
+import { updateParcelStatus } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
+import { VehicleForm } from '../../../components/forms';
+import { createVehicleModel } from '../../../models/app/vehicle/create-vehicle.model';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -34,14 +28,15 @@ const DeliverParcelScreen = ({ route }) => {
   const navigation = useNavigation();
   const { parcelRequest } = route.params;
   const { Fonts, Gutters, Layout } = useTheme();
-  const { delivererId, bankAccounts } = useSelector(userSelector);
+  const { delivererId, bankAccounts, vehicles } = useSelector(userSelector);
   const dispatch = useDispatch();
   const [formIndex, setFormIndex] = useState(0);
-  // const [itemDetailsForm, setItemDetailsForm] = useState({});
-  const [deliverAndReceiverDetailsForm, setDeliverAndReceiverDetailsForm] = useState({});
-  const [creditCardForm, setCreditCardForm] = useState({});
+  // const [deliveryDetailsForm, setDeliveryDetailsForm] = useState({});
+  // const [bankAccountForm, setBankAccountForm] = useState({});
+  const defaultVehicle = _.get(_.nth(vehicles, 0), 'id', '');
 
-  const hasCreditCards = Array.isArray(bankAccounts) ? bankAccounts.length > 0 : false;
+  const hasBankAccounts = Array.isArray(bankAccounts) ? bankAccounts.length > 0 : false;
+  const hasVehicles = Array.isArray(vehicles) ? vehicles.length > 0 : false;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -51,19 +46,27 @@ const DeliverParcelScreen = ({ route }) => {
 
   useEffect(() => {
     dispatch(getUserBankAccountsAction());
+    dispatch(getUserVehiclesAction());
   }, []);
 
-  // const _handleSubmitItemDetailsForm = (currentForm) => {
-  //   setItemDetailsForm(currentForm);
-  //   return Promise.resolve(currentForm);
-  // };
+  const _deliveryInitialValues = () =>
+    deliveryTripDetailsDetailsFormModel({
+      delivererId: delivererId,
+      vehicleId: defaultVehicle,
+      ...parcelRequest,
+    });
 
-  const _handleSubmitDeliverAndReceiverDetailsForm = (currentForm) => {
-    setDeliverAndReceiverDetailsForm(currentForm);
-    return dispatch(createParcelRequestAction(_getParcelRequest()))
-      .then((response) => {
-        if (successful(response)) {
-          _openParcelRequestsScreen();
+  const _handleSubmitDeliveryDetailsForm = (currentForm) => {
+    // setDeliveryDetailsForm(currentForm);
+    return dispatch(createTripAction(currentForm))
+      .then((tripResponse) => {
+        if (successful(tripResponse)) {
+          dispatch(updateParcelStatus(parcelRequest, tripResponse)).then((jobResponse) => {
+            console.log('object to check for error', jobResponse);
+            if (successful(jobResponse)) {
+              navigation.navigate('ParcelRequests');
+            }
+          });
         }
       })
       .catch((error) => {
@@ -71,61 +74,33 @@ const DeliverParcelScreen = ({ route }) => {
       });
   };
 
-  const _handleSubmitCreditCardForm = (currentForm) => {
-    setCreditCardForm(currentForm);
-    return dispatch(tokenizeCard(tokenizeCardModel(currentForm))).then((response) => {
-      const { id, card } = response.data;
-      const finalData = {
-        delivererId,
-        obfuscatedCardNumber: `************${_.get(card, 'last4Digits')}`,
-        cardType: _.get(creditCardForm, 'cardType'),
-        tokenizedCard: id,
-        cardHolder: _.get(card, 'holder'),
-        expiryMonth: _.get(card, 'expiryMonth'),
-        expiryYear: _.get(card, 'expiryYear'),
-      };
-
-      return dispatch(createUserCreditCardAction(finalData)).then((creditCardResponse) => {
-        if (successful(creditCardResponse)) {
-          _openVerificationPaymentScreen(finalData);
-        }
-      });
-    });
-  };
-
-  const _getParcelRequest = () => ({
-    // ...itemDetailsForm,
-    ...deliverAndReceiverDetailsForm,
-    delivererId,
-  });
-
-  const _openVerificationPaymentScreen = (card) => {
-    navigation.navigate('Payment', {
-      message: `We will make a charge of ${getCurrency()}1.00 on your credit card to verify that your card number and details are correct. This charge will be reversed once successful.`,
-      totalAmount: 1,
-      paymentType: PAYMENT_TYPES.verification,
-      card,
-      parcelRequest: _getParcelRequest(),
-    });
-  };
-
-  const _openParcelRequestsScreen = () => {
-    navigation.navigate('ParcelRequests');
-  };
+  // const _handleSubmitBankAccountForm = (currentForm) => {
+  //   setBankAccountForm(currentForm);
+  //   return dispatch(createTripAction(deliveryDetailsForm))
+  //     .then((response) => {
+  //       if (successful(response)) {
+  //         dispatch(updateParcelStatus(parcelRequest, response))
+  //         .then({_openParcelRequestsScreen()});
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.warn(error.message);
+  //     });
+  // };
 
   const _handleSuccess = () => {
-    if (hasCreditCards && formIndex >= formData.length - 1) {
-      navigation.navigate('ParcelRequests');
+    if (hasBankAccounts && formIndex >= formData.length - 1) {
+      // navigation.navigate('ParcelRequests');
     } else {
       _goToNext();
     }
   };
 
-  const _handleCreditCardSuccess = (returnedData) => {
-    if (successful(returnedData)) {
-      navigation.navigate('ParcelDeliveryDetails');
-    }
-  };
+  // const _handleBankAccountSuccess = (returnedData) => {
+  //   if (successful(returnedData)) {
+  //     navigation.navigate('ParcelRequests');
+  //   }
+  // };
 
   const _renderItem = () => <View>{_.get(_.nth(formData, formIndex), 'content')}</View>;
 
@@ -188,30 +163,49 @@ const DeliverParcelScreen = ({ route }) => {
         </>
       ),
     },
-    {
-      id: 'deliveryAndReceiverDetailsForm',
+  ];
+
+  if (!hasVehicles) {
+    formData.push({
+      id: 'createVehicleForm',
       content: (
         <>
-          <Index title="Final Amounts" />
+          <Index title="Add vehicle" />
           <Divider />
           <View style={[Gutters.smallHMargin]}>
-            <SendParcelDeliverAndReceiverDetailsForm
-              initialValues={deliveryAndReceiverDetailsFormModel({
-                latestDeliveryDateTime: getCurrentDate(),
-                ...deliverAndReceiverDetailsForm,
-              })}
-              submitForm={_handleSubmitDeliverAndReceiverDetailsForm}
-              onSuccess={_handleSuccess}
+            <VehicleForm
+              submitForm={() => {}}
+              onSuccess={() => {}}
+              initialValues={createVehicleModel()}
+              containerStyle={[Gutters.smallHMargin]}
             />
           </View>
         </>
       ),
-    },
-  ];
+    });
+  }
 
-  if (!hasCreditCards) {
+  formData.push({
+    id: 'deliveryAndReceiverDetailsForm',
+    content: (
+      <>
+        <Index title="Final Amounts" />
+        <Divider />
+        <View style={[Gutters.smallHMargin]}>
+          <DeliverParcelDetailsForm
+            initialValues={_deliveryInitialValues()}
+            submitForm={_handleSubmitDeliveryDetailsForm}
+            onSuccess={_handleSuccess}
+            parcelRequest={parcelRequest}
+          />
+        </View>
+      </>
+    ),
+  });
+
+  if (!hasBankAccounts) {
     formData.push({
-      id: 'creditCardForm',
+      id: 'bankAccountForm',
       content: (
         <>
           <Index title="Payment Details" />
@@ -221,11 +215,11 @@ const DeliverParcelScreen = ({ route }) => {
           </Text>
           <Divider />
           <View style={[Gutters.smallHMargin]}>
-            <CreditCardForm
-              initialValues={userCreditCardModel(creditCardForm)}
-              submitForm={_handleSubmitCreditCardForm}
-              onSuccess={_handleCreditCardSuccess}
-            />
+            {/* <BankAcountForm
+              initialValues={userCreditCardModel(bankAccountForm)}
+              submitForm={_handleSubmitBankAccountForm}
+              onSuccess={_handleBankAccountSuccess}
+            /> */}
           </View>
         </>
       ),

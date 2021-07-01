@@ -18,3 +18,11 @@ export const deliveryAndReceiverDetailsFormModel = (_parcelRequestModel = {}) =>
   receiverLastName: _.get(_parcelRequestModel, 'receiverLastName', ''),
   receiverMobileNumber: _.get(_parcelRequestModel, 'receiverMobileNumber', ''),
 });
+
+export const deliveryTripDetailsDetailsFormModel = (_parcelRequestModel = {}) => ({
+  collectorId: _.get(_parcelRequestModel, 'delivererId', ''),
+  latestArrivalDateTime: _.get(_parcelRequestModel, 'latestDeliveryDateTime', ''),
+  vehicleId: _.get(_parcelRequestModel, 'vehicleId', ''),
+  pickUpAddress: _.get(_parcelRequestModel, 'pickUpAddress', ''),
+  dropOffAddress: _.get(_parcelRequestModel, 'dropOffAddress', ''),
+});

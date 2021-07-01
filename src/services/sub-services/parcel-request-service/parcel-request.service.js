@@ -5,6 +5,7 @@ import authNetworkService from '../auth-network-service/auth-network.service';
 import {
   apiParcelRequestModel,
   apiParcelRequestUpdateModel,
+  apiParcelStatusCancelModel,
   apiParcelStatusUpdateModel,
   parcelRequestModel,
 } from '../../../models/app/parcel-request/parcel-request.model';
@@ -82,7 +83,25 @@ const update = (id, data = {}) => {
 const updateStatus = (id, data = {}) => {
   const url = parcelRequestUrls.parcelRequestsUrl();
   const dataModel = apiParcelStatusUpdateModel(data);
-  const _createAndReturnModel = (apiResponse) => parcelRequestModel(apiResponse.data);
+  const _createAndReturnModel = (apiResponse) => {
+    parcelRequestModel(apiResponse.data);
+  };
+  return authNetworkService
+    .patch(`${url}/${id}`, dataModel)
+    .then(_createAndReturnModel)
+    .catch((error) => {
+      // eslint-disable-next-line no-console
+      console.warn(error);
+      return Promise.reject(error);
+    });
+};
+
+const cancelDeliveryRequest = (id, data = {}) => {
+  const url = parcelRequestUrls.parcelRequestsUrl();
+  const dataModel = apiParcelStatusCancelModel(data);
+  const _createAndReturnModel = (apiResponse) => {
+    parcelRequestModel(apiResponse.data);
+  };
   return authNetworkService
     .patch(`${url}/${id}`, dataModel)
     .then(_createAndReturnModel)
@@ -114,6 +133,7 @@ export default {
   create,
   update,
   updateStatus,
+  cancelDeliveryRequest,
   remove,
   getServiceFee,
 };

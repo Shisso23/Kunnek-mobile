@@ -32,7 +32,7 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
   };
 
   const _cancelRequest = () => {
-    dispatch(cancelParcelStatus(parcelRequest));
+    dispatch(cancelParcelStatus(parcelRequest)).then(navigation.goBack());
   };
 
   const _reviewUser = () => {
