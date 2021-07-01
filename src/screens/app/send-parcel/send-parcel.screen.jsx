@@ -62,7 +62,12 @@ const SendParcelScreen = () => {
 
   const _handleSubmitDeliverAndReceiverDetailsForm = (currentForm) => {
     setDeliverAndReceiverDetailsForm(currentForm);
-    return dispatch(createParcelRequestAction(_getParcelRequest()))
+    return dispatch(
+      createParcelRequestAction({
+        ..._getParcelRequest(),
+        ...currentForm,
+      }),
+    )
       .then((response) => {
         if (successful(response)) {
           _openParcelRequestsScreen();

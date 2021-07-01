@@ -27,8 +27,14 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
   };
 
   const _renderOTP = () => {
-    _buttonClick();
-    navigation.navigate('OTP', parcelRequest);
+    if (_.get(parcelRequest, 'status') === 'completed_pickup') {
+      _buttonClick();
+    } else if (_.get(parcelRequest, 'status') === 'pending_delivery') {
+      _buttonClick();
+      navigation.navigate('OTP', parcelRequest);
+    } else if (_.get(parcelRequest, 'status') === 'initiated_delivery') {
+      navigation.navigate('OTP', parcelRequest);
+    }
   };
 
   const _cancelRequest = () => {

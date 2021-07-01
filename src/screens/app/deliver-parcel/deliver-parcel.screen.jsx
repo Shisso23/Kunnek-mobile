@@ -62,7 +62,6 @@ const DeliverParcelScreen = ({ route }) => {
       .then((tripResponse) => {
         if (successful(tripResponse)) {
           dispatch(updateParcelStatus(parcelRequest, tripResponse)).then((jobResponse) => {
-            console.log('object to check for error', jobResponse);
             if (successful(jobResponse)) {
               navigation.navigate('ParcelRequests');
             }

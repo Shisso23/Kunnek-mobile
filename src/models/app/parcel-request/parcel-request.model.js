@@ -42,14 +42,14 @@ export const apiParcelRequestModel = (_appParcelRequestModel = {}) => {
       item_length: _.get(_appParcelRequestModel, 'itemLength', 0.0),
       pickup_date_time: _.get(_appParcelRequestModel, 'pickupDateTime', ''),
       latest_delivery_date_time: _.get(_appParcelRequestModel, 'latestDeliveryDateTime', ''),
-      locations: [
+      locations_attributes: [
         { location_type: 'collect', address: _.get(_appParcelRequestModel, 'pickUpAddress', '') },
         { location_type: 'deliver', address: _.get(_appParcelRequestModel, 'dropOffAddress', '') },
       ],
       service_fee: _.get(_appParcelRequestModel, 'serviceFee', 0),
       sender_id: _.get(_appParcelRequestModel, 'senderId', 0),
       status: _.get(_appParcelRequestModel, 'status', ''),
-      receiver: {
+      receiver_attributes: {
         first_name: _.get(_appParcelRequestModel, 'receiverFirstName', ''),
         last_name: _.get(_appParcelRequestModel, 'receiverLastName', ''),
         mobile_number: _.get(_appParcelRequestModel, 'receiverMobileNumber', ''),
@@ -64,7 +64,6 @@ export const apiParcelRequestModel = (_appParcelRequestModel = {}) => {
       type: 'image/jpeg',
     };
   }
-
   return data;
 };
 
@@ -78,11 +77,11 @@ export const apiParcelRequestUpdateModel = (_appParcelRequestModel = {}) => {
       item_width: _.get(_appParcelRequestModel, 'itemWidth', 0.0),
       item_length: _.get(_appParcelRequestModel, 'itemLength', 0.0),
       latest_delivery_date_time: _.get(_appParcelRequestModel, 'latestDeliveryDateTime', ''),
-      locations: [
+      locations_attributes: [
         { location_type: 'collect', address: _.get(_appParcelRequestModel, 'pickUpAddress', '') },
         { location_type: 'deliver', address: _.get(_appParcelRequestModel, 'dropOffAddress', '') },
       ],
-      receiver: {
+      receiver_attributes: {
         first_name: _.get(_appParcelRequestModel, 'receiverFirstName', ''),
         last_name: _.get(_appParcelRequestModel, 'receiverLastName', ''),
         mobile_number: _.get(_appParcelRequestModel, 'receiverMobileNumber', ''),

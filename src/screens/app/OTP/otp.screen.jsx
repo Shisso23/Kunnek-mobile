@@ -13,13 +13,14 @@ import { Button, Image, Text } from 'react-native-elements';
 import { OTPInputField } from '../../../components/molecules';
 import { PaperContainer } from '../../../components';
 import {
+  getActionId,
   sendOTP,
   updateParcelStatus,
   verifyParcelDelivery,
 } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { parcelRequestSelector } from '../../../reducers/parcel-request-reducer/parcel-request.reducer';
-import { progressPackageStatus } from '../../../helpers/parcel-request-status.helper';
+import { useEffect } from 'react';
 
 const OTPScreen = ({ route }) => {
   const { Layout, Gutters, Images } = useTheme();
@@ -31,6 +32,10 @@ const OTPScreen = ({ route }) => {
   const dispatch = useDispatch();
   const { actionId } = useSelector(parcelRequestSelector);
 
+  useEffect(() => {
+    dispatch(getActionId(parcelRequest));
+  }, []);
+
   const _getMobileNumber = () => {
     const mobileNumber = _.get(parcelRequest, 'receiverMobileNumber');
     return mobileNumber;
@@ -40,10 +45,9 @@ const OTPScreen = ({ route }) => {
     if (otpValue.length < 4) return setErrorMessage('OTP must be 4 digits long');
     dispatch(verifyParcelDelivery(actionId, otpValue)).then((result) => {
       if (result === true) {
-        const newStatus = progressPackageStatus(parcelRequest);
-        return dispatch(updateParcelStatus(parcelRequest, newStatus)).then(
-          navigation.navigate('ParcelDetails'),
-        );
+        const newStatus = { nextStatus: 'completed_delivery' };
+        dispatch(updateParcelStatus(parcelRequest, newStatus));
+        navigation.navigate('ParcelDetails', parcelRequest);
       }
       setErrorMessage('please fill in the correct OTP');
     });
@@ -117,6 +121,7 @@ export default OTPScreen;
 const styles = StyleSheet.create({
   buttonSize: {
     width: '80%',
+    alignSelf: 'center',
   },
   imageSize: {
     width: 130,
