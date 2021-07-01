@@ -9,6 +9,9 @@ export const setParcelRequestAction = setParcelRequest.action;
 const setParcelRequests = CreateAction(reducerName, 'SET_PARCEL_REQUESTS');
 export const setParcelRequestsAction = setParcelRequests.action;
 
+const setUserParcelRequests = CreateAction(reducerName, 'SET_USER_PARCEL_REQUESTS');
+export const setUserParcelRequestsAction = setUserParcelRequests.action;
+
 const setId = CreateAction(reducerName, 'SET_ID');
 export const setIdAction = setId.action;
 
@@ -57,6 +60,9 @@ export const setServiceFeeAction = setServiceFee.action;
 const setPagination = CreateAction(reducerName, 'SET_PAGINATION');
 export const setPaginationAction = setPagination.action;
 
+const setActionId = CreateAction(reducerName, 'SET_ACTION_ID');
+export const setActionIdAction = setActionId.action;
+
 const setParcelRequestLoading = CreateAction(reducerName, 'SET_PARCEL_REQUEST_LOADING');
 export const setParcelRequestLoadingAction = setParcelRequestLoading.action;
 
@@ -66,10 +72,13 @@ export const setFilterParcelsAction = setFilterParcels.action;
 const setParcelFilterFields = new CreateAction(reducerName, 'SET_PARCEL_FILTER_FIELDS');
 export const setParcelsFilterFieldsAction = setParcelFilterFields.action;
 
+export const parcelRequestSelector = (reducers) => reducers.parcelRequestReducer;
+
 const initialState = {
   parcelRequestLoading: false,
   parcelRequest: undefined,
   parcelRequests: [],
+  userParcelRequests: [],
   id: undefined,
   collectAddress: '',
   deliverAddress: '',
@@ -86,6 +95,7 @@ const initialState = {
   locations: [],
   serviceFee: 0,
   pagination: getDefaultPaginationObject(),
+  actionId: undefined,
   parcelFilterFields: {
     startLocation: '',
     endLocation: '',
@@ -105,6 +115,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         parcelRequests: action.payload,
+      };
+    case setUserParcelRequests.actionType:
+      return {
+        ...state,
+        userParcelRequests: action.payload,
       };
     case setFilterParcels.actionType:
       return {
@@ -190,6 +205,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         serviceFee: action.payload,
+      };
+    case setActionId.actionType:
+      return {
+        ...state,
+        actionId: action.payload,
       };
     case setParcelRequestLoading.actionType:
       return {

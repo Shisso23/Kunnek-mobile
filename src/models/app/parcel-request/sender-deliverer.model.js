@@ -8,9 +8,26 @@ const setProfilePicture = (_apiUserModel) => {
   return pictureUri;
 };
 
-export const senderDelivererModel = (_apiSenderDelivererModel = {}) => ({
+const senderDelivererModel = (_apiSenderDelivererModel = {}) => ({
   id: _.get(_apiSenderDelivererModel, 'id', ''),
   userId: _.get(_apiSenderDelivererModel, 'user_id', ''),
   fullName: _.get(_apiSenderDelivererModel, 'full_name', ''),
   profilePictureUri: setProfilePicture(_apiSenderDelivererModel),
+  mobileNumber: _.get(_apiSenderDelivererModel, 'mobile-number', ''),
+});
+
+const vehicleModel = (_apiVehicleModel = {}) => ({
+  make: _.get(_apiVehicleModel, 'make', ''),
+  model: _.get(_apiVehicleModel, 'model', ''),
+  registrationNumber: _.get(_apiVehicleModel, 'registration_number', ''),
+});
+
+export const senderModel = (_apiSenderModel = {}) => ({
+  ...senderDelivererModel(_apiSenderModel),
+});
+
+export const delivererModel = (_apiDelivererModel = {}) => ({
+  ...senderDelivererModel(_apiDelivererModel),
+  idNumber: _.get(_apiDelivererModel, 'id_number', ''),
+  vehicle: vehicleModel(_.get(_apiDelivererModel, 'vehicle'), {}),
 });

@@ -4,6 +4,8 @@ import parcelRequestUrls from './parcel-request.urls';
 import authNetworkService from '../auth-network-service/auth-network.service';
 import {
   apiParcelRequestModel,
+  apiParcelRequestUpdateModel,
+  apiParcelStatusUpdateModel,
   parcelRequestModel,
 } from '../../../models/app/parcel-request/parcel-request.model';
 import { getParamString } from '../../../helpers/network.helper';
@@ -65,7 +67,21 @@ const create = (data = {}) => {
 
 const update = (id, data = {}) => {
   const url = parcelRequestUrls.parcelRequestsUrl();
-  const dataModel = apiParcelRequestModel(data);
+  const dataModel = apiParcelRequestUpdateModel(data);
+  const _createAndReturnModel = (apiResponse) => parcelRequestModel(apiResponse.data);
+  return authNetworkService
+    .patch(`${url}/${id}`, dataModel)
+    .then(_createAndReturnModel)
+    .catch((error) => {
+      // eslint-disable-next-line no-console
+      console.warn(error);
+      return Promise.reject(error);
+    });
+};
+
+const updateStatus = (id, data = {}) => {
+  const url = parcelRequestUrls.parcelRequestsUrl();
+  const dataModel = apiParcelStatusUpdateModel(data);
   const _createAndReturnModel = (apiResponse) => parcelRequestModel(apiResponse.data);
   return authNetworkService
     .patch(`${url}/${id}`, dataModel)
@@ -97,6 +113,7 @@ export default {
   filterParcels,
   create,
   update,
+  updateStatus,
   remove,
   getServiceFee,
 };

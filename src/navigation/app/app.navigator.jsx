@@ -19,6 +19,9 @@ import ParcelRequestsScreen from '../../screens/app/parcel-requests/parcel-reque
 import AddCardScreen from '../../screens/app/credit-card/add-card.screen';
 import { Colors } from '../../theme/Variables';
 import ParcelDetailsScreen from '../../screens/app/parcel-details/parcel-details.screen';
+import OTPScreen from '../../screens/app/OTP/otp.screen';
+import EditParcelScreen from '../../screens/app/edit-parcel/edit-parcel.screen';
+import OtherUserProfileScreen from '../../screens/app/other-user-profile/other-user-profile.screen';
 
 const Drawer = createDrawerNavigator();
 const AppStack = createStackNavigator();
@@ -33,6 +36,7 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
       />
       <AppStack.Screen name="SendParcel" component={SendParcelScreen} />
+      <AppStack.Screen name="EditParcel" component={EditParcelScreen} />
       <AppStack.Screen name="ViewParcel" component={ViewParcelsScreen} />
       <AppStack.Screen name="ParcelRequests" component={ParcelRequestsScreen} />
       <AppStack.Screen name="ParcelDetails" component={ParcelDetailsScreen} />
@@ -42,8 +46,10 @@ const AppNavigator = () => {
       <AppStack.Screen name="AddVehicle" component={AddVehicleScreen} />
       <AppStack.Screen name="ViewVehicle" component={ViewVehicleScreen} />
       <AppStack.Screen name="Payment" component={PaymentScreen} />
+      <AppStack.Screen name="OTP" component={OTPScreen} />
       <AppStack.Screen name="ContactUs" component={ContactUsScreen} />
-      <AppStack.Screen name="AddCardScreen" component={AddCardScreen} />
+      <AppStack.Screen name="AddCard" component={AddCardScreen} />
+      <AppStack.Screen name="UserDetails" component={OtherUserProfileScreen} />
     </AppStack.Navigator>
   );
 };

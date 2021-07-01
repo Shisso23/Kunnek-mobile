@@ -78,7 +78,7 @@ const MapViewComponent = ({ parcelRequests, onPointPress }) => {
 
   const _renderLine = (points = [], index) => {
     if (points.length < 2) {
-      return <></>;
+      return <React.Fragment key={index}></React.Fragment>;
     }
 
     const processedPoints = points.map((point = {}) => locationService.getCoordinate(point));

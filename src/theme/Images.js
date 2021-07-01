@@ -23,4 +23,10 @@ export default () => ({
   timerBlue: require('../assets/images/timer-icon-blue.png'),
   truckBlue: require('../assets/images/truck-icon-blue.png'),
   writeCommentBlue: require('../assets/images/write-comment-icon-blue.png'),
+  mailIcon: require('../assets/images/mail-icon-black.png'),
+  messageIconBlue: require('../assets/images/message-icon-blue.png'),
+  messageIconGreen: require('../assets/images/message-icon-green.png'),
+  mapIcon: require('../assets/images/map-icon.png'),
+  editIconGreen: require('../assets/images/edit-icon-green.png'),
+  cancelIconOrange: require('../assets/images/cancel-icon-orange.png'),
 });

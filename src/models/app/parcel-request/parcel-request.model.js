@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { locationsModel } from '../location/locations.model';
-import { senderDelivererModel } from './sender-deliverer.model';
+import { delivererModel, senderModel } from './sender-deliverer.model';
 
 export const parcelRequestModel = (_apiParcelRequestModel = {}) => ({
   id: _.get(_apiParcelRequestModel, 'id', ''),
@@ -25,8 +25,8 @@ export const parcelRequestModel = (_apiParcelRequestModel = {}) => ({
   receiverMobileNumber: _.get(_apiParcelRequestModel, 'receiver.mobile_number', ''),
   senderId: _.get(_apiParcelRequestModel, 'sender_id', 0),
   status: _.get(_apiParcelRequestModel, 'status', 'In Progress'),
-  sender: senderDelivererModel(_.get(_apiParcelRequestModel, 'sender', {})),
-  deliverer: senderDelivererModel(_.get(_apiParcelRequestModel, 'collector', {})),
+  sender: senderModel(_.get(_apiParcelRequestModel, 'sender', {})),
+  deliverer: delivererModel(_.get(_apiParcelRequestModel, 'collector', {})),
 });
 
 export const apiParcelRequestModel = (_appParcelRequestModel = {}) => {
@@ -65,5 +65,59 @@ export const apiParcelRequestModel = (_appParcelRequestModel = {}) => {
     };
   }
 
+  return data;
+};
+
+export const apiParcelRequestUpdateModel = (_appParcelRequestModel = {}) => {
+  const data = {
+    job: {
+      description: _.get(_appParcelRequestModel, 'description', ''),
+      price: _.get(_appParcelRequestModel, 'price', 0.0),
+      item_weight: _.get(_appParcelRequestModel, 'itemWeight', 0.0),
+      item_height: _.get(_appParcelRequestModel, 'itemHeight', 0.0),
+      item_width: _.get(_appParcelRequestModel, 'itemWidth', 0.0),
+      item_length: _.get(_appParcelRequestModel, 'itemLength', 0.0),
+      latest_delivery_date_time: _.get(_appParcelRequestModel, 'latestDeliveryDateTime', ''),
+      locations: [
+        { location_type: 'collect', address: _.get(_appParcelRequestModel, 'pickUpAddress', '') },
+        { location_type: 'deliver', address: _.get(_appParcelRequestModel, 'dropOffAddress', '') },
+      ],
+      receiver: {
+        first_name: _.get(_appParcelRequestModel, 'receiverFirstName', ''),
+        last_name: _.get(_appParcelRequestModel, 'receiverLastName', ''),
+        mobile_number: _.get(_appParcelRequestModel, 'receiverMobileNumber', ''),
+      },
+    },
+  };
+  const photoUri = _.get(_appParcelRequestModel, 'photoUri', '');
+  if (!_.isEmpty(photoUri)) {
+    data.job.photo = {
+      uri: photoUri,
+      name: 'photo',
+      type: 'image/jpeg',
+    };
+  }
+
+  return data;
+};
+
+export const apiParcelStatusUpdateModel = (_appParcelStatusUpdateModel = {}) => {
+  const data = {
+    job: {
+      next_status: _.get(_appParcelStatusUpdateModel, 'next_status'),
+    },
+  };
+  return data;
+};
+
+export const apiParcelStatusCancelModel = (_appParcelStatusCancelModel = {}) => {
+  const data = {
+    job: {
+      status: _.get(_appParcelStatusCancelModel, 'status'),
+      next_status: 'pending',
+      trip_id: null,
+      collector_id: null,
+    },
+  };
   return data;
 };

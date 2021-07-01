@@ -11,6 +11,7 @@ import { useTheme } from '../../../theme';
 import { Colors } from '../../../theme/Variables';
 import { formatDate } from '../../../helpers/date.helper';
 import { ParcelPhoto, TagPanel } from '../../atoms';
+import { abbreviatedStatus } from '../../../helpers/parcel-request-status.helper';
 
 const ParcelRequestListItem = ({ parcelRequest }) => {
   const { Fonts, Gutters, Layout } = useTheme();
@@ -32,7 +33,7 @@ const ParcelRequestListItem = ({ parcelRequest }) => {
   };
 
   const _formatStatus = (parcel) => {
-    const statusMessage = _.replace(_.get(parcel, 'status'), '_', ' ');
+    const statusMessage = abbreviatedStatus(parcel);
     return _.startCase(statusMessage);
   };
 
