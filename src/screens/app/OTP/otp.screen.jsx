@@ -21,6 +21,7 @@ import {
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { parcelRequestSelector } from '../../../reducers/parcel-request-reducer/parcel-request.reducer';
 import { useEffect } from 'react';
+import { progressPackageStatus } from '../../../helpers/parcel-request-status.helper';
 
 const OTPScreen = ({ route }) => {
   const { Layout, Gutters, Images } = useTheme();
@@ -45,7 +46,7 @@ const OTPScreen = ({ route }) => {
     if (otpValue.length < 4) return setErrorMessage('OTP must be 4 digits long');
     dispatch(verifyParcelDelivery(actionId, otpValue)).then((result) => {
       if (result === true) {
-        const newStatus = { nextStatus: 'completed_delivery' };
+        const newStatus = progressPackageStatus(parcelRequest);
         dispatch(updateParcelStatus(parcelRequest, newStatus));
         navigation.navigate('ParcelDetails', parcelRequest);
       }

@@ -14,3 +14,15 @@ export const getUserBankAccountsAction = () => async (dispatch) => {
     dispatch(setBankAccountsLoadingAction(false));
   }
 };
+
+export const createUserBankAccountsAction = (data = {}) => (dispatch, getState) => {
+  dispatch(setBankAccountsLoadingAction(true));
+
+  bankAccountService
+    .createBankAccount(data)
+    .then((newBankAccount) => {
+      const { bankAccounts } = getState().userReducer;
+      return dispatch(setUserBankAccountsAction([...bankAccounts, newBankAccount]));
+    })
+    .finally(() => dispatch(setBankAccountsLoadingAction(false)));
+};

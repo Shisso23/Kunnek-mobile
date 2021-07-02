@@ -6,3 +6,4 @@ export { default as SendParcelItemDetailsForm } from './parcel-request/send-parc
 export { default as VehicleForm } from './vehicle/vehicle.form';
 export { default as ReviewDriverForm } from './review-driver/review-driver.form';
 export { default as ReviewSenderForm } from './review-sender/review-sender.form';
+export { default as BankAccountForm } from './bank-account/bank-account.form';

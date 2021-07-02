@@ -16,10 +16,22 @@ import { DropdownSelect } from '../../molecules';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
 import { useTheme } from '../../../theme';
+import dayjs from 'dayjs';
 
 const DeliverParcelDetailsForm = ({ submitForm, onSuccess, initialValues, parcelRequest }) => {
   const validationSchema = Yup.object().shape({
-    latestArrivalDateTime: Yup.date().required('Latest delivery date is required'),
+    latestArrivalDateTime: Yup.string()
+      .test('past-date', 'date cannot be in the past', (dateTime) => {
+        return dayjs(dateTime).isAfter(dayjs());
+      })
+      .test(
+        'before-date',
+        'date cannot be after the due date specified by the sender',
+        (dateTime) => {
+          return dayjs(dateTime).isBefore(dayjs(_.get(parcelRequest, 'latestDeliveryDateTime')));
+        },
+      )
+      .required('Latest delivery date is required'),
     vehicleId: Yup.string().required('Vehicle is Required'),
   });
 
@@ -81,6 +93,7 @@ const DeliverParcelDetailsForm = ({ submitForm, onSuccess, initialValues, parcel
           );
           setFieldValue('vehicleId', _.get(vehicle, 'id'));
         };
+
         return (
           <>
             <ListItem>
@@ -141,6 +154,8 @@ const DeliverParcelDetailsForm = ({ submitForm, onSuccess, initialValues, parcel
               placeholder="Latest Date of Collection"
               errorMessage={error('latestArrivalDateTime')}
               label=""
+              mode="datetime"
+              format="YYYY-MM-DD:HH:mm"
             />
 
             <SafeAreaView>

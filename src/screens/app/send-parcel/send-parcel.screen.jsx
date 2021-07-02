@@ -25,7 +25,7 @@ import {
 } from '../../../models/app/parcel-request/parcel-request-form.model';
 import { userCreditCardModel } from '../../../models/app/user/user-credit-card.model';
 import { successful } from '../../../helpers/errors.helper';
-import { getCurrentDate } from '../../../helpers/date.helper';
+import { getTomorrow } from '../../../helpers/date.helper';
 import { PAYMENT_TYPES } from '../../../services/sub-services/payment-service/payment.service';
 import { getCurrency } from '../../../helpers/payment.helper';
 import { tokenizeCardModel } from '../../../models/app/credit-card/tokenize-card.model';
@@ -197,7 +197,7 @@ const SendParcelScreen = () => {
           <View style={[Gutters.smallHMargin]}>
             <SendParcelDeliverAndReceiverDetailsForm
               initialValues={deliveryAndReceiverDetailsFormModel({
-                latestDeliveryDateTime: getCurrentDate(),
+                latestDeliveryDateTime: getTomorrow('YYYY-MM-DD:HH:mm'),
                 ...deliverAndReceiverDetailsForm,
               })}
               submitForm={_handleSubmitDeliverAndReceiverDetailsForm}

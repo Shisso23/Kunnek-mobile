@@ -17,7 +17,9 @@ export const createTripAction = (data = {}) => (dispatch) => {
   dispatch(setTripLoadingAction(true));
   return tripService
     .create(data)
-    .then((result) => result)
+    .then((result) => {
+      return result;
+    })
     .finally(() => {
       dispatch(setTripLoadingAction(false));
     });

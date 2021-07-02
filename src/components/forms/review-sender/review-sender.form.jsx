@@ -1,6 +1,6 @@
 import React from 'react';
 import * as Yup from 'yup';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Formik } from 'formik';
 import _ from 'lodash';
 import { Button } from 'react-native-elements';
@@ -88,8 +88,7 @@ const ReviewSenderForm = ({ submitForm, user, parcelRequest }) => {
               onBlur={handleBlur('comment')}
               errorMessage={error('comment')}
               multiline={true}
-              numberOfLines={5}
-              style={[Common.viewCard, Gutters.regularHMargin]}
+              style={[Common.viewCard, Gutters.regularHMargin, styles.commentBoxStyle]}
             />
             <View style={[Layout.fill]} />
             <SafeAreaView style={[Gutters.largeMargin]}>
@@ -114,3 +113,9 @@ ReviewSenderForm.defaultProps = {
 };
 
 export default ReviewSenderForm;
+
+const styles = StyleSheet.create({
+  commentBoxStyle: {
+    minHeight: 120,
+  },
+});

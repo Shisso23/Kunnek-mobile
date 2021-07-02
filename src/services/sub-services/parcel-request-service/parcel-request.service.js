@@ -83,12 +83,9 @@ const update = (id, data = {}) => {
 const updateStatus = (id, data = {}) => {
   const url = parcelRequestUrls.parcelRequestsUrl();
   const dataModel = apiParcelStatusUpdateModel(data);
-  const _createAndReturnModel = (apiResponse) => {
-    parcelRequestModel(apiResponse.data);
-  };
   return authNetworkService
     .patch(`${url}/${id}`, dataModel)
-    .then(_createAndReturnModel)
+    .then((response) => parcelRequestModel(response.data))
     .catch((error) => {
       // eslint-disable-next-line no-console
       console.warn(error);
