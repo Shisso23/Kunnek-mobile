@@ -57,11 +57,10 @@ const AddCardScreen = () => {
   };
   const submitRegistration = (cardModel, transaction) => {
     return PeachMobile.submitRegistration(transaction, `${config.peachPayments.peachPaymentMode}`)
-      .then((response) => {
-        console.log('peach Submit registration response', response);
+      .then(() => {
         getCardRegistrationStatus(cardModel);
       })
-      .catch((error) => console.log('peach submit registration error', { error }));
+      .catch((error) => console.warn('peach submit registration error', error.message));
   };
 
   const createUserCreditCard = (cardModel, tokenizedCard) => {
@@ -76,27 +75,23 @@ const AddCardScreen = () => {
     };
     return dispatch(createUserCreditCardAction(finalData))
       .then((creditCardResponse) => {
-        console.log('Create creditCard response', { creditCardResponse });
         flashService.success('added card successfully!');
         if (successful(creditCardResponse)) {
           _openVerificationPaymentScreen(creditCardResponse);
         }
       })
       .catch((error) => {
-        console.log('Create credit card error', error);
-        flashService.error('Could not create card');
+        flashService.error('Could not create card', error.message);
       });
   };
 
   const getCardRegistrationStatus = (cardModel) => {
     return dispatch(getCardRegistrationStatusAction(checkoutID))
       .then((cardRegStatus) => {
-        console.log({ cardRegStatus });
         const tokenizedCard = _.get(cardRegStatus, 'id', '');
         return createUserCreditCard(cardModel, tokenizedCard);
       })
       .catch((error) => {
-        console.log('app submit transaction error ', error);
         return error;
       });
   };
@@ -104,14 +99,11 @@ const AddCardScreen = () => {
   const _onSubmit = async (cardFormValues) => {
     if (peachMobileRef) {
       const cardModel = tokenizeCardModel(cardFormValues);
-      console.log('card model', cardModel);
       return createTransaction(cardModel)
         .then((transaction) => {
-          console.log({ transaction });
           return submitRegistration(cardModel, transaction);
         })
         .catch((error) => {
-          console.log('Create transaction error', { error });
           console.warn({ error });
         });
     }
