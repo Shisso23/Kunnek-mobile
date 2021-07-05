@@ -1,18 +1,22 @@
 import _ from 'lodash';
 
-export const userCreditCardModel = (_apiUserModel = {}) => ({
-  id: _.get(_apiUserModel, 'id', ''),
-  cardNumber: _.get(_apiUserModel, 'obfuscated_card_number', ''),
-  cardType: _.get(_apiUserModel, 'card_type', ''),
-  tokenizedCard: _.get(_apiUserModel, 'tokenized_card', ''),
-  cardHolder: _.get(_apiUserModel, 'card_holder', ''),
-  expiryMonth: _.get(_apiUserModel, 'expiry_month', ''),
-  expiryYear: _.get(_apiUserModel, 'expiry_year', ''),
-  senderId: _.get(_apiUserModel, 'sender_id'),
-  default: _.get(_apiUserModel, 'default', false),
-  verified: _.get(_apiUserModel, 'verified', false),
-  expired: _.get(_apiUserModel, 'expired', false),
-});
+export const userCreditCardModel = (_apiUserModel = {}) => {
+  const sender = _.get(_apiUserModel, 'sender', {});
+  return {
+    id: _.get(_apiUserModel, 'id', ''),
+    cardNumber: _.get(_apiUserModel, 'obfuscated_card_number', ''),
+    cardType: _.get(_apiUserModel, 'card_type', ''),
+    tokenizedCard: _.get(_apiUserModel, 'tokenized_card', ''),
+    cardHolder: _.get(_apiUserModel, 'card_holder', ''),
+    expiryMonth: _.get(_apiUserModel, 'expiry_month', ''),
+    expiryYear: _.get(_apiUserModel, 'expiry_year', ''),
+    senderId: _.get(sender, 'id', ''),
+    userId: _.get(sender, 'user_id', ''),
+    default: _.get(_apiUserModel, 'default', false),
+    verified: _.get(_apiUserModel, 'verified', false),
+    expired: _.get(_apiUserModel, 'expired', false),
+  };
+};
 
 export const apiUserCreditCardModel = (_appUserModel = {}) => ({
   card: {

@@ -19,7 +19,7 @@ import { createParcelRequestAction } from '../../../reducers/parcel-request-redu
 import {
   createUserCreditCardAction,
   getUserCreditCardsAction,
-  submitCardTransactionAction,
+  getCardRegistrationStatusAction,
 } from '../../../reducers/user-reducer/user-cards.actions';
 import { createCheckoutIdAction } from '../../../reducers/user-reducer/user-cards.actions';
 import {
@@ -82,53 +82,76 @@ const SendParcelScreen = () => {
       });
   };
 
+  const createTransaction = async (cardModel) => {
+    return PeachMobile.createTransaction(
+      checkoutID,
+      _.get(cardModel, 'paymentBrand'),
+      _.get(cardModel, 'cardHolder'),
+      _.get(cardModel, 'cardNumber'),
+      _.get(cardModel, 'expiryMonth'),
+      _.get(cardModel, 'expiryYear', ''),
+      _.get(cardModel, 'cvv'),
+    );
+  };
+  const submitRegistration = (cardModel, transaction) => {
+    return PeachMobile.submitRegistration(transaction, `${config.peachPayments.peachPaymentMode}`)
+      .then((response) => {
+        console.log('peach Submit registration response', response);
+        getCardRegistrationStatus(cardModel);
+      })
+      .catch((error) => console.log('peach submit registration error', { error }));
+  };
+
+  const createUserCreditCard = (cardModel, tokenizedCard) => {
+    const finalData = {
+      cardNumber: _.get(cardModel, 'obfuscatedCardNumber'),
+      cardType: _.get(cardModel, 'paymentBrand'),
+      cardHolder: _.get(cardModel, 'cardHolder'),
+      expiryMonth: _.get(cardModel, 'expiryMonth'),
+      expiryYear: _.get(cardModel, 'expiryYear'),
+      senderId,
+      tokenizedCard,
+    };
+    return dispatch(createUserCreditCardAction(finalData))
+      .then((creditCardResponse) => {
+        console.log('Create creditCard response', { creditCardResponse });
+        flashService.success('added card successfully!');
+        if (successful(creditCardResponse)) {
+          _openVerificationPaymentScreen(creditCardResponse);
+        }
+      })
+      .catch((error) => {
+        console.log('Create credit card error', error);
+        flashService.error('Could not create card');
+      });
+  };
+
+  const getCardRegistrationStatus = (cardModel) => {
+    return dispatch(getCardRegistrationStatusAction(checkoutID))
+      .then((cardRegStatus) => {
+        console.log({ cardRegStatus });
+        const tokenizedCard = _.get(cardRegStatus, 'id', '');
+        return createUserCreditCard(cardModel, tokenizedCard);
+      })
+      .catch((error) => {
+        console.log('app submit transaction error ', error);
+        return error;
+      });
+  };
+
   const _handleSubmitCreditCardForm = async (cardFormValues) => {
     setCreditCardForm(cardFormValues);
     if (peachMobileRef) {
-      setCreditCardForm(cardFormValues);
       const cardModel = tokenizeCardModel(cardFormValues);
-
-      return PeachMobile.createTransaction(
-        checkoutID,
-        _.get(cardModel, 'paymentBrand'),
-        _.get(cardModel, 'cardHolder'),
-        _.get(cardModel, 'cardNumber'),
-        _.get(cardModel, 'expiryMonth'),
-        _.get(cardModel, 'expiryYear', ''),
-        _.get(cardModel, 'cvv'),
-      )
+      console.log('card model', cardModel);
+      return createTransaction(cardModel)
         .then((transaction) => {
-          return PeachMobile.submitRegistration(
-            transaction,
-            config.peachPayments.peachPaymentMode,
-          ).then(() => {
-            return dispatch(submitCardTransactionAction(checkoutID))
-              .then((response) => {
-                const finalData = {
-                  cardNumber: _.get(cardModel, 'obfuscatedCardNumber'),
-                  cardType: _.get(cardModel, 'paymentBrand'),
-                  cardHolder: _.get(cardModel, 'cardHolder'),
-                  expiryMonth: _.get(cardModel, 'expiryMonth'),
-                  expiryYear: _.get(cardModel, 'expiryYear'),
-                  senderId,
-                  tokenizedCard: _.get(response, 'id', ''),
-                };
-                return dispatch(createUserCreditCardAction(finalData))
-                  .then((creditCardResponse) => {
-                    flashService.success('added card successfully!');
-                    if (successful(creditCardResponse)) {
-                      _openVerificationPaymentScreen(creditCardResponse);
-                    }
-                  })
-                  .catch(() => flashService.error('Could not create card'));
-              })
-              .catch((error) => {
-                return error;
-              });
-          });
+          console.log({ transaction });
+          return submitRegistration(cardModel, transaction);
         })
         .catch((error) => {
-          console.log({ error });
+          console.log('Create transaction error', { error });
+          console.warn({ error });
         });
     }
   };
