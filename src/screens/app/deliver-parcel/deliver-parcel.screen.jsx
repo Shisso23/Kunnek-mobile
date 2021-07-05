@@ -19,7 +19,10 @@ import {
   getUserBankAccountsAction,
 } from '../../../reducers/user-reducer/user-bank-account.actions';
 import DeliverParcelDetailsForm from '../../../components/forms/parcel-request/deliver-parcel-details.form';
-import { getUserVehiclesAction } from '../../../reducers/user-reducer/user-vehicles.actions';
+import {
+  createVehicleAction,
+  getUserVehiclesAction,
+} from '../../../reducers/user-reducer/user-vehicles.actions';
 import { createTripAction } from '../../../reducers/trip-reducer/trip.actions';
 import { updateParcelStatus } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 import { BankAccountForm, VehicleForm } from '../../../components/forms';
@@ -62,9 +65,9 @@ const DeliverParcelScreen = ({ route }) => {
     return dispatch(createTripAction(currentForm))
       .then((tripResponse) => {
         if (successful(tripResponse)) {
-          dispatch(updateParcelStatus(parcelRequest, tripResponse)).then((jobResponse) => {
+          return dispatch(updateParcelStatus(parcelRequest, tripResponse)).then((jobResponse) => {
             if (successful(jobResponse)) {
-              navigation.navigate('ParcelRequests');
+              return true;
             }
           });
         }
@@ -75,10 +78,22 @@ const DeliverParcelScreen = ({ route }) => {
   };
 
   const _handleSubmitBankAccountForm = (currentForm) => {
-    dispatch(createUserBankAccountsAction(currentForm))
-      .then((response) => {
-        if (successful(response)) {
-          return response;
+    return dispatch(createUserBankAccountsAction(currentForm))
+      .then((BankAccountResponse) => {
+        if (successful(BankAccountResponse)) {
+          return true;
+        }
+      })
+      .catch((error) => {
+        console.warn(error.message);
+      });
+  };
+
+  const _handleSubmitVehicleForm = (currentForm) => {
+    return dispatch(createVehicleAction(currentForm))
+      .then((vehicleResponse) => {
+        if (successful(vehicleResponse)) {
+          return true;
         }
       })
       .catch((error) => {
@@ -166,9 +181,9 @@ const DeliverParcelScreen = ({ route }) => {
           <Divider />
           <View style={[Gutters.smallHMargin]}>
             <VehicleForm
-              submitForm={() => {}}
+              submitForm={_handleSubmitVehicleForm}
               onSuccess={_handleSuccess}
-              initialValues={createVehicleModel()}
+              initialValues={createVehicleModel({ collector_id: delivererId })}
               containerStyle={[Gutters.smallHMargin]}
             />
           </View>

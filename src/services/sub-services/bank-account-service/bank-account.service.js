@@ -23,7 +23,6 @@ const createBankAccount = (data = {}) => {
   return authNetworkService
     .post(url, dataModel)
     .then((response) => {
-      //error just before this line gets executed: Warning: An unhandled error was caught from submitForm() [TypeError: undefined is not an object (evaluating 'dispatch((0, _userBankAccount.createUserBankAccountsAction)(currentForm)).then')]
       return userBankAccountModel(response.data);
     })
     .catch((error) => {

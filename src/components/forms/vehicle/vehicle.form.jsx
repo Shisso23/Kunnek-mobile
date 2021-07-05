@@ -1,24 +1,20 @@
 import React from 'react';
 import _ from 'lodash';
-import { Text, View, ViewPropTypes } from 'react-native';
+import { View, ViewPropTypes, SafeAreaView } from 'react-native';
+import { Input, Button } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import { TextInput, Button, HelperText } from 'react-native-paper';
 import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
-import { useTheme } from '../../../theme';
-import { UploadDocumentButton } from '../../molecules';
 
 const VehicleForm = ({ submitForm, onSuccess, initialValues, containerStyle }) => {
-  const { Layout } = useTheme();
-
   const validationSchema = Yup.object().shape({
-    make: Yup.string().required('Length is required'),
-    model: Yup.string().required('Weight is required'),
-    registrationNumber: Yup.string().required('Height is required'),
-    type: Yup.string().required('Width is required'),
+    make: Yup.string().required('Vehicle make is required'),
+    model: Yup.string().required('Vehicle model is required'),
+    registrationNumber: Yup.string().required('Vehicle registration number is required'),
+    type: Yup.string().required('Vehicle type is required'),
   });
 
   const _handleSubmission = (formData, actions) => {
@@ -54,50 +50,45 @@ const VehicleForm = ({ submitForm, onSuccess, initialValues, containerStyle }) =
         handleBlur,
         touched,
         status,
-        setFieldValue,
       }) => {
         const error = (name) => getFormError(name, { touched, status, errors });
         return (
           <View style={containerStyle}>
-            <TextInput
+            <Input
               value={values.make}
               onChangeText={handleChange('make')}
               onBlur={handleBlur('make')}
-              label="Make"
+              label="Vehicle Make"
               errorMessage={error('make')}
             />
-            <HelperText type="error" visible={error('make')}>
-              {error('make')}
-            </HelperText>
 
-            <TextInput
+            <Input
               value={values.model}
               onChangeText={handleChange('model')}
               onBlur={handleBlur('model')}
-              label="Model"
+              label="Vehicle Model"
               errorMessage={error('model')}
             />
-            <HelperText type="error" visible={error('model')}>
-              {error('model')}
-            </HelperText>
 
-            <TextInput
+            <Input
+              value={values.type}
+              onChangeText={handleChange('type')}
+              onBlur={handleBlur('type')}
+              label="Vehicle Type"
+              errorMessage={error('type')}
+            />
+
+            <Input
               value={values.registrationNumber}
               onChangeText={handleChange('registrationNumber')}
               onBlur={handleBlur('registrationNumber')}
               label="License Plate"
               errorMessage={error('registrationNumber')}
             />
-            <HelperText type="error" visible={error('registrationNumber')}>
-              {error('registrationNumber')}
-            </HelperText>
 
-            <Button onPress={handleSubmit} loading={isSubmitting} mode="contained">
-              Add Vehicle
-            </Button>
-
-            {__DEV__ && <Text>{JSON.stringify(values, null, 2)}</Text>}
-            {__DEV__ && <Text>{JSON.stringify(errors, null, 2)}</Text>}
+            <SafeAreaView>
+              <Button onPress={handleSubmit} loading={isSubmitting} title="Next" />
+            </SafeAreaView>
           </View>
         );
       }}

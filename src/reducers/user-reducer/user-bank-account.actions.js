@@ -18,7 +18,7 @@ export const getUserBankAccountsAction = () => async (dispatch) => {
 export const createUserBankAccountsAction = (data = {}) => (dispatch, getState) => {
   dispatch(setBankAccountsLoadingAction(true));
 
-  bankAccountService
+  return bankAccountService
     .createBankAccount(data)
     .then((newBankAccount) => {
       const { bankAccounts } = getState().userReducer;
