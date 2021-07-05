@@ -5,21 +5,21 @@ import { Divider } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormScreenContainer } from '../../../components';
 import Index from '../../../components/atoms/title';
-import { VehicleForm } from '../../../components/forms';
+import CreditCardForm from '../../../components/forms/credit-card/credit-card.form';
 import { successful } from '../../../helpers/errors.helper';
-import { createVehicleModel } from '../../../models/app/vehicle/create-vehicle.model';
-import { createVehicleAction } from '../../../reducers/user-reducer/user-vehicles.actions';
+import { userCreditCardModel } from '../../../models/app/user/user-credit-card.model';
+import { createUserCreditCardAction } from '../../../reducers/user-reducer/user-cards.actions';
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
 import { useTheme } from '../../../theme';
 
-const AddVehicleScreen = () => {
+const AddCreditCardScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const _handleSubmit = (currentForm) => {
-    return dispatch(createVehicleAction(currentForm))
-      .then((vehicleResponse) => {
-        if (successful(vehicleResponse)) {
+    return dispatch(createUserCreditCardAction(currentForm))
+      .then((cardResponse) => {
+        if (successful(cardResponse)) {
           return true;
         }
       })
@@ -33,17 +33,17 @@ const AddVehicleScreen = () => {
   };
 
   const { Gutters } = useTheme();
-  const { delivererId } = useSelector(userSelector);
+  const { senderId } = useSelector(userSelector);
 
   return (
     <FormScreenContainer>
-      <Index title="Add vehicle" />
+      <Index title="Add Credit Card" />
       <Divider />
       <View style={[Gutters.smallHMargin]}>
-        <VehicleForm
+        <CreditCardForm
           submitForm={_handleSubmit}
           onSuccess={_formSuccess}
-          initialValues={createVehicleModel({ collector_id: delivererId })}
+          initialValues={userCreditCardModel({ sender_id: senderId })}
           containerStyle={[Gutters.smallHMargin]}
         />
       </View>
@@ -51,8 +51,6 @@ const AddVehicleScreen = () => {
   );
 };
 
-AddVehicleScreen.propTypes = {};
+AddCreditCardScreen.propTypes = {};
 
-AddVehicleScreen.defaultProps = {};
-
-export default AddVehicleScreen;
+export default AddCreditCardScreen;

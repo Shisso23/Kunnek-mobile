@@ -23,6 +23,12 @@ import EditParcelScreen from '../../screens/app/edit-parcel/edit-parcel.screen';
 import OtherUserProfileScreen from '../../screens/app/other-user-profile/other-user-profile.screen';
 import ReviewScreen from '../../screens/app/review/review.screen';
 import DeliverParcelScreen from '../../screens/app/deliver-parcel/deliver-parcel.screen';
+import AddBankAccountScreen from '../../screens/app/bank-accounts/add-bank-account.screen';
+import EditVehicleScreen from '../../screens/app/vehicles/edit-vehicle.screen';
+import EditBankAccountScreen from '../../screens/app/bank-accounts/edit-bank-account.screen';
+import AddCreditCardScreen from '../../screens/app/credit-cards/add-credit-card.screen';
+import EditCreditCardScreen from '../../screens/app/credit-cards/edit-credit-card.screen';
+import MyReviewsScreen from '../../screens/app/my-reviews/my-reviews.screen';
 
 const Drawer = createDrawerNavigator();
 const AppStack = createStackNavigator();
@@ -46,12 +52,18 @@ const AppNavigator = () => {
       <AppStack.Screen name="TransactionHistory" component={TransactionHistoryScreen} />
       <AppStack.Screen name="NotificationHistory" component={NotificationHistoryScreen} />
       <AppStack.Screen name="AddVehicle" component={AddVehicleScreen} />
+      <AppStack.Screen name="EditVehicle" component={EditVehicleScreen} />
       <AppStack.Screen name="ViewVehicle" component={ViewVehicleScreen} />
+      <AppStack.Screen name="AddBankAccount" component={AddBankAccountScreen} />
+      <AppStack.Screen name="EditBankAccount" component={EditBankAccountScreen} />
+      <AppStack.Screen name="AddCreditCard" component={AddCreditCardScreen} />
+      <AppStack.Screen name="EditCreditCard" component={EditCreditCardScreen} />
       <AppStack.Screen name="Payment" component={PaymentScreen} />
       <AppStack.Screen name="OTP" component={OTPScreen} />
       <AppStack.Screen name="ContactUs" component={ContactUsScreen} />
       <AppStack.Screen name="UserDetails" component={OtherUserProfileScreen} />
       <AppStack.Screen name="Review" component={ReviewScreen} />
+      <AppStack.Screen name="MyReviews" component={MyReviewsScreen} />
     </AppStack.Navigator>
   );
 };

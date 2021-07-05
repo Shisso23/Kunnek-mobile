@@ -4,10 +4,17 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import _ from 'lodash';
 import { ListItem, Text } from 'react-native-elements';
 import PropTypes from 'prop-types';
+import { IconButton } from 'react-native-paper';
+
 import useTheme from '../../../theme/hooks/useTheme';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { deleteUserBankAccountAction } from '../../../reducers/user-reducer/user-bank-account.actions';
 
 const AccountsList = ({ items }) => {
-  const { Common, Layout, Gutters } = useTheme();
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const { Common, Layout, Gutters, Colors } = useTheme();
 
   if (_.isEmpty(items)) {
     return null;
@@ -20,9 +27,26 @@ const AccountsList = ({ items }) => {
         <ListItem.Content>
           <ListItem.Title>{_.get(item, 'accountNumber', '')}</ListItem.Title>
         </ListItem.Content>
-        <ListItem.Chevron />
+        <>
+          <IconButton
+            icon={() => <Icon name="pencil-alt" color={Colors.darkerGrey} size={20} />}
+            onPress={() => _edit(item)}
+          />
+          <IconButton
+            icon={() => <Icon name="times" color={Colors.darkerGrey} size={20} />}
+            onPress={() => _delete(item)}
+          />
+        </>
       </ListItem>
     ));
+  };
+
+  const _delete = (bankAccount) => {
+    dispatch(deleteUserBankAccountAction(_.get(bankAccount, 'id', '')));
+  };
+
+  const _edit = (bankAccount) => {
+    navigation.navigate('EditBankAccount', { bankAccount });
   };
 
   return (
@@ -30,7 +54,10 @@ const AccountsList = ({ items }) => {
       <View style={[Common.viewCard, Gutters.smallVMargin]}>
         <Text>My Bank Accounts</Text>
         {_renderItems()}
-        <TouchableOpacity style={[Layout.rowCenter]}>
+        <TouchableOpacity
+          style={[Layout.rowCenter]}
+          onPress={() => navigation.navigate('AddBankAccount')}
+        >
           <Text>Add bank account</Text>
         </TouchableOpacity>
       </View>

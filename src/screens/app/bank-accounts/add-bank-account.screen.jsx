@@ -5,21 +5,21 @@ import { Divider } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormScreenContainer } from '../../../components';
 import Index from '../../../components/atoms/title';
-import { VehicleForm } from '../../../components/forms';
+import { BankAccountForm } from '../../../components/forms';
 import { successful } from '../../../helpers/errors.helper';
-import { createVehicleModel } from '../../../models/app/vehicle/create-vehicle.model';
-import { createVehicleAction } from '../../../reducers/user-reducer/user-vehicles.actions';
+import { userBankAccountModel } from '../../../models/app/user/user-bank-account.model';
+import { createUserBankAccountsAction } from '../../../reducers/user-reducer/user-bank-account.actions';
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
 import { useTheme } from '../../../theme';
 
-const AddVehicleScreen = () => {
+const AddBankAccountScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const _handleSubmit = (currentForm) => {
-    return dispatch(createVehicleAction(currentForm))
-      .then((vehicleResponse) => {
-        if (successful(vehicleResponse)) {
+    return dispatch(createUserBankAccountsAction(currentForm))
+      .then((BankAccountResponse) => {
+        if (successful(BankAccountResponse)) {
           return true;
         }
       })
@@ -37,13 +37,13 @@ const AddVehicleScreen = () => {
 
   return (
     <FormScreenContainer>
-      <Index title="Add vehicle" />
+      <Index title="Add Bank Account" />
       <Divider />
       <View style={[Gutters.smallHMargin]}>
-        <VehicleForm
+        <BankAccountForm
           submitForm={_handleSubmit}
           onSuccess={_formSuccess}
-          initialValues={createVehicleModel({ collector_id: delivererId })}
+          initialValues={userBankAccountModel({ collector_id: delivererId })}
           containerStyle={[Gutters.smallHMargin]}
         />
       </View>
@@ -51,8 +51,6 @@ const AddVehicleScreen = () => {
   );
 };
 
-AddVehicleScreen.propTypes = {};
+AddBankAccountScreen.propTypes = {};
 
-AddVehicleScreen.defaultProps = {};
-
-export default AddVehicleScreen;
+export default AddBankAccountScreen;

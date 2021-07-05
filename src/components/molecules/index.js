@@ -22,3 +22,4 @@ export { default as OTPInputField } from './otp-input-fields';
 export { default as IdNumber } from './id-number';
 export { default as ReviewItem } from './review-item';
 export { default as DropdownSelect } from './dropdown-select';
+export { default as UserReviewDetailsCard } from './user-review-details';
