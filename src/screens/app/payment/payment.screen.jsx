@@ -40,7 +40,11 @@ const PaymentScreen = ({ isLoading, route, retry = false }) => {
 
   const renderPeachPayment = () => {
     return (
-      <PeachMobile mode={config.peachPaymentMode} urlScheme="kunnekp2p" ref={peachMobileRef} />
+      <PeachMobile
+        mode={config.peachPayments.peachPaymentMode}
+        urlScheme="kunnekp2p"
+        ref={peachMobileRef}
+      />
     );
   };
 
