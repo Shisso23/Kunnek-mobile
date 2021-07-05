@@ -22,7 +22,7 @@ const createCheckoutId = async () =>
     .post(creditCardUrls.createCheckoutUrl())
     .then((response) => _.get(response, 'data'));
 
-const submitCardTransaction = async (checkoutID) => {
+const getCardRegistrationStatus = async (checkoutID) => {
   const url = creditCardUrls.cardsUrl();
   const apiResponse = await authNetworkService.get(
     `${url}/registration_status?checkout_id=${checkoutID}`,
@@ -33,11 +33,12 @@ const submitCardTransaction = async (checkoutID) => {
 const createCreditCard = async (data) => {
   const url = creditCardUrls.cardsUrl();
   const dataModel = apiUserCreditCardModel(data);
-  console.warn({ dataModel });
   const _createAndReturnModel = (apiResponse) => userCreditCardModel(apiResponse.data);
   return authNetworkService
     .post(url, dataModel)
-    .then(_createAndReturnModel)
+    .then((response) => {
+      return _createAndReturnModel(response);
+    })
     .catch((error) => {
       // eslint-disable-next-line no-console
       console.warn(error);
@@ -63,6 +64,6 @@ export default {
   getCreditCards,
   createCreditCard,
   tokenizeCard,
-  submitCardTransaction,
+  getCardRegistrationStatus,
   createCheckoutId,
 };

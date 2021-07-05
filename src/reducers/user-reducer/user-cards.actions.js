@@ -35,7 +35,10 @@ export const getUserCreditCardsAction = () => async (dispatch) => {
 export const createUserCreditCardAction = (data) => async (dispatch, getState) => {
   dispatch(setCreditCardsLoadingAction(true));
   try {
-    const { creditCards } = getState().userReducer;
+    let { creditCards } = getState().userReducer;
+    if (_.isNull(creditCards)) {
+      creditCards = [];
+    }
     const card = await creditCardService.createCreditCard(data);
     dispatch(setCreditCardsLoadingAction(false));
     dispatch(setUserCreditCardsAction([...creditCards, card]));
@@ -47,10 +50,11 @@ export const createUserCreditCardAction = (data) => async (dispatch, getState) =
   }
 };
 
-export const submitCardTransactionAction = (checkoutID) => async (dispatch) => {
+export const getCardRegistrationStatusAction = (checkoutID) => async (dispatch) => {
   dispatch(setSubmitCardTransactionLoadingAction(true));
-  await creditCardService.submitCardTransaction(checkoutID);
+  const response = await creditCardService.getCardRegistrationStatus(checkoutID);
   dispatch(setSubmitCardTransactionLoadingAction(false));
+  return response;
 };
 
 export const tokenizeCard = (data) => (dispatch) => {
