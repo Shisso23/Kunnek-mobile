@@ -20,3 +20,4 @@ export { default as ParcelDetailsFooter } from './parcel-details-footer';
 export { default as ViewParcelCard } from './view-parcel-card';
 export { default as OTPInputField } from './otp-input-fields';
 export { default as IdNumber } from './id-number';
+export { default as ReviewItem } from './review-item';
