@@ -32,8 +32,34 @@ const createBankAccount = (data = {}) => {
     });
 };
 
+const deleteBankAccount = (id) => {
+  const url = bankAccountUrls.bankAccountsUrl();
+  return authNetworkService.delete(`${url}/${id}`).catch((error) => {
+    // eslint-disable-next-line no-console
+    console.warn(error);
+    return Promise.reject(error);
+  });
+};
+
+const updateBankAccount = (id, data = {}) => {
+  const url = bankAccountUrls.bankAccountsUrl();
+  const dataModel = apiUserBankAccountModel(data);
+  return authNetworkService
+    .patch(`${url}/${id}`, dataModel)
+    .then((response) => {
+      return userBankAccountModel(response.data);
+    })
+    .catch((error) => {
+      // eslint-disable-next-line no-console
+      console.warn(error);
+      return Promise.reject(error);
+    });
+};
+
 export default {
   getBankAccounts,
   createBankAccount,
   getBanks,
+  deleteBankAccount,
+  updateBankAccount,
 };

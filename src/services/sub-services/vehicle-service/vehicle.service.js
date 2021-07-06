@@ -27,7 +27,33 @@ const createVehicle = (data = {}) => {
     });
 };
 
+const deleteVehicle = (id) => {
+  const url = vehicleUrls.vehiclesUrl();
+  return authNetworkService.delete(`${url}/${id}`).catch((error) => {
+    // eslint-disable-next-line no-console
+    console.warn(error);
+    return Promise.reject(error);
+  });
+};
+
+const updateVehicle = (id, data = {}) => {
+  const url = vehicleUrls.vehiclesUrl();
+  const dataModel = apiCreateVehicleModel(data);
+  return authNetworkService
+    .patch(`${url}/${id}`, dataModel)
+    .then((response) => {
+      return userVehicleModel(response.data);
+    })
+    .catch((error) => {
+      // eslint-disable-next-line no-console
+      console.warn(error);
+      return Promise.reject(error);
+    });
+};
+
 export default {
   getVehicles,
   createVehicle,
+  deleteVehicle,
+  updateVehicle,
 };

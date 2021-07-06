@@ -7,10 +7,14 @@ import { ListItem, Text } from 'react-native-elements';
 import PropTypes from 'prop-types';
 
 import useTheme from '../../../theme/hooks/useTheme';
+import { IconButton } from 'react-native-paper';
+import { deleteVehicleAction } from '../../../reducers/user-reducer/user-vehicles.actions';
+import { useDispatch } from 'react-redux';
 
 const VehiclesList = ({ items, readOnly }) => {
   const navigation = useNavigation();
-  const { Common, Layout, Gutters } = useTheme();
+  const { Common, Layout, Gutters, Colors } = useTheme();
+  const dispatch = useDispatch();
 
   if (_.isEmpty(items)) {
     return null;
@@ -28,9 +32,28 @@ const VehiclesList = ({ items, readOnly }) => {
           )}`}</ListItem.Title>
           <ListItem.Subtitle>{_.get(item, 'registrationNumber', '')}</ListItem.Subtitle>
         </ListItem.Content>
-        <ListItem.Chevron />
+        {!readOnly && (
+          <>
+            <IconButton
+              icon={() => <Icon name="pencil-alt" color={Colors.darkerGrey} size={20} />}
+              onPress={() => _edit(item)}
+            />
+            <IconButton
+              icon={() => <Icon name="times" color={Colors.darkerGrey} size={20} />}
+              onPress={() => _delete(item)}
+            />
+          </>
+        )}
       </ListItem>
     ));
+  };
+
+  const _delete = (vehicle) => {
+    dispatch(deleteVehicleAction(_.get(vehicle, 'id', '')));
+  };
+
+  const _edit = (vehicle) => {
+    navigation.navigate('EditVehicle', { vehicle });
   };
 
   const _listFooter = () => {
