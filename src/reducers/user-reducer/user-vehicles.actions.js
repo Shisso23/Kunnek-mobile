@@ -15,6 +15,14 @@ export const getUserVehiclesAction = () => async (dispatch) => {
   }
 };
 
-export const createVehicleAction = () => (dispatch) => {
+export const createVehicleAction = (data = {}) => (dispatch, getState) => {
+  dispatch(setVehiclesLoadingAction(true));
 
+  return vehicleService
+    .createVehicle(data)
+    .then((newVehicle) => {
+      const { vehicles } = getState().userReducer;
+      return dispatch(setUserVehiclesAction([...vehicles, newVehicle]));
+    })
+    .finally(() => dispatch(setVehiclesLoadingAction(false)));
 };

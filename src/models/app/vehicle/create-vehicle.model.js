@@ -9,9 +9,12 @@ export const createVehicleModel = (_apiVehicleModel = {}) => ({
   collectorId: _.get(_apiVehicleModel, 'collector_id', ''),
 });
 
-export const apiCreateVehicleModel = (_appUserModel = {}) => ({
-  user: {
-    email: _.get(_appUserModel, 'email', ''),
-    name: _.get(_appUserModel, 'name', ''),
+export const apiCreateVehicleModel = (_appVehicleModel = {}) => ({
+  vehicle: {
+    registration_number: _.get(_appVehicleModel, 'registrationNumber', ''),
+    vehicle_type: _.get(_appVehicleModel, 'type', ''),
+    make: _.get(_appVehicleModel, 'make', ''),
+    model: _.get(_appVehicleModel, 'model', ''),
+    collector_id: _.get(_appVehicleModel, 'collectorId', ''),
   },
 });

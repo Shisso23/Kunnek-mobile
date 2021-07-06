@@ -32,12 +32,12 @@ const ReviewScreen = ({ route }) => {
     if (_isDeliverer()) {
       return {
         type: 'Sender',
-        ..._.get(parcelRequest, 'sender'),
+        ..._.get(parcelRequest, 'deliverer'),
       };
     }
     return {
       type: 'Driver',
-      ..._.get(parcelRequest, 'deliverer'),
+      ..._.get(parcelRequest, 'sender'),
     };
   };
 

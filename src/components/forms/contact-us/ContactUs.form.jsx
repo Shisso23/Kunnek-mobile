@@ -10,8 +10,8 @@ import { Input, Text, Button } from 'react-native-elements';
 import useTheme from '../../../theme/hooks/useTheme';
 import { flashService } from '../../../services';
 import { getFormError } from '../form-utils';
-import DropDownSelect from '../../molecules/dropdown-select/DropDownSelect';
 import { getParcelRequestsAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
+import { DropdownSelect } from '../../molecules';
 
 const issueTypes = ['Bug', 'Complaint', 'General'];
 const { Common, Colors, Custom, Gutters } = useTheme();
@@ -71,7 +71,7 @@ const ContactUsForm = ({ submitForm, onSuccess, containerStyle, initialValues })
               <Text style={[Custom.headerTitleStyle, styles.headerTileExtraStyle]}>Contact Us</Text>
               <Text style={[Common.smallText, styles.helpTextStyle]}>How can we help you?</Text>
               <Text style={[Common.smallText, styles.smallText]}>Select an issue with</Text>
-              <DropDownSelect
+              <DropdownSelect
                 value={values.issueType}
                 keyExtractor={(item, index) => `${item}${index}`}
                 onChange={handleChange('issueType')}
@@ -83,7 +83,7 @@ const ContactUsForm = ({ submitForm, onSuccess, containerStyle, initialValues })
               <Text style={[Common.smallText, styles.smallText]}>
                 Select connected parcel request
               </Text>
-              <DropDownSelect
+              <DropdownSelect
                 value={values.connectedParcel}
                 keyExtractor={(item, index) => `${item.description}${index}`}
                 onChange={(parcel) => {
