@@ -31,7 +31,7 @@ const BankAccountForm = ({ submitForm, onSuccess, initialValues }) => {
     accountType: Yup.string()
       .oneOf(['Cheque', 'Current', 'Savings'])
       .required('Is this a cheque/current or savings account'),
-    collectorID: Yup.string(),
+    collectorId: Yup.string(),
     bankId: Yup.string().required('Bank is required'),
   });
 

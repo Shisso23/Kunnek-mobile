@@ -15,7 +15,6 @@ const getVehicles = async () => {
 const createVehicle = (data = {}) => {
   const url = vehicleUrls.vehiclesUrl();
   const dataModel = apiCreateVehicleModel(data);
-  console.log(url, dataModel);
   return authNetworkService
     .post(url, dataModel)
     .then((response) => {
