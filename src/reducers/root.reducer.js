@@ -6,7 +6,6 @@ import parcelRequestReducer from './parcel-request-reducer/parcel-request.reduce
 import tripReducer from './trip-reducer/trip.reducer';
 import paymentReducer from './payment-reducer/payment.reducer';
 import mapsReducer from './maps-reducer/maps.reducer';
-import chatReducer from './chat-reducer/chat.reducer';
 
 export default combineReducers({
   userAuthReducer,
@@ -15,5 +14,4 @@ export default combineReducers({
   tripReducer,
   paymentReducer,
   mapsReducer,
-  chatReducer,
 });

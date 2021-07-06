@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Text } from 'react-native-elements';
 import { FlatList, View } from 'react-native';
 import _ from 'lodash';
@@ -9,30 +9,29 @@ import { useTheme } from '../../../theme';
 import ProfilePicture from '../../../components/atoms/profile-picture';
 import { StyleSheet } from 'react-native';
 import { ChatBottomDrawer, ChatItem } from '../../../components/molecules';
-import {
-  getChatAction,
-  sendMessageAction,
-  updateChatAction,
-} from '../../../reducers/chat-reducer/chat.actions';
-import { chatSelector } from '../../../reducers/chat-reducer/chat.reducer';
 import { useInterval } from '../../../services';
+import chatService from '../../../services/sub-services/chat-service/chat.service';
 
 const ChatScreen = ({ route }) => {
   const { parcelRequest } = route.params;
+  const chattableId = _.get(parcelRequest, 'id');
   const { user } = useSelector(userSelector);
-  const { chat } = useSelector(chatSelector);
   const { Layout, Fonts } = useTheme();
-  const dispatch = useDispatch();
+  const [chat, setchat] = useState({});
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    dispatch(getChatAction(_.get(parcelRequest, 'id')));
+    chatService.getChat(chattableId).then((response) => {
+      setchat(response);
+      setMessages(response.messages);
+    });
   }, []);
 
   useInterval(() => {
-    dispatch(updateChatAction(_.get(parcelRequest, 'id')));
+    chatService.getChat(chattableId).then((response) => {
+      if (response.messages.length !== messages.length) setMessages(response.messages);
+    });
   }, 5000);
-
-  const { messages } = chat;
 
   const _getOtherUser = () => {
     if (_.get(_.get(parcelRequest, 'sender', {}), 'userId') === _.get(user, 'id')) {
@@ -53,7 +52,9 @@ const ChatScreen = ({ route }) => {
 
   const _sendMessage = (message) => {
     const chatId = _.get(chat, 'id');
-    dispatch(sendMessageAction({ ...message, ...{ chatId } }));
+    chatService.sendMessage({ ...message, ...{ chatId } }).then((response) => {
+      setMessages([...messages, response]);
+    });
   };
 
   return (

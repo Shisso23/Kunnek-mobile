@@ -7,7 +7,7 @@ import {
 import authNetworkService from '../auth-network-service/auth-network.service';
 import chatUrls from './chat.urls';
 
-const get = (id) => {
+const getChat = (id) => {
   const url = chatUrls.newChatUrl();
   const dataModel = apiChatModel({ id });
   const _createAndReturnModel = (apiResponse) => chatModel(apiResponse.data);
@@ -21,7 +21,7 @@ const get = (id) => {
     });
 };
 
-const create = (data = {}) => {
+const sendMessage = (data = {}) => {
   const url = chatUrls.messageUrl();
   const dataModel = apiMessageModel(data);
   const _createAndReturnModel = (apiResponse) => messageModel(apiResponse.data);
@@ -37,6 +37,6 @@ const create = (data = {}) => {
 };
 
 export default {
-  get,
-  create,
+  getChat,
+  sendMessage,
 };
