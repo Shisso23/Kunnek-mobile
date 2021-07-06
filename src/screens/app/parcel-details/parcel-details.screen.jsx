@@ -22,6 +22,7 @@ import {
 } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 import { useInterval } from '../../../services';
 import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 const ParcelDetailsScreen = ({ route }) => {
   const { Layout, Images } = useTheme();
@@ -31,6 +32,7 @@ const ParcelDetailsScreen = ({ route }) => {
   const { user } = useSelector(userSelector);
   const dispatch = useDispatch();
   const [parcelRequestUpdated, updateParcelRequest] = useState(parcelRequest);
+  const navigation = useNavigation();
 
   useInterval(() => {
     dispatch(checkParcelRequestAction(_.get(parcelRequestUpdated, 'id'))).then((response) => {
@@ -69,9 +71,18 @@ const ParcelDetailsScreen = ({ route }) => {
       icons.push({
         icon: Images.messageIconGreen,
         caption: `Contact ${_isDeliverer() ? 'Sender' : ''}`,
+        onPress: () => {
+          navigation.navigate('Chat', { parcelRequest });
+        },
       });
       if (_isDeliverer()) {
-        icons.push({ icon: Images.messageIconBlue, caption: 'Contact Recipient' });
+        icons.push({
+          icon: Images.messageIconBlue,
+          caption: 'Contact Recipient',
+          onPress: () => {
+            navigation.navigate('Chat', { parcelRequest });
+          },
+        });
       } else {
         icons.push({ icon: Images.mapIcon, caption: 'Track Parcel' });
       }
