@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Text } from 'react-native-elements';
 import { FlatList, View } from 'react-native';
 import _ from 'lodash';
@@ -8,37 +8,65 @@ import { userSelector } from '../../../reducers/user-reducer/user.reducer';
 import { useTheme } from '../../../theme';
 import ProfilePicture from '../../../components/atoms/profile-picture';
 import { StyleSheet } from 'react-native';
-import { ChatBottomDrawer } from '../../../components/molecules';
+import { ChatBottomDrawer, ChatItem } from '../../../components/molecules';
+import {
+  getChatAction,
+  sendMessageAction,
+  updateChatAction,
+} from '../../../reducers/chat-reducer/chat.actions';
+import { chatSelector } from '../../../reducers/chat-reducer/chat.reducer';
+import { useInterval } from '../../../services';
 
 const ChatScreen = ({ route }) => {
   const { parcelRequest } = route.params;
   const { user } = useSelector(userSelector);
+  const { chat } = useSelector(chatSelector);
   const { Layout, Fonts } = useTheme();
-  const messages = [
-    { _id: 1, text: 'Hi' },
-    { _id: 2, text: 'Hi' },
-    { _id: 3, text: "I'd like to deliver" },
-  ];
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getChatAction(_.get(parcelRequest, 'id')));
+  }, []);
+
+  useInterval(() => {
+    dispatch(updateChatAction(_.get(parcelRequest, 'id')));
+  }, 5000);
+
+  const { messages } = chat;
+
+  const _getOtherUser = () => {
+    if (_.get(_.get(parcelRequest, 'sender', {}), 'userId') === _.get(user, 'id')) {
+      return _.get(parcelRequest, 'deliverer', {});
+    } else {
+      return user;
+    }
+  };
 
   const _headerComponent = () => (
     <View style={Layout.center}>
-      <ProfilePicture user={user} />
-      <Text style={Fonts.titleTiny}>{`${_.get(user, 'fullName')}`}</Text>
+      <ProfilePicture user={_getOtherUser()} />
+      <Text style={Fonts.titleTiny}>{`${_.get(_getOtherUser(), 'fullName')}`}</Text>
     </View>
   );
 
-  const _message = ({ item }) => <Text>{_.get(item, 'text')}</Text>;
+  const _message = ({ item }) => <ChatItem message={item} />;
+
+  const _sendMessage = (message) => {
+    const chatId = _.get(chat, 'id');
+    dispatch(sendMessageAction({ ...message, ...{ chatId } }));
+  };
 
   return (
     <>
       <FlatList
         ListHeaderComponent={_headerComponent}
         data={messages}
+        style={Layout.fill}
         renderItem={_message}
-        keyExtractor={(message) => `message-${message._id}`}
+        keyExtractor={(message) => `message-${message.id}`}
       />
       <View style={styles.bottomDrawer}>
-        <ChatBottomDrawer onPress={() => {}} chatId={_.get(parcelRequest, 'id')} />
+        <ChatBottomDrawer submitMessage={_sendMessage} />
       </View>
     </>
   );
@@ -46,14 +74,17 @@ const ChatScreen = ({ route }) => {
 
 ChatScreen.propTypes = {
   route: PropTypes.object.isRequired,
-  item: PropTypes.object.isRequired,
+  item: PropTypes.object,
+};
+
+ChatScreen.defaultProps = {
+  item: {},
 };
 
 export default ChatScreen;
 
 const styles = StyleSheet.create({
   bottomDrawer: {
-    position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,

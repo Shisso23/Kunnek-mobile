@@ -22,3 +22,4 @@ export { default as OTPInputField } from './otp-input-fields';
 export { default as IdNumber } from './id-number';
 export { default as ReviewItem } from './review-item';
 export { default as ChatBottomDrawer } from './chat-bottom-drawer';
+export { default as ChatItem } from './chat-item';
