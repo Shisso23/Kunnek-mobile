@@ -39,12 +39,12 @@ const AddVehicleScreen = () => {
     <FormScreenContainer>
       <Index title="Add vehicle" />
       <Divider />
-      <View style={[Gutters.smallHMargin]}>
+      <View style={Gutters.smallHMargin}>
         <VehicleForm
           submitForm={_handleSubmit}
           onSuccess={_formSuccess}
           initialValues={createVehicleModel({ collector_id: delivererId })}
-          containerStyle={[Gutters.smallHMargin]}
+          containerStyle={Gutters.smallHMargin}
         />
       </View>
     </FormScreenContainer>

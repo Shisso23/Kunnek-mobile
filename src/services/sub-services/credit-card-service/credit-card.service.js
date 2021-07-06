@@ -45,7 +45,6 @@ const tokenizeCard = (data) =>
 
 const deleteCreditCard = (id) => {
   const url = creditCardUrls.cardsUrl();
-  console.log(`${url}/${id}`);
   return authNetworkService.delete(`${url}/${id}`).catch((error) => {
     // eslint-disable-next-line no-console
     console.warn(error);

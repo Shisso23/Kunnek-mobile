@@ -55,7 +55,7 @@ const AccountsList = ({ items }) => {
         <Text>My Bank Accounts</Text>
         {_renderItems()}
         <TouchableOpacity
-          style={[Layout.rowCenter]}
+          style={Layout.rowCenter}
           onPress={() => navigation.navigate('AddBankAccount')}
         >
           <Text>Add bank account</Text>

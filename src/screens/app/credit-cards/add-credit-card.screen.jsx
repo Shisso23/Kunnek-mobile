@@ -39,12 +39,12 @@ const AddCreditCardScreen = () => {
     <FormScreenContainer>
       <Index title="Add Credit Card" />
       <Divider />
-      <View style={[Gutters.smallHMargin]}>
+      <View style={Gutters.smallHMargin}>
         <CreditCardForm
           submitForm={_handleSubmit}
           onSuccess={_formSuccess}
           initialValues={userCreditCardModel({ sender_id: senderId })}
-          containerStyle={[Gutters.smallHMargin]}
+          containerStyle={Gutters.smallHMargin}
         />
       </View>
     </FormScreenContainer>

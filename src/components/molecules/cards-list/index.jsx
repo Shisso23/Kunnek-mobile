@@ -60,10 +60,7 @@ const CardsList = ({ items }) => {
       <View style={[Common.viewCard, Gutters.smallVMargin]}>
         <Text>My Debit/Credit Cards</Text>
         {_renderItems()}
-        <TouchableOpacity
-          style={[Layout.rowCenter]}
-          onPress={() => navigation.push('AddCreditCard')}
-        >
+        <TouchableOpacity style={Layout.rowCenter} onPress={() => navigation.push('AddCreditCard')}>
           <Text>Add card</Text>
         </TouchableOpacity>
       </View>

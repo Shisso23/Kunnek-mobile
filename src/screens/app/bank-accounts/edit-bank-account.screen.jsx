@@ -39,12 +39,12 @@ const EditBankAccountScreen = ({ route }) => {
     <FormScreenContainer>
       <Index title="Edit bank account" />
       <Divider />
-      <View style={[Gutters.smallHMargin]}>
+      <View style={Gutters.smallHMargin}>
         <BankAccountForm
           submitForm={_handleSubmit}
           onSuccess={_formSuccess}
           initialValues={bankAccount}
-          containerStyle={[Gutters.smallHMargin]}
+          containerStyle={Gutters.smallHMargin}
         />
       </View>
     </FormScreenContainer>

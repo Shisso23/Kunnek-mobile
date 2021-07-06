@@ -39,12 +39,12 @@ const AddBankAccountScreen = () => {
     <FormScreenContainer>
       <Index title="Add Bank Account" />
       <Divider />
-      <View style={[Gutters.smallHMargin]}>
+      <View style={Gutters.smallHMargin}>
         <BankAccountForm
           submitForm={_handleSubmit}
           onSuccess={_formSuccess}
           initialValues={userBankAccountModel({ collector_id: delivererId })}
-          containerStyle={[Gutters.smallHMargin]}
+          containerStyle={Gutters.smallHMargin}
         />
       </View>
     </FormScreenContainer>

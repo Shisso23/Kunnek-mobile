@@ -39,12 +39,12 @@ const EditVehicleScreen = ({ route }) => {
     <FormScreenContainer>
       <Index title="Edit vehicle" />
       <Divider />
-      <View style={[Gutters.smallHMargin]}>
+      <View style={Gutters.smallHMargin}>
         <VehicleForm
           submitForm={_handleSubmit}
           onSuccess={_formSuccess}
           initialValues={vehicle}
-          containerStyle={[Gutters.smallHMargin]}
+          containerStyle={Gutters.smallHMargin}
         />
       </View>
     </FormScreenContainer>
