@@ -4,3 +4,6 @@ export { default as ForgotPasswordForm } from './forgot-password/forgot-password
 export { default as NumericalInputForm } from './numerical-input/numerical-input.form';
 export { default as SendParcelItemDetailsForm } from './parcel-request/send-parcel-item-details.form';
 export { default as VehicleForm } from './vehicle/vehicle.form';
+export { default as ReviewDriverForm } from './review-driver/review-driver.form';
+export { default as ReviewSenderForm } from './review-sender/review-sender.form';
+export { default as BankAccountForm } from './bank-account/bank-account.form';

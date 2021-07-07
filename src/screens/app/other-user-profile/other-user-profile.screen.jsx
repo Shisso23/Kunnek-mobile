@@ -11,7 +11,10 @@ import { StyleSheet } from 'react-native';
 import { Colors } from '../../../theme/Variables';
 import { useDispatch } from 'react-redux';
 import { progressPackageStatus } from '../../../helpers/parcel-request-status.helper';
-import { cancelParcelStatus } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
+import {
+  cancelParcelStatus,
+  updateParcelStatus,
+} from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 import { useNavigation } from '@react-navigation/native';
 
 const OtherUserProfileScreen = ({ route }) => {
@@ -24,27 +27,23 @@ const OtherUserProfileScreen = ({ route }) => {
   const _renderApproval = () => {
     if (parcelRequest) {
       return (
-        <>
+        <View style={Layout.center}>
+          <Button containerStyle={styles.buttonStyle} onPress={_accept} title="Accept" />
           <Button
-            containerStyle={Layout.center}
-            buttonStyle={[styles.buttonStyle]}
-            onPress={_accept}
-            title="Accept"
-          />
-          <Button
-            containerStyle={Layout.center}
-            buttonStyle={[styles.buttonStyle, styles.clearButtonStyle]}
+            containerStyle={styles.buttonStyle}
+            buttonStyle={styles.clearButtonStyle}
             onPress={_reject}
-            title="Reject"
             titleStyle={[styles.clearButtonTextStyle]}
+            title="Reject"
           />
-        </>
+        </View>
       );
     }
   };
 
   const _accept = () => {
-    dispatch(progressPackageStatus());
+    const newStatus = progressPackageStatus(parcelRequest);
+    dispatch(updateParcelStatus(parcelRequest, newStatus));
     navigation.navigate('ParcelDetails', parcelRequest);
   };
 
@@ -67,9 +66,9 @@ const OtherUserProfileScreen = ({ route }) => {
             {/* <ReviewsList items={reviews} /> */}
           </View>
         </SafeAreaView>
+        <View style={[Layout.fill]} />
+        {_renderApproval()}
       </View>
-      <View style={[Layout.fill]} />
-      {_renderApproval()}
     </ParallaxView>
   );
 };

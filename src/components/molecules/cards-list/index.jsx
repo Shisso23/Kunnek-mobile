@@ -6,10 +6,14 @@ import _ from 'lodash';
 import { ListItem, Text } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import useTheme from '../../../theme/hooks/useTheme';
+import { useDispatch } from 'react-redux';
+import { IconButton } from 'react-native-paper';
+import { deleteUserCreditCardAction } from '../../../reducers/user-reducer/user-cards.actions';
 
 const CardsList = ({ items }) => {
-  const { Common, Layout, Gutters } = useTheme();
+  const { Common, Layout, Gutters, Colors } = useTheme();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   if (_.isEmpty(items)) {
     return null;
@@ -29,9 +33,26 @@ const CardsList = ({ items }) => {
         <ListItem.Content>
           <ListItem.Title>{_.get(item, 'cardNumber', '')}</ListItem.Title>
         </ListItem.Content>
-        <ListItem.Chevron />
+        <>
+          <IconButton
+            icon={() => <Icon name="pencil-alt" color={Colors.darkerGrey} size={20} />}
+            onPress={() => _edit(item)}
+          />
+          <IconButton
+            icon={() => <Icon name="times" color={Colors.darkerGrey} size={20} />}
+            onPress={() => _delete(item)}
+          />
+        </>
       </ListItem>
     ));
+  };
+
+  const _delete = (card) => {
+    dispatch(deleteUserCreditCardAction(_.get(card, 'id', '')));
+  };
+
+  const _edit = (card) => {
+    navigation.navigate('EditCreditCard', { card });
   };
 
   return (
@@ -39,7 +60,7 @@ const CardsList = ({ items }) => {
       <View style={[Common.viewCard, Gutters.smallVMargin]}>
         <Text>My Debit/Credit Cards</Text>
         {_renderItems()}
-        <TouchableOpacity onPress={() => navigation.navigate('AddCard')} style={[Layout.rowCenter]}>
+        <TouchableOpacity style={Layout.rowCenter} onPress={() => navigation.push('AddCreditCard')}>
           <Text>Add card</Text>
         </TouchableOpacity>
       </View>

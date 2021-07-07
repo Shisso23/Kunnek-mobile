@@ -54,4 +54,11 @@ export default ({ FontSize, Colors }) =>
       fontSize: FontSize.small * 1.5,
       fontWeight: 'bold',
     },
+    subtitleRegular: {
+      color: Colors.darkerGrey,
+      fontSize: FontSize.regular,
+    },
+    secondaryRegular: {
+      color: Colors.lynch,
+    },
   });

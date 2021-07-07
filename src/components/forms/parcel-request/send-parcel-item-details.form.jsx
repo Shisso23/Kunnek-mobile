@@ -10,16 +10,18 @@ import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
 import UploadDocumentButton from '../../molecules/upload-document-button';
 
-const SendParcelItemDetailsForm = ({ edit, submitForm, onSuccess, initialValues }) => {
+const SendParcelItemDetailsForm = ({ submitForm, onSuccess, initialValues }) => {
   const validationSchema = Yup.object().shape({
     description: Yup.string().required('Description is required'),
     itemHeight: Yup.number().required('Height is required').positive(),
     itemWidth: Yup.number().required('Width is required').positive(),
     itemLength: Yup.number().required('Length is required').positive(),
     itemWeight: Yup.number().required('Weight is required').positive(),
-    price: Yup.string()
-      .required('Offer Amount is required')
-      .matches(/^\d+(?:\.\d{0,2})$/, 'Offer amount needs to be in this format: 10.00'),
+    price: Yup.number()
+      .test('is-currency', 'Please type a currency value eg: 12.34', (price) => {
+        return Number(price.toFixed(2)) === Number(price);
+      })
+      .required('Offer Amount is required'),
   });
 
   const _handleSubmission = (formData, actions) => {
@@ -55,7 +57,6 @@ const SendParcelItemDetailsForm = ({ edit, submitForm, onSuccess, initialValues 
         handleBlur,
         touched,
         status,
-        setFieldValue,
       }) => {
         const error = (name) => getFormError(name, { touched, status, errors });
         return (
@@ -139,13 +140,11 @@ SendParcelItemDetailsForm.propTypes = {
   submitForm: PropTypes.func.isRequired,
   initialValues: PropTypes.object.isRequired,
   onSuccess: PropTypes.func,
-  edit: PropTypes.bool,
   containerStyle: ViewPropTypes.style,
 };
 
 SendParcelItemDetailsForm.defaultProps = {
   onSuccess: () => null,
-  edit: false,
   containerStyle: {},
 };
 

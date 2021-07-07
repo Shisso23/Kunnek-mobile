@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { apiLocationsModel, locationsModel } from '../location/locations.model';
+import { apiTripLocationsModel, locationsModel } from '../location/locations.model';
 
 export const tripModel = (_apiTripModel = {}) => ({
   id: _.get(_apiTripModel, 'id', ''),
@@ -12,13 +12,10 @@ export const tripModel = (_apiTripModel = {}) => ({
 });
 
 export const apiTripModel = (_appTripModel = {}) => ({
-  job: {
-    id: _.get(_appTripModel, 'id', ''),
+  trip: {
     latest_arrival_date_time: _.get(_appTripModel, 'latestArrivalDateTime', ''),
     collector_id: _.get(_appTripModel, 'collectorId', ''),
-    distance: _.get(_appTripModel, 'distance', ''),
-    start_address: _.get(_appTripModel, 'startAddress', ''),
-    end_address: _.get(_appTripModel, 'endAddress', 0.0),
-    locations: apiLocationsModel(_appTripModel),
+    vehicle_id: _.get(_appTripModel, 'vehicleId', ''),
+    locations_attributes: apiTripLocationsModel(_appTripModel),
   },
 });

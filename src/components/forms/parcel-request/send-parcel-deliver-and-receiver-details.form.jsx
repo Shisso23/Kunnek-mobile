@@ -12,16 +12,15 @@ import { flashService } from '../../../services';
 import AddressInput from '../../molecules/address-input';
 import DateTimeInput from '../../molecules/date-time-input';
 
-const SendParcelDeliverAndReceiverDetailsForm = ({
-  edit,
-  submitForm,
-  onSuccess,
-  initialValues,
-}) => {
+const SendParcelDeliverAndReceiverDetailsForm = ({ submitForm, onSuccess, initialValues }) => {
   const validationSchema = Yup.object().shape({
     pickUpAddress: Yup.string().required('Pick up address is required'),
     dropOffAddress: Yup.string().required('Drop off address is required'),
-    latestDeliveryDateTime: Yup.date().required('Latest delivery date is required'),
+    latestDeliveryDateTime: Yup.string()
+      .test('past-date', 'date cannot be in the past', (dateTime) => {
+        return dayjs(dateTime).isAfter(dayjs());
+      })
+      .required('Latest delivery date is required'),
     receiverFirstName: Yup.string().required("The receiver's first name is required"),
     receiverLastName: Yup.string().required("The receiver's last name is required"),
     receiverMobileNumber: Yup.string()
@@ -65,7 +64,6 @@ const SendParcelDeliverAndReceiverDetailsForm = ({
         handleBlur,
         touched,
         status,
-        setFieldValue,
       }) => {
         const error = (name) => getFormError(name, { touched, status, errors });
         return (
@@ -87,12 +85,14 @@ const SendParcelDeliverAndReceiverDetailsForm = ({
             />
 
             <DateTimeInput
-              value={values.latestDeliveryDateTime || dayjs().format('YYYY-MM-DD')}
+              value={values.latestDeliveryDateTime || dayjs().format('YYYY-MM-DD:HH:mm')}
               onChange={handleChange('latestDeliveryDateTime')}
               onBlur={handleBlur('latestDeliveryDateTime')}
               placeholder="Latest Date of Delivery"
               errorMessage={error('latestDeliveryDateTime')}
               label="Latest Date of Delivery"
+              mode="datetime"
+              format="YYYY-MM-DD:HH:mm"
             />
 
             <Input
@@ -136,13 +136,11 @@ SendParcelDeliverAndReceiverDetailsForm.propTypes = {
   submitForm: PropTypes.func.isRequired,
   initialValues: PropTypes.object.isRequired,
   onSuccess: PropTypes.func,
-  edit: PropTypes.bool,
   containerStyle: ViewPropTypes.style,
 };
 
 SendParcelDeliverAndReceiverDetailsForm.defaultProps = {
   onSuccess: () => null,
-  edit: false,
   containerStyle: {},
 };
 

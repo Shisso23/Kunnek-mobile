@@ -10,6 +10,7 @@ import creditCardUrls from './credit-card.urls';
 import paymentUrls from '../payment-service/payment.urls';
 import appConfig from '../../../config';
 import networkService from '../network-service/network.service';
+import vehicleUrls from '../vehicle-service/vehicle.urls';
 
 const getCreditCards = async () => {
   const url = creditCardUrls.cardsUrl();
@@ -60,10 +61,36 @@ const tokenizeCard = (data) => {
   );
 };
 
+const deleteCreditCard = (id) => {
+  const url = creditCardUrls.cardsUrl();
+  return authNetworkService.delete(`${url}/${id}`).catch((error) => {
+    // eslint-disable-next-line no-console
+    console.warn(error);
+    return Promise.reject(error);
+  });
+};
+
+const updateCreditCard = (id, data = {}) => {
+  const url = vehicleUrls.cardsUrl();
+  const dataModel = apiUserCreditCardModel(data);
+  return authNetworkService
+    .patch(`${url}/${id}`, dataModel)
+    .then((response) => {
+      return userCreditCardModel(response.data);
+    })
+    .catch((error) => {
+      // eslint-disable-next-line no-console
+      console.warn(error);
+      return Promise.reject(error);
+    });
+};
+
 export default {
   getCreditCards,
   createCreditCard,
   tokenizeCard,
   getCardRegistrationStatus,
   createCheckoutId,
+  deleteCreditCard,
+  updateCreditCard,
 };

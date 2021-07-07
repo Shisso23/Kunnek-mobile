@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -16,10 +16,7 @@ import {
 } from '../../../components';
 import { parcelStatus } from '../../../helpers/parcel-request-status.helper';
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
-import {
-  checkParcelRequestAction,
-  getActionId,
-} from '../../../reducers/parcel-request-reducer/parcel-request.actions';
+import { checkParcelRequestAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 import { useInterval } from '../../../services';
 import { useState } from 'react';
 
@@ -78,10 +75,6 @@ const ParcelDetailsScreen = ({ route }) => {
       return <ParcelDetailsFooter buttons={icons} />;
     }
   };
-
-  useEffect(() => {
-    dispatch(getActionId(parcelRequest));
-  }, []);
 
   return (
     <>

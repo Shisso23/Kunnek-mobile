@@ -41,7 +41,7 @@ const HomeScreen = () => {
   };
 
   const _onPressMapMarker = (parcelRequest) => {
-    navigation.navigate('ViewParcel', {
+    navigation.navigate('DeliveryRequest', {
       parcelRequest,
     });
   };
