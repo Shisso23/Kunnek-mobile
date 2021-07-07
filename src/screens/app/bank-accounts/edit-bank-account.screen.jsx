@@ -1,16 +1,22 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View } from 'react-native';
-import { Divider } from 'react-native-elements';
+import { SafeAreaView, View } from 'react-native';
+import { Button, Divider } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import { FormScreenContainer } from '../../../components';
 import Index from '../../../components/atoms/title';
 import { BankAccountForm } from '../../../components/forms';
 import { successful } from '../../../helpers/errors.helper';
 import { useTheme } from '../../../theme';
-import { editUserBankAccountsAction } from '../../../reducers/user-reducer/user-bank-account.actions';
+import {
+  deleteUserBankAccountAction,
+  editUserBankAccountsAction,
+} from '../../../reducers/user-reducer/user-bank-account.actions';
+import { StyleSheet } from 'react-native';
+import { Colors } from '../../../theme/Variables';
 
 const EditBankAccountScreen = ({ route }) => {
   const navigation = useNavigation();
@@ -29,6 +35,12 @@ const EditBankAccountScreen = ({ route }) => {
       });
   };
 
+  const _delete = () => {
+    dispatch(deleteUserBankAccountAction(_.get(bankAccount, 'id', ''))).then(() =>
+      navigation.goBack(),
+    );
+  };
+
   const _formSuccess = () => {
     navigation.goBack();
   };
@@ -37,7 +49,7 @@ const EditBankAccountScreen = ({ route }) => {
 
   return (
     <FormScreenContainer>
-      <Index title="Edit bank account" />
+      <Index title="My Bank Account" />
       <Divider />
       <View style={Gutters.smallHMargin}>
         <BankAccountForm
@@ -45,8 +57,18 @@ const EditBankAccountScreen = ({ route }) => {
           onSuccess={_formSuccess}
           initialValues={bankAccount}
           containerStyle={Gutters.smallHMargin}
+          submitText="Update Bank Account"
         />
       </View>
+      <SafeAreaView>
+        <Button
+          onPress={_delete}
+          title={'Delete'}
+          containerStyle={styles.buttonStyle}
+          buttonStyle={styles.clearButtonStyle}
+          titleStyle={[styles.clearButtonTextStyle]}
+        />
+      </SafeAreaView>
     </FormScreenContainer>
   );
 };
@@ -56,3 +78,16 @@ EditBankAccountScreen.propTypes = {
 };
 
 export default EditBankAccountScreen;
+
+const styles = StyleSheet.create({
+  buttonStyle: {
+    width: '90%',
+    alignSelf: 'center',
+  },
+  clearButtonStyle: {
+    backgroundColor: Colors.transparent,
+  },
+  clearButtonTextStyle: {
+    color: Colors.darkerGrey,
+  },
+});

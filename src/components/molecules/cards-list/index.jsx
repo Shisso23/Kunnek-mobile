@@ -4,16 +4,13 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import _ from 'lodash';
 import { ListItem, Text } from 'react-native-elements';
 import PropTypes from 'prop-types';
-import useTheme from '../../../theme/hooks/useTheme';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
-import { IconButton } from 'react-native-paper';
-import { deleteUserCreditCardAction } from '../../../reducers/user-reducer/user-cards.actions';
+
+import useTheme from '../../../theme/hooks/useTheme';
 
 const CardsList = ({ items }) => {
-  const { Common, Layout, Gutters, Colors } = useTheme();
+  const { Common, Layout, Gutters } = useTheme();
   const navigation = useNavigation();
-  const dispatch = useDispatch();
 
   if (_.isEmpty(items)) {
     return null;
@@ -28,27 +25,16 @@ const CardsList = ({ items }) => {
 
   const _renderItems = () => {
     return _.map(items, (item, index) => (
-      <ListItem key={`card-${index}`}>
-        {_getIcon(_.get(item, 'cardType', ''))}
-        <ListItem.Content>
-          <ListItem.Title>{_.get(item, 'cardNumber', '')}</ListItem.Title>
-        </ListItem.Content>
-        <>
-          <IconButton
-            icon={() => <Icon name="pencil-alt" color={Colors.darkerGrey} size={20} />}
-            onPress={() => _edit(item)}
-          />
-          <IconButton
-            icon={() => <Icon name="times" color={Colors.darkerGrey} size={20} />}
-            onPress={() => _delete(item)}
-          />
-        </>
-      </ListItem>
+      <TouchableOpacity key={`card-${index}`} onPress={() => _edit(item)}>
+        <ListItem>
+          {_getIcon(_.get(item, 'cardType', ''))}
+          <ListItem.Content>
+            <ListItem.Title>{_.get(item, 'cardNumber', '')}</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+      </TouchableOpacity>
     ));
-  };
-
-  const _delete = (card) => {
-    dispatch(deleteUserCreditCardAction(_.get(card, 'id', '')));
   };
 
   const _edit = (card) => {
