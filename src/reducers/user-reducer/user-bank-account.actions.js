@@ -1,3 +1,5 @@
+import _ from 'lodash';
+import { updateObjectArray } from '../../helpers/data.helper';
 import { bankAccountService, flashService } from '../../services';
 import { setBankAccountsLoadingAction, setUserBankAccountsAction } from './user.reducer';
 
@@ -13,4 +15,45 @@ export const getUserBankAccountsAction = () => async (dispatch) => {
   } finally {
     dispatch(setBankAccountsLoadingAction(false));
   }
+};
+
+export const createUserBankAccountsAction = (data = {}) => (dispatch, getState) => {
+  dispatch(setBankAccountsLoadingAction(true));
+
+  return bankAccountService
+    .createBankAccount(data)
+    .then((newBankAccount) => {
+      const { bankAccounts } = getState().userReducer;
+      return dispatch(setUserBankAccountsAction([...bankAccounts, newBankAccount]));
+    })
+    .finally(() => dispatch(setBankAccountsLoadingAction(false)));
+};
+
+export const deleteUserBankAccountAction = (id) => (dispatch, getState) => {
+  return bankAccountService.deleteBankAccount(id).then(() => {
+    const { bankAccounts } = getState().userReducer;
+
+    _.remove(bankAccounts, (account) => {
+      return _.get(account, 'id') === id;
+    });
+    return dispatch(setUserBankAccountsAction(bankAccounts));
+  });
+};
+
+export const editUserBankAccountsAction = (data = {}) => (dispatch, getState) => {
+  dispatch(setBankAccountsLoadingAction(true));
+  const id = _.get(data, 'id');
+
+  return bankAccountService
+    .updateBankAccount(id, data)
+    .then((changedBankAccount) => {
+      const { bankAccounts } = getState().userReducer;
+
+      return dispatch(
+        setUserBankAccountsAction(updateObjectArray(bankAccounts, changedBankAccount)),
+      );
+    })
+    .finally(() => {
+      dispatch(setBankAccountsLoadingAction(false));
+    });
 };

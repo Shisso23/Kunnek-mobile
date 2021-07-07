@@ -4,4 +4,5 @@ const { apiUrl } = appConfig;
 
 export default {
   bankAccountsUrl: () => `${apiUrl}/bank_accounts`,
+  bankNamesUrl: () => `${apiUrl}/banks`,
 };

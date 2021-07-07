@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+
 import { useTheme } from '../../../theme';
 
 const UserRating = ({ user, onStarChange, style = {} }) => {
@@ -17,7 +18,7 @@ const UserRating = ({ user, onStarChange, style = {} }) => {
           ? require('../../../assets/images/star-fill.png')
           : require('../../../assets/images/star.png');
       stars.push(
-        <TouchableOpacity onPress={onStarChange ? _setStars(i) : null} key={i}>
+        <TouchableOpacity onPress={onStarChange ? () => onStarChange(i + 1) : null} key={i}>
           <Image style={[styles.ratingStyle, style]} source={image} />
         </TouchableOpacity>,
       );
@@ -27,14 +28,7 @@ const UserRating = ({ user, onStarChange, style = {} }) => {
     return stars;
   };
 
-  const _setStars = (index) => {
-    return () => {
-      const { onStarChange } = this.props;
-      onStarChange(index + 1);
-    };
-  };
-
-  return <View style={[Layout.row]}>{_renderStars()}</View>;
+  return <View style={Layout.row}>{_renderStars()}</View>;
 };
 
 UserRating.propTypes = {

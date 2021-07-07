@@ -27,12 +27,19 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
   };
 
   const _renderOTP = () => {
-    _buttonClick();
-    navigation.navigate('OTP', parcelRequest);
+    if (_.get(parcelRequest, 'status') === 'initiated_delivery') {
+      navigation.navigate('OTP', parcelRequest);
+    } else {
+      _buttonClick();
+    }
   };
 
   const _cancelRequest = () => {
-    dispatch(cancelParcelStatus(parcelRequest));
+    dispatch(cancelParcelStatus(parcelRequest)).then(navigation.goBack());
+  };
+
+  const _reviewUser = () => {
+    navigation.navigate('Review', { parcelRequest });
   };
 
   return (
@@ -69,7 +76,7 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
         title={_.get(parcelStatusDecoded.review, 'title')}
         description={_.get(parcelStatusDecoded.review, 'description')}
         activeMessage={_.get(parcelStatusDecoded.review, 'interaction')}
-        action={_buttonClick}
+        action={_reviewUser}
       />
     </View>
   );

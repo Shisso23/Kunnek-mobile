@@ -1,5 +1,6 @@
 import _ from 'lodash';
 
+import { updateObjectArray } from '../../helpers/data.helper';
 import { creditCardService, flashService } from '../../services';
 import {
   setCreditCardsLoadingAction,
@@ -67,6 +68,32 @@ export const tokenizeCard = (data) => (dispatch) => {
     .catch((error) => {
       flashService.error('Could not tokenize your credit card.');
       console.warn(error.message);
+    })
+    .finally(() => dispatch(setCreditCardsLoadingAction(false)));
+};
+
+export const deleteUserCreditCardAction = (id) => (dispatch, getState) => {
+  return creditCardService.deleteCreditCard(id).then(() => {
+    const { creditCards } = getState().userReducer;
+
+    _.remove(creditCards, (card) => {
+      return _.get(card, 'id') === id;
+    });
+
+    return dispatch(setUserCreditCardsAction(creditCards));
+  });
+};
+
+export const editCreditCardAction = (data = {}) => (dispatch, getState) => {
+  dispatch(setCreditCardsLoadingAction(true));
+  const id = _.get(data, 'id');
+
+  return creditCardService
+    .updateCreditCard(id, data)
+    .then((changedCard) => {
+      const { creditCards } = getState().userReducer;
+
+      return dispatch(setUserCreditCardsAction(updateObjectArray(creditCards, changedCard)));
     })
     .finally(() => dispatch(setCreditCardsLoadingAction(false)));
 };
