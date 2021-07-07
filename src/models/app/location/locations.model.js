@@ -13,3 +13,8 @@ export const apiLocationsModel = (_appLocationableModel = {}) =>
     longitude: _.get(_location, 'longitude', 0.0),
     location_type: _.get(_location, 'type', ''),
   }));
+
+export const apiTripLocationsModel = (_appLocationableModel = {}) => [
+  { address: _.get(_appLocationableModel, 'pickUpAddress'), location_type: 'start' },
+  { address: _.get(_appLocationableModel, 'dropOffAddress'), location_type: 'end' },
+];

@@ -10,6 +10,8 @@ import {
   getUserDelivererIdAction,
   getUserSenderIdAction,
 } from '../user-reducer/user.actions';
+import { bankAccountService } from '../../services';
+import { setBanksAction } from './app.reducer';
 
 export const initAppAction = () => async (dispatch, getState) => {
   const { AUTHENTICATED } = AuthStates;
@@ -39,3 +41,9 @@ export const loadAppDataForSignedInUserAction = () => (dispatch) =>
     dispatch(getUserDelivererIdAction()),
     dispatch(getUserSenderIdAction()),
   ]);
+
+export const getBankNames = () => (dispatch) => {
+  bankAccountService.getBanks().then((banks) => {
+    return dispatch(setBanksAction(banks));
+  });
+};

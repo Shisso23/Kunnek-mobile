@@ -38,3 +38,13 @@ export const objectToFormData = (obj, form, type) => {
 
   return formData;
 };
+
+export const updateObjectArray = (array, updatedObject, identifier = 'id') => {
+  const indexToUpdate = _.findIndex(array, (object) => {
+    return object[identifier] === updatedObject[identifier];
+  });
+
+  array.splice(indexToUpdate, 1, updatedObject);
+
+  return array;
+};

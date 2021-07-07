@@ -16,11 +16,14 @@ const ReviewItem = ({ value, onChange, title }) => {
 };
 
 ReviewItem.propTypes = {
-  value: PropTypes.number.isRequired,
-  onChange: PropTypes.func.isRequired,
+  value: PropTypes.number,
+  onChange: PropTypes.func,
   title: PropTypes.string.isRequired,
 };
 
-ReviewItem.defaultProps = {};
+ReviewItem.defaultProps = {
+  value: 0,
+  onChange: () => {},
+};
 
 export default ReviewItem;

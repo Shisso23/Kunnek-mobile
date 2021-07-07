@@ -53,12 +53,12 @@ export const userSelector = (reducers) => reducers.userReducer;
 
 const initialState = {
   user: userModel(),
-  creditCards: null,
-  bankAccounts: null,
-  vehicles: null,
-  reviews: null,
-  transactionHistory: null,
-  notificationHistory: null,
+  creditCards: [],
+  bankAccounts: [],
+  vehicles: [],
+  reviews: [],
+  transactionHistory: [],
+  notificationHistory: [],
   delivererId: null,
   senderId: null,
 

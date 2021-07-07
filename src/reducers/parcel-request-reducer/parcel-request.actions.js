@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { updateObjectArray } from '../../helpers/data.helper';
 
 import { actionsService, parcelRequestService } from '../../services';
 import {
@@ -54,19 +55,14 @@ export const removeParcelRequest = (id) => () => {
 
 export const updateParcelStatus = (parcelRequest, newStatus) => (dispatch, getState) => {
   dispatch(setParcelRequestLoadingAction(true));
-
-  const { parcelRequests = [] } = getState().parcelRequestReducer;
-  const parcelRequestIndex = _.findIndex(parcelRequests, (parcel) => {
-    return parcel.id === parcelRequest.id;
-  });
+  const { userParcelRequests = [] } = getState().parcelRequestReducer;
+  const id = _.get(parcelRequest, 'id');
 
   return parcelRequestService
-    .updateStatus(_.get(parcelRequest, 'id'), { next_status: newStatus })
-    .then(() => {
-      parcelRequest.status = newStatus;
-      parcelRequests[parcelRequestIndex] = parcelRequest;
-
-      return dispatch(setParcelRequestsAction(parcelRequests));
+    .updateStatus(id, newStatus)
+    .then((response) => {
+      dispatch(setUserParcelRequestsAction(updateObjectArray(userParcelRequests, response)));
+      return response;
     })
     .finally(() => {
       dispatch(setParcelRequestLoadingAction(false));
@@ -77,16 +73,11 @@ export const cancelParcelStatus = (parcelRequest) => (dispatch, getState) => {
   dispatch(setParcelRequestLoadingAction(true));
 
   const { parcelRequests = [] } = getState().parcelRequestReducer;
-  const parcelRequestIndex = _.findIndex(parcelRequests, (parcel) => {
-    return parcel.id === parcelRequest.id;
-  });
 
   return parcelRequestService
-    .updateStatus(_.get(parcelRequest, 'id'), parcelRequest)
+    .cancelDeliveryRequest(_.get(parcelRequest, 'id'), parcelRequest)
     .then((response) => {
-      parcelRequests[parcelRequestIndex] = response;
-
-      return dispatch(setParcelRequestsAction(parcelRequests));
+      return dispatch(setParcelRequestsAction(updateObjectArray(parcelRequests, response)));
     })
     .finally(() => {
       dispatch(setParcelRequestLoadingAction(false));
@@ -134,14 +125,11 @@ export const updateParcelRequestAction = (id, parcelRequest) => (dispatch, getSt
   dispatch(setParcelRequestLoadingAction(true));
 
   const { userParcelRequests = [] } = getState().parcelRequestReducer;
-  const parcelRequestIndex = _.findIndex(userParcelRequests, (parcel) => {
-    return parcel.id === parcelRequest.id;
-  });
+
   return parcelRequestService
     .update(id, parcelRequest)
     .then((response) => {
-      userParcelRequests[parcelRequestIndex] = response;
-      return dispatch(setUserParcelRequestsAction(userParcelRequests));
+      return dispatch(setUserParcelRequestsAction(updateObjectArray(userParcelRequests, response)));
     })
     .finally(() => {
       dispatch(setParcelRequestLoadingAction(false));

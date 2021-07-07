@@ -37,7 +37,7 @@ export const parcelStatusKeys = Object.keys(parcelStatus);
 
 export const progressPackageStatus = (parcelRequest) => {
   const parcelStatusIndex = parcelStatus[_.get(parcelRequest, 'status')];
-  return parcelStatusKeys[parcelStatusIndex];
+  return { nextStatus: parcelStatusKeys[parcelStatusIndex] };
 };
 
 export const cancelJobSender = () => {

@@ -23,3 +23,5 @@ export { default as IdNumber } from './id-number';
 export { default as ReviewItem } from './review-item';
 export { default as ChatBottomDrawer } from './chat-bottom-drawer';
 export { default as ChatItem } from './chat-item';
+export { default as DropdownSelect } from './dropdown-select';
+export { default as UserReviewDetailsCard } from './user-review-details';

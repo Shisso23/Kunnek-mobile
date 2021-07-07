@@ -12,6 +12,7 @@ import { getFormError } from '../form-utils';
 import { useTheme } from '../../../theme';
 import { PaperContainer } from '../../containers';
 import ProfilePicture from '../../atoms/profile-picture';
+import { StyleSheet } from 'react-native';
 
 const ReviewDriverForm = ({ submitForm, user, parcelRequest }) => {
   const initialValues = {
@@ -99,8 +100,7 @@ const ReviewDriverForm = ({ submitForm, user, parcelRequest }) => {
               onBlur={handleBlur('comment')}
               errorMessage={error('comment')}
               multiline={true}
-              numberOfLines={5}
-              style={[Common.viewCard, Gutters.regularHMargin]}
+              style={[Common.viewCard, Gutters.regularHMargin, styles.commentBoxStyle]}
             />
             <View style={Layout.fill} />
             <SafeAreaView style={Gutters.largeMargin}>
@@ -125,3 +125,9 @@ ReviewDriverForm.defaultProps = {
 };
 
 export default ReviewDriverForm;
+
+const styles = StyleSheet.create({
+  commentBoxStyle: {
+    minHeight: 120,
+  },
+});

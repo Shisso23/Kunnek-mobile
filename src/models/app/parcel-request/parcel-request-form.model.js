@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { getCloseOfBusiness } from '../../../helpers/date.helper';
 
 export const itemDetailsFormModel = (_parcelRequestModel = {}) => ({
   description: _.get(_parcelRequestModel, 'description', ''),
@@ -17,4 +18,12 @@ export const deliveryAndReceiverDetailsFormModel = (_parcelRequestModel = {}) =>
   receiverFirstName: _.get(_parcelRequestModel, 'receiverFirstName', ''),
   receiverLastName: _.get(_parcelRequestModel, 'receiverLastName', ''),
   receiverMobileNumber: _.get(_parcelRequestModel, 'receiverMobileNumber', ''),
+});
+
+export const deliveryTripDetailsDetailsFormModel = (_parcelRequestModel = {}) => ({
+  collectorId: _.get(_parcelRequestModel, 'delivererId', ''),
+  latestArrivalDateTime: getCloseOfBusiness('YYYY-MM-DD:HH:mm'),
+  vehicleId: _.get(_parcelRequestModel, 'vehicleId', ''),
+  pickUpAddress: _.get(_parcelRequestModel, 'pickUpAddress', ''),
+  dropOffAddress: _.get(_parcelRequestModel, 'dropOffAddress', ''),
 });
