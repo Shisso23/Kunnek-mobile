@@ -69,9 +69,12 @@ const create = (data = {}) => {
 const update = (id, data = {}) => {
   const url = parcelRequestUrls.parcelRequestsUrl();
   const dataModel = apiParcelRequestUpdateModel(data);
+  const formData = objectToFormData(_.get(dataModel, 'job', {}), undefined, 'job');
   const _createAndReturnModel = (apiResponse) => parcelRequestModel(apiResponse.data);
   return authNetworkService
-    .patch(`${url}/${id}`, dataModel)
+    .patch(`${url}/${id}`, formData, {
+      headers: { Accept: 'multipart/form-data', 'Content-Type': 'multipart/form-data' },
+    })
     .then(_createAndReturnModel)
     .catch((error) => {
       // eslint-disable-next-line no-console
