@@ -42,7 +42,7 @@ const TransactionHistoryCard = ({ items }) => {
             style={[Layout.rowCenterSpaceBetween, Gutters.smallVMargin]}
             onPress={() => navigation.navigate('TransactionDetails', { payment: item })}
           >
-            <View style={[Layout.rowCenterSpaceAround]}>
+            <View style={Layout.rowCenterSpaceAround}>
               <Icon name="user" size={26} color={Colors.primary} />
               <View style={[Gutters.regularLMargin]}>
                 <Text>R{_.get(item, 'amount', '').toFixed(2)}</Text>
