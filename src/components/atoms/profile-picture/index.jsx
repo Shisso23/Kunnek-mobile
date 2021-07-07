@@ -6,11 +6,11 @@ import _ from 'lodash';
 
 import { Colors } from '../../../theme/Variables';
 
-const ProfilePicture = ({ user }) => {
+const ProfilePicture = ({ user, style }) => {
   return (
     <>
       <Image
-        style={styles.profilePicture}
+        style={[styles.profilePicture, style]}
         source={{ uri: _.get(user, 'profilePictureUri') }}
         PlaceholderContent={<ActivityIndicator color={Colors.white} />}
       />
@@ -20,9 +20,12 @@ const ProfilePicture = ({ user }) => {
 
 ProfilePicture.propTypes = {
   user: PropTypes.shape({ profilePictureUri: PropTypes.string }).isRequired,
+  style: PropTypes.object,
 };
 
-ProfilePicture.defaultProps = {};
+ProfilePicture.defaultProps = {
+  style: {},
+};
 
 export default ProfilePicture;
 

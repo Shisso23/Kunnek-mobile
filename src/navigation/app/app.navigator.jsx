@@ -19,6 +19,7 @@ import ParcelRequestsScreen from '../../screens/app/parcel-requests/parcel-reque
 import AddCardScreen from '../../screens/app/credit-card/add-card.screen';
 import { Colors } from '../../theme/Variables';
 import ParcelDetailsScreen from '../../screens/app/parcel-details/parcel-details.screen';
+import TransactionDetailScreen from '../../screens/app/transactions/transaction-details.screen';
 import OTPScreen from '../../screens/app/OTP/otp.screen';
 import EditParcelScreen from '../../screens/app/edit-parcel/edit-parcel.screen';
 import OtherUserProfileScreen from '../../screens/app/other-user-profile/other-user-profile.screen';
@@ -61,6 +62,7 @@ const AppNavigator = () => {
       <AppStack.Screen name="Payment" component={PaymentScreen} />
       <AppStack.Screen name="OTP" component={OTPScreen} />
       <AppStack.Screen name="ContactUs" component={ContactUsScreen} />
+      <AppStack.Screen name="TransactionDetails" component={TransactionDetailScreen} />
       <AppStack.Screen name="UserDetails" component={OtherUserProfileScreen} />
       <AppStack.Screen name="Review" component={ReviewScreen} />
       <AppStack.Screen name="MyReviews" component={MyReviewsScreen} />
