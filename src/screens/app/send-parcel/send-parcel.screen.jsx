@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
-import { Button, Divider, Text } from 'react-native-elements';
+import { Button, Divider } from 'react-native-elements';
 import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { HeaderBackButton } from '@react-navigation/stack';
@@ -38,7 +38,7 @@ const screenWidth = Dimensions.get('window').width;
 
 const SendParcelScreen = () => {
   const navigation = useNavigation();
-  const { Fonts, Gutters, Layout } = useTheme();
+  const { Gutters, Layout } = useTheme();
   const senderId = useSelector((state) => state.userReducer.senderId);
   const creditCards = useSelector((state) => state.userReducer.creditCards);
   const dispatch = useDispatch();
@@ -78,9 +78,7 @@ const SendParcelScreen = () => {
       }),
     )
       .then((response) => {
-        if (successful(response)) {
-          _openParcelRequestsScreen();
-        }
+        return response;
       })
       .catch((error) => {
         console.warn(error.message);
@@ -135,10 +133,9 @@ const SendParcelScreen = () => {
         return createUserCreditCard(cardModel, tokenizedCard);
       })
       .catch((error) => {
-        console.warn('app submit transaction error ', error.message);
+        return error;
       });
   };
-
   const _handleSubmitCreditCardForm = async (cardFormValues) => {
     setCreditCardForm(cardFormValues);
     if (peachMobileRef) {
@@ -167,10 +164,6 @@ const SendParcelScreen = () => {
       card,
       parcelRequest: _getParcelRequest(),
     });
-  };
-
-  const _openParcelRequestsScreen = () => {
-    navigation.navigate('ParcelRequests');
   };
 
   const _handleSuccess = () => {
@@ -265,11 +258,7 @@ const SendParcelScreen = () => {
         <>
           <View style={[Gutters.smallHMargin, styles.creditCardForm]}>
             <Index title="My Debit/Credit Card" />
-            <Divider />
-            <Text style={[Fonts.textLarge, Gutters.smallHPadding]}>
-              Before you can create a new send request, we will need your payment details.
-            </Text>
-            <Divider />
+            <Divider color="transparent" />
             <CreditCardForm
               initialValues={userCreditCardModel(creditCardForm)}
               submitForm={_handleSubmitCreditCardForm}
@@ -286,7 +275,7 @@ const SendParcelScreen = () => {
   }
 
   return (
-    <FormScreenContainer contentContainerStyle={formIndex === 2 ? styles.formContainer : {}}>
+    <FormScreenContainer>
       {_renderPagination()}
       {_renderItem()}
     </FormScreenContainer>
@@ -309,12 +298,9 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
     width: 100,
   },
-  creditCardForm: { height: '95%' },
+  creditCardForm: { height: '97%' },
   currentCarouselDotStyle: {
     backgroundColor: Colors.carouselDotsColour,
-  },
-  formContainer: {
-    flex: 1,
   },
   pagination: { flex: 0.1 },
 });
