@@ -12,7 +12,7 @@ export const paymentModel = (_apiPaymentModel = {}) => ({
   date: _.get(_apiPaymentModel, 'created_at', false),
   job: _.get(_apiPaymentModel, 'job', false),
   reasonForFailure: _.get(_apiPaymentModel, 'reason_for_failure', true),
-  checkout_id: _.get(_apiPaymentModel, 'checkout_id', ''),
+  checkoutId: _.get(_apiPaymentModel, 'checkout_id', ''),
 });
 
 export const apiPaymentModel = (_appPaymentModel = {}) => ({

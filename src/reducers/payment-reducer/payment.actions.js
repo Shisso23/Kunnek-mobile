@@ -20,7 +20,7 @@ export const fetchCheckoutId = (id, data) => (dispatch) => {
   return paymentService
     .fetchCheckoutId(id, data)
     .then((response) => {
-      const checkoutId = _.get(response, 'checkout_id');
+      const checkoutId = _.get(response, 'checkoutId');
       dispatch(setCheckoutIdAction(checkoutId));
       return checkoutId;
     })

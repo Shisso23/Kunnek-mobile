@@ -70,7 +70,7 @@ const PaymentScreen = ({ isLoading, route, retry = false }) => {
           payment_type: peachPaymentType,
         }),
       );
-      if (checkoutId !== null) {
+      if (checkoutId) {
         result = await createTransaction();
       }
     }
@@ -79,17 +79,18 @@ const PaymentScreen = ({ isLoading, route, retry = false }) => {
   };
 
   const createTransaction = async () => {
+    const cardType = _.get(card, 'cardType');
     if (!_.isNil(card)) {
       setIsLoading(true);
       if (peachMobileRef) {
         PeachMobile.createTransactionWithToken(
           checkoutId,
           _.get(card, 'tokenizedCard', ''),
-          _.get(card, 'cardType'),
+          cardType === 'MASTERCARD' ? 'MASTER' : cardType,
           cvvNumber,
         )
           .then((transaction) => {
-            PeachMobile.submitTransaction(transaction, config.peachPaymentMode)
+            PeachMobile.submitTransaction(transaction, config.peachPayments.peachPaymentMode)
               .then(async (response) => {
                 if (response) {
                   flashService.success('Payment Processing...');

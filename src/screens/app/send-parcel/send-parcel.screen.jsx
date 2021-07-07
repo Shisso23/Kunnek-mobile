@@ -85,7 +85,7 @@ const SendParcelScreen = () => {
   const createTransaction = async (cardModel) => {
     return PeachMobile.createTransaction(
       checkoutID,
-      _.get(cardModel, 'paymentBrand'),
+      '',
       _.get(cardModel, 'cardHolder'),
       _.get(cardModel, 'cardNumber'),
       _.get(cardModel, 'expiryMonth'),
