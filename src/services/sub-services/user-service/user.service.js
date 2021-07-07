@@ -1,6 +1,8 @@
 import authNetworkService from '../auth-network-service/auth-network.service';
-import { userModel, apiUserModel } from '../../../models';
+import { userModel, apiUpdateUserModel } from '../../../models';
 import userUrls from './user.urls';
+import { objectToFormData } from '../../../helpers/data.helper';
+import _ from 'lodash';
 
 const getUser = async (id) => {
   const url = userUrls.userUrl(id);
@@ -10,15 +12,22 @@ const getUser = async (id) => {
   return _createAndReturnUserModel(apiResponse);
 };
 
-const updateUser = ({ formData }) => {
-  const url = userUrls.userUrl();
-  const apiUser = apiUserModel(formData);
-  return authNetworkService.patch(url, apiUser).catch((error) => {
-    error.errors = userModel(error.errors);
-    // eslint-disable-next-line no-console
-    console.warn(error);
-    return Promise.reject(error);
-  });
+const updateUser = (formData) => {
+  const url = userUrls.userUrl(_.get(formData, 'id', '1'));
+  const apiUser = apiUpdateUserModel(formData);
+  const apiUserForm = objectToFormData(_.get(apiUser, 'user', {}), undefined, 'user');
+  const _createAndReturnUserModel = (apiResponse) => userModel(apiResponse.data);
+  return authNetworkService
+    .patch(url, apiUserForm, {
+      headers: { Accept: 'multipart/form-data', 'Content-Type': 'multipart/form-data' },
+    })
+    .then(_createAndReturnUserModel)
+    .catch((error) => {
+      error.errors = userModel(error.errors);
+      // eslint-disable-next-line no-console
+      console.warn(error);
+      return Promise.reject(error);
+    });
 };
 
 const getDelivererId = async () => {

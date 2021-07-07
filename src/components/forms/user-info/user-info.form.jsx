@@ -15,12 +15,16 @@ import {
 import { getFormError } from '../form-utils';
 import { TermsAndConditions } from '../../atoms';
 import { flashService } from '../../../services';
+import { UploadDocumentButton } from '../../molecules';
+import ProfilePicture from '../../atoms/profile-picture';
+import { useTheme } from '../../../theme';
 
 const UserInfoForm = ({ edit, submitForm, onSuccess, initialValues, containerStyle }) => {
+  const { Layout } = useTheme();
   const validationSchema = Yup.object().shape({
     email: emailSchema,
-    name: Yup.string().required('First Name is required'),
-    surname: Yup.string().required('Last Name is required'),
+    firstName: Yup.string().required('First Name is required'),
+    lastName: Yup.string().required('Last Name is required'),
     mobileNumber: Yup.string().required('Mobile number is required'),
     idNumber: Yup.string().required('Id is required'),
     password: registerPasswordSchema(edit),
@@ -68,19 +72,19 @@ const UserInfoForm = ({ edit, submitForm, onSuccess, initialValues, containerSty
           return (
             <>
               <Input
-                value={values.name}
-                onChangeText={handleChange('name')}
-                onBlur={handleBlur('name')}
+                value={values.firstName}
+                onChangeText={handleChange('firstName')}
+                onBlur={handleBlur('firstName')}
                 placeholder="First Name"
-                errorMessage={error('name')}
+                errorMessage={error('firstName')}
               />
 
               <Input
-                value={values.surname}
-                onChangeText={handleChange('surname')}
-                onBlur={handleBlur('surname')}
+                value={values.lastName}
+                onChangeText={handleChange('lastName')}
+                onBlur={handleBlur('lastName')}
                 placeholder="Last Name"
-                errorMessage={error('surname')}
+                errorMessage={error('lastName')}
               />
 
               <Input
@@ -109,6 +113,18 @@ const UserInfoForm = ({ edit, submitForm, onSuccess, initialValues, containerSty
                 errorMessage={error('mobileNumber')}
                 keyboardType="email-address"
               />
+              {edit && (
+                <>
+                  <View style={Layout.alignSelfCenter}>
+                    <ProfilePicture user={values} />
+                  </View>
+                  <UploadDocumentButton
+                    label="ProfilePicture"
+                    errorMessage={error('profilePictureUri')}
+                    onImageSelect={handleChange('profilePictureUri')}
+                  />
+                </>
+              )}
 
               {!edit && (
                 <>
