@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
-import { SafeAreaView, ViewPropTypes, StyleSheet, TouchableOpacity } from 'react-native';
+import { SafeAreaView, ViewPropTypes, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -154,6 +154,9 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues, clearInitialFormV
                 display="default"
                 onChange={(event, date) => {
                   setFieldValue('lastDeliveryDate', `${moment(date).format('D MMMM YYYY, h:mm')}`);
+                  if (Platform.OS !== 'ios') {
+                    setShowDatePicker(false);
+                  }
                 }}
                 onTouchEnd={() => setShowDatePicker(false)}
                 style={[Gutters.tinyLMargin]}
