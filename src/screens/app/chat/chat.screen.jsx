@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Text } from 'react-native-elements';
 import { FlatList, View } from 'react-native';
 import _ from 'lodash';
@@ -10,7 +10,7 @@ import ProfilePicture from '../../../components/atoms/profile-picture';
 import { StyleSheet } from 'react-native';
 import { ChatBottomDrawer, ChatItem } from '../../../components/molecules';
 import { useInterval } from '../../../services';
-import chatService from '../../../services/sub-services/chat-service/chat.service';
+import { getChatAction, sendMessageAction } from '../../../reducers/chat-reducer/chat.actions';
 
 const ChatScreen = ({ route }) => {
   const { parcelRequest } = route.params;
@@ -19,16 +19,17 @@ const ChatScreen = ({ route }) => {
   const { Layout, Fonts } = useTheme();
   const [chat, setchat] = useState({});
   const [messages, setMessages] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    chatService.getChat(chattableId).then((response) => {
+    dispatch(getChatAction(chattableId)).then((response) => {
       setchat(response);
       setMessages(response.messages);
     });
   }, []);
 
   useInterval(() => {
-    chatService.getChat(chattableId).then((response) => {
+    dispatch(getChatAction(chattableId)).then((response) => {
       if (response.messages.length !== messages.length) setMessages(response.messages);
     });
   }, 5000);
@@ -52,7 +53,7 @@ const ChatScreen = ({ route }) => {
 
   const _sendMessage = (message) => {
     const chatId = _.get(chat, 'id');
-    chatService.sendMessage({ ...message, ...{ chatId } }).then((response) => {
+    dispatch(sendMessageAction({ ...message, ...{ chatId } })).then((response) => {
       setMessages([...messages, response]);
     });
   };
