@@ -1,3 +1,4 @@
+import { getParamString } from '../../../helpers/network.helper';
 import {
   apiReviewTheDriverModel,
   apiReviewTheSenderModel,
@@ -10,6 +11,14 @@ const getReviews = async () => {
   const url = reviewUrls.reviewsUrl();
   const apiResponse = await authNetworkService.get(url);
   return constructUserReviewModels(apiResponse.data);
+};
+
+const getPublicReviews = (id, params = {}) => {
+  const url = reviewUrls.publicReviewsUrl(id);
+  const paramsString = getParamString(params);
+
+  const _createAndReturnModel = (apiResponse) => constructUserReviewModels(apiResponse.data);
+  return authNetworkService.get(`${url}${paramsString}`).then(_createAndReturnModel);
 };
 
 const reviewTheDriver = (data = {}) => {
@@ -40,6 +49,7 @@ const reviewTheSender = (data = {}) => {
 
 export default {
   getReviews,
+  getPublicReviews,
   reviewTheDriver,
   reviewTheSender,
 };

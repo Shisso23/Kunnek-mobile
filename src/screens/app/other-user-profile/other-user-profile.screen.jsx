@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { View, SafeAreaView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { Button, Text } from 'react-native-elements';
 import _ from 'lodash';
 
 import useTheme from '../../../theme/hooks/useTheme';
 import ParallaxView from '../../../components/molecules/parallax-view';
-import { IdNumber, VehiclesList } from '../../../components';
+import { IdNumber, ReviewsList, VehiclesList } from '../../../components';
 import { StyleSheet } from 'react-native';
 import { Colors } from '../../../theme/Variables';
 import { useDispatch } from 'react-redux';
@@ -15,14 +16,19 @@ import {
   cancelParcelStatus,
   updateParcelStatus,
 } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
-import { useNavigation } from '@react-navigation/native';
+import { getPublicReviewsAction } from '../../../reducers/reviews-reducer/reviews.actions';
 
 const OtherUserProfileScreen = ({ route }) => {
   const { user, parcelRequest } = route.params;
   const { Common, Layout } = useTheme();
+  const [reviews, setReviews] = useState([]);
   const vehicle = _.get(user, 'vehicle', undefined);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  useEffect(() => {
+    dispatch(getPublicReviewsAction(user)).then((apiResponse) => setReviews(apiResponse));
+  }, []);
 
   const _renderApproval = () => {
     if (parcelRequest) {
@@ -63,7 +69,7 @@ const OtherUserProfileScreen = ({ route }) => {
           <View>
             <IdNumber item={user} />
             <VehiclesList items={vehicle ? [vehicle] : null} readOnly />
-            {/* <ReviewsList items={reviews} /> */}
+            <ReviewsList items={reviews} readOnly />
           </View>
         </SafeAreaView>
         <View style={[Layout.fill]} />

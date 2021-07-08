@@ -10,7 +10,7 @@ import { userSelector } from '../../../reducers/user-reducer/user.reducer';
 
 const MyReviewsScreen = ({ route }) => {
   const { Fonts, Gutters } = useTheme();
-  const { reviews } = route.params;
+  const { reviews, publicReviews } = route.params;
   const { user } = useSelector(userSelector);
 
   const _renderReviews = () => {
@@ -22,7 +22,7 @@ const MyReviewsScreen = ({ route }) => {
 
   return (
     <>
-      <Index title="My Reviews" />
+      <Index title={`${publicReviews ? '' : ' My'} Reviews`} />
       <Text style={[Fonts.subtitleRegular, Gutters.regularHPadding]}>
         See your previous reviews that clients have left you.
       </Text>

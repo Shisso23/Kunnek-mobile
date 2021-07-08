@@ -6,7 +6,7 @@ import useTheme from '../../../theme/hooks/useTheme';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 
-const ReviewsList = ({ items }) => {
+const ReviewsList = ({ items, readOnly }) => {
   const { Common, Gutters } = useTheme();
   const navigation = useNavigation();
 
@@ -27,10 +27,10 @@ const ReviewsList = ({ items }) => {
         <ListItem key={`review-${index}`}>
           {_getAvatar(_.get(item, 'reviewer.profilePictureUri', ''))}
           <ListItem.Content>
-            <Rating readonly startingValue={_.get(item, 'rating', '')} imageSize={14} />
+            <ListItem.Title>{_.get(item, 'reviewer.fullName', '')}</ListItem.Title>
             <ListItem.Subtitle>{_.get(item, 'job.description', '')}</ListItem.Subtitle>
           </ListItem.Content>
-          <ListItem.Chevron />
+          <Rating readonly startingValue={_.get(item, 'rating', '')} imageSize={14} />
         </ListItem>
       )),
       0,
@@ -42,9 +42,11 @@ const ReviewsList = ({ items }) => {
     <>
       <TouchableOpacity
         style={[Common.viewCard, Gutters.smallVMargin]}
-        onPress={() => navigation.navigate('MyReviews', { reviews: items })}
+        onPress={() =>
+          navigation.navigate('MyReviews', { reviews: items, publicReviews: readOnly })
+        }
       >
-        <Text>My Reviews</Text>
+        <Text>{`${readOnly ? 'R' : 'My r'}eviews`}</Text>
         {_renderItems()}
       </TouchableOpacity>
     </>
@@ -53,10 +55,12 @@ const ReviewsList = ({ items }) => {
 
 ReviewsList.propTypes = {
   items: PropTypes.array,
+  readOnly: PropTypes.bool,
 };
 
 ReviewsList.defaultProps = {
   items: [],
+  readOnly: false,
 };
 
 export default ReviewsList;
