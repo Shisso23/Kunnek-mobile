@@ -22,6 +22,7 @@ import OTPScreen from '../../screens/app/OTP/otp.screen';
 import EditParcelScreen from '../../screens/app/edit-parcel/edit-parcel.screen';
 import OtherUserProfileScreen from '../../screens/app/other-user-profile/other-user-profile.screen';
 import ReviewScreen from '../../screens/app/review/review.screen';
+import ChatScreen from '../../screens/app/chat/chat.screen';
 import DeliverParcelScreen from '../../screens/app/deliver-parcel/deliver-parcel.screen';
 import AddBankAccountScreen from '../../screens/app/bank-accounts/add-bank-account.screen';
 import EditVehicleScreen from '../../screens/app/vehicles/edit-vehicle.screen';
@@ -64,6 +65,7 @@ const AppNavigator = () => {
       <AppStack.Screen name="ContactUs" component={ContactUsScreen} />
       <AppStack.Screen name="UserDetails" component={OtherUserProfileScreen} />
       <AppStack.Screen name="Review" component={ReviewScreen} />
+      <AppStack.Screen name="Chat" component={ChatScreen} />
       <AppStack.Screen name="MyReviews" component={MyReviewsScreen} />
       <AppStack.Screen name="EditProfile" component={EditProfileScreen} />
     </AppStack.Navigator>
