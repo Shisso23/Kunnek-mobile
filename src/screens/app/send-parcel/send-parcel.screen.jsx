@@ -262,6 +262,7 @@ const SendParcelScreen = () => {
             <CreditCardForm
               initialValues={userCreditCardModel(creditCardForm)}
               submitForm={_handleSubmitCreditCardForm}
+              submitButtonStyle={styles.submitButtonStyle}
             />
             <PeachMobile
               mode={config.peachPayments.peachPaymentMode}
@@ -303,4 +304,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.carouselDotsColour,
   },
   pagination: { flex: 0.1 },
+  submitButtonStyle: {
+    alignSelf: 'center',
+    bottom: 0,
+    position: 'absolute',
+    width: '95%',
+  },
 });

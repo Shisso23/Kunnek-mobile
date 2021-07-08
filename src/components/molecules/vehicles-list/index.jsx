@@ -7,14 +7,10 @@ import { ListItem, Text } from 'react-native-elements';
 import PropTypes from 'prop-types';
 
 import useTheme from '../../../theme/hooks/useTheme';
-import { IconButton } from 'react-native-paper';
-import { deleteVehicleAction } from '../../../reducers/user-reducer/user-vehicles.actions';
-import { useDispatch } from 'react-redux';
 
 const VehiclesList = ({ items, readOnly }) => {
   const navigation = useNavigation();
-  const { Common, Layout, Gutters, Colors } = useTheme();
-  const dispatch = useDispatch();
+  const { Common, Layout, Gutters } = useTheme();
 
   if (_.isEmpty(items)) {
     return null;
@@ -22,34 +18,21 @@ const VehiclesList = ({ items, readOnly }) => {
 
   const _renderItems = () => {
     return _.map(items, (item, index) => (
-      <ListItem key={`vehicle-${index}`}>
-        <Icon name="car-side" size={26} />
-        <ListItem.Content>
-          <ListItem.Title>{`${_.get(item, 'make', '')} ${_.get(
-            item,
-            'model',
-            '',
-          )}`}</ListItem.Title>
-          <ListItem.Subtitle>{_.get(item, 'registrationNumber', '')}</ListItem.Subtitle>
-        </ListItem.Content>
-        {!readOnly && (
-          <>
-            <IconButton
-              icon={() => <Icon name="pencil-alt" color={Colors.darkerGrey} size={20} />}
-              onPress={() => _edit(item)}
-            />
-            <IconButton
-              icon={() => <Icon name="times" color={Colors.darkerGrey} size={20} />}
-              onPress={() => _delete(item)}
-            />
-          </>
-        )}
-      </ListItem>
+      <TouchableOpacity onPress={() => _edit(item)} key={`vehicle-${index}`}>
+        <ListItem>
+          <Icon name="car-side" size={26} />
+          <ListItem.Content>
+            <ListItem.Title>{`${_.get(item, 'make', '')} ${_.get(
+              item,
+              'model',
+              '',
+            )}`}</ListItem.Title>
+            <ListItem.Subtitle>{_.get(item, 'registrationNumber', '')}</ListItem.Subtitle>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+      </TouchableOpacity>
     ));
-  };
-
-  const _delete = (vehicle) => {
-    dispatch(deleteVehicleAction(_.get(vehicle, 'id', '')));
   };
 
   const _edit = (vehicle) => {

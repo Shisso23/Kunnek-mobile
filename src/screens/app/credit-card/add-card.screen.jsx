@@ -114,7 +114,11 @@ const AddCardScreen = () => {
       <FormScreenContainer contentContainerStyle={styles.formContainer}>
         <Index title="My Debit/Credit Card" />
         <Divider />
-        <CreditCardForm initialValues={userCreditCardModel({})} submitForm={_onSubmit} />
+        <CreditCardForm
+          initialValues={userCreditCardModel({})}
+          submitForm={_onSubmit}
+          submitButtonStyle={styles.submitButtonStyle}
+        />
       </FormScreenContainer>
       <PeachMobile
         mode={config.peachPayments.peachPaymentMode}
@@ -130,5 +134,11 @@ export default AddCardScreen;
 const styles = StyleSheet.create({
   formContainer: {
     flex: 1,
+  },
+  submitButtonStyle: {
+    alignSelf: 'center',
+    bottom: 0,
+    position: 'absolute',
+    width: '95%',
   },
 });

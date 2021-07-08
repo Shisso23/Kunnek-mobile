@@ -18,7 +18,7 @@ export const deletePrompt = (onDelete) => {
   );
 };
 
-const fieldsToExcludeFromRecursion = ['photo', 'photoUri'];
+const fieldsToExcludeFromRecursion = ['photo', 'photoUri', 'profile_picture', 'photo_uri'];
 
 export const objectToFormData = (obj, form, type) => {
   const formData = form || new FormData();

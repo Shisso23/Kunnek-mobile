@@ -102,7 +102,7 @@ const DeliverParcelScreen = ({ route }) => {
   };
 
   const _handleSuccess = () => {
-    if (hasBankAccounts && formIndex >= formData.length - 1) {
+    if (formIndex >= formData.length - 1) {
       navigation.navigate('ParcelRequests');
     } else {
       _goToNext();
@@ -170,10 +170,27 @@ const DeliverParcelScreen = ({ route }) => {
         </>
       ),
     },
+    {
+      id: 'deliveryDetailsForm',
+      content: (
+        <>
+          <Index title="Final Amounts" />
+          <Divider />
+          <View style={[Gutters.smallHMargin]}>
+            <DeliverParcelDetailsForm
+              initialValues={_deliveryInitialValues()}
+              submitForm={_handleSubmitDeliveryDetailsForm}
+              onSuccess={_handleSuccess}
+              parcelRequest={parcelRequest}
+            />
+          </View>
+        </>
+      ),
+    },
   ];
 
   if (!hasVehicles) {
-    formData.push({
+    formData.splice(1, 0, {
       id: 'createVehicleForm',
       content: (
         <>
@@ -214,24 +231,6 @@ const DeliverParcelScreen = ({ route }) => {
       ),
     });
   }
-
-  formData.push({
-    id: 'deliveryDetailsForm',
-    content: (
-      <>
-        <Index title="Final Amounts" />
-        <Divider />
-        <View style={[Gutters.smallHMargin]}>
-          <DeliverParcelDetailsForm
-            initialValues={_deliveryInitialValues()}
-            submitForm={_handleSubmitDeliveryDetailsForm}
-            onSuccess={_handleSuccess}
-            parcelRequest={parcelRequest}
-          />
-        </View>
-      </>
-    ),
-  });
 
   return (
     <FormScreenContainer>
