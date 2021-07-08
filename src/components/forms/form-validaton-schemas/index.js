@@ -25,3 +25,14 @@ export const termsAndConditionsSchema = (edit) =>
   !edit ? Yup.bool().oneOf([true]) : Yup.string().notRequired();
 
 export const numericSchema = Yup.string().matches(numberRegex, 'Can only contain digits');
+
+export const twoFactorAuthSchema = (edit) => (edit ? Yup.bool() : Yup.bool().notRequired());
+
+export const profilePictureSchema = (edit) =>
+  edit
+    ? Yup.object().shape({
+        name: Yup.string(),
+        uri: Yup.string(),
+        type: Yup.string(),
+      })
+    : Yup.object().notRequired();

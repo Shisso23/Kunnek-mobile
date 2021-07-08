@@ -19,6 +19,7 @@ export const userModel = (_apiUserModel = {}) => ({
   profilePictureUri: setProfilePicture(_apiUserModel),
   rating: _.get(_apiUserModel, 'rating', ''),
   shouldTrack: _.get(_apiUserModel, 'should_be_tracked', ''),
+  useTwoFactorAuth: _.get(_apiUserModel, 'use_two_factor_auth', false),
   get fullName() {
     return `${this.firstName} ${this.lastName}`;
   },
@@ -39,6 +40,7 @@ export const apiUpdateUserModel = (_appUserModel = {}) => {
       mobile_number: _.get(_appUserModel, 'mobileNumber', ''),
       id_number: _.get(_appUserModel, 'idNumber', ''),
       email: _.get(_appUserModel, 'email', ''),
+      use_two_factor_auth: _.get(_appUserModel, 'useTwoFactorAuth', false),
     },
   };
 
