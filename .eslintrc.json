@@ -39,6 +39,12 @@
         "ignoreClassNames": false,
         "ignoreStyleProperties": false
       }
+    ],
+    "no-console": [
+      "error",
+      {
+        "allow": ["warn", "error"]
+      }
     ]
   }
 }

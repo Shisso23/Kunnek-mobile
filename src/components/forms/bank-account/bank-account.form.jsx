@@ -15,7 +15,7 @@ import { getBankNames } from '../../../reducers/app-reducer/app.actions';
 import { DropdownSelect } from '../../molecules';
 import { useTheme } from '../../../theme';
 
-const BankAccountForm = ({ submitForm, onSuccess, initialValues }) => {
+const BankAccountForm = ({ submitForm, onSuccess, initialValues, submitText }) => {
   const { banks } = useSelector(appSelector);
   const bankValues = _.map(banks, (bank) => _.get(bank, 'name'));
   const { Gutters } = useTheme();
@@ -119,7 +119,11 @@ const BankAccountForm = ({ submitForm, onSuccess, initialValues }) => {
             />
 
             <SafeAreaView>
-              <Button onPress={handleSubmit} loading={isSubmitting} title="Next" />
+              <Button
+                onPress={handleSubmit}
+                loading={isSubmitting}
+                title={submitText ? submitText : 'Next'}
+              />
             </SafeAreaView>
           </>
         );
@@ -133,11 +137,13 @@ BankAccountForm.propTypes = {
   initialValues: PropTypes.object.isRequired,
   onSuccess: PropTypes.func,
   containerStyle: ViewPropTypes.style,
+  submitText: PropTypes.string,
 };
 
 BankAccountForm.defaultProps = {
   onSuccess: () => null,
   containerStyle: {},
+  submitText: '',
 };
 
 export default BankAccountForm;
