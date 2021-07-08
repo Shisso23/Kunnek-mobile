@@ -30,3 +30,26 @@ export const apiUserModel = (_appUserModel = {}) => ({
     name: _.get(_appUserModel, 'name', ''),
   },
 });
+
+export const apiUpdateUserModel = (_appUserModel = {}) => {
+  const data = {
+    user: {
+      first_name: _.get(_appUserModel, 'firstName', ''),
+      last_name: _.get(_appUserModel, 'lastName', ''),
+      mobile_number: _.get(_appUserModel, 'mobileNumber', ''),
+      id_number: _.get(_appUserModel, 'idNumber', ''),
+      email: _.get(_appUserModel, 'email', ''),
+    },
+  };
+
+  const photoUri = _.get(_appUserModel, 'profilePictureUri', '');
+  if (!_.isEmpty(photoUri)) {
+    data.user.profile_picture = {
+      uri: photoUri,
+      name: 'profile_picture',
+      type: 'image/jpeg',
+    };
+  }
+
+  return data;
+};

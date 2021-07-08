@@ -9,7 +9,7 @@ import * as Yup from 'yup';
 import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
 
-const VehicleForm = ({ submitForm, onSuccess, initialValues, containerStyle }) => {
+const VehicleForm = ({ submitForm, onSuccess, initialValues, containerStyle, submitText }) => {
   const validationSchema = Yup.object().shape({
     make: Yup.string().required('Vehicle make is required'),
     model: Yup.string().required('Vehicle model is required'),
@@ -87,7 +87,11 @@ const VehicleForm = ({ submitForm, onSuccess, initialValues, containerStyle }) =
             />
 
             <SafeAreaView>
-              <Button onPress={handleSubmit} loading={isSubmitting} title="Next" />
+              <Button
+                onPress={handleSubmit}
+                loading={isSubmitting}
+                title={submitText ? submitText : 'Next'}
+              />
             </SafeAreaView>
           </View>
         );
@@ -101,11 +105,13 @@ VehicleForm.propTypes = {
   initialValues: PropTypes.object.isRequired,
   onSuccess: PropTypes.func,
   containerStyle: ViewPropTypes.style,
+  submitText: PropTypes.string,
 };
 
 VehicleForm.defaultProps = {
   onSuccess: () => null,
   containerStyle: {},
+  submitText: '',
 };
 
 export default VehicleForm;

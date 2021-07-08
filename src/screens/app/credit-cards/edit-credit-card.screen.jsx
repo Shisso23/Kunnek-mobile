@@ -1,16 +1,22 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View } from 'react-native';
-import { Divider } from 'react-native-elements';
+import { SafeAreaView, View } from 'react-native';
+import { Button, Divider } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import { FormScreenContainer } from '../../../components';
 import Index from '../../../components/atoms/title';
 import { successful } from '../../../helpers/errors.helper';
 import { useTheme } from '../../../theme';
-import { editCreditCardAction } from '../../../reducers/user-reducer/user-cards.actions';
+import {
+  deleteUserCreditCardAction,
+  editCreditCardAction,
+} from '../../../reducers/user-reducer/user-cards.actions';
 import CreditCardForm from '../../../components/forms/credit-card/credit-card.form';
+import { StyleSheet } from 'react-native';
+import { Colors } from '../../../theme/Variables';
 
 const EditCreditCardScreen = ({ route }) => {
   const navigation = useNavigation();
@@ -29,6 +35,10 @@ const EditCreditCardScreen = ({ route }) => {
       });
   };
 
+  const _delete = () => {
+    dispatch(deleteUserCreditCardAction(_.get(card, 'id', '')));
+  };
+
   const _formSuccess = () => {
     navigation.goBack();
   };
@@ -37,7 +47,7 @@ const EditCreditCardScreen = ({ route }) => {
 
   return (
     <FormScreenContainer>
-      <Index title="Edit Credit Card" />
+      <Index title="My Debit/Credit Card" />
       <Divider />
       <View style={Gutters.smallHMargin}>
         <CreditCardForm
@@ -45,8 +55,18 @@ const EditCreditCardScreen = ({ route }) => {
           onSuccess={_formSuccess}
           initialValues={card}
           containerStyle={Gutters.smallHMargin}
+          submitText="Update Card"
         />
       </View>
+      <SafeAreaView>
+        <Button
+          onPress={_delete}
+          title={'Delete'}
+          containerStyle={styles.buttonStyle}
+          buttonStyle={styles.clearButtonStyle}
+          titleStyle={[styles.clearButtonTextStyle]}
+        />
+      </SafeAreaView>
     </FormScreenContainer>
   );
 };
@@ -56,3 +76,16 @@ EditCreditCardScreen.propTypes = {
 };
 
 export default EditCreditCardScreen;
+
+const styles = StyleSheet.create({
+  buttonStyle: {
+    width: '90%',
+    alignSelf: 'center',
+  },
+  clearButtonStyle: {
+    backgroundColor: Colors.transparent,
+  },
+  clearButtonTextStyle: {
+    color: Colors.darkerGrey,
+  },
+});

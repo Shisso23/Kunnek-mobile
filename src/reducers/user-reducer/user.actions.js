@@ -39,3 +39,9 @@ export const getFullProfileAction = () => (dispatch) =>
     dispatch(getUserVehiclesAction()),
     dispatch(getUserReviewsAction()),
   ]);
+
+export const updateUserAction = (data = {}) => (dispatch) => {
+  return userService.updateUser(data).then((updatedUser) => {
+    return dispatch(setUserAction(updatedUser));
+  });
+};

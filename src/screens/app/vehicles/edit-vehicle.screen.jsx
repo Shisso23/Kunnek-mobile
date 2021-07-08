@@ -1,16 +1,22 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View } from 'react-native';
-import { Divider } from 'react-native-elements';
+import { SafeAreaView, View } from 'react-native';
+import { Button, Divider } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import { FormScreenContainer } from '../../../components';
 import Index from '../../../components/atoms/title';
 import { VehicleForm } from '../../../components/forms';
 import { successful } from '../../../helpers/errors.helper';
-import { editVehicleAction } from '../../../reducers/user-reducer/user-vehicles.actions';
+import {
+  deleteVehicleAction,
+  editVehicleAction,
+} from '../../../reducers/user-reducer/user-vehicles.actions';
 import { useTheme } from '../../../theme';
+import { StyleSheet } from 'react-native';
+import { Colors } from '../../../theme/Variables';
 
 const EditVehicleScreen = ({ route }) => {
   const navigation = useNavigation();
@@ -29,6 +35,10 @@ const EditVehicleScreen = ({ route }) => {
       });
   };
 
+  const _delete = () => {
+    dispatch(deleteVehicleAction(_.get(vehicle, 'id', ''))).then(() => navigation.goBack());
+  };
+
   const _formSuccess = () => {
     navigation.goBack();
   };
@@ -37,7 +47,7 @@ const EditVehicleScreen = ({ route }) => {
 
   return (
     <FormScreenContainer>
-      <Index title="Edit vehicle" />
+      <Index title="My Vehicle" />
       <Divider />
       <View style={Gutters.smallHMargin}>
         <VehicleForm
@@ -45,8 +55,18 @@ const EditVehicleScreen = ({ route }) => {
           onSuccess={_formSuccess}
           initialValues={vehicle}
           containerStyle={Gutters.smallHMargin}
+          submitText="Update Vehicle"
         />
       </View>
+      <SafeAreaView>
+        <Button
+          onPress={_delete}
+          title={'Delete'}
+          containerStyle={styles.buttonStyle}
+          buttonStyle={styles.clearButtonStyle}
+          titleStyle={[styles.clearButtonTextStyle]}
+        />
+      </SafeAreaView>
     </FormScreenContainer>
   );
 };
@@ -56,3 +76,16 @@ EditVehicleScreen.propTypes = {
 };
 
 export default EditVehicleScreen;
+
+const styles = StyleSheet.create({
+  buttonStyle: {
+    width: '90%',
+    alignSelf: 'center',
+  },
+  clearButtonStyle: {
+    backgroundColor: Colors.transparent,
+  },
+  clearButtonTextStyle: {
+    color: Colors.darkerGrey,
+  },
+});

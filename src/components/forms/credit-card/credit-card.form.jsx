@@ -12,7 +12,7 @@ import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
 import { useTheme } from '../../../theme';
 
-const CreditCardForm = ({ submitForm, onSuccess, initialValues }) => {
+const CreditCardForm = ({ submitForm, onSuccess, initialValues, submitText }) => {
   const { Layout } = useTheme();
 
   const validationSchema = Yup.object().shape({
@@ -61,82 +61,85 @@ const CreditCardForm = ({ submitForm, onSuccess, initialValues }) => {
   };
 
   return (
-      <Formik
-        initialValues={initialValues}
-        initialStatus={{ apiErrors: {} }}
-        onSubmit={_handleSubmission}
-        validationSchema={validationSchema}
-        enableReinitialize
-      >
-        {({
-          handleChange,
-          handleSubmit,
-          values,
-          errors,
-          isSubmitting,
-          handleBlur,
-          touched,
-          status,
-          setFieldValue,
-        }) => {
-          const error = (name) => getFormError(name, { touched, status, errors });
-          return (
-            <>
+    <Formik
+      initialValues={initialValues}
+      initialStatus={{ apiErrors: {} }}
+      onSubmit={_handleSubmission}
+      validationSchema={validationSchema}
+      enableReinitialize
+    >
+      {({
+        handleChange,
+        handleSubmit,
+        values,
+        errors,
+        isSubmitting,
+        handleBlur,
+        touched,
+        status,
+      }) => {
+        const error = (name) => getFormError(name, { touched, status, errors });
+        return (
+          <>
+            <Input
+              value={values.cardHolder}
+              label="Name on Card"
+              onChangeText={handleChange('cardHolder')}
+              onBlur={handleBlur('cardHolder')}
+              placeholder="Name on Card"
+              errorMessage={error('cardHolder')}
+            />
+
+            <Input
+              value={values.cardNumber}
+              label="Card Number"
+              onChangeText={handleChange('cardNumber')}
+              onBlur={handleBlur('cardNumber')}
+              placeholder="Card Number"
+              errorMessage={error('cardNumber')}
+              keyboardType="number-pad"
+            />
+
+            <View style={[Layout.row, Layout.justifyContentAround]}>
               <Input
-                value={values.cardHolder}
-                label="Name on Card"
-                onChangeText={handleChange('cardHolder')}
-                onBlur={handleBlur('cardHolder')}
-                placeholder="Name on Card"
-                errorMessage={error('cardHolder')}
+                containerStyle={styles.halfWidthInput}
+                label="Exp. Date"
+                value={values.expiryDate}
+                onChangeText={handleChange('expiryDate')}
+                onBlur={handleBlur('expiryDate')}
+                placeholder="Exp. Date"
+                errorMessage={error('expiryDate')}
+                keyboardType="numeric"
               />
 
               <Input
-                value={values.cardNumber}
-                label="Card Number"
-                onChangeText={handleChange('cardNumber')}
-                onBlur={handleBlur('cardNumber')}
-                placeholder="Card Number"
-                errorMessage={error('cardNumber')}
-                keyboardType="number-pad"
+                containerStyle={styles.halfWidthInput}
+                label="CVV"
+                value={values.cvv}
+                onChangeText={handleChange('cvv')}
+                onBlur={handleBlur('cvv')}
+                placeholder="CVV"
+                errorMessage={error('cvv')}
+                keyboardType="numeric"
               />
+            </View>
 
-              <View style={[Layout.row, Layout.justifyContentAround]}>
-                <Input
-                  containerStyle={styles.halfWidthInput}
-                  label="Exp. Date"
-                  value={values.expiryDate}
-                  onChangeText={handleChange('expiryDate')}
-                  onBlur={handleBlur('expiryDate')}
-                  placeholder="Exp. Date"
-                  errorMessage={error('expiryDate')}
-                  keyboardType="numeric"
-                />
+            <Image
+              source={require('../../../assets/images/powered-by-peach-payments.png')}
+              containerStyle={styles.peachPaymentsImage}
+            />
 
-                <Input
-                  containerStyle={styles.halfWidthInput}
-                  label="CVV"
-                  value={values.cvv}
-                  onChangeText={handleChange('cvv')}
-                  onBlur={handleBlur('cvv')}
-                  placeholder="CVV"
-                  errorMessage={error('cvv')}
-                  keyboardType="numeric"
-                />
-              </View>
-
-              <Image
-                source={require('../../../assets/images/powered-by-peach-payments.png')}
-                containerStyle={styles.peachPaymentsImage}
+            <SafeAreaView>
+              <Button
+                onPress={handleSubmit}
+                loading={isSubmitting}
+                title={submitText ? submitText : 'Complete'}
               />
-
-              <SafeAreaView>
-                <Button onPress={handleSubmit} loading={isSubmitting} title="Complete" />
-              </SafeAreaView>
-            </>
-          );
-        }}
-      </Formik>
+            </SafeAreaView>
+          </>
+        );
+      }}
+    </Formik>
   );
 };
 
@@ -145,11 +148,13 @@ CreditCardForm.propTypes = {
   initialValues: PropTypes.object.isRequired,
   onSuccess: PropTypes.func,
   containerStyle: ViewPropTypes.style,
+  submitText: PropTypes.string,
 };
 
 CreditCardForm.defaultProps = {
   onSuccess: () => null,
   containerStyle: {},
+  submitText: '',
 };
 
 export default CreditCardForm;

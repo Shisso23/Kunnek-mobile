@@ -32,13 +32,13 @@ const ProfileScreen = () => {
   );
 
   return !isLoading ? (
-    <ParallaxView user={user}>
+    <ParallaxView user={user} editable={true}>
       <View style={[Common.bottomDrawer]}>
         <View style={[Layout.rowCenterSpaceBetween]}>
           <Text h1>{user.fullName}</Text>
           <IconButton
             icon={() => <Icon name="pencil-alt" color={Colors.black} size={20} />}
-            onPress={() => {}}
+            onPress={() => navigation.navigate('EditProfile')}
           />
         </View>
         <View

@@ -29,6 +29,7 @@ import EditBankAccountScreen from '../../screens/app/bank-accounts/edit-bank-acc
 import AddCreditCardScreen from '../../screens/app/credit-cards/add-credit-card.screen';
 import EditCreditCardScreen from '../../screens/app/credit-cards/edit-credit-card.screen';
 import MyReviewsScreen from '../../screens/app/my-reviews/my-reviews.screen';
+import EditProfileScreen from '../../screens/app/profile/edit-profile.screen';
 
 const Drawer = createDrawerNavigator();
 const AppStack = createStackNavigator();
@@ -64,6 +65,7 @@ const AppNavigator = () => {
       <AppStack.Screen name="UserDetails" component={OtherUserProfileScreen} />
       <AppStack.Screen name="Review" component={ReviewScreen} />
       <AppStack.Screen name="MyReviews" component={MyReviewsScreen} />
+      <AppStack.Screen name="EditProfile" component={EditProfileScreen} />
     </AppStack.Navigator>
   );
 };
