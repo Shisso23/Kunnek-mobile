@@ -17,13 +17,13 @@ const ChatScreen = ({ route }) => {
   const chattableId = _.get(parcelRequest, 'id');
   const { user } = useSelector(userSelector);
   const { Layout, Fonts } = useTheme();
-  const [chat, setchat] = useState({});
+  const [chat, setChat] = useState({});
   const [messages, setMessages] = useState([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getChatAction(chattableId)).then((response) => {
-      setchat(response);
+      setChat(response);
       setMessages(response.messages);
     });
   }, []);
