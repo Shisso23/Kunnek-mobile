@@ -5,9 +5,10 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import _ from 'lodash';
 import { ListItem, Text } from 'react-native-elements';
 import PropTypes from 'prop-types';
-import useTheme from '../../../theme/hooks/useTheme';
 import { useDispatch } from 'react-redux';
 import { IconButton } from 'react-native-paper';
+
+import useTheme from '../../../theme/hooks/useTheme';
 import { deleteUserCreditCardAction } from '../../../reducers/user-reducer/user-cards.actions';
 
 const CardsList = ({ items }) => {
