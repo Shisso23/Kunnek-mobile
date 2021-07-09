@@ -15,7 +15,7 @@ export const Colors = {
   black: '#000',
   text: '#212529',
   primary: '#068D9D',
-  secondary: '#53599A',
+  secondary: '#43B2FF',
   success: '#95F9E3',
   warning: '#D4B483',
   error: '#C1666B',
