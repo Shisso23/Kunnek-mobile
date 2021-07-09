@@ -18,25 +18,28 @@ import {
   fetchCheckoutId,
 } from '../../../reducers/payment-reducer/payment.actions';
 
-import { setPaymentsLoadingAction } from '../../../reducers/payment-reducer/payment.reducer';
+import {
+  paymentSelector,
+  setPaymentsLoadingAction,
+} from '../../../reducers/payment-reducer/payment.reducer';
 import { getServiceFee } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 import { ScreenContainer } from '../../../components';
 import { useTheme } from '../../../theme';
 import Index from '../../../components/atoms/title';
 
-const PaymentScreen = ({ isLoading, route, retry = false }) => {
+const PaymentScreen = ({ route }) => {
   const { Fonts, Gutters, Layout } = useTheme();
-  const { message, parcelRequest, totalAmount, paymentType, card } = route.params;
+  const { message, parcelRequest, totalAmount, paymentType, card, retry = false } = route.params;
   const dispatch = useDispatch();
   const [cvvNumber, setCvvNumber] = useState('');
   const navigation = useNavigation();
   const peachMobileRef = useRef(null);
-  const { checkoutId } = useSelector((state) => state.paymentReducer);
   const { serviceFee } = useSelector((state) => state.parcelRequestReducer);
+  const { paymentsLoading } = useSelector(paymentSelector);
 
   useEffect(() => {
-    dispatch(getServiceFee(_.get(parcelRequest, 'id')));
-  }, [parcelRequest]);
+    if (parcelRequest) dispatch(getServiceFee(_.get(parcelRequest, 'id')));
+  }, []);
 
   const renderPeachPayment = () => {
     return (
@@ -49,7 +52,6 @@ const PaymentScreen = ({ isLoading, route, retry = false }) => {
   };
 
   const onPay = async () => {
-    let result = { success: false };
     const finalPayment = await dispatch(
       createPaymentAction({
         amount: _.get(parcelRequest, 'amount', totalAmount),
@@ -69,16 +71,15 @@ const PaymentScreen = ({ isLoading, route, retry = false }) => {
         fetchCheckoutId(_.get(finalPayment.payload, 'id'), {
           payment_type: peachPaymentType,
         }),
-      );
-      if (checkoutId) {
-        result = await createTransaction();
-      }
+      ).then((checkoutId) => {
+        if (checkoutId) {
+          createTransaction(checkoutId);
+        }
+      });
     }
-
-    return result;
   };
 
-  const createTransaction = async () => {
+  const createTransaction = async (checkoutId) => {
     const cardType = _.get(card, 'cardType');
     if (!_.isNil(card)) {
       setIsLoading(true);
@@ -142,7 +143,7 @@ const PaymentScreen = ({ isLoading, route, retry = false }) => {
         <View style={Layout.alignItemsCenter}>
           <View>
             <Text style={styles.headingText}>Payment about to be made</Text>
-            <Button title="Pay" onPress={onPay} loading={isLoading} />
+            <Button title="Pay" onPress={onPay} loading={paymentsLoading} />
           </View>
         </View>
       </View>

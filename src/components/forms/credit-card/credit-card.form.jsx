@@ -95,15 +95,6 @@ const CreditCardForm = ({
               placeholder="Name on Card"
               errorMessage={error('cardHolder')}
             />
-            <Input
-              value={values.cardNumber}
-              label="Card Number"
-              onChangeText={handleChange('cardNumber')}
-              onBlur={handleBlur('cardNumber')}
-              placeholder="Card Number"
-              errorMessage={error('cardNumber')}
-              keyboardType="number-pad"
-            />
 
             <Input
               value={values.cardNumber}
