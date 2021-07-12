@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import { StyleSheet } from 'react-native';
+import { Alert, StyleSheet, Platform, Linking } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 import Index from '../../../components/atoms/title';
 import { useTheme } from '../../../theme';
@@ -18,8 +19,6 @@ import { parcelStatus } from '../../../helpers/parcel-request-status.helper';
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
 import { checkParcelRequestAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 import { useInterval } from '../../../services';
-import { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
 
 const ParcelDetailsScreen = ({ route }) => {
   const { Layout, Images } = useTheme();
@@ -51,6 +50,24 @@ const ParcelDetailsScreen = ({ route }) => {
     return _.get(parcelRequest, 'deliverer');
   };
 
+  const _dialReceiver = () => {
+    let phone;
+    if (Platform.OS !== 'android') {
+      phone = `telprompt:${_.get(parcelRequest, 'receiverMobileNumber', '')}`;
+    } else {
+      phone = `tel:${_.get(parcelRequest, 'receiverMobileNumber', '')}`;
+    }
+    Linking.canOpenURL(phone)
+      .then((supported) => {
+        if (!supported) {
+          Alert.alert('Phone number is not available');
+        } else {
+          return Linking.openURL(phone);
+        }
+      })
+      .catch((err) => console.warn(err));
+  };
+
   const _renderDetailsCard = () => {
     if (_isDeliverer()) return <ParcelStatusCardDriver parcelRequest={parcelRequestUpdated} />;
     return <ParcelStatusCardSender parcelRequest={parcelRequestUpdated} />;
@@ -76,9 +93,7 @@ const ParcelDetailsScreen = ({ route }) => {
         icons.push({
           icon: Images.messageIconBlue,
           caption: 'Contact Recipient',
-          onPress: () => {
-            navigation.navigate('Chat', { parcelRequest });
-          },
+          onPress: _dialReceiver,
         });
       } else {
         icons.push({ icon: Images.mapIcon, caption: 'Track Parcel' });
