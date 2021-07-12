@@ -24,10 +24,12 @@ const vehicleModel = (_apiVehicleModel = {}) => ({
 
 export const senderModel = (_apiSenderModel = {}) => ({
   ...senderDelivererModel(_apiSenderModel),
+  type: 'sender',
 });
 
 export const delivererModel = (_apiDelivererModel = {}) => ({
   ...senderDelivererModel(_apiDelivererModel),
+  type: 'collector',
   idNumber: _.get(_apiDelivererModel, 'id_number', ''),
   vehicle: vehicleModel(_.get(_apiDelivererModel, 'vehicle'), {}),
 });

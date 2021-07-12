@@ -12,7 +12,7 @@ const setProfilePicture = (_apiUserModel) => {
 export const userModel = (_apiUserModel = {}) => ({
   email: _.get(_apiUserModel, 'email', ''),
   id: _.get(_apiUserModel, 'id', ''),
-  firstName: _.get(_apiUserModel, 'first_name', ''),
+  firstName: _.get(_apiUserModel, 'first_name', _.get(_apiUserModel, 'name', '')),
   lastName: _.get(_apiUserModel, 'last_name', ''),
   mobileNumber: _.get(_apiUserModel, 'mobile_number', ''),
   idNumber: _.get(_apiUserModel, 'id_number', ''),
