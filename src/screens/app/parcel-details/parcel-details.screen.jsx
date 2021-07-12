@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import { Alert, StyleSheet } from 'react-native';
+import { Alert, StyleSheet, Platform, Linking } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 
 import Index from '../../../components/atoms/title';
 import { useTheme } from '../../../theme';
@@ -18,10 +19,6 @@ import { parcelStatus } from '../../../helpers/parcel-request-status.helper';
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
 import { checkParcelRequestAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 import { useInterval } from '../../../services';
-import { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { Platform } from 'react-native';
-import { Linking } from 'react-native';
 
 const ParcelDetailsScreen = ({ route }) => {
   const { Layout, Images } = useTheme();
