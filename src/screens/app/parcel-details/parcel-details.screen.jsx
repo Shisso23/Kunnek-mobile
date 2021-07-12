@@ -57,7 +57,7 @@ const ParcelDetailsScreen = ({ route }) => {
     } else {
       phone = `tel:${_.get(parcelRequest, 'receiverMobileNumber', '')}`;
     }
-    Linking.openURL(phone)
+    Linking.canOpenURL(phone)
       .then((supported) => {
         if (!supported) {
           Alert.alert('Phone number is not available');
