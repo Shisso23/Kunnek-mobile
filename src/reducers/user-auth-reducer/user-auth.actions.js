@@ -18,6 +18,7 @@ export const signInAction = (signInForm) => async (dispatch) => {
     currentState = AuthStates.AUTHENTICATED;
   }
   await dispatch(storeAuthStateAction(currentState));
+  return currentState;
 };
 
 export const signUpAction = (form) => async () => {

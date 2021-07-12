@@ -6,14 +6,17 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 import { Button, Input } from 'react-native-elements';
+
 import {
   emailSchema,
   registerPasswordSchema,
   confirmPasswordSchema,
   termsAndConditionsSchema,
+  profilePictureSchema,
+  twoFactorAuthSchema,
 } from '../form-validaton-schemas';
 import { getFormError } from '../form-utils';
-import { TermsAndConditions } from '../../atoms';
+import { CustomCheckbox, TermsAndConditions } from '../../atoms';
 import { flashService } from '../../../services';
 import { UploadDocumentButton } from '../../molecules';
 import ProfilePicture from '../../atoms/profile-picture';
@@ -30,9 +33,17 @@ const UserInfoForm = ({ edit, submitForm, onSuccess, initialValues, containerSty
     password: registerPasswordSchema(edit),
     confirmPassword: confirmPasswordSchema(edit),
     termsAndConditions: termsAndConditionsSchema(edit),
+    ProfilePicture: profilePictureSchema(edit),
+    useTwoFactorAuth: twoFactorAuthSchema(edit),
   });
 
   const _handleSubmission = (formData, actions) => {
+    if (edit) {
+      const currentProfilePicture = _.get(initialValues, 'profilePictureUri');
+      const newProfilePicture = _.get(formData, 'profilePictureUri');
+      if (currentProfilePicture === newProfilePicture) delete formData.profilePictureUri;
+    }
+
     submitForm(formData)
       .then(() => {
         actions.setSubmitting(false);
@@ -115,11 +126,18 @@ const UserInfoForm = ({ edit, submitForm, onSuccess, initialValues, containerSty
               />
               {edit && (
                 <>
+                  <CustomCheckbox
+                    onPress={() => {
+                      setFieldValue('useTwoFactorAuth', !values.useTwoFactorAuth);
+                    }}
+                    checked={values.useTwoFactorAuth}
+                    text="Two factor authentication"
+                  />
                   <View style={Layout.alignSelfCenter}>
                     <ProfilePicture user={values} />
                   </View>
                   <UploadDocumentButton
-                    label="ProfilePicture"
+                    label=""
                     errorMessage={error('profilePictureUri')}
                     onImageSelect={handleChange('profilePictureUri')}
                   />

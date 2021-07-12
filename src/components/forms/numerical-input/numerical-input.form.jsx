@@ -4,13 +4,17 @@ import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import { Text } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
-import { NumericInput } from '../../atoms';
 import { numericSchema } from '../form-validaton-schemas';
+import { PaperContainer } from '../../containers';
+import { OTPInputField } from '../../molecules';
+import { StyleSheet } from 'react-native';
+import { useTheme } from '../../../theme';
 
 const NumericalInputForm = React.forwardRef(({ submitForm, onSuccess, initialValues }, ref) => {
+  const { Gutters } = useTheme();
   const validationSchema = Yup.object().shape({
     numeric: numericSchema,
   });
@@ -47,16 +51,20 @@ const NumericalInputForm = React.forwardRef(({ submitForm, onSuccess, initialVal
       {({ handleSubmit, values, errors, isSubmitting, touched, status, setFieldValue }) => {
         const error = (name) => getFormError(name, { touched, status, errors });
         return (
-          <>
-            {isSubmitting && <Text>loading </Text>}
-            <NumericInput
+          <PaperContainer>
+            <OTPInputField
+              length={4}
               value={values.numeric}
               onChange={(newNumeric) => setFieldValue('numeric', newNumeric)}
-              cellCount={4}
-              handleSubmit={handleSubmit}
-              errorMessage={error('numeric')}
+              error={error('numeric')}
             />
-          </>
+            <Button
+              style={[styles.buttonSize, Gutters.regularTMargin, styles.box]}
+              onPress={handleSubmit}
+              title="Continue"
+              loading={isSubmitting}
+            />
+          </PaperContainer>
         );
       }}
     </Formik>
@@ -74,3 +82,10 @@ NumericalInputForm.defaultProps = {
 };
 
 export default NumericalInputForm;
+
+const styles = StyleSheet.create({
+  buttonSize: {
+    width: '80%',
+    alignSelf: 'center',
+  },
+});

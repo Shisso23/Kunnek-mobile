@@ -31,9 +31,9 @@ const SignInForm = ({ submitForm, onSuccess, containerStyle, initialValues }) =>
 
   const _handleSubmission = (formData, actions) => {
     submitForm(formData)
-      .then(() => {
+      .then((authState) => {
         actions.setSubmitting(false);
-        onSuccess();
+        onSuccess(authState);
       })
       .catch((error) => _handleFormSubmitError(error, actions, formData));
   };

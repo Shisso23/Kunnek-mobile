@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { Image, SafeAreaView, View } from 'react-native';
 import { SignInForm } from '../../../components/forms';
@@ -9,10 +9,7 @@ import { isAuthenticatedFlowAction } from '../../../reducers/app-reducer/app.act
 import useTheme from '../../../theme/hooks/useTheme';
 import { FormScreenContainer } from '../../../components';
 import { signInAction } from '../../../reducers/user-auth-reducer/user-auth.actions';
-import {
-  setDoneLoadingAppDataAction,
-  userAuthSelector,
-} from '../../../reducers/user-auth-reducer/user-auth.reducer';
+import { setDoneLoadingAppDataAction } from '../../../reducers/user-auth-reducer/user-auth.reducer';
 import { AuthStates } from '../../../reducers/user-auth-reducer/user-auth.enums';
 
 const SignInScreen = () => {
@@ -20,11 +17,9 @@ const SignInScreen = () => {
   const navigation = useNavigation();
   const { Gutters, Images, Custom, Layout } = useTheme();
 
-  const { authState } = useSelector(userAuthSelector);
-
   const _handleFormSubmit = (signInForm) => dispatch(signInAction(signInForm));
 
-  const _onSignInSuccess = async () => {
+  const _onSignInSuccess = async (authState) => {
     if (authState === AuthStates._2FA_PENDING) {
       navigation.navigate('SignInOtp');
     } else {
