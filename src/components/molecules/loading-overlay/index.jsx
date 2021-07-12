@@ -1,29 +1,22 @@
 import React from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { Overlay } from 'react-native-elements';
-import { useTheme } from '../../../theme';
+import AnimatedLoader from 'react-native-animated-loader';
 
-const LoadingOverlay = ({ isLoading, message }) => {
-  const { Fonts, Layout } = useTheme();
+const LoadingOverlay = ({ isLoading }) => {
   return (
-    <Overlay isVisible={isLoading}>
-      <View style={[Layout.fill, Layout.alignItemsCenter, Layout.justifyContentCenter]}>
-        <ActivityIndicator size="large" />
-        <Text style={[Fonts.textCenter]}>{message}</Text>
-      </View>
-    </Overlay>
+    <AnimatedLoader
+      visible={isLoading}
+      source={require('../../../assets/animations/loader.json')}
+    />
   );
 };
 
 LoadingOverlay.propTypes = {
   isLoading: PropTypes.bool,
-  message: PropTypes.string,
 };
 
 LoadingOverlay.defaultProps = {
   isLoading: false,
-  message: 'Loading...',
 };
 
 export default LoadingOverlay;
