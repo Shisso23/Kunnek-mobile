@@ -45,7 +45,7 @@ const PaymentScreen = ({ route }) => {
     return (
       <PeachMobile
         mode={config.peachPayments.peachPaymentMode}
-        urlScheme="kunnekp2p"
+        urlScheme="com.kunnek.payments"
         ref={peachMobileRef}
       />
     );
@@ -91,7 +91,8 @@ const PaymentScreen = ({ route }) => {
           cvvNumber,
         )
           .then((transaction) => {
-            PeachMobile.submitTransaction(transaction, config.peachPayments.peachPaymentMode)
+            peachMobileRef.current
+              .submitTransaction(transaction)
               .then(async (response) => {
                 if (response) {
                   flashService.success('Payment Processing...');

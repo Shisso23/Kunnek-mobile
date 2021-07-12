@@ -55,6 +55,15 @@ static void InitializeFlipper(UIApplication *application) {
   return YES;
 }
 
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options {
+  if ([url.scheme localizedCaseInsensitiveCompare:@"com.kunnek.payments"] == NSOrderedSame) {
+    [NSNotificationCenter.defaultCenter postNotificationName:@"AsyncPaymentCompletedNotificationKey"  object:nil];
+    return true;
+  }
+  return false;
+
+}
+
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
 #if DEBUG
