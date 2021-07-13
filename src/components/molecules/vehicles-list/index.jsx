@@ -36,7 +36,7 @@ const VehiclesList = ({ items, readOnly }) => {
   };
 
   const _edit = (vehicle) => {
-    navigation.navigate('EditVehicle', { vehicle });
+    if (!readOnly) navigation.navigate('EditVehicle', { vehicle });
   };
 
   const _listFooter = () => {

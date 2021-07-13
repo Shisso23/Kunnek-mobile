@@ -10,7 +10,7 @@ export const getTomorrow = (format) =>
     .format(format ? format : getDefaultDateFormat());
 
 export const getCloseOfBusiness = () =>
-  dayjs().set('hour', 17).set('minute', 0).format('YYYY-MM-DD:HH:mm');
+  dayjs().set('hour', 17).set('minute', 0).format('YYYY-MM-DD HH:mm');
 
 export const formatDate = (date) => {
   return dayjs(date).format(getDefaultDateFormat());

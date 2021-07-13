@@ -49,13 +49,15 @@ const OtherUserProfileScreen = ({ route }) => {
 
   const _accept = () => {
     const newStatus = progressPackageStatus(parcelRequest);
-    dispatch(updateParcelStatus(parcelRequest, newStatus));
-    navigation.navigate('ParcelDetails', parcelRequest);
+    dispatch(updateParcelStatus(parcelRequest, newStatus)).then((updatedParcelRequest) => {
+      navigation.navigate('ParcelDetails', { parcelRequest: updatedParcelRequest });
+    });
   };
 
   const _reject = () => {
-    dispatch(cancelParcelStatus(parcelRequest));
-    navigation.navigate('ParcelDetails', parcelRequest);
+    dispatch(cancelParcelStatus(parcelRequest)).then((updatedParcelRequest) => {
+      navigation.navigate('ParcelDetails', { parcelRequest: updatedParcelRequest });
+    });
   };
 
   return (

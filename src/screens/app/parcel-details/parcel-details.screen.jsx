@@ -19,23 +19,30 @@ import { parcelStatus } from '../../../helpers/parcel-request-status.helper';
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
 import { checkParcelRequestAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 import { useInterval } from '../../../services';
+import { parcelRequestSelector } from '../../../reducers/parcel-request-reducer/parcel-request.reducer';
 
 const ParcelDetailsScreen = ({ route }) => {
   const { Layout, Images } = useTheme();
   const parcelRequest = route.params;
   const deliverer = _.get(parcelRequest, 'deliverer');
-  const parcelStatusIndex = parcelStatus[_.get(parcelRequest, 'status')];
   const { user } = useSelector(userSelector);
   const dispatch = useDispatch();
   const [parcelRequestUpdated, updateParcelRequest] = useState(parcelRequest);
+  const parcelStatusIndex = parcelStatus[_.get(parcelRequestUpdated, 'status')];
   const navigation = useNavigation();
 
+  const { userParcelRequests } = useSelector(parcelRequestSelector);
+
   useInterval(() => {
-    dispatch(checkParcelRequestAction(_.get(parcelRequestUpdated, 'id'))).then((response) => {
-      if (_.get(response, 'status') !== _.get(parcelRequestUpdated, 'status')) {
-        updateParcelRequest(response);
-      }
-    });
+    const requestId = _.get(parcelRequestUpdated, 'id');
+    const parcelExists = _.find(userParcelRequests, (parcel) => parcel.id === requestId);
+    if (parcelExists) {
+      dispatch(checkParcelRequestAction(requestId)).then((response) => {
+        if (_.get(response, 'status') !== _.get(parcelRequestUpdated, 'status')) {
+          updateParcelRequest(response);
+        }
+      });
+    }
   }, 5000);
 
   const _isDeliverer = () => {
@@ -44,18 +51,18 @@ const ParcelDetailsScreen = ({ route }) => {
 
   const _getOtherUser = () => {
     if (_isDeliverer()) {
-      return _.get(parcelRequest, 'sender');
+      return _.get(parcelRequestUpdated, 'sender');
     }
 
-    return _.get(parcelRequest, 'deliverer');
+    return _.get(parcelRequestUpdated, 'deliverer');
   };
 
   const _dialReceiver = () => {
     let phone;
     if (Platform.OS !== 'android') {
-      phone = `telprompt:${_.get(parcelRequest, 'receiverMobileNumber', '')}`;
+      phone = `telprompt:${_.get(parcelRequestUpdated, 'receiverMobileNumber', '')}`;
     } else {
-      phone = `tel:${_.get(parcelRequest, 'receiverMobileNumber', '')}`;
+      phone = `tel:${_.get(parcelRequestUpdated, 'receiverMobileNumber', '')}`;
     }
     Linking.canOpenURL(phone)
       .then((supported) => {
@@ -86,7 +93,7 @@ const ParcelDetailsScreen = ({ route }) => {
         icon: Images.messageIconGreen,
         caption: `Contact ${_isDeliverer() ? 'Sender' : ''}`,
         onPress: () => {
-          navigation.navigate('Chat', { parcelRequest });
+          navigation.navigate('Chat', { parcelRequest: parcelRequestUpdated });
         },
       });
       if (_isDeliverer()) {

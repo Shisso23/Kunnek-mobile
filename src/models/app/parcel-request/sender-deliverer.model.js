@@ -14,6 +14,7 @@ const senderDelivererModel = (_apiSenderDelivererModel = {}) => ({
   fullName: _.get(_apiSenderDelivererModel, 'full_name', ''),
   profilePictureUri: setProfilePicture(_apiSenderDelivererModel),
   mobileNumber: _.get(_apiSenderDelivererModel, 'mobile-number', ''),
+  rating: _.get(_apiSenderDelivererModel, 'rating', 0),
 });
 
 const vehicleModel = (_apiVehicleModel = {}) => ({

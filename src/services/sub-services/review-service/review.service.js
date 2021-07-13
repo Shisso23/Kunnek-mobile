@@ -17,7 +17,9 @@ const getPublicReviews = (id, params = {}) => {
   const url = reviewUrls.publicReviewsUrl(id);
   const paramsString = getParamString(params);
 
-  const _createAndReturnModel = (apiResponse) => constructUserReviewModels(apiResponse.data);
+  const _createAndReturnModel = (apiResponse) => {
+    return constructUserReviewModels(apiResponse.data);
+  };
   return authNetworkService.get(`${url}${paramsString}`).then(_createAndReturnModel);
 };
 

@@ -64,7 +64,7 @@ const DrawerContent = (props) => {
           <DrawerItem
             icon={() => <Image source={Images.deliverParcelIconBlue} style={styles.icon} />}
             label="Deliver Parcel"
-            onPress={() => navigation.navigate('HomeScreen')}
+            onPress={() => navigation.navigate('Home')}
           />
           <DrawerItem
             icon={() => <Image source={Images.parcelsIconBlue} style={styles.icon} />}

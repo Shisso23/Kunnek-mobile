@@ -22,13 +22,16 @@ const DeliverParcelDetailsForm = ({ submitForm, onSuccess, initialValues, parcel
   const validationSchema = Yup.object().shape({
     latestArrivalDateTime: Yup.string()
       .test('past-date', 'date cannot be in the past', (dateTime) => {
-        return dayjs(dateTime).isAfter(dayjs());
+        if (dateTime) return dayjs(dateTime).isAfter(dayjs());
+        return false;
       })
       .test(
         'before-date',
         'date cannot be after the due date specified by the sender',
         (dateTime) => {
-          return dayjs(dateTime).isBefore(dayjs(_.get(parcelRequest, 'latestDeliveryDateTime')));
+          if (dateTime)
+            return dayjs(dateTime).isBefore(dayjs(_.get(parcelRequest, 'latestDeliveryDateTime')));
+          return false;
         },
       )
       .required('Latest delivery date is required'),
@@ -155,7 +158,7 @@ const DeliverParcelDetailsForm = ({ submitForm, onSuccess, initialValues, parcel
               errorMessage={error('latestArrivalDateTime')}
               label=""
               mode="datetime"
-              format="YYYY-MM-DD:HH:mm"
+              format="YYYY-MM-DD HH:mm"
             />
 
             <SafeAreaView>
