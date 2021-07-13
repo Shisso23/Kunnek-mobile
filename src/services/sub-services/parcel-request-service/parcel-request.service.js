@@ -100,7 +100,7 @@ const cancelDeliveryRequest = (id, data = {}) => {
   const url = parcelRequestUrls.parcelRequestsUrl();
   const dataModel = apiParcelStatusCancelModel(data);
   const _createAndReturnModel = (apiResponse) => {
-    parcelRequestModel(apiResponse.data);
+    return parcelRequestModel(apiResponse.data);
   };
   return authNetworkService
     .patch(`${url}/${id}`, dataModel)

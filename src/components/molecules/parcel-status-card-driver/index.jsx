@@ -7,17 +7,22 @@ import { useNavigation } from '@react-navigation/core';
 import { useTheme } from '../../../theme';
 import { parcelStatusDeliverer } from '../../../helpers/parcel-request.helper';
 import IconListItem from '../icon-list-item';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { progressPackageStatus } from '../../../helpers/parcel-request-status.helper';
 import {
   cancelParcelStatus,
   updateParcelStatus,
 } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
+import {
+  parcelRequestSelector,
+  setUserParcelRequestsAction,
+} from '../../../reducers/parcel-request-reducer/parcel-request.reducer';
 
 const ParcelStatusCardDriver = ({ parcelRequest }) => {
   const { Gutters, Layout, Common, Images } = useTheme();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const { userParcelRequests } = useSelector(parcelRequestSelector);
 
   const parcelStatusDecoded = parcelStatusDeliverer(parcelRequest);
 
@@ -35,7 +40,13 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
   };
 
   const _cancelRequest = () => {
-    dispatch(cancelParcelStatus(parcelRequest)).then(navigation.goBack());
+    dispatch(cancelParcelStatus(parcelRequest, true)).then(() => {
+      _.remove(userParcelRequests, (request) => {
+        return request.id === parcelRequest.id;
+      });
+      dispatch(setUserParcelRequestsAction(userParcelRequests));
+      navigation.goBack();
+    });
   };
 
   const _reviewUser = () => {
