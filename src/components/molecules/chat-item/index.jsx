@@ -10,7 +10,7 @@ import { Colors } from '../../../theme/Variables';
 import dayjs from 'dayjs';
 
 const ChatItem = ({ message }) => {
-  const { Layout, Fonts, Gutters } = useTheme();
+  const { Layout, Gutters } = useTheme();
   const { user } = useSelector(userSelector);
   const userId = _.get(user, 'id');
   const messageUser = _.get(_.get(message, 'user', {}), 'id');
@@ -29,12 +29,11 @@ const ChatItem = ({ message }) => {
 
   if (userId === messageUser)
     return (
-      <View
-        style={[Layout.row, Layout.justifyContentBetween, Layout.alignItemsEnd, Gutters.tinyMargin]}
-      >
-        <Text style={Fonts.subtitleRegular}>{_dateFormatter(_.get(message, 'timestamp'))}</Text>
+      <View style={[Layout.row, Layout.justifyContentBetween, Gutters.tinyMargin]}>
+        <View style={Layout.fill} />
         <View style={styles.myMessage}>
           <Text style={styles.messageColor}>{_.get(message, 'text')}</Text>
+          <Text style={styles.messageTimeColor}>{_dateFormatter(_.get(message, 'timestamp'))}</Text>
         </View>
       </View>
     );
@@ -43,10 +42,9 @@ const ChatItem = ({ message }) => {
     <View style={[Layout.row, Layout.justifyContentBetween, Gutters.tinyMargin]}>
       <View style={styles.theirMessage}>
         <Text style={[styles.messageColor]}>{_.get(message, 'text')}</Text>
+        <Text style={styles.messageTimeColor}>{_dateFormatter(_.get(message, 'timestamp'))}</Text>
       </View>
-      <View>
-        <Text style={Fonts.subtitleRegular}>{_dateFormatter(_.get(message, 'timestamp'))}</Text>
-      </View>
+      <View></View>
     </View>
   );
 };
@@ -76,5 +74,8 @@ const styles = StyleSheet.create({
   },
   messageColor: {
     color: Colors.white,
+  },
+  messageTimeColor: {
+    color: Colors.inputPlaceholderColor,
   },
 });

@@ -33,7 +33,7 @@ const DrawerContent = (props) => {
               ratingColor="transparent"
               ratingBackgroundColor="transparent"
               readonly
-              startingValue={Number(_.get(user, 'rating', 0))}
+              ratingCount={Number(_.get(user, 'rating', 0))}
               imageSize={20}
               style={styles.ratingStyle}
             />
@@ -64,7 +64,7 @@ const DrawerContent = (props) => {
           <DrawerItem
             icon={() => <Image source={Images.deliverParcelIconBlue} style={styles.icon} />}
             label="Deliver Parcel"
-            onPress={() => navigation.navigate('HomeScreen')}
+            onPress={() => navigation.navigate('Home')}
           />
           <DrawerItem
             icon={() => <Image source={Images.parcelsIconBlue} style={styles.icon} />}

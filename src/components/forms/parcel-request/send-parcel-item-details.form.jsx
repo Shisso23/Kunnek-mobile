@@ -19,7 +19,7 @@ const SendParcelItemDetailsForm = ({ submitForm, onSuccess, initialValues }) => 
     itemWeight: Yup.number().required('Weight is required').positive(),
     price: Yup.number()
       .test('is-currency', 'Please type a currency value eg: 12.34', (price) => {
-        return Number(price.toFixed(2)) === Number(price);
+        if (price) return Number(price.toFixed(2)) === Number(price);
       })
       .required('Offer Amount is required'),
   });
@@ -27,8 +27,7 @@ const SendParcelItemDetailsForm = ({ submitForm, onSuccess, initialValues }) => 
   const _handleSubmission = (formData, actions) => {
     submitForm(formData)
       .then(() => {
-        actions.setSubmitting(false);
-        onSuccess();
+        onSuccess().then(() => actions.setSubmitting(false));
       })
       .catch((error) => {
         actions.setSubmitting(false);

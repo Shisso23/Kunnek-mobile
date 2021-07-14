@@ -72,12 +72,13 @@ export const updateParcelStatus = (parcelRequest, newStatus) => (dispatch, getSt
 export const cancelParcelStatus = (parcelRequest) => (dispatch, getState) => {
   dispatch(setParcelRequestLoadingAction(true));
 
-  const { parcelRequests = [] } = getState().parcelRequestReducer;
+  const { userParcelRequests = [] } = getState().parcelRequestReducer;
 
   return parcelRequestService
     .cancelDeliveryRequest(_.get(parcelRequest, 'id'), parcelRequest)
     .then((response) => {
-      return dispatch(setParcelRequestsAction(updateObjectArray(parcelRequests, response)));
+      dispatch(setUserParcelRequestsAction(updateObjectArray(userParcelRequests, response)));
+      return response;
     })
     .finally(() => {
       dispatch(setParcelRequestLoadingAction(false));

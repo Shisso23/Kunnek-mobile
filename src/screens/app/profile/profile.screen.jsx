@@ -1,5 +1,5 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React from 'react';
 import { View, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Text } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,27 +11,21 @@ import { getFullProfileAction } from '../../../reducers/user-reducer/user.action
 import useTheme from '../../../theme/hooks/useTheme';
 import ParallaxView from '../../../components/molecules/parallax-view';
 import CardsList from '../../../components/molecules/cards-list';
-import { AccountsList, LoadingComponent, ReviewsList, VehiclesList } from '../../../components';
+import { AccountsList, ReviewsList, VehiclesList } from '../../../components';
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { user, creditCards, bankAccounts, vehicles, reviews } = useSelector(userSelector);
   const { Colors, Common, Layout, Gutters } = useTheme();
-  const [isLoading, setIsLoading] = useState();
-
-  const _loadUserMeta = () => {
-    setIsLoading(true);
-    dispatch(getFullProfileAction()).then(() => setIsLoading(false));
-  };
 
   useFocusEffect(
     React.useCallback(() => {
-      _loadUserMeta();
+      dispatch(getFullProfileAction());
     }, []),
   );
 
-  return !isLoading ? (
+  return (
     <ParallaxView user={user} editable={true}>
       <View style={[Common.bottomDrawer]}>
         <View style={[Layout.rowCenterSpaceBetween]}>
@@ -75,8 +69,6 @@ const ProfileScreen = () => {
         </SafeAreaView>
       </View>
     </ParallaxView>
-  ) : (
-    <LoadingComponent />
   );
 };
 

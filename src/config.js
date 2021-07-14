@@ -11,6 +11,7 @@ const {
   PP_3D_ENTITY_ID,
   PEACH_PAYMENT_URL,
   PEACH_PAYMENT_MODE,
+  TERMS_AND_CONDITIONS_URL,
 } = Config;
 
 export default {
@@ -21,6 +22,7 @@ export default {
   clientId: CLIENT_ID,
   clientSecret: CLIENT_SECRET,
   environment: ENVIRONMENT,
+  termsAndConditionsUrl: TERMS_AND_CONDITIONS_URL || 'https://kunnekp2p.com/terms-and-conditions',
 
   googleMaps: {
     apiKey: GOOGLE_MAPS_API_KEY,

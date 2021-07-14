@@ -18,7 +18,8 @@ const SendParcelDeliverAndReceiverDetailsForm = ({ submitForm, onSuccess, initia
     dropOffAddress: Yup.string().required('Drop off address is required'),
     latestDeliveryDateTime: Yup.string()
       .test('past-date', 'date cannot be in the past', (dateTime) => {
-        return dayjs(dateTime).isAfter(dayjs());
+        if (dateTime) return dayjs(dateTime).isAfter(dayjs());
+        return false;
       })
       .required('Latest delivery date is required'),
     receiverFirstName: Yup.string().required("The receiver's first name is required"),
@@ -85,14 +86,14 @@ const SendParcelDeliverAndReceiverDetailsForm = ({ submitForm, onSuccess, initia
             />
 
             <DateTimeInput
-              value={values.latestDeliveryDateTime || dayjs().format('YYYY-MM-DD:HH:mm')}
+              value={values.latestDeliveryDateTime}
               onChange={handleChange('latestDeliveryDateTime')}
               onBlur={handleBlur('latestDeliveryDateTime')}
               placeholder="Latest Date of Delivery"
               errorMessage={error('latestDeliveryDateTime')}
               label="Latest Date of Delivery"
               mode="datetime"
-              format="YYYY-MM-DD:HH:mm"
+              format="YYYY-MM-DD HH:mm"
             />
 
             <Input

@@ -21,7 +21,7 @@ import {
 } from '../../../reducers/parcel-request-reducer/parcel-request.reducer';
 import { View } from 'react-native';
 
-const ViewParcelsScreen = ({ route }) => {
+const ViewParcelScreen = ({ route }) => {
   const navigation = useNavigation();
   const { Layout, Images } = useTheme();
   const { parcelRequest } = route.params;
@@ -38,7 +38,7 @@ const ViewParcelsScreen = ({ route }) => {
 
   const _canCancel = () => {
     if (_isSender()) {
-      if (parcelStatus[thisParcelStatus] <= parcelStatus['pending_acceptance_from_sender'])
+      if (parcelStatus[thisParcelStatus] < parcelStatus['pending_acceptance_from_sender'])
         return true;
     }
     return false;
@@ -58,7 +58,7 @@ const ViewParcelsScreen = ({ route }) => {
 
   const _cancel = () => {
     _.remove(userParcelRequests, (request) => {
-      return request === parcelRequest;
+      return request.id === parcelRequest.id;
     });
     dispatch(removeParcelRequest(_.get(parcelRequest, 'id')))
       .then(navigation.navigate('ParcelRequests'))
@@ -119,11 +119,11 @@ const ViewParcelsScreen = ({ route }) => {
   );
 };
 
-ViewParcelsScreen.propTypes = {
+ViewParcelScreen.propTypes = {
   route: PropTypes.object,
 };
 
-export default ViewParcelsScreen;
+export default ViewParcelScreen;
 
 const styles = StyleSheet.create({
   fillScreen: {
