@@ -16,21 +16,21 @@ const MapViewComponent = ({ parcelRequests, onPointPress }) => {
   const { Layout } = useTheme();
   const dispatch = useDispatch();
   const { currentLocation } = useSelector((state) => state.mapsReducer);
-  const [map, setMap] = useState(undefined);
-  const regionPoints = [currentLocation];
+  const [mapRegion, setMapRegion] = useState({
+    latitude: 0,
+    latitudeDelta: 1,
+    longitude: 0,
+    longitudeDelta: 1,
+  });
   const coordinateTypes = ['collect', 'deliver'];
 
   useEffect(() => {
-    dispatch(getCurrentLocation());
+    dispatch(getCurrentLocation()).then((locationStart) => {
+      const regionPoints = [locationStart];
+      const region = mapService.getRegionForCoordinates(regionPoints, 0.15);
+      setMapRegion(region);
+    });
   }, []);
-
-  useEffect(() => {
-    const regionPoints = [currentLocation];
-    const region = mapService.getRegionForCoordinates(regionPoints);
-    if (map) {
-      map.animateToRegion(region);
-    }
-  }, [currentLocation]);
 
   const _renderParcelRequestCoordinates = () => {
     const markers = [];
@@ -92,18 +92,13 @@ const MapViewComponent = ({ parcelRequests, onPointPress }) => {
     }
   };
 
-  const _assignMap = (ref) => {
-    setMap(ref);
-  };
-
   return (
     <View style={[styles.container, Layout.fill, Layout.alignItemsCenter]}>
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.map}
-        initalRegion={mapService.getRegionForCoordinates(regionPoints)}
         loadingEnabled
-        mapRef={_assignMap}
+        region={mapRegion}
         {...config.googleMaps}
       >
         <Marker

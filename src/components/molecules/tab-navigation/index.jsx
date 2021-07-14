@@ -4,7 +4,7 @@ import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text } from 'react-native-elements';
 import { useTheme } from '../../../theme';
 
-const { Colors, Layout, Images } = useTheme();
+const { Colors, Layout, Images, Gutters } = useTheme();
 
 const BottomNavigationBar = () => {
   const navigation = useNavigation();
@@ -24,7 +24,7 @@ const BottomNavigationBar = () => {
           onPress={() => navigation.navigate('Home')}
         >
           <Image source={Images.deliverParcelIcon} style={styles.icon} />
-          <Text style={styles.title}>Deliver</Text>
+          <Text style={[styles.title, styles.higlightButton, Gutters.tinyBPadding]}>Deliver</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[Layout.fill, Layout.colCenter]}
@@ -58,6 +58,10 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   title: { color: Colors.white, fontSize: 12, textAlign: 'center' },
+  higlightButton: {
+    borderBottomColor: Colors.white,
+    borderBottomWidth: 2,
+  },
 });
 
 export default BottomNavigationBar;

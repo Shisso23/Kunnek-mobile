@@ -128,6 +128,7 @@ const CreditCardForm = ({ submitForm, onSuccess, initialValues, submitText }) =>
               source={require('../../../assets/images/powered-by-peach-payments.png')}
               containerStyle={styles.peachPaymentsImage}
             />
+            <View style={Layout.fill} />
 
             <SafeAreaView>
               <Button

@@ -4,18 +4,15 @@ import { SafeAreaView, ViewPropTypes, StyleSheet, TouchableOpacity } from 'react
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import moment from 'moment';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Button, Input, Text } from 'react-native-elements';
-import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
 import { useTheme } from '../../../theme';
-import { Colors, FontSize } from '../../../theme/Variables';
+import { Colors } from '../../../theme/Variables';
 import AddressInput from '../../molecules/address-input';
 import theme from '../../../theme/react-native-elements-theme';
-import InputWrapper from '../../molecules/input-wrapper';
+import DateTimeInput from '../../molecules/date-time-input';
 
 const FilterParcels = ({ submitForm, onSuccess, initialValues, clearInitialFormValues }) => {
   const validationSchema = Yup.object().shape({
@@ -25,8 +22,7 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues, clearInitialFormV
     lastDeliveryDate: Yup.string(),
   });
 
-  const { Custom, Common, Layout, Gutters } = useTheme();
-  const [showDatePicker, setShowDatePicker] = useState(false);
+  const { Custom, Common, Gutters } = useTheme();
   const [formReseted, setFormReseted] = useState(false);
 
   const resetFormData = (resetForm) => {
@@ -66,7 +62,6 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues, clearInitialFormV
         values,
         errors,
         isSubmitting,
-        setFieldValue,
         handleBlur,
         touched,
         status,
@@ -110,57 +105,17 @@ const FilterParcels = ({ submitForm, onSuccess, initialValues, clearInitialFormV
               keyboardType="number-pad"
               labelStyle={Gutters.regularBPadding}
             />
-            <InputWrapper
-              label="Latest Delivery Date"
+            <DateTimeInput
+              value={values.lastDeliveryDate}
+              onChange={handleChange('lastDeliveryDate')}
+              onBlur={handleBlur('lastDeliveryDate')}
+              placeholder="Latest Date of Collection"
               errorMessage={error('lastDeliveryDate')}
+              label="Latest Delivery Date"
+              mode="datetime"
+              format="YYYY-MM-DD HH:mm"
               containerStyle={[theme.Input.containerStyle, styles.containerStyle]}
-            >
-              <Button
-                onPress={() => setShowDatePicker(true)}
-                title={`${values.lastDeliveryDate}`}
-                buttonStyle={[
-                  theme.Input.inputStyle,
-                  Gutters.smallLPadding,
-                  Gutters.regularTPadding,
-                  Layout.alignItemsStart,
-                  Gutters.smallVPadding,
-                  Layout.fullWidth,
-                  Layout.alignSelfStart,
-                ]}
-                icon={
-                  <Icon
-                    name="calendar-alt"
-                    size={25}
-                    color={Colors.primary}
-                    style={[styles.calendarIcon, Layout.alignSelfCenter]}
-                  />
-                }
-                iconRight
-                containerStyle={[theme.Input.inputContainerStyle]}
-                titleStyle={[Custom.buttonTextInput, styles.texts]}
-              />
-            </InputWrapper>
-
-            {showDatePicker && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={
-                  values.lastDeliveryDate.length === 0
-                    ? new Date(`${moment(new Date()).format('D MMMM YYYY, h:mm')}`)
-                    : new Date(values.lastDeliveryDate)
-                }
-                is24Hour={true}
-                mode="datetime"
-                display="default"
-                onChange={(event, date) => {
-                  setFieldValue('lastDeliveryDate', `${moment(date).format('D MMMM YYYY, h:mm')}`);
-                }}
-                onTouchEnd={() => setShowDatePicker(false)}
-                style={[Gutters.tinyLMargin]}
-                minimumDate={new Date()}
-              />
-            )}
-
+            />
             <SafeAreaView>
               <Button onPress={handleSubmit} loading={isSubmitting} title="Search" />
               <TouchableOpacity
@@ -195,11 +150,9 @@ FilterParcels.defaultProps = {
 export default FilterParcels;
 
 const styles = StyleSheet.create({
-  calendarIcon: { left: 10, position: 'absolute' },
   clearButton: {
     alignSelf: 'center',
   },
   clearText: { color: Colors.primary, fontWeight: 'bold' },
   containerStyle: { backgroundColor: Colors.white, marginTop: -13 },
-  texts: { color: Colors.darkGrey, fontSize: FontSize.regular },
 });

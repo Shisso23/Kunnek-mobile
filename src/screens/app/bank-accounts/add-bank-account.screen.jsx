@@ -37,14 +37,14 @@ const AddBankAccountScreen = () => {
     navigation.goBack();
   };
 
-  const { Gutters } = useTheme();
+  const { Gutters, Layout } = useTheme();
   const { delivererId } = useSelector(userSelector);
 
   return (
     <FormScreenContainer>
       <Index title="Payment Details" />
       <Divider />
-      <View style={Gutters.smallHMargin}>
+      <View style={[Gutters.smallHMargin, Layout.fill]}>
         <BankAccountForm
           submitForm={_handleSubmit}
           onSuccess={_formSuccess}

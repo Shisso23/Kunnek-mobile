@@ -16,25 +16,28 @@ const TransactionHistoryCard = ({ items }) => {
     return null;
   }
 
+  const _renderTransaction = ({ item }) => (
+    <TouchableOpacity
+      key={`transaction-${_.get(item, 'id')}`}
+      style={[Layout.rowCenterSpaceBetween, Gutters.smallVMargin]}
+    >
+      <View style={[Layout.rowCenterSpaceAround]}>
+        <Icon name="user" size={26} color={Colors.primary} />
+        <View style={[Gutters.regularLMargin]}>
+          <Text>R{_.get(item, 'amount', '').toFixed(2)}</Text>
+          <Text>{moment(_.get(item, 'date', '')).format('D MMMM YYYY, h:mm')}</Text>
+        </View>
+      </View>
+      <StatusBox color={Colors.primary} status={_.startCase(_.get(item, 'status', ''))} />
+    </TouchableOpacity>
+  );
+
   return (
     <View style={[Gutters.smallMargin]}>
       <FlatList
         data={items}
-        renderItem={({ item, index }) => (
-          <TouchableOpacity
-            key={index}
-            style={[Layout.rowCenterSpaceBetween, Gutters.smallVMargin]}
-          >
-            <View style={[Layout.rowCenterSpaceAround]}>
-              <Icon name="user" size={26} color={Colors.primary} />
-              <View style={[Gutters.regularLMargin]}>
-                <Text>R{_.get(item, 'amount', '').toFixed(2)}</Text>
-                <Text>{moment(_.get(item, 'date', '')).format('D MMMM YYYY, h:mm')}</Text>
-              </View>
-            </View>
-            <StatusBox color={Colors.primary} status={_.get(item, 'status', '')} />
-          </TouchableOpacity>
-        )}
+        renderItem={_renderTransaction}
+        keyExtractor={(item) => `transaction-${_.get(item, 'id')}`}
       />
     </View>
   );
@@ -42,6 +45,7 @@ const TransactionHistoryCard = ({ items }) => {
 
 TransactionHistoryCard.propTypes = {
   items: PropTypes.array.isRequired,
+  item: PropTypes.object.isRequired,
 };
 
 export default TransactionHistoryCard;

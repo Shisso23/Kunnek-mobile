@@ -171,6 +171,7 @@ const UserInfoForm = ({ edit, submitForm, onSuccess, initialValues, containerSty
                   onPress={() => setFieldValue('termsAndConditions', !values.termsAndConditions)}
                 />
               )}
+              <View style={Layout.fill} />
               <SafeAreaView>
                 <Button
                   onPress={handleSubmit}

@@ -3,17 +3,30 @@ import { ActivityIndicator, StyleSheet } from 'react-native';
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { Colors } from '../../../theme/Variables';
 
 const ParcelPhoto = ({ parcelRequest, style }) => {
-  return (
-    <Image
-      style={[styles.ParcelPhoto, style]}
-      source={{ uri: _.get(parcelRequest, 'photoUri') }}
-      PlaceholderContent={<ActivityIndicator color={Colors.white} />}
-    />
-  );
+  if (_.get(parcelRequest, 'photoUri')) {
+    return (
+      <Image
+        style={[styles.ParcelPhoto, style]}
+        source={{ uri: _.get(parcelRequest, 'photoUri') }}
+        PlaceholderContent={<ActivityIndicator color={Colors.white} />}
+      />
+    );
+  } else {
+    const iconSize = _.get(style, 'height') / 1.44 || 75 / 1.44;
+    return (
+      <Icon
+        name="box-open"
+        color={Colors.primary}
+        size={iconSize}
+        style={[styles.ParcelPhoto, style]}
+      />
+    );
+  }
 };
 
 ParcelPhoto.propTypes = {

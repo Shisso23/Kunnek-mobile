@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Divider, Text } from 'react-native-elements';
 import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
@@ -70,7 +70,7 @@ const SendParcelScreen = () => {
     )
       .then((response) => {
         if (successful(response)) {
-          _openParcelRequestsScreen();
+          return true;
         }
       })
       .catch((error) => {
@@ -116,10 +116,6 @@ const SendParcelScreen = () => {
     });
   };
 
-  const _openParcelRequestsScreen = () => {
-    navigation.navigate('ParcelRequests');
-  };
-
   const _handleSuccess = () => {
     if (hasCreditCards && formIndex >= formData.length - 1) {
       navigation.navigate('ParcelRequests');
@@ -134,7 +130,7 @@ const SendParcelScreen = () => {
     }
   };
 
-  const _renderItem = () => <View>{_.get(_.nth(formData, formIndex), 'content')}</View>;
+  const _renderItem = () => <ScrollView>{_.get(_.nth(formData, formIndex), 'content')}</ScrollView>;
 
   const _goToNext = () => {
     if (formIndex < formData.length - 1) {

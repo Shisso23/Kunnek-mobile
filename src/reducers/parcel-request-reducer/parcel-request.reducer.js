@@ -96,12 +96,7 @@ const initialState = {
   serviceFee: 0,
   pagination: getDefaultPaginationObject(),
   actionId: undefined,
-  parcelFilterFields: {
-    startLocation: '',
-    endLocation: '',
-    maximumDistance: 50,
-    lastDeliveryDate: '',
-  },
+  parcelFilterFields: null,
 };
 
 export default (state = initialState, action) => {
