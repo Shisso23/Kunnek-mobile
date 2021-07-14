@@ -1,50 +1,32 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.kunnek">
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
-    <application
-      android:name=".MainApplication"
-      android:label="@string/app_name"
-      android:icon="@mipmap/ic_launcher"
-      android:roundIcon="@mipmap/ic_launcher_round"
-      android:allowBackup="false"
-      android:theme="@style/AppTheme">
-      <activity
-        android:name=".MainActivity"
-        android:label="@string/app_name"
-        android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
-        android:launchMode="singleTask"
-        android:windowSoftInputMode="adjustResize"
-        android:exported="true">
-        <intent-filter>
-          <action android:name="android.intent.action.MAIN" />
-          <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-        <intent-filter>
-        <data android:scheme="com.kunnek.payments"/>
-          <action android:name="android.intent.action.VIEW"/>
-          <category android:name="android.intent.category.DEFAULT"/>
-          <category android:name="android.intent.category.BROWSABLE"/>
-        </intent-filter>
-      </activity>
-      <activity
-        android:name="com.zoontek.rnbootsplash.RNBootSplashActivity"
-        android:theme="@style/BootTheme"
-        android:launchMode="singleTask">
-        <intent-filter>
-          <action android:name="android.intent.action.MAIN" />
-          <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.kunnek">
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+  <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:theme="@style/AppTheme">
+    <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode" android:launchMode="singleTask" android:windowSoftInputMode="adjustResize" android:exported="true">
+      <intent-filter android:autoVerify="true">
+        <data
+                android:scheme="https"
+                android:host="kunnekp2p.com" />
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+      </intent-filter>
+      <intent-filter>
+        <data android:scheme="kunnekp2p" />
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+      </intent-filter>
     </activity>
-      <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-        <meta-data
-                android:name="com.google.android.geo.API_KEY"
-                android:value="@string/google_maps_api_key"/>
-
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
-    </application>
-
+    <activity android:name="com.zoontek.rnbootsplash.RNBootSplashActivity" android:theme="@style/BootTheme" android:launchMode="singleTask">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+    <activity android:name="com.facebook.react.devsupport.DevSettingsActivity"/>
+    <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/google_maps_api_key"/>
+    <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+  </application>
 </manifest>

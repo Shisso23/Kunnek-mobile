@@ -31,3 +31,33 @@ export const fetchCheckoutId = (id, data) => (dispatch) => {
       dispatch(setPaymentsLoadingAction(false));
     });
 };
+
+export const fetchCheckoutStatus = (id) => {
+  return (dispatch) => {
+    dispatch(setPaymentsLoadingAction(true));
+    return paymentService
+      .fetchCheckoutStatus(id)
+      .then((response) => {
+        return _.get(response, 'data', {});
+      })
+      .catch((error) => flashService.error(error.message))
+      .finally(() => {
+        dispatch(setPaymentsLoadingAction(false));
+      });
+  };
+};
+
+export const completePayment = (paymentId) => {
+  return (dispatch) => {
+    dispatch(setPaymentsLoadingAction(true));
+    return paymentService
+      .completePayment(paymentId)
+      .then((response) => {
+        return _.get(response, 'data', {});
+      })
+      .catch((error) => flashService.error(error.message))
+      .finally(() => {
+        dispatch(setPaymentsLoadingAction(false));
+      });
+  };
+};

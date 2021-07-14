@@ -16,7 +16,6 @@ import ViewVehicleScreen from '../../screens/app/vehicles/view-vehicle.screen';
 import NotificationHistoryScreen from '../../screens/app/notifications/notifications.screen';
 import PaymentScreen from '../../screens/app/payment/payment.screen';
 import ParcelRequestsScreen from '../../screens/app/parcel-requests/parcel-requests.screen';
-import AddCardScreen from '../../screens/app/credit-card/add-card.screen';
 import { Colors } from '../../theme/Variables';
 import ParcelDetailsScreen from '../../screens/app/parcel-details/parcel-details.screen';
 import TransactionDetailScreen from '../../screens/app/transactions/transaction-details.screen';
@@ -32,6 +31,7 @@ import EditBankAccountScreen from '../../screens/app/bank-accounts/edit-bank-acc
 import EditCreditCardScreen from '../../screens/app/credit-cards/edit-credit-card.screen';
 import MyReviewsScreen from '../../screens/app/my-reviews/my-reviews.screen';
 import EditProfileScreen from '../../screens/app/profile/edit-profile.screen';
+import AddCreditCardScreen from '../../screens/app/credit-cards/add-credit-card.screen';
 
 const Drawer = createDrawerNavigator();
 const AppStack = createStackNavigator();
@@ -59,7 +59,7 @@ const AppNavigator = () => {
       <AppStack.Screen name="ViewVehicle" component={ViewVehicleScreen} />
       <AppStack.Screen name="AddBankAccount" component={AddBankAccountScreen} />
       <AppStack.Screen name="EditBankAccount" component={EditBankAccountScreen} />
-      <AppStack.Screen name="AddCreditCard" component={AddCardScreen} />
+      <AppStack.Screen name="AddCreditCard" component={AddCreditCardScreen} />
       <AppStack.Screen name="EditCreditCard" component={EditCreditCardScreen} />
       <AppStack.Screen name="Payment" component={PaymentScreen} />
       <AppStack.Screen name="OTP" component={OTPScreen} />

@@ -35,8 +35,23 @@ const fetchCheckoutId = (id, data) => {
   });
 };
 
+const completePayment = (paymentId) => {
+  return authNetworkService
+    .get(`${paymentUrls.paymentsUrl()}/${paymentId}/complete`)
+    .then((response) => _.get(response, 'data'));
+};
+
+const fetchCheckoutStatus = (paymentId) => {
+  const url = paymentUrls.paymentsUrl();
+  return authNetworkService
+    .get(`${url}/${paymentId}/checkout_status`)
+    .then((response) => _.get(response, 'data'));
+};
+
 export default {
   getTransactions,
   fetchCheckoutId,
   create,
+  completePayment,
+  fetchCheckoutStatus,
 };

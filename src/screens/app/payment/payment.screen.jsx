@@ -14,10 +14,12 @@ import PaymentSummary from '../../../components/molecules/payment-summary';
 import { PAYMENT_TYPES } from '../../../services/sub-services/payment-service/payment.service';
 import { flashService } from '../../../services';
 import {
+  complete,
+  completePayment,
   createPaymentAction,
   fetchCheckoutId,
+  fetchCheckoutStatus,
 } from '../../../reducers/payment-reducer/payment.actions';
-
 import {
   paymentSelector,
   setPaymentsLoadingAction,
@@ -35,7 +37,7 @@ const PaymentScreen = ({ route }) => {
   const navigation = useNavigation();
   const peachMobileRef = useRef(null);
   const { serviceFee } = useSelector((state) => state.parcelRequestReducer);
-  const { paymentsLoading } = useSelector(paymentSelector);
+  const { paymentsLoading, payment } = useSelector(paymentSelector);
 
   useEffect(() => {
     if (parcelRequest) dispatch(getServiceFee(_.get(parcelRequest, 'id')));
@@ -45,7 +47,7 @@ const PaymentScreen = ({ route }) => {
     return (
       <PeachMobile
         mode={config.peachPayments.peachPaymentMode}
-        urlScheme="com.kunnek.payments"
+        urlScheme="kunnekp2p"
         ref={peachMobileRef}
       />
     );
@@ -93,13 +95,9 @@ const PaymentScreen = ({ route }) => {
           .then((transaction) => {
             peachMobileRef.current
               .submitTransaction(transaction)
-              .then(async (response) => {
-                if (response) {
-                  flashService.success('Payment Processing...');
-                  navigation.navigate('Home');
-                } else {
-                  flashService.error('Sorry, something went wrong with payment. Please try again.');
-                }
+              .then(finaliseTransaction)
+              .then(() => {
+                flashService.success('Payment completed successfully.');
               })
               .catch((error) => {
                 flashService.error(error.message);
@@ -113,6 +111,16 @@ const PaymentScreen = ({ route }) => {
             setIsLoading(false);
           });
       }
+    }
+  };
+
+  const finaliseTransaction = (response) => {
+    if (response) {
+      return dispatch(completePayment(_.get(payment, 'id'))).then((paymentResponse) => {
+        console.log(paymentResponse);
+      });
+    } else {
+      throw new Error('Sorry, something went wrong with payment. Please try again.');
     }
   };
 
