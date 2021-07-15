@@ -45,7 +45,7 @@ const TransactionHistoryCard = ({ items }) => {
 
 TransactionHistoryCard.propTypes = {
   items: PropTypes.array.isRequired,
-  item: PropTypes.object.isRequired,
+  item: PropTypes.object,
 };
 
 export default TransactionHistoryCard;

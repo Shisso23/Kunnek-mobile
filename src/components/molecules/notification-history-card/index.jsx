@@ -4,38 +4,19 @@ import _ from 'lodash';
 import { Text } from 'react-native-elements';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import useTheme from '../../../theme/hooks/useTheme';
 
 const NotificationHistoryCard = ({ items }) => {
-  const { Gutters, Common, Layout, Colors } = useTheme();
+  const { Gutters, Common, Layout } = useTheme();
 
   if (_.isEmpty(items)) {
     return null;
   }
 
-  const _getIconForNotificationType = (type) => {
-    switch (type) {
-      case 'push':
-        return 'bell';
-      case 'email':
-        return 'at';
-      case 'sms':
-        return 'comment';
-      default:
-        return 'envelope';
-    }
-  };
-
   const _renderNotification = ({ item }) => (
     <TouchableOpacity key={`notification-${_.get(item, 'id')}`} style={[styles.cardContainer]}>
       <View style={[Gutters.smallHMargin, Common.viewCard, Layout.row]}>
-        <Icon
-          name={_getIconForNotificationType(_.get(item, 'notificationType'))}
-          color={Colors.secondary}
-          size={35}
-        />
         <View style={[Layout.fill, Gutters.smallLMargin]}>
           <Text numberOfLines={2} style={[Common.smallText]}>
             {_.get(item, 'message', '')}
@@ -61,7 +42,7 @@ const NotificationHistoryCard = ({ items }) => {
 
 NotificationHistoryCard.propTypes = {
   items: PropTypes.array.isRequired,
-  item: PropTypes.object.isRequired,
+  item: PropTypes.object,
 };
 
 const styles = StyleSheet.create({
