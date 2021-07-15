@@ -23,8 +23,10 @@ const BottomNavigationBar = () => {
           style={[Layout.fill, Layout.colCenter]}
           onPress={() => navigation.navigate('Home')}
         >
-          <Image source={Images.deliverParcelIcon} style={styles.icon} />
-          <Text style={[styles.title, styles.higlightButton, Gutters.tinyBPadding]}>Deliver</Text>
+          <View style={styles.higlightButton}>
+            <Image source={Images.deliverParcelIcon} style={styles.icon} />
+            <Text style={[styles.title, Gutters.tinyBPadding]}>Deliver</Text>
+          </View>
         </TouchableOpacity>
         <TouchableOpacity
           style={[Layout.fill, Layout.colCenter]}
