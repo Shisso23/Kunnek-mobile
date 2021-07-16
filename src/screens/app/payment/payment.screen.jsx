@@ -14,11 +14,9 @@ import PaymentSummary from '../../../components/molecules/payment-summary';
 import { PAYMENT_TYPES } from '../../../services/sub-services/payment-service/payment.service';
 import { flashService } from '../../../services';
 import {
-  complete,
   completePayment,
   createPaymentAction,
   fetchCheckoutId,
-  fetchCheckoutStatus,
 } from '../../../reducers/payment-reducer/payment.actions';
 import {
   paymentSelector,
@@ -28,6 +26,7 @@ import { getServiceFee } from '../../../reducers/parcel-request-reducer/parcel-r
 import { ScreenContainer } from '../../../components';
 import { useTheme } from '../../../theme';
 import Index from '../../../components/atoms/title';
+import { getUserTransaction } from '../../../reducers/user-reducer/user-payments.actions';
 
 const PaymentScreen = ({ route }) => {
   const { Fonts, Gutters, Layout } = useTheme();
@@ -47,7 +46,7 @@ const PaymentScreen = ({ route }) => {
     return (
       <PeachMobile
         mode={config.peachPayments.peachPaymentMode}
-        urlScheme="kunnekp2p"
+        urlScheme="com.kunnek.payments"
         ref={peachMobileRef}
       />
     );
@@ -96,9 +95,6 @@ const PaymentScreen = ({ route }) => {
             peachMobileRef.current
               .submitTransaction(transaction)
               .then(finaliseTransaction)
-              .then(() => {
-                flashService.success('Payment completed successfully.');
-              })
               .catch((error) => {
                 flashService.error(error.message);
               })
@@ -116,8 +112,23 @@ const PaymentScreen = ({ route }) => {
 
   const finaliseTransaction = (response) => {
     if (response) {
-      return dispatch(completePayment(_.get(payment, 'id'))).then((paymentResponse) => {
-        console.log(paymentResponse);
+      const paymentId = _.get(payment, 'id');
+      return dispatch(completePayment(paymentId)).then((paymentResponse) => {
+        return dispatch(getUserTransaction(paymentId)).then((transaction) => {
+          const status = _.get(paymentResponse, 'success', false);
+          if (status) {
+            flashService.success('Payment completed successfully');
+            navigation.navigate('TransactionDetails', { payment: transaction });
+          } else {
+            flashService.error(
+              `Payment was not successful. Please try again. Reason: ${_.get(
+                paymentResponse,
+                'reason',
+                '',
+              )}`,
+            );
+          }
+        });
       });
     } else {
       throw new Error('Sorry, something went wrong with payment. Please try again.');

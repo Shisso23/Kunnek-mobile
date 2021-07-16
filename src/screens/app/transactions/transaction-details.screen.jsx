@@ -81,13 +81,12 @@ const TransactionDetailScreen = ({ route }) => {
           </View>
         </ViewCard>
       )}
-      <ViewCard>
+      <ViewCard style={[Layout.column, Layout.justifyContentBetween]}>
         <View>
           <Text>Payment</Text>
-          <Text style={[Gutters.smallVMargin]}>
+          <Text style={Gutters.smallVMargin}>
             {paymentStatus === 'failed'
-              ? `Reason for failure \n
-             ${_.get(payment, 'reasonForFailure', '')}`
+              ? `Reason for failure: ${_.get(payment, 'reasonForFailure', '')}`
               : ''}
           </Text>
         </View>
