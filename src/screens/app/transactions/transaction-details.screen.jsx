@@ -19,6 +19,9 @@ const TransactionDetailScreen = ({ route }) => {
   const { user } = useSelector(userSelector);
   const paymentStatus = _.get(payment, 'status', '');
 
+  const amount = _.get(payment, 'amount', 0);
+  const displayAmount = parseInt(amount).toFixed(2);
+
   return (
     <View style={[Gutters.smallHMargin, styles.container]}>
       <Text style={[Custom.headerTitle]}>Transaction Details</Text>
@@ -29,7 +32,7 @@ const TransactionDetailScreen = ({ route }) => {
         </Text>
         <Text style={styles.amount}>
           <Text>{getCurrency()}</Text>
-          {_.get(payment, 'amount', '0').toFixed(2)}
+          {displayAmount}
         </Text>
       </View>
       <ViewCard style={[Gutters.largeTMargin]}>
@@ -52,13 +55,13 @@ const TransactionDetailScreen = ({ route }) => {
             <View>
               <Text>Items</Text>
               <Text style={[Gutters.smallVMargin, Common.smallGreyText]}>
-                {_.get(payment.job, 'description', '')}
+                {_.get(payment, 'job.description', '')}
               </Text>
             </View>
             <View>
               <Text>Sender</Text>
               <Text style={[Gutters.smallVMargin, Common.smallGreyText]}>
-                {_.get(payment.sender, 'firstName', '')}
+                {_.get(payment, 'sender.firstName', '')}
               </Text>
             </View>
           </View>
@@ -68,7 +71,7 @@ const TransactionDetailScreen = ({ route }) => {
               <Text>Amount</Text>
               <Text style={[Gutters.smallVMargin, Common.rightAlignText, Common.smallGreyText]}>
                 {getCurrency()}
-                {_.get(payment, 'amount', '0').toFixed(2)}
+                {displayAmount}
               </Text>
             </View>
 
@@ -81,13 +84,12 @@ const TransactionDetailScreen = ({ route }) => {
           </View>
         </ViewCard>
       )}
-      <ViewCard>
+      <ViewCard style={[Layout.column, Layout.justifyContentBetween]}>
         <View>
           <Text>Payment</Text>
-          <Text style={[Gutters.smallVMargin]}>
+          <Text style={Gutters.smallVMargin}>
             {paymentStatus === 'failed'
-              ? `Reason for failure \n
-             ${_.get(payment, 'reasonForFailure', '')}`
+              ? `Reason for failure: ${_.get(payment, 'reasonForFailure', '')}`
               : ''}
           </Text>
         </View>

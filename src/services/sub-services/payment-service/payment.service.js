@@ -1,9 +1,13 @@
 import _ from 'lodash';
 
-import { constructUserTransactionModels } from '../../../models/app/user/user-transaction-history.model';
+import {
+  apiUserTransactionModel,
+  constructUserTransactionModels, userTransactionModel
+} from '../../../models/app/user/user-transaction-history.model';
 import authNetworkService from '../auth-network-service/auth-network.service';
 import paymentUrls from './payment.urls';
 import { apiPaymentModel, paymentModel } from '../../../models/app/user/payment.model';
+import { parcelRequestModel } from '../../../models/app/parcel-request/parcel-request.model';
 
 export const PAYMENT_TYPES = {
   verification: 'verification',
@@ -15,6 +19,12 @@ const getTransactions = async () => {
   const url = paymentUrls.paymentUrl();
   const apiResponse = await authNetworkService.get(url);
   return constructUserTransactionModels(apiResponse.data);
+};
+
+const getTransaction = (paymentId) => {
+  const url = paymentUrls.paymentUrl();
+  const _createAndReturnModel = (apiResponse) => userTransactionModel(apiResponse.data);
+  return authNetworkService.get(`${url}/${paymentId}`).then(_createAndReturnModel);
 };
 
 const create = (data = {}) => {
@@ -37,12 +47,12 @@ const fetchCheckoutId = (id, data) => {
 
 const completePayment = (paymentId) => {
   return authNetworkService
-    .get(`${paymentUrls.paymentsUrl()}/${paymentId}/complete`)
+    .post(`${paymentUrls.paymentUrl()}/${paymentId}/complete`)
     .then((response) => _.get(response, 'data'));
 };
 
 const fetchCheckoutStatus = (paymentId) => {
-  const url = paymentUrls.paymentsUrl();
+  const url = paymentUrls.paymentUrl();
   return authNetworkService
     .get(`${url}/${paymentId}/checkout_status`)
     .then((response) => _.get(response, 'data'));
@@ -50,6 +60,7 @@ const fetchCheckoutStatus = (paymentId) => {
 
 export default {
   getTransactions,
+  getTransaction,
   fetchCheckoutId,
   create,
   completePayment,

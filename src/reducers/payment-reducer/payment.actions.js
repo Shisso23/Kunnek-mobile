@@ -52,10 +52,9 @@ export const completePayment = (paymentId) => {
     dispatch(setPaymentsLoadingAction(true));
     return paymentService
       .completePayment(paymentId)
-      .then((response) => {
-        return _.get(response, 'data', {});
+      .catch((error) => {
+        flashService.error(error.message);
       })
-      .catch((error) => flashService.error(error.message))
       .finally(() => {
         dispatch(setPaymentsLoadingAction(false));
       });

@@ -5859,6 +5859,11 @@ loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.4.0:
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
+lottie-ios@3.1.8:
+  version "3.1.8"
+  resolved "https://registry.yarnpkg.com/lottie-ios/-/lottie-ios-3.1.8.tgz#2e9b1f4eae0dfc10bf4c0b3ab6b402c1d590d0fa"
+  integrity sha512-9bgiVn1n+zqWjDPTk4MVWXA+DgVa91payxV2jz8B2dsDFqWtjEqTZaaVo5IqNUExsaC5XkRbziExtTOtzd39tQ==
+
 lottie-react-native@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/lottie-react-native/-/lottie-react-native-4.0.2.tgz#d0b7a479995b4bfdf5402671e096f15b7ef2a7d8"
@@ -7409,10 +7414,10 @@ react-native-parallax-scroll-view@^0.21.3:
   dependencies:
     prop-types "^15.6.0"
 
-react-native-peach-mobile@^1.1.9:
-  version "1.1.9"
-  resolved "https://registry.yarnpkg.com/react-native-peach-mobile/-/react-native-peach-mobile-1.1.9.tgz#ee786874f3b4cc97e662d9ec84651b50efd3cee7"
-  integrity sha512-oB1zV+lL8p9VQW4z1JYmM+eixIlbCQBM0abzPxRL4xbAC9Xb4fYl0CXcnaA01RsnEtgW3FoOnbKPzkYpJwf4Og==
+react-native-peach-mobile@^1.1.10:
+  version "1.1.10"
+  resolved "https://registry.yarnpkg.com/react-native-peach-mobile/-/react-native-peach-mobile-1.1.10.tgz#c9033afbcd24e614ecb6e6311d45ba50de690066"
+  integrity sha512-2sDKfPGeD1eG9xacQeT0JCJ/JEZwx5b9ZdiXLllyeKrCdsH2+iip/NQKT5ulSKSQ2TIAJ3LTg+xKkEI+swuTaA==
   dependencies:
     axios "0.21.1"
     lodash "4.17.21"

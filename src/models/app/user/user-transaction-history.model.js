@@ -33,5 +33,5 @@ export const apiUserTransactionModel = (_appPaymentModel = {}) => ({
   },
 });
 
-export const constructUserTransactionModels = (apiTransactionModel) =>
-  apiTransactionModel.map((transaction) => userTransactionModel(transaction));
+export const constructUserTransactionModels = (apiTransactionModels) =>
+  apiTransactionModels.map((transaction) => userTransactionModel(transaction));
