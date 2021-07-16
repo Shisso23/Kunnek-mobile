@@ -54,7 +54,7 @@ const PaymentScreen = ({ route }) => {
     return (
       <PeachMobile
         mode={config.peachPayments.peachPaymentMode}
-        urlScheme="com.kunnek.payments"
+        urlScheme={config.peachPayments.urlScheme}
         ref={peachMobileRef}
       />
     );

@@ -36,5 +36,6 @@ export default {
     pp3dEntityId: PP_3D_ENTITY_ID,
     peachPaymentMode: PEACH_PAYMENT_MODE,
     peachPaymentUrl: PEACH_PAYMENT_URL,
+    urlScheme: 'com.kunnek.payments',
   },
 };
