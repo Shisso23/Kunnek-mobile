@@ -1,9 +1,13 @@
 import _ from 'lodash';
 
-import { constructUserTransactionModels } from '../../../models/app/user/user-transaction-history.model';
+import {
+  apiUserTransactionModel,
+  constructUserTransactionModels, userTransactionModel
+} from '../../../models/app/user/user-transaction-history.model';
 import authNetworkService from '../auth-network-service/auth-network.service';
 import paymentUrls from './payment.urls';
 import { apiPaymentModel, paymentModel } from '../../../models/app/user/payment.model';
+import { parcelRequestModel } from '../../../models/app/parcel-request/parcel-request.model';
 
 export const PAYMENT_TYPES = {
   verification: 'verification',
@@ -17,10 +21,10 @@ const getTransactions = async () => {
   return constructUserTransactionModels(apiResponse.data);
 };
 
-const getTransaction = async (paymentId) => {
+const getTransaction = (paymentId) => {
   const url = paymentUrls.paymentUrl();
-  const apiResponse = await authNetworkService.get(`${url}/${paymentId}`);
-  return constructUserTransactionModels(apiResponse.data);
+  const _createAndReturnModel = (apiResponse) => userTransactionModel(apiResponse.data);
+  return authNetworkService.get(`${url}/${paymentId}`).then(_createAndReturnModel);
 };
 
 const create = (data = {}) => {

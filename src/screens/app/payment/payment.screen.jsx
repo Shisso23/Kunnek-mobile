@@ -4,7 +4,7 @@ import PeachMobile from 'react-native-peach-mobile';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Button, Input } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, StackActions } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Colors } from '../../../theme/Variables';
@@ -30,7 +30,15 @@ import { getUserTransaction } from '../../../reducers/user-reducer/user-payments
 
 const PaymentScreen = ({ route }) => {
   const { Fonts, Gutters, Layout } = useTheme();
-  const { message, parcelRequest, totalAmount, paymentType, card, retry = false } = route.params;
+  const {
+    message,
+    parcelRequest,
+    totalAmount,
+    paymentType,
+    card,
+    sceneToNavigateTo = 'TransactionDetails',
+    retry = false,
+  } = route.params;
   const dispatch = useDispatch();
   const [cvvNumber, setCvvNumber] = useState('');
   const navigation = useNavigation();
@@ -42,7 +50,7 @@ const PaymentScreen = ({ route }) => {
     if (parcelRequest) dispatch(getServiceFee(_.get(parcelRequest, 'id')));
   }, []);
 
-  const renderPeachPayment = () => {
+  const _renderPeachPayment = () => {
     return (
       <PeachMobile
         mode={config.peachPayments.peachPaymentMode}
@@ -52,7 +60,7 @@ const PaymentScreen = ({ route }) => {
     );
   };
 
-  const onPay = async () => {
+  const _onPay = async () => {
     const finalPayment = await dispatch(
       createPaymentAction({
         amount: _.get(parcelRequest, 'amount', totalAmount),
@@ -74,16 +82,16 @@ const PaymentScreen = ({ route }) => {
         }),
       ).then((checkoutId) => {
         if (checkoutId) {
-          createTransaction(checkoutId);
+          _createTransaction(checkoutId);
         }
       });
     }
   };
 
-  const createTransaction = async (checkoutId) => {
+  const _createTransaction = async (checkoutId) => {
     const cardType = _.get(card, 'cardType');
     if (!_.isNil(card)) {
-      setIsLoading(true);
+      _setIsLoading(true);
       if (peachMobileRef) {
         PeachMobile.createTransactionWithToken(
           checkoutId,
@@ -94,23 +102,23 @@ const PaymentScreen = ({ route }) => {
           .then((transaction) => {
             peachMobileRef.current
               .submitTransaction(transaction)
-              .then(finaliseTransaction)
+              .then(_finaliseTransaction)
               .catch((error) => {
                 flashService.error(error.message);
               })
               .finally(() => {
-                setIsLoading(false);
+                _setIsLoading(false);
               });
           })
           .catch((error) => {
             flashService.error(error.message);
-            setIsLoading(false);
+            _setIsLoading(false);
           });
       }
     }
   };
 
-  const finaliseTransaction = (response) => {
+  const _finaliseTransaction = (response) => {
     if (response) {
       const paymentId = _.get(payment, 'id');
       return dispatch(completePayment(paymentId)).then((paymentResponse) => {
@@ -118,7 +126,8 @@ const PaymentScreen = ({ route }) => {
           const status = _.get(paymentResponse, 'success', false);
           if (status) {
             flashService.success('Payment completed successfully');
-            navigation.navigate('TransactionDetails', { payment: transaction });
+            navigation.dispatch(StackActions.popToTop());
+            navigation.navigate(sceneToNavigateTo, { payment: transaction });
           } else {
             flashService.error(
               `Payment was not successful. Please try again. Reason: ${_.get(
@@ -135,7 +144,7 @@ const PaymentScreen = ({ route }) => {
     }
   };
 
-  const setIsLoading = (loading) => {
+  const _setIsLoading = (loading) => {
     dispatch(setPaymentsLoadingAction(loading));
   };
 
@@ -163,11 +172,11 @@ const PaymentScreen = ({ route }) => {
         <View style={Layout.alignItemsCenter}>
           <View>
             <Text style={styles.headingText}>Payment about to be made</Text>
-            <Button title="Pay" onPress={onPay} loading={paymentsLoading} />
+            <Button title="Pay" onPress={_onPay} loading={paymentsLoading} />
           </View>
         </View>
       </View>
-      {renderPeachPayment()}
+      {_renderPeachPayment()}
     </ScreenContainer>
   );
 };
