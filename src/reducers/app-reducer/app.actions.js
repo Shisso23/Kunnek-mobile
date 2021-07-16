@@ -1,4 +1,5 @@
 import RNBootSplash from 'react-native-bootsplash';
+import _ from 'lodash';
 import {
   setDoneLoadingAppDataAction,
   userAuthSelector,
@@ -9,9 +10,12 @@ import {
   getUserAction,
   getUserDelivererIdAction,
   getUserSenderIdAction,
+  updateDeviceTokenAction,
 } from '../user-reducer/user.actions';
-import { bankAccountService } from '../../services';
+import { bankAccountService, firebaseService } from '../../services';
 import { setBanksAction } from './app.reducer';
+import { Alert } from 'react-native';
+import messaging from '@react-native-firebase/messaging';
 
 export const initAppAction = () => async (dispatch, getState) => {
   const { AUTHENTICATED } = AuthStates;
@@ -20,7 +24,6 @@ export const initAppAction = () => async (dispatch, getState) => {
   try {
     if (authState === AUTHENTICATED) {
       await dispatch(isAuthenticatedFlowAction());
-      dispatch(setDoneLoadingAppDataAction(true));
     }
   } finally {
     setTimeout(() => {
@@ -30,8 +33,22 @@ export const initAppAction = () => async (dispatch, getState) => {
   }
 };
 
-export const isAuthenticatedFlowAction = () => (dispatch) =>
+export const isAuthenticatedFlowAction = () => (dispatch) => {
   dispatch(loadAppDataForSignedInUserAction());
+
+  dispatch(setDoneLoadingAppDataAction(true));
+
+  firebaseService.requestUserPermission().then((token) => {
+    const deviceRegistrationToken = _.get(token, 'updateToken');
+    if (deviceRegistrationToken) {
+      dispatch(updateDeviceTokenAction({ deviceRegistrationToken }));
+    }
+  });
+  const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+    Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+  });
+  return unsubscribe;
+};
 
 export const loadAppDataAction = () => (dispatch) => Promise.all([dispatch(loadAuthStateAction())]);
 
