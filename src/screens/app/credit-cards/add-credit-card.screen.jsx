@@ -1,84 +1,144 @@
-import { useNavigation } from '@react-navigation/native';
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native';
-import { View } from 'react-native';
-import { Button, Divider } from 'react-native-elements';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FormScreenContainer } from '../../../components';
-import Index from '../../../components/atoms/title';
-import CreditCardForm from '../../../components/forms/credit-card/credit-card.form';
+import { useNavigation } from '@react-navigation/native';
+import { Divider } from 'react-native-elements';
+import _ from 'lodash';
+import PeachMobile from 'react-native-peach-mobile';
+
+import {
+  createUserCreditCardAction,
+  getCardRegistrationStatusAction,
+} from '../../../reducers/user-reducer/user-cards.actions';
+import { tokenizeCardModel } from '../../../models/app/credit-card/tokenize-card.model';
 import { successful } from '../../../helpers/errors.helper';
+import { createCheckoutIdAction } from '../../../reducers/user-reducer/user-cards.actions';
+import Index from '../../../components/atoms/title';
+import { FormScreenContainer } from '../../../components';
+import CreditCardForm from '../../../components/forms/credit-card/credit-card.form';
 import { userCreditCardModel } from '../../../models/app/user/user-credit-card.model';
-import { createUserCreditCardAction } from '../../../reducers/user-reducer/user-cards.actions';
-import { userSelector } from '../../../reducers/user-reducer/user.reducer';
-import { useTheme } from '../../../theme';
-import { Colors } from '../../../theme/Variables';
+import config from '../../../config';
+import { StyleSheet } from 'react-native';
+import { PAYMENT_TYPES } from '../../../services/sub-services/payment-service/payment.service';
+import { getCurrency } from '../../../helpers/payment.helper';
+import { flashService } from '../../../services';
 
 const AddCreditCardScreen = () => {
-  const navigation = useNavigation();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const senderId = useSelector((state) => state.userReducer.senderId);
+  const [checkoutID, setCheckoutID] = useState('');
+  const peachMobileRef = useRef(null);
 
-  const _handleSubmit = (currentForm) => {
-    return dispatch(createUserCreditCardAction(currentForm))
-      .then((cardResponse) => {
-        if (successful(cardResponse)) {
-          return true;
+  useEffect(() => {
+    dispatch(createCheckoutIdAction()).then((id) => {
+      setCheckoutID(id);
+    });
+  }, []);
+
+  const _openVerificationPaymentScreen = (card) => {
+    navigation.navigate('Payment', {
+      message: `We will make a charge of ${getCurrency()}1.00 on your credit card to verify that your card number and details are correct. This charge will be reversed once successful.`,
+      totalAmount: 1,
+      paymentType: PAYMENT_TYPES.verification,
+      card,
+    });
+  };
+
+  const createTransaction = async (cardModel) => {
+    return PeachMobile.createTransaction(
+      checkoutID,
+      '',
+      _.get(cardModel, 'cardHolder'),
+      _.get(cardModel, 'cardNumber'),
+      _.get(cardModel, 'expiryMonth'),
+      _.get(cardModel, 'expiryYear', ''),
+      _.get(cardModel, 'cvv'),
+    );
+  };
+  const submitRegistration = (cardModel, transaction) => {
+    return PeachMobile.submitRegistration(transaction, `${config.peachPayments.peachPaymentMode}`)
+      .then(() => {
+        getCardRegistrationStatus(cardModel);
+      })
+      .catch((error) => console.warn('peach submit registration error', error.message));
+  };
+
+  const createUserCreditCard = (cardModel, tokenizedCard) => {
+    const finalData = {
+      cardNumber: _.get(cardModel, 'obfuscatedCardNumber'),
+      cardType: _.get(cardModel, 'paymentBrand'),
+      cardHolder: _.get(cardModel, 'cardHolder'),
+      expiryMonth: _.get(cardModel, 'expiryMonth'),
+      expiryYear: _.get(cardModel, 'expiryYear'),
+      senderId,
+      tokenizedCard,
+    };
+    return dispatch(createUserCreditCardAction(finalData))
+      .then((creditCardResponse) => {
+        flashService.success('Added card successfully!');
+        if (successful(creditCardResponse)) {
+          _openVerificationPaymentScreen(creditCardResponse);
         }
       })
       .catch((error) => {
-        console.warn(error.message);
+        flashService.error('Could not create card', error.message);
       });
   };
 
-  const _back = () => navigation.goBack();
-
-  const _formSuccess = () => {
-    navigation.goBack();
+  const getCardRegistrationStatus = (cardModel) => {
+    return dispatch(getCardRegistrationStatusAction(checkoutID))
+      .then((cardRegStatus) => {
+        const tokenizedCard = _.get(cardRegStatus, 'id', '');
+        return createUserCreditCard(cardModel, tokenizedCard);
+      })
+      .catch((error) => {
+        return error;
+      });
   };
 
-  const { Gutters } = useTheme();
-  const { senderId } = useSelector(userSelector);
+  const _onSubmit = async (cardFormValues) => {
+    if (peachMobileRef) {
+      const cardModel = tokenizeCardModel(cardFormValues);
+      return createTransaction(cardModel)
+        .then((transaction) => {
+          return submitRegistration(cardModel, transaction);
+        })
+        .catch((error) => {
+          console.warn({ error });
+        });
+    }
+  };
 
   return (
-    <FormScreenContainer>
-      <Index title="Add Credit Card" />
-      <Divider />
-      <View style={Gutters.smallHMargin}>
+    <>
+      <FormScreenContainer contentContainerStyle={styles.formContainer}>
+        <Index title="My Debit/Credit Card" />
+        <Divider />
         <CreditCardForm
-          submitForm={_handleSubmit}
-          onSuccess={_formSuccess}
-          initialValues={userCreditCardModel({ sender_id: senderId })}
-          containerStyle={Gutters.smallHMargin}
-          submitText="Add Credit Card"
+          initialValues={userCreditCardModel({})}
+          submitForm={_onSubmit}
+          submitButtonStyle={styles.submitButtonStyle}
         />
-      </View>
-      <SafeAreaView>
-        <Button
-          onPress={_back}
-          title={'Cancel'}
-          containerStyle={styles.buttonStyle}
-          buttonStyle={styles.clearButtonStyle}
-          titleStyle={[styles.clearButtonTextStyle]}
-        />
-      </SafeAreaView>
-    </FormScreenContainer>
+      </FormScreenContainer>
+      <PeachMobile
+        mode={config.peachPayments.peachPaymentMode}
+        urlScheme="com.kunnek.payments"
+        ref={peachMobileRef}
+      />
+    </>
   );
 };
-
-AddCreditCardScreen.propTypes = {};
 
 export default AddCreditCardScreen;
 
 const styles = StyleSheet.create({
-  buttonStyle: {
-    width: '90%',
+  formContainer: {
+    flex: 1,
+  },
+  submitButtonStyle: {
     alignSelf: 'center',
-  },
-  clearButtonStyle: {
-    backgroundColor: Colors.transparent,
-  },
-  clearButtonTextStyle: {
-    color: Colors.darkerGrey,
+    bottom: 0,
+    position: 'absolute',
+    width: '95%',
   },
 });

@@ -290,7 +290,7 @@ PODS:
     - React-Core
   - react-native-webview (11.4.3):
     - React-Core
-  - React-PeachMobile (1.1.6):
+  - React-PeachMobile (1.1.9):
     - React
   - React-RCTActionSheet (0.63.4):
     - React-Core/RCTActionSheetHeaders (= 0.63.4)
@@ -586,7 +586,7 @@ SPEC CHECKSUMS:
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   react-native-webview: d749ba1348c17c7225391e84ac4a0c1c90c2c8ee
-  React-PeachMobile: 389abf5334e8e59fbed3b6dbb9a4573b1f434778
+  React-PeachMobile: 312cea9c1c940ffe215662007312a658bd05c785
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
   React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b
   React-RCTBlob: a97d378b527740cc667e03ebfa183a75231ab0f0

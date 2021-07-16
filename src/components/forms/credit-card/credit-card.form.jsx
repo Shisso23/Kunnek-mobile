@@ -12,7 +12,13 @@ import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
 import { useTheme } from '../../../theme';
 
-const CreditCardForm = ({ submitForm, onSuccess, initialValues, submitText }) => {
+const CreditCardForm = ({
+  submitForm,
+  onSuccess,
+  initialValues,
+  submitText,
+  submitButtonStyle,
+}) => {
   const { Layout } = useTheme();
 
   const validationSchema = Yup.object().shape({
@@ -103,23 +109,22 @@ const CreditCardForm = ({ submitForm, onSuccess, initialValues, submitText }) =>
             <View style={[Layout.row, Layout.justifyContentAround]}>
               <Input
                 containerStyle={styles.halfWidthInput}
-                label="Exp. Date"
-                value={values.expiryDate}
-                onChangeText={handleChange('expiryDate')}
-                onBlur={handleBlur('expiryDate')}
-                placeholder="Exp. Date"
-                errorMessage={error('expiryDate')}
-                keyboardType="numeric"
-              />
-
-              <Input
-                containerStyle={styles.halfWidthInput}
                 label="CVV"
                 value={values.cvv}
                 onChangeText={handleChange('cvv')}
                 onBlur={handleBlur('cvv')}
                 placeholder="CVV"
                 errorMessage={error('cvv')}
+                keyboardType="numeric"
+              />
+              <Input
+                containerStyle={styles.halfWidthInput}
+                label="Exp. Date"
+                value={values.expiryDate}
+                onChangeText={handleChange('expiryDate')}
+                onBlur={handleBlur('expiryDate')}
+                placeholder="Exp. Date"
+                errorMessage={error('expiryDate')}
                 keyboardType="numeric"
               />
             </View>
@@ -129,7 +134,7 @@ const CreditCardForm = ({ submitForm, onSuccess, initialValues, submitText }) =>
               containerStyle={styles.peachPaymentsImage}
             />
 
-            <SafeAreaView>
+            <SafeAreaView style={submitButtonStyle}>
               <Button
                 onPress={handleSubmit}
                 loading={isSubmitting}
@@ -149,11 +154,13 @@ CreditCardForm.propTypes = {
   onSuccess: PropTypes.func,
   containerStyle: ViewPropTypes.style,
   submitText: PropTypes.string,
+  submitButtonStyle: PropTypes.object,
 };
 
 CreditCardForm.defaultProps = {
   onSuccess: () => null,
   containerStyle: {},
+  submitButtonStyle: {},
   submitText: '',
 };
 

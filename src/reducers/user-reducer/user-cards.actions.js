@@ -1,7 +1,24 @@
 import _ from 'lodash';
+
 import { updateObjectArray } from '../../helpers/data.helper';
 import { creditCardService, flashService } from '../../services';
-import { setCreditCardsLoadingAction, setUserCreditCardsAction } from './user.reducer';
+import {
+  setCreditCardsLoadingAction,
+  setUserCreditCardsAction,
+  setSubmitCardTransactionLoadingAction,
+  setCardCheckoutIdAction,
+} from './user.reducer';
+
+export const createCheckoutIdAction = () => async (dispatch) => {
+  return creditCardService
+    .createCheckoutId()
+    .then((response) => {
+      const checkoutId = _.get(response, 'id');
+      dispatch(setCardCheckoutIdAction(checkoutId));
+      return checkoutId;
+    })
+    .catch((error) => flashService.error(error.message));
+};
 
 export const getUserCreditCardsAction = () => async (dispatch) => {
   dispatch(setCreditCardsLoadingAction(true));
@@ -19,7 +36,10 @@ export const getUserCreditCardsAction = () => async (dispatch) => {
 export const createUserCreditCardAction = (data) => async (dispatch, getState) => {
   dispatch(setCreditCardsLoadingAction(true));
   try {
-    const { creditCards } = getState().userReducer;
+    let { creditCards } = getState().userReducer;
+    if (_.isNull(creditCards)) {
+      creditCards = [];
+    }
     const card = await creditCardService.createCreditCard(data);
     dispatch(setCreditCardsLoadingAction(false));
     dispatch(setUserCreditCardsAction([...creditCards, card]));
@@ -31,11 +51,20 @@ export const createUserCreditCardAction = (data) => async (dispatch, getState) =
   }
 };
 
+export const getCardRegistrationStatusAction = (checkoutID) => async (dispatch) => {
+  dispatch(setSubmitCardTransactionLoadingAction(true));
+  const response = await creditCardService.getCardRegistrationStatus(checkoutID);
+  dispatch(setSubmitCardTransactionLoadingAction(false));
+  return response;
+};
+
 export const tokenizeCard = (data) => (dispatch) => {
   dispatch(setCreditCardsLoadingAction(true));
   return creditCardService
     .tokenizeCard(new URLSearchParams(data).toString())
-    .then((response) => response)
+    .then((response) => {
+      return response;
+    })
     .catch((error) => {
       flashService.error('Could not tokenize your credit card.');
       console.warn(error.message);

@@ -49,6 +49,15 @@ export const setUserDelivererIdAction = setUserDelivererId.action;
 const setUserSenderId = CreateAction(reducerName, 'SET_USER_SENDER_ID');
 export const setUserSenderIdAction = setUserSenderId.action;
 
+const setSubmitCardTransactionLoading = CreateAction(
+  reducerName,
+  'SET_SUBMIT_CARD_TRANSACTION_LOADING',
+);
+export const setSubmitCardTransactionLoadingAction = setSubmitCardTransactionLoading.action;
+
+const setCardCheckoutId = CreateAction(reducerName, 'SET_CARD_CHECKOUT_ID');
+export const setCardCheckoutIdAction = setCardCheckoutId.action;
+
 export const userSelector = (reducers) => reducers.userReducer;
 
 const initialState = {
@@ -61,12 +70,14 @@ const initialState = {
   notificationHistory: [],
   delivererId: null,
   senderId: null,
+  cardCheckoutID: null,
 
   creditCardsLoading: false,
   bankAccountsLoading: false,
   vehiclesLoading: false,
   transactionHistoryLoading: false,
   notificationHistoryLoading: false,
+  submitCardTransactionLoading: false,
 };
 
 export default function userReducer(state = initialState, action) {
@@ -143,6 +154,16 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         creditCardsLoading: action.payload,
+      };
+    case setSubmitCardTransactionLoading.actionType:
+      return {
+        ...state,
+        submitCardTransactionLoading: action.payload,
+      };
+    case setCardCheckoutId.actionType:
+      return {
+        ...state,
+        cardCheckoutID: action.payload,
       };
     default:
       return state;

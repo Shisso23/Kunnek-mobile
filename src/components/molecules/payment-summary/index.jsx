@@ -103,13 +103,14 @@ const PaymentSummary = ({ paymentType, amount, parcelRequest, serviceFee }) => {
 
 PaymentSummary.propTypes = {
   amount: PropTypes.number.isRequired,
-  parcelRequest: PropTypes.object.isRequired,
+  parcelRequest: PropTypes.object,
   serviceFee: PropTypes.number.isRequired,
   paymentType: PropTypes.oneOf(Object.values(PAYMENT_TYPES)),
 };
 
 PaymentSummary.defaultProps = {
   paymentType: PAYMENT_TYPES.paidBySender,
+  parcelRequest: {},
 };
 
 export default PaymentSummary;

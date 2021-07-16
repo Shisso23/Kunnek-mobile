@@ -29,13 +29,29 @@ const create = (data = {}) => {
     });
 };
 
-const fetchCheckoutId = (id, data) =>
-  authNetworkService()
-    .post(paymentUrls.createCheckout(id), data)
-    .then((response) => paymentModel(_.get(response, 'data')));
+const fetchCheckoutId = (id, data) => {
+  return authNetworkService.post(paymentUrls.createCheckout(id), data).then((response) => {
+    return paymentModel(_.get(response, 'data'));
+  });
+};
+
+const completePayment = (paymentId) => {
+  return authNetworkService
+    .get(`${paymentUrls.paymentsUrl()}/${paymentId}/complete`)
+    .then((response) => _.get(response, 'data'));
+};
+
+const fetchCheckoutStatus = (paymentId) => {
+  const url = paymentUrls.paymentsUrl();
+  return authNetworkService
+    .get(`${url}/${paymentId}/checkout_status`)
+    .then((response) => _.get(response, 'data'));
+};
 
 export default {
   getTransactions,
   fetchCheckoutId,
   create,
+  completePayment,
+  fetchCheckoutStatus,
 };

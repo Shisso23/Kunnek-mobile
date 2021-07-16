@@ -1,8 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 import { Image, Text } from 'react-native-elements';
 import React from 'react';
-import PropTypes from 'prop-types';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
 
 import useTheme from '../../../theme/hooks/useTheme';
 import { Colors } from '../../../theme/Variables';
