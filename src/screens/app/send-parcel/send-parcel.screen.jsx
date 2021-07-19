@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Divider } from 'react-native-elements';
 import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,7 +33,6 @@ import { PAYMENT_TYPES } from '../../../services/sub-services/payment-service/pa
 import { getCurrency } from '../../../helpers/payment.helper';
 import config from '../../../config';
 import { flashService } from '../../../services';
-import { ScrollView } from 'react-native-gesture-handler';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -47,8 +46,8 @@ const SendParcelScreen = () => {
   const [itemDetailsForm, setItemDetailsForm] = React.useState({});
   const [deliverAndReceiverDetailsForm, setDeliverAndReceiverDetailsForm] = React.useState({});
   const [creditCardForm, setCreditCardForm] = React.useState({});
-  const [checkoutID, setCheckoutID] = useState({});
-  const peachMobileRef = useRef(null);
+  const [checkoutID, setCheckoutID] = React.useState({});
+  const peachMobileRef = React.useRef(null);
   const hasCreditCards = Array.isArray(creditCards) ? creditCards.length > 0 : false;
 
   React.useLayoutEffect(() => {
