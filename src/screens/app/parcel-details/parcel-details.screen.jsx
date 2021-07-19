@@ -86,7 +86,10 @@ const ParcelDetailsScreen = ({ route }) => {
   };
 
   const _renderFooter = () => {
-    if (parcelStatusIndex >= parcelStatus['pending_acceptance_from_sender']) {
+    if (
+      parcelStatusIndex >= parcelStatus['pending_acceptance_from_sender'] &&
+      parcelStatusIndex < parcelStatus['completed_delivery']
+    ) {
       var icons = [];
 
       icons.push({

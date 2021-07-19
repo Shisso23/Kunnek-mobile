@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Divider } from 'react-native-elements';
 import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,10 +42,10 @@ const SendParcelScreen = () => {
   const senderId = useSelector((state) => state.userReducer.senderId);
   const creditCards = useSelector((state) => state.userReducer.creditCards);
   const dispatch = useDispatch();
-  const [formIndex, setFormIndex] = React.useState(0);
-  const [itemDetailsForm, setItemDetailsForm] = React.useState({});
-  const [deliverAndReceiverDetailsForm, setDeliverAndReceiverDetailsForm] = React.useState({});
-  const [creditCardForm, setCreditCardForm] = React.useState({});
+  const [formIndex, setFormIndex] = useState(0);
+  const [itemDetailsForm, setItemDetailsForm] = useState({});
+  const [deliverAndReceiverDetailsForm, setDeliverAndReceiverDetailsForm] = useState({});
+  const [creditCardForm, setCreditCardForm] = useState({});
   const [checkoutId, setCheckoutId] = useState('');
   const hasCreditCards = Array.isArray(creditCards) ? creditCards.length > 0 : false;
   const peachMobileRef = useRef(null);
@@ -183,7 +183,7 @@ const SendParcelScreen = () => {
     }
   };
 
-  const _renderItem = () => <View>{_.get(_.nth(formData, formIndex), 'content')}</View>;
+  const _renderItem = () => <ScrollView>{_.get(_.nth(formData, formIndex), 'content')}</ScrollView>;
 
   const _goToNext = () => {
     if (formIndex < formData.length - 1) {

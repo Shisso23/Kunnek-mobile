@@ -9,9 +9,12 @@ import ContactUsForm from '../../../components/forms/contact-us/ContactUs.form';
 import { queryFormModel } from '../../../models/app/query-model/query.model';
 import { queryService } from '../../../services';
 import { _setQueryAction } from '../../../reducers/query-reducer/query.actions';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useTheme } from '../../../theme';
 
 const ContactUsScreen = () => {
   const { user } = useSelector(userSelector);
+  const { Layout } = useTheme();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const submitForm = async (formData) => {
@@ -26,12 +29,14 @@ const ContactUsScreen = () => {
   };
 
   return (
-    <ContactUsForm
-      containerStyle={styles.container}
-      initialValues={queryFormModel()}
-      onSuccess={onSuccess}
-      submitForm={submitForm}
-    />
+    <KeyboardAwareScrollView contentContainerStyle={Layout.fill}>
+      <ContactUsForm
+        containerStyle={styles.container}
+        initialValues={queryFormModel()}
+        onSuccess={onSuccess}
+        submitForm={submitForm}
+      />
+    </KeyboardAwareScrollView>
   );
 };
 

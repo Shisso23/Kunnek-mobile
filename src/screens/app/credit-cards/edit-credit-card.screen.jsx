@@ -26,7 +26,7 @@ import { getCurrency } from '../../../helpers/payment.helper';
 import { PAYMENT_TYPES } from '../../../services/sub-services/payment-service/payment.service';
 import { tokenizeCardModel } from '../../../models/app/credit-card/tokenize-card.model';
 
-const EditCreditCardScreen = ({ route }) => {
+const ViewCreditCardScreen = ({ route }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { card } = route.params;
@@ -131,10 +131,10 @@ const EditCreditCardScreen = ({ route }) => {
     navigation.goBack();
   };
 
-  const { Gutters } = useTheme();
+  const { Gutters, Layout } = useTheme();
 
   return (
-    <FormScreenContainer>
+    <FormScreenContainer contentContainerStyle={Layout.fill}>
       <Index title="My Debit/Credit Card" />
       <Divider />
       <View style={Gutters.smallHMargin}>
@@ -144,8 +144,10 @@ const EditCreditCardScreen = ({ route }) => {
           initialValues={card}
           containerStyle={Gutters.smallHMargin}
           submitText="Update Card"
+          disabled={true}
         />
       </View>
+      <View style={Layout.fill} />
       <SafeAreaView>
         <Button
           onPress={_delete}
@@ -160,11 +162,11 @@ const EditCreditCardScreen = ({ route }) => {
   );
 };
 
-EditCreditCardScreen.propTypes = {
+ViewCreditCardScreen.propTypes = {
   route: PropTypes.object.isRequired,
 };
 
-export default EditCreditCardScreen;
+export default ViewCreditCardScreen;
 
 const styles = StyleSheet.create({
   buttonStyle: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { SafeAreaView, StyleSheet, Text, ViewPropTypes } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, ViewPropTypes } from 'react-native';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -18,7 +18,7 @@ import { useTheme } from '../../../theme';
 const BankAccountForm = ({ submitForm, onSuccess, initialValues, submitText }) => {
   const { banks } = useSelector(appSelector);
   const bankValues = _.map(banks, (bank) => _.get(bank, 'name'));
-  const { Gutters } = useTheme();
+  const { Gutters, Layout } = useTheme();
   const accountTypes = ['Cheque', 'Current', 'Savings'];
 
   const dispatch = useDispatch();
@@ -117,6 +117,7 @@ const BankAccountForm = ({ submitForm, onSuccess, initialValues, submitText }) =
               source={require('../../../assets/images/powered-by-peach-payments.png')}
               containerStyle={styles.peachPaymentsImage}
             />
+            <View style={Layout.fill} />
 
             <SafeAreaView>
               <Button

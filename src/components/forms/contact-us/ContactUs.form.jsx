@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { ViewPropTypes, View, StyleSheet } from 'react-native';
+import { ViewPropTypes, View, StyleSheet, TextInput } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import { Input, Text, Button } from 'react-native-elements';
+import { Text, Button } from 'react-native-elements';
 import useTheme from '../../../theme/hooks/useTheme';
 import { flashService } from '../../../services';
 import { getFormError } from '../form-utils';
@@ -14,7 +14,7 @@ import { getParcelRequestsAction } from '../../../reducers/parcel-request-reduce
 import { DropdownSelect } from '../../molecules';
 
 const issueTypes = ['Bug', 'Complaint', 'General'];
-const { Common, Colors, Custom, Gutters } = useTheme();
+const { Common, Colors, Custom, Gutters, Layout } = useTheme();
 
 const ContactUsForm = ({ submitForm, onSuccess, containerStyle, initialValues }) => {
   const { parcelRequests = [] } = useSelector((state) => state.parcelRequestReducer);
@@ -60,6 +60,7 @@ const ContactUsForm = ({ submitForm, onSuccess, containerStyle, initialValues })
           values,
           handleChange,
           handleSubmit,
+          handleBlur,
           isSubmitting,
           errors,
           touched,
@@ -94,20 +95,21 @@ const ContactUsForm = ({ submitForm, onSuccess, containerStyle, initialValues })
                 valueExtractor={(item) => item.description}
                 error={error('connectedParcel')}
                 placeholder="Select parcel"
-                contentStyle={styles.parcelsContent}
+                contentStyle={[styles.parcelsContent, Common.viewCard]}
               />
               <Text style={[Common.smallText, styles.smallText, Gutters.smallBMargin]}>
                 Description
               </Text>
 
-              <Input
+              <TextInput
                 value={values.description}
                 multiline={true}
                 onChangeText={handleChange('description')}
-                placeholder="Description"
-                inputContainerStyle={styles.inputStyle}
-                inputStyle={styles.inputStyle}
+                onBlur={handleBlur('description')}
+                erroMessage={error('description')}
+                style={[Common.viewCard, Gutters.regularHMargin, styles.inputStyle]}
               />
+              <View style={Layout.fill} />
               <Button
                 title="Submit"
                 onPress={handleSubmit}
@@ -149,12 +151,8 @@ const styles = StyleSheet.create({
   parcelsContent: { maxHeight: '80%' },
   smallText: { color: Colors.black, fontSize: 15 },
   submitButton: {
-    alignItems: 'center',
-    alignSelf: 'center',
-    backgroundColor: Colors.primary,
-    bottom: '12%',
-    position: 'absolute',
     width: '60%',
+    alignSelf: 'center',
   },
   texts: {
     color: Colors.darkGrey,

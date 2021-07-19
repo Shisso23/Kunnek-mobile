@@ -140,6 +140,8 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
   },
   textInputExtraStyle: {
+    backgroundColor: Colors.white,
+    elevation: 9,
     borderRadius: 12,
     borderTopEndRadius: 12,
     borderTopLeftRadius: 12,

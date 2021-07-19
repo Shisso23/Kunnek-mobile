@@ -4,6 +4,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 
 import { useTheme } from '../../../theme';
+import { StyleSheet } from 'react-native';
 
 const CustomHeaderButton = ({
   headerLeftAccessibilityLabel,
@@ -32,7 +33,7 @@ const CustomHeaderButton = ({
       borderless
     >
       <Image
-        style={[Custom.headerButtonIcon, tintColor ? { tintColor } : null]}
+        style={[Custom.headerButtonIcon, styles.iconSize, tintColor ? { tintColor } : null]}
         source={image}
         fadeDuration={0}
       />
@@ -57,3 +58,11 @@ CustomHeaderButton.defaultProps = {
 };
 
 export default CustomHeaderButton;
+
+const styles = StyleSheet.create({
+  iconSize: {
+    height: 40,
+    width: 40,
+    resizeMode: 'center',
+  },
+});

@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
     right: 0,
     top: Platform.OS === 'ios' ? 110 : 60,
     zIndex: 1,
+    marginTop: 5,
   },
   header: {
     position: 'absolute',
