@@ -18,6 +18,7 @@ const CreditCardForm = ({
   initialValues,
   submitText,
   submitButtonStyle,
+  disabled,
 }) => {
   const { Layout } = useTheme();
 
@@ -94,6 +95,7 @@ const CreditCardForm = ({
               onBlur={handleBlur('cardHolder')}
               placeholder="Name on Card"
               errorMessage={error('cardHolder')}
+              disabled={disabled}
             />
 
             <Input
@@ -104,19 +106,10 @@ const CreditCardForm = ({
               placeholder="Card Number"
               errorMessage={error('cardNumber')}
               keyboardType="number-pad"
+              disabled={disabled}
             />
 
             <View style={[Layout.row, Layout.justifyContentAround]}>
-              <Input
-                containerStyle={styles.halfWidthInput}
-                label="CVV"
-                value={values.cvv}
-                onChangeText={handleChange('cvv')}
-                onBlur={handleBlur('cvv')}
-                placeholder="CVV"
-                errorMessage={error('cvv')}
-                keyboardType="numeric"
-              />
               <Input
                 containerStyle={styles.halfWidthInput}
                 label="Exp. Date"
@@ -126,21 +119,39 @@ const CreditCardForm = ({
                 placeholder="Exp. Date"
                 errorMessage={error('expiryDate')}
                 keyboardType="numeric"
+                disabled={disabled}
+              />
+
+              <Input
+                containerStyle={styles.halfWidthInput}
+                label="CVV"
+                value={values.cvv}
+                onChangeText={handleChange('cvv')}
+                onBlur={handleBlur('cvv')}
+                placeholder="CVV"
+                errorMessage={error('cvv')}
+                keyboardType="numeric"
+                disabled={disabled}
               />
             </View>
+            {disabled ? null : (
+              <>
+                <Image
+                  source={require('../../../assets/images/powered-by-peach-payments.png')}
+                  containerStyle={styles.peachPaymentsImage}
+                />
+                <View style={Layout.fill} />
 
-            <Image
-              source={require('../../../assets/images/powered-by-peach-payments.png')}
-              containerStyle={styles.peachPaymentsImage}
-            />
-
-            <SafeAreaView style={submitButtonStyle}>
-              <Button
-                onPress={handleSubmit}
-                loading={isSubmitting}
-                title={submitText ? submitText : 'Complete'}
-              />
-            </SafeAreaView>
+                <SafeAreaView>
+                  <Button
+                    onPress={handleSubmit}
+                    loading={isSubmitting}
+                    title={submitText ? submitText : 'Complete'}
+                    style={submitButtonStyle}
+                  />
+                </SafeAreaView>
+              </>
+            )}
           </>
         );
       }}
@@ -154,6 +165,7 @@ CreditCardForm.propTypes = {
   onSuccess: PropTypes.func,
   containerStyle: ViewPropTypes.style,
   submitText: PropTypes.string,
+  disabled: PropTypes.bool,
   submitButtonStyle: PropTypes.object,
 };
 
@@ -162,6 +174,7 @@ CreditCardForm.defaultProps = {
   containerStyle: {},
   submitButtonStyle: {},
   submitText: '',
+  disabled: false,
 };
 
 export default CreditCardForm;

@@ -1,8 +1,10 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React from 'react';
-import { ScrollView, SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { Text } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
+import { View } from 'react-native';
+
 import { getUserNotificationHistoryAction } from '../../../reducers/user-reducer/user-notifications.actions';
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
 import useTheme from '../../../theme/hooks/useTheme';
@@ -25,12 +27,12 @@ const NotificationHistoryScreen = () => {
   );
 
   return !notificationHistoryLoading ? (
-    <ScrollView style={[Gutters.smallHPadding]}>
+    <View style={[Gutters.smallHPadding]}>
       <Text h1>Notification History</Text>
       <SafeAreaView>
         <NotificationHistoryCard items={notificationHistory} />
       </SafeAreaView>
-    </ScrollView>
+    </View>
   ) : (
     <LoadingComponent />
   );

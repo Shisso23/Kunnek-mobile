@@ -1,10 +1,11 @@
 import _ from 'lodash';
+import { getCloseOfBusiness } from '../../../helpers/date.helper';
 
 export const filtersFormModel = (filterModal = {}) => ({
   startLocation: _.get(filterModal, 'startLocation', ''),
   endLocation: _.get(filterModal, 'endLocation', ''),
   maximumDistance: _.get(filterModal, 'maximumDistance', 50),
-  lastDeliveryDate: _.get(filterModal, 'lastDeliveryDate', ''),
+  lastDeliveryDate: _.get(filterModal, 'lastDeliveryDate', getCloseOfBusiness()),
 });
 
 export const apiFiltersFormModel = (filterModal = {}) => {

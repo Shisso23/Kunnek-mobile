@@ -23,7 +23,7 @@ const DrawerContent = (props) => {
 
   return (
     <View style={[Layout.fill]}>
-      <DrawerContentScrollView {...props}>
+      <DrawerContentScrollView {...props} contentContainerStyle={Layout.fill}>
         <Drawer.Section style={{ backgroundColor: Colors.darkBackground }}>
           <View style={[Layout.alignItemsStart, Gutters.regularPadding]}>
             <Avatar rounded source={{ uri: user.profilePictureUri }} size={65} />
@@ -77,6 +77,7 @@ const DrawerContent = (props) => {
             onPress={_signOut}
           />
         </Drawer.Section>
+        <View style={Layout.fill} />
         <DrawerItem
           icon={() => <Image source={Images.contactUsIcon} style={styles.icon} />}
           label="Contact Us"

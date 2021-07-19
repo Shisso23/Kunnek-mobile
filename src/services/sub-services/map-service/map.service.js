@@ -87,7 +87,7 @@ const getCoordinate = (point) => ({
   longitude: Number(_.get(point, 'longitude', 0)),
 });
 
-const getRegionForCoordinates = (coordinates = []) => {
+const getRegionForCoordinates = (coordinates = [], delta = 1) => {
   let minX;
   let maxX;
   let minY;
@@ -117,8 +117,8 @@ const getRegionForCoordinates = (coordinates = []) => {
   return {
     latitude: midX,
     longitude: midY,
-    latitudeDelta: deltaX + 1,
-    longitudeDelta: deltaY + 1,
+    latitudeDelta: deltaX ? 1 : delta,
+    longitudeDelta: deltaY ? 1 : delta,
   };
 };
 

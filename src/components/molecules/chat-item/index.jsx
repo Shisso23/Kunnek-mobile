@@ -31,7 +31,7 @@ const ChatItem = ({ message }) => {
     return (
       <View style={[Layout.row, Layout.justifyContentBetween, Gutters.tinyMargin]}>
         <View style={Layout.fill} />
-        <View style={styles.myMessage}>
+        <View style={[styles.myMessage, Gutters.smallPadding]}>
           <Text style={styles.messageColor}>{_.get(message, 'text')}</Text>
           <Text style={styles.messageTimeColor}>{_dateFormatter(_.get(message, 'timestamp'))}</Text>
         </View>
@@ -40,7 +40,7 @@ const ChatItem = ({ message }) => {
 
   return (
     <View style={[Layout.row, Layout.justifyContentBetween, Gutters.tinyMargin]}>
-      <View style={styles.theirMessage}>
+      <View style={[styles.theirMessage, Gutters.smallPadding]}>
         <Text style={[styles.messageColor]}>{_.get(message, 'text')}</Text>
         <Text style={styles.messageTimeColor}>{_dateFormatter(_.get(message, 'timestamp'))}</Text>
       </View>
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderTopRightRadius: 0,
     backgroundColor: Colors.secondary,
-    padding: 5,
+    padding: 10,
     flexShrink: 1,
     marginLeft: 5,
   },
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderTopLeftRadius: 0,
     backgroundColor: Colors.primary,
-    padding: 5,
+    padding: 10,
     flexShrink: 1,
     marginRight: 5,
   },
@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
   },
   messageTimeColor: {
-    color: Colors.inputPlaceholderColor,
+    color: Colors.headerButtonBackgroundWhite,
+    fontSize: 11,
   },
 });

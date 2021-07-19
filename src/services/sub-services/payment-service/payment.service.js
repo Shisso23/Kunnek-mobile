@@ -1,13 +1,12 @@
 import _ from 'lodash';
 
 import {
-  apiUserTransactionModel,
-  constructUserTransactionModels, userTransactionModel
+  constructUserTransactionModels,
+  userTransactionModel,
 } from '../../../models/app/user/user-transaction-history.model';
 import authNetworkService from '../auth-network-service/auth-network.service';
 import paymentUrls from './payment.urls';
 import { apiPaymentModel, paymentModel } from '../../../models/app/user/payment.model';
-import { parcelRequestModel } from '../../../models/app/parcel-request/parcel-request.model';
 
 export const PAYMENT_TYPES = {
   verification: 'verification',

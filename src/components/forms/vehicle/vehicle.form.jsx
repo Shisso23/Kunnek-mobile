@@ -8,8 +8,10 @@ import * as Yup from 'yup';
 
 import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
+import { useTheme } from '../../../theme';
 
 const VehicleForm = ({ submitForm, onSuccess, initialValues, containerStyle, submitText }) => {
+  const { Layout } = useTheme();
   const validationSchema = Yup.object().shape({
     make: Yup.string().required('Vehicle make is required'),
     model: Yup.string().required('Vehicle model is required'),
@@ -85,7 +87,7 @@ const VehicleForm = ({ submitForm, onSuccess, initialValues, containerStyle, sub
               label="License Plate"
               errorMessage={error('registrationNumber')}
             />
-
+            <View style={Layout.fill} />
             <SafeAreaView>
               <Button
                 onPress={handleSubmit}

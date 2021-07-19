@@ -13,9 +13,9 @@ import UploadDocumentButton from '../../molecules/upload-document-button';
 const SendParcelItemDetailsForm = ({ submitForm, onSuccess, initialValues }) => {
   const validationSchema = Yup.object().shape({
     description: Yup.string().required('Description is required'),
-    itemHeight: Yup.number().required('Height is required').positive(),
-    itemWidth: Yup.number().required('Width is required').positive(),
-    itemLength: Yup.number().required('Length is required').positive(),
+    itemHeight: Yup.number().positive(),
+    itemWidth: Yup.number().positive(),
+    itemLength: Yup.number().positive(),
     itemWeight: Yup.number().required('Weight is required').positive(),
     price: Yup.number()
       .test('is-currency', 'Please type a currency value eg: 12.34', (price) => {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
-import { Text, ButtonGroup } from 'react-native-elements';
+import { ButtonGroup } from 'react-native-elements';
 import PropTypes from 'prop-types';
 
 import Index from '../../../components/atoms/title';
@@ -17,7 +17,7 @@ import { activeParcelParams } from '../../../helpers/parcel-request-status.helpe
 import { useInterval } from '../../../services';
 
 const ParcelRequestScreen = () => {
-  const { Fonts, Gutters, Layout } = useTheme();
+  const { Layout } = useTheme();
   const [buttonIndex, setButtonIndex] = useState(0);
   const { userParcelRequests = [] } = useSelector((state) => state.parcelRequestReducer);
   const dispatch = useDispatch();
@@ -58,7 +58,6 @@ const ParcelRequestScreen = () => {
   return (
     <View style={[Layout.fill]}>
       <Index title="My Parcels" />
-      <Text style={[Fonts.textLarge, Gutters.regularHPadding]}>See your current orders.</Text>
       <ButtonGroup
         buttons={buttons}
         selectedIndex={buttonIndex}

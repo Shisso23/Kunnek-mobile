@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useRef, useState } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Divider } from 'react-native-elements';
 import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,8 +46,8 @@ const SendParcelScreen = () => {
   const [itemDetailsForm, setItemDetailsForm] = React.useState({});
   const [deliverAndReceiverDetailsForm, setDeliverAndReceiverDetailsForm] = React.useState({});
   const [creditCardForm, setCreditCardForm] = React.useState({});
-  const [checkoutID, setCheckoutID] = useState({});
-  const peachMobileRef = useRef(null);
+  const [checkoutID, setCheckoutID] = React.useState({});
+  const peachMobileRef = React.useRef(null);
   const hasCreditCards = Array.isArray(creditCards) ? creditCards.length > 0 : false;
 
   React.useLayoutEffect(() => {
@@ -78,7 +78,9 @@ const SendParcelScreen = () => {
       }),
     )
       .then((response) => {
-        return response;
+        if (successful(response)) {
+          return true;
+        }
       })
       .catch((error) => {
         console.warn(error.message);
@@ -174,7 +176,7 @@ const SendParcelScreen = () => {
     }
   };
 
-  const _renderItem = () => <View>{_.get(_.nth(formData, formIndex), 'content')}</View>;
+  const _renderItem = () => <ScrollView>{_.get(_.nth(formData, formIndex), 'content')}</ScrollView>;
 
   const _goToNext = () => {
     if (formIndex < formData.length - 1) {

@@ -16,7 +16,7 @@ const ChatScreen = ({ route }) => {
   const { parcelRequest } = route.params;
   const chattableId = _.get(parcelRequest, 'id');
   const { user } = useSelector(userSelector);
-  const { Layout, Fonts } = useTheme();
+  const { Layout, Fonts, Gutters } = useTheme();
   const [chat, setChat] = useState({});
   const [messages, setMessages] = useState([]);
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ const ChatScreen = ({ route }) => {
   };
 
   const _headerComponent = () => (
-    <View style={Layout.center}>
+    <View style={[Layout.center, Gutters.largeBMargin]}>
       <ProfilePicture user={_getOtherUser()} />
       <Text style={Fonts.titleTiny}>{`${_.get(_getOtherUser(), 'fullName')}`}</Text>
     </View>
