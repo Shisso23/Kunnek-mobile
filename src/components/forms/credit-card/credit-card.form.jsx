@@ -133,16 +133,6 @@ const CreditCardForm = ({
                 keyboardType="numeric"
                 disabled={disabled}
               />
-              <Input
-                containerStyle={styles.halfWidthInput}
-                label="Exp. Date"
-                value={values.expiryDate}
-                onChangeText={handleChange('expiryDate')}
-                onBlur={handleBlur('expiryDate')}
-                placeholder="Exp. Date"
-                errorMessage={error('expiryDate')}
-                keyboardType="numeric"
-              />
             </View>
             {disabled ? null : (
               <>
