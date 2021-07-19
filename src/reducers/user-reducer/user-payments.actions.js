@@ -17,3 +17,16 @@ export const getUserTransactionHistoryAction = () => async (dispatch) => {
     dispatch(setTransactionHistoryLoadingAction(false));
   }
 };
+
+export const getUserTransaction = (paymentId) => (dispatch) => {
+  dispatch(setTransactionHistoryLoadingAction(true));
+  return paymentService
+    .getTransaction(paymentId)
+    .catch((error) => {
+      console.warn(error.message);
+      flashService.error('Could not load transaction');
+    })
+    .finally(() => {
+      dispatch(setTransactionHistoryLoadingAction(false));
+    });
+};

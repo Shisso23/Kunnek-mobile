@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import {
   apiUserCreditCardModel,
   constructUserCreditCardModels,
@@ -16,13 +18,28 @@ const getCreditCards = async () => {
   return constructUserCreditCardModels(apiResponse.data);
 };
 
+const createCheckoutId = async () =>
+  authNetworkService
+    .post(creditCardUrls.createCheckoutUrl())
+    .then((response) => _.get(response, 'data'));
+
+const getCardRegistrationStatus = async (checkoutID) => {
+  const url = creditCardUrls.cardsUrl();
+  const apiResponse = await authNetworkService.get(
+    `${url}/registration_status?checkout_id=${checkoutID}`,
+  );
+  return apiResponse.data;
+};
+
 const createCreditCard = async (data) => {
   const url = creditCardUrls.cardsUrl();
   const dataModel = apiUserCreditCardModel(data);
   const _createAndReturnModel = (apiResponse) => userCreditCardModel(apiResponse.data);
   return authNetworkService
     .post(url, dataModel)
-    .then(_createAndReturnModel)
+    .then((response) => {
+      return _createAndReturnModel(response);
+    })
     .catch((error) => {
       // eslint-disable-next-line no-console
       console.warn(error);
@@ -30,8 +47,8 @@ const createCreditCard = async (data) => {
     });
 };
 
-const tokenizeCard = (data) =>
-  networkService.post(
+const tokenizeCard = (data) => {
+  return networkService.post(
     paymentUrls.registration(),
     data,
     {
@@ -42,6 +59,7 @@ const tokenizeCard = (data) =>
     },
     false,
   );
+};
 
 const deleteCreditCard = (id) => {
   const url = creditCardUrls.cardsUrl();
@@ -71,6 +89,8 @@ export default {
   getCreditCards,
   createCreditCard,
   tokenizeCard,
+  getCardRegistrationStatus,
+  createCheckoutId,
   deleteCreditCard,
   updateCreditCard,
 };

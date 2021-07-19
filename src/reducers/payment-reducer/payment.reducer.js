@@ -12,6 +12,8 @@ export const setPaymentsLoadingAction = setPaymentsLoading.action;
 const setCheckoutId = CreateAction(reducerName, 'SET_CHECKOUT_ID');
 export const setCheckoutIdAction = setCheckoutId.action;
 
+export const paymentSelector = (reducers) => reducers.paymentReducer;
+
 const initialState = {
   payment: paymentModel(),
   paymentsLoading: false,
