@@ -25,4 +25,3 @@ export { default as ChatBottomDrawer } from './chat-bottom-drawer';
 export { default as ChatItem } from './chat-item';
 export { default as DropdownSelect } from './dropdown-select';
 export { default as UserReviewDetailsCard } from './user-review-details';
-export { default as CreditCardTokenization } from './credit-card-tokenization';

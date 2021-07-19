@@ -29,7 +29,7 @@ import Index from '../../../components/atoms/title';
 import { getUserTransaction } from '../../../reducers/user-reducer/user-payments.actions';
 
 const PaymentScreen = ({ route }) => {
-  const { Fonts, Gutters, Layout } = useTheme();
+  const { Common, Fonts, Gutters, Layout } = useTheme();
   const {
     message,
     parcelRequest,
@@ -41,6 +41,7 @@ const PaymentScreen = ({ route }) => {
   } = route.params;
   const dispatch = useDispatch();
   const [cvvNumber, setCvvNumber] = useState('');
+  const [error, setError] = useState('');
   const navigation = useNavigation();
   const peachMobileRef = useRef(null);
   const { serviceFee } = useSelector((state) => state.parcelRequestReducer);
@@ -104,6 +105,7 @@ const PaymentScreen = ({ route }) => {
               .submitTransaction(transaction)
               .then(_finaliseTransaction)
               .catch((error) => {
+                setError(error.message);
                 flashService.error(error.message);
               })
               .finally(() => {
@@ -111,6 +113,7 @@ const PaymentScreen = ({ route }) => {
               });
           })
           .catch((error) => {
+            setError(error.message);
             flashService.error(error.message);
             _setIsLoading(false);
           });
@@ -129,13 +132,13 @@ const PaymentScreen = ({ route }) => {
             navigation.dispatch(StackActions.popToTop());
             navigation.navigate(sceneToNavigateTo, { payment: transaction });
           } else {
-            flashService.error(
-              `Payment was not successful. Please try again. Reason: ${_.get(
-                paymentResponse,
-                'reason',
-                '',
-              )}`,
-            );
+            const errorMessage = `Payment was not successful. Please try again. Reason: ${_.get(
+              paymentResponse,
+              'reason',
+              '',
+            )}`;
+            setError(errorMessage);
+            flashService.error(errorMessage);
           }
         });
       });
@@ -174,6 +177,7 @@ const PaymentScreen = ({ route }) => {
             <Text style={styles.headingText}>Payment about to be made</Text>
             <Button title="Pay" onPress={_onPay} loading={paymentsLoading} />
           </View>
+          <View>{!_.isEmpty(error) && <Text style={Common.errorStyle}>{error}</Text>}</View>
         </View>
       </View>
       {_renderPeachPayment()}

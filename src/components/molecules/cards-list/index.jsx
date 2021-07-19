@@ -36,10 +36,6 @@ const CardsList = ({ items }) => {
         </ListItem.Content>
         <>
           <IconButton
-            icon={() => <Icon name="pencil-alt" color={Colors.darkerGrey} size={20} />}
-            onPress={() => _edit(item)}
-          />
-          <IconButton
             icon={() => <Icon name="times" color={Colors.darkerGrey} size={20} />}
             onPress={() => _delete(item)}
           />

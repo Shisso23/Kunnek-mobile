@@ -1,12 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { Button, Divider } from 'react-native-elements';
 import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { HeaderBackButton } from '@react-navigation/stack';
 
-import { CreditCardTokenization, FormScreenContainer } from '../../../components';
+import { FormScreenContainer } from '../../../components';
 import { useTheme } from '../../../theme';
 import { SendParcelItemDetailsForm } from '../../../components/forms';
 import Index from '../../../components/atoms/title';
@@ -14,13 +14,25 @@ import { Colors } from '../../../theme/Variables';
 import SendParcelDeliverAndReceiverDetailsForm from '../../../components/forms/parcel-request/send-parcel-deliver-and-receiver-details.form';
 import CreditCardForm from '../../../components/forms/credit-card/credit-card.form';
 import { createParcelRequestAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
-import { getUserCreditCardsAction } from '../../../reducers/user-reducer/user-cards.actions';
+import {
+  createCheckoutIdAction,
+  createUserCreditCardAction,
+  getCardRegistrationStatusAction,
+  getUserCreditCardsAction,
+} from '../../../reducers/user-reducer/user-cards.actions';
 import {
   deliveryAndReceiverDetailsFormModel,
   itemDetailsFormModel,
 } from '../../../models/app/parcel-request/parcel-request-form.model';
 import { userCreditCardModel } from '../../../models/app/user/user-credit-card.model';
 import { getTomorrow } from '../../../helpers/date.helper';
+import PeachMobile from 'react-native-peach-mobile';
+import config from '../../../config';
+import { flashService } from '../../../services';
+import { successful } from '../../../helpers/errors.helper';
+import { getCurrency } from '../../../helpers/payment.helper';
+import { PAYMENT_TYPES } from '../../../services/sub-services/payment-service/payment.service';
+import { tokenizeCardModel } from '../../../models/app/credit-card/tokenize-card.model';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -34,8 +46,9 @@ const SendParcelScreen = () => {
   const [itemDetailsForm, setItemDetailsForm] = React.useState({});
   const [deliverAndReceiverDetailsForm, setDeliverAndReceiverDetailsForm] = React.useState({});
   const [creditCardForm, setCreditCardForm] = React.useState({});
-  const creditCardTokenizationRef = useRef(null);
+  const [checkoutId, setCheckoutId] = useState('');
   const hasCreditCards = Array.isArray(creditCards) ? creditCards.length > 0 : false;
+  const peachMobileRef = useRef(null);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -46,6 +59,89 @@ const SendParcelScreen = () => {
   useEffect(() => {
     dispatch(getUserCreditCardsAction());
   }, []);
+
+  const _createTransaction = (cardModel) => {
+    return PeachMobile.createTransaction(
+      checkoutId,
+      '',
+      _.get(cardModel, 'cardHolder'),
+      _.get(cardModel, 'cardNumber'),
+      _.get(cardModel, 'expiryMonth'),
+      _.get(cardModel, 'expiryYear', ''),
+      _.get(cardModel, 'cvv'),
+    );
+  };
+
+  const _submitRegistration = (cardModel, transaction) => {
+    return PeachMobile.submitRegistration(
+      transaction,
+      `${config.peachPayments.peachPaymentMode}`,
+    ).catch((error) => console.warn('peach submit registration error', error.message));
+  };
+
+  const _getCardRegistrationStatus = () => {
+    return dispatch(getCardRegistrationStatusAction(checkoutId)).then((cardRegStatus) =>
+      _.get(cardRegStatus, 'id', ''),
+    );
+  };
+
+  const _saveCreditCard = (cardModel, tokenizedCard) => {
+    const finalData = {
+      cardNumber: _.get(cardModel, 'obfuscatedCardNumber'),
+      cardType: _.get(cardModel, 'paymentBrand'),
+      cardHolder: _.get(cardModel, 'cardHolder'),
+      expiryMonth: _.get(cardModel, 'expiryMonth'),
+      expiryYear: _.get(cardModel, 'expiryYear'),
+      senderId,
+      tokenizedCard,
+    };
+    return dispatch(createUserCreditCardAction(finalData))
+      .then((creditCardResponse) => {
+        flashService.success('Added card successfully!');
+        if (successful(creditCardResponse)) {
+          _openVerificationPaymentScreen(creditCardResponse);
+        }
+      })
+      .catch((error) => {
+        flashService.error('Could not create card', error.message);
+      });
+  };
+
+  const _openVerificationPaymentScreen = (card) => {
+    navigation.navigate('Payment', {
+      message: `We will make a charge of ${getCurrency()}1.00 on your credit card to verify that your card number and details are correct. This charge will be reversed once successful.`,
+      totalAmount: 1,
+      paymentType: PAYMENT_TYPES.verification,
+      card,
+      sceneToNavigateTo: 'ParcelRequests',
+    });
+  };
+
+  const _process = (cardFormValues) => {
+    const cardModel = tokenizeCardModel(cardFormValues);
+    return dispatch(createCheckoutIdAction())
+      .then((id) => {
+        setCheckoutId(id);
+        return _createTransaction(cardModel);
+      })
+      .then((transaction) => _submitRegistration(cardModel, transaction))
+      .then(_getCardRegistrationStatus)
+      .then((tokenizedCard) => _saveCreditCard(cardModel, tokenizedCard))
+      .catch((error) => {
+        console.warn({ error });
+        flashService.error(error.message);
+      });
+  };
+
+  const _renderPeachPayments = () => (
+    <>
+      <PeachMobile
+        mode={config.peachPayments.peachPaymentMode}
+        urlScheme={config.peachPayments.urlScheme}
+        ref={peachMobileRef}
+      />
+    </>
+  );
 
   const _handleSubmitItemDetailsForm = (currentForm) => {
     setItemDetailsForm(currentForm);
@@ -70,9 +166,7 @@ const SendParcelScreen = () => {
 
   const _handleSubmitCreditCardForm = async (cardFormValues) => {
     setCreditCardForm(cardFormValues);
-    if (creditCardTokenizationRef) {
-      return creditCardTokenizationRef.current.process(cardFormValues);
-    }
+    return _process(cardFormValues);
   };
 
   const _getParcelRequest = () => ({
@@ -179,11 +273,7 @@ const SendParcelScreen = () => {
               submitForm={_handleSubmitCreditCardForm}
               submitButtonStyle={styles.submitButtonStyle}
             />
-            <CreditCardTokenization
-              ref={creditCardTokenizationRef}
-              sceneToNavigateToOnSuccess="TransactionDetails"
-              saveMethod="update"
-            />
+            {_renderPeachPayments()}
           </View>
         </>
       ),
