@@ -127,6 +127,7 @@ const AddCreditCardScreen = () => {
           initialValues={userCreditCardModel({})}
           submitForm={_onSubmit}
           submitButtonStyle={styles.submitButtonStyle}
+          disabled={false}
         />
       </FormScreenContainer>
       {_renderPeachPayments()}
@@ -142,8 +143,7 @@ const styles = StyleSheet.create({
   },
   submitButtonStyle: {
     alignSelf: 'center',
-    bottom: 0,
-    position: 'absolute',
+    paddingTop: 20,
     width: '95%',
   },
 });

@@ -21,7 +21,6 @@ import {
 } from '../../../reducers/payment-reducer/payment.actions';
 import {
   paymentSelector,
-  setPaymentAction,
   setPaymentsLoadingAction,
 } from '../../../reducers/payment-reducer/payment.reducer';
 import { getServiceFee } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
@@ -47,11 +46,10 @@ const PaymentScreen = ({ route }) => {
   const navigation = useNavigation();
   const peachMobileRef = useRef(null);
   const { serviceFee } = useSelector((state) => state.parcelRequestReducer);
-  const { paymentsLoading, payment, payments = [] } = useSelector(paymentSelector);
+  const { paymentsLoading, payment } = useSelector(paymentSelector);
 
   useEffect(() => {
     if (parcelRequest) dispatch(getServiceFee(_.get(parcelRequest, 'id')));
-    dispatch(getPayments({ payable_id: _.get(card, 'id') }));
   }, []);
 
   const _renderPeachPayment = () => {
@@ -64,7 +62,12 @@ const PaymentScreen = ({ route }) => {
     );
   };
 
+  const _getExistingPayments = (creditCard) => {
+    return dispatch(getPayments({ payable_id: _.get(creditCard, 'id') }));
+  };
+
   const _onPay = async () => {
+    const payments = await _getExistingPayments(card);
     let finalPayment = _.nth(payments, 0);
     if (_.isEmpty(_.get(finalPayment, 'id'))) {
       finalPayment = await dispatch(
@@ -89,13 +92,13 @@ const PaymentScreen = ({ route }) => {
         }),
       ).then((checkoutId) => {
         if (checkoutId) {
-          _createTransaction(checkoutId);
+          _createTransaction(checkoutId, finalPayment);
         }
       });
     }
   };
 
-  const _createTransaction = async (checkoutId) => {
+  const _createTransaction = async (checkoutId, finalPayment) => {
     const cardType = _.get(card, 'cardType');
     if (!_.isNil(card)) {
       _setIsLoading(true);
@@ -109,7 +112,7 @@ const PaymentScreen = ({ route }) => {
           .then((transaction) => {
             peachMobileRef.current
               .submitTransaction(transaction)
-              .then(_finaliseTransaction)
+              .then((response) => _finaliseTransaction(response, finalPayment))
               .catch((error) => {
                 setError(error.message);
                 flashService.error(error.message);
@@ -127,9 +130,9 @@ const PaymentScreen = ({ route }) => {
     }
   };
 
-  const _finaliseTransaction = (response) => {
+  const _finaliseTransaction = (response, finalPayment) => {
     if (response) {
-      const paymentId = _.get(payment, 'id');
+      const paymentId = _.get(finalPayment, 'id');
       return dispatch(completePayment(paymentId)).then((paymentResponse) => {
         return dispatch(getUserTransaction(paymentId)).then((transaction) => {
           const status = _.get(paymentResponse, 'success', false);
