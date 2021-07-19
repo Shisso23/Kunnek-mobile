@@ -38,7 +38,7 @@ const CardsList = ({ items }) => {
   };
 
   const _edit = (card) => {
-    navigation.navigate('EditCreditCard', { card });
+    navigation.navigate('ViewCreditCard', { card });
   };
 
   return (

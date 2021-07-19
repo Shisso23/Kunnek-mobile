@@ -17,7 +17,7 @@ const ParcelPhoto = ({ parcelRequest, style }) => {
       />
     );
   } else {
-    const iconSize = _.get(style, 'height') / 1.44 || 75 / 1.44;
+    const iconSize = _.get(style, 'height', 75) / 1.44;
     return (
       <Icon
         name="box-open"
