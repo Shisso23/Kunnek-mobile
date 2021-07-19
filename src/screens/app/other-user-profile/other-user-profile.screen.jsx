@@ -33,7 +33,7 @@ const OtherUserProfileScreen = ({ route }) => {
   const _renderApproval = () => {
     if (parcelRequest) {
       return (
-        <View style={Layout.center}>
+        <SafeAreaView style={Layout.center}>
           <Button containerStyle={styles.buttonStyle} onPress={_accept} title="Accept" />
           <Button
             containerStyle={styles.buttonStyle}
@@ -42,7 +42,7 @@ const OtherUserProfileScreen = ({ route }) => {
             titleStyle={[styles.clearButtonTextStyle]}
             title="Reject"
           />
-        </View>
+        </SafeAreaView>
       );
     }
   };
