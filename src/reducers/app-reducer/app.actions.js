@@ -12,9 +12,8 @@ import {
   getUserSenderIdAction,
   updateDeviceTokenAction,
 } from '../user-reducer/user.actions';
-import { bankAccountService, firebaseService } from '../../services';
+import { bankAccountService, firebaseService, flashService } from '../../services';
 import { setBanksAction } from './app.reducer';
-import { Alert } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 
 export const initAppAction = () => async (dispatch, getState) => {
@@ -33,10 +32,9 @@ export const initAppAction = () => async (dispatch, getState) => {
   }
 };
 
-export const isAuthenticatedFlowAction = () => (dispatch) => {
-  dispatch(loadAppDataForSignedInUserAction());
-
-  dispatch(setDoneLoadingAppDataAction(true));
+export const isAuthenticatedFlowAction = () => async (dispatch) => {
+  await dispatch(loadAppDataForSignedInUserAction());
+  await dispatch(setDoneLoadingAppDataAction(true));
 
   firebaseService.requestUserPermission().then((token) => {
     const deviceRegistrationToken = _.get(token, 'updateToken');
@@ -44,10 +42,13 @@ export const isAuthenticatedFlowAction = () => (dispatch) => {
       dispatch(updateDeviceTokenAction({ deviceRegistrationToken }));
     }
   });
-  const unsubscribe = messaging().onMessage(async (remoteMessage) => {
-    Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+  const foregroundPushNotification = messaging().onMessage(async (remoteMessage) => {
+    flashService.inbox(
+      _.get(remoteMessage, 'notification.title', 'Kunnek'),
+      _.get(remoteMessage, 'notification.body'),
+    );
   });
-  return unsubscribe;
+  return foregroundPushNotification;
 };
 
 export const loadAppDataAction = () => (dispatch) => Promise.all([dispatch(loadAuthStateAction())]);

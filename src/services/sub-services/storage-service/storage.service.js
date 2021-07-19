@@ -21,15 +21,8 @@ const authStateOperations = {
   removeAuthState: () => removeItem(AUTH_STATE),
 };
 
-const fcmTokenOperations = {
-  getFcmToken: () => getItem(config.fcmTokenKey),
-  storeFcmToken: (token) => saveItem(config.fcmTokenKey, token),
-  removeFcmToken: () => removeItem(config.fcmTokenKey),
-};
-
 export default {
   ...accessTokenOperations,
   ...refreshTokenOperations,
   ...authStateOperations,
-  ...fcmTokenOperations,
 };

@@ -8,8 +8,8 @@ import messaging from '@react-native-firebase/messaging';
 const App = () => {
   const dispatch = useDispatch();
 
-  messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-    console.warn('Message handled in the background!', remoteMessage);
+  messaging().setBackgroundMessageHandler(() => {
+    console.warn('Message handled in the background');
   });
 
   useEffect(() => {
