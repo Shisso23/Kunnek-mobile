@@ -17,9 +17,11 @@ import {
   completePayment,
   createPaymentAction,
   fetchCheckoutId,
+  getPayments,
 } from '../../../reducers/payment-reducer/payment.actions';
 import {
   paymentSelector,
+  setPaymentAction,
   setPaymentsLoadingAction,
 } from '../../../reducers/payment-reducer/payment.reducer';
 import { getServiceFee } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
@@ -45,10 +47,11 @@ const PaymentScreen = ({ route }) => {
   const navigation = useNavigation();
   const peachMobileRef = useRef(null);
   const { serviceFee } = useSelector((state) => state.parcelRequestReducer);
-  const { paymentsLoading, payment } = useSelector(paymentSelector);
+  const { paymentsLoading, payment, payments = [] } = useSelector(paymentSelector);
 
   useEffect(() => {
     if (parcelRequest) dispatch(getServiceFee(_.get(parcelRequest, 'id')));
+    dispatch(getPayments({ payable_id: _.get(card, 'id') }));
   }, []);
 
   const _renderPeachPayment = () => {
@@ -62,23 +65,26 @@ const PaymentScreen = ({ route }) => {
   };
 
   const _onPay = async () => {
-    const finalPayment = await dispatch(
-      createPaymentAction({
-        amount: _.get(parcelRequest, 'amount', totalAmount),
-        status: 'pending',
-        jobId: _.get(parcelRequest, 'id'),
-        payableType: 'Card',
-        payableId: _.get(card, 'id'),
-        paymentType: PAYMENT_TYPES.verification,
-      }),
-    );
+    let finalPayment = _.nth(payments, 0);
+    if (_.isEmpty(_.get(finalPayment, 'id'))) {
+      finalPayment = await dispatch(
+        createPaymentAction({
+          amount: _.get(parcelRequest, 'amount', totalAmount),
+          status: 'pending',
+          jobId: _.get(parcelRequest, 'id'),
+          payableType: 'Card',
+          payableId: _.get(card, 'id'),
+          paymentType: PAYMENT_TYPES.verification,
+        }),
+      );
+    }
     if (successful(finalPayment)) {
       const peachPaymentType =
         retry && !_.isNil(_.get(finalPayment, 'peach_payment_type'))
           ? _.get(finalPayment, 'peach_payment_type')
           : 'DB';
-      await dispatch(
-        fetchCheckoutId(_.get(finalPayment.payload, 'id'), {
+      dispatch(
+        fetchCheckoutId(_.get(finalPayment, 'id'), {
           payment_type: peachPaymentType,
         }),
       ).then((checkoutId) => {
@@ -143,7 +149,7 @@ const PaymentScreen = ({ route }) => {
         });
       });
     } else {
-      throw new Error('Sorry, something went wrong with payment. Please try again.');
+      return Promise.reject('Sorry, something went wrong with payment. Please try again.');
     }
   };
 
