@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PeachMobile from 'react-native-peach-mobile';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Button, Input } from 'react-native-elements';
+import { useNavigation, StackActions } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Colors } from '../../../theme/Variables';
@@ -13,34 +14,53 @@ import PaymentSummary from '../../../components/molecules/payment-summary';
 import { PAYMENT_TYPES } from '../../../services/sub-services/payment-service/payment.service';
 import { flashService } from '../../../services';
 import {
+  completePayment,
   createPaymentAction,
   fetchCheckoutId,
 } from '../../../reducers/payment-reducer/payment.actions';
-import { setPaymentsLoadingAction } from '../../../reducers/payment-reducer/payment.reducer';
+import {
+  paymentSelector,
+  setPaymentsLoadingAction,
+} from '../../../reducers/payment-reducer/payment.reducer';
 import { getServiceFee } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 import { ScreenContainer } from '../../../components';
 import { useTheme } from '../../../theme';
 import Index from '../../../components/atoms/title';
+import { getUserTransaction } from '../../../reducers/user-reducer/user-payments.actions';
 
-const PaymentScreen = ({ isLoading, route, retry = false, payment = {} }) => {
+const PaymentScreen = ({ route }) => {
   const { Fonts, Gutters, Layout } = useTheme();
-  const { message, parcelRequest, totalAmount, paymentType, card } = route.params;
+  const {
+    message,
+    parcelRequest,
+    totalAmount,
+    paymentType,
+    card,
+    sceneToNavigateTo = 'TransactionDetails',
+    retry = false,
+  } = route.params;
   const dispatch = useDispatch();
   const [cvvNumber, setCvvNumber] = useState('');
-  const [peachMobile, setPeachMobile] = useState(undefined);
-  const { checkoutId } = useSelector((state) => state.paymentReducer);
+  const navigation = useNavigation();
+  const peachMobileRef = useRef(null);
   const { serviceFee } = useSelector((state) => state.parcelRequestReducer);
+  const { paymentsLoading, payment } = useSelector(paymentSelector);
 
   useEffect(() => {
-    dispatch(getServiceFee(_.get(parcelRequest, 'id')));
-  }, [parcelRequest]);
+    if (parcelRequest) dispatch(getServiceFee(_.get(parcelRequest, 'id')));
+  }, []);
 
-  const renderPeachPayment = () => (
-    <PeachMobile mode={config.peachPaymentMode} urlScheme="kunnekp2p" ref={setPeachMobile} />
-  );
+  const _renderPeachPayment = () => {
+    return (
+      <PeachMobile
+        mode={config.peachPayments.peachPaymentMode}
+        urlScheme="com.kunnek.payments"
+        ref={peachMobileRef}
+      />
+    );
+  };
 
-  const onPay = async () => {
-    let result = { success: false };
+  const _onPay = async () => {
     const finalPayment = await dispatch(
       createPaymentAction({
         amount: _.get(parcelRequest, 'amount', totalAmount),
@@ -53,56 +73,78 @@ const PaymentScreen = ({ isLoading, route, retry = false, payment = {} }) => {
     );
     if (successful(finalPayment)) {
       const peachPaymentType =
-        retry && !_.isNil(_.get(payment, 'peach_payment_type'))
-          ? _.get(payment, 'peach_payment_type')
+        retry && !_.isNil(_.get(finalPayment, 'peach_payment_type'))
+          ? _.get(finalPayment, 'peach_payment_type')
           : 'DB';
       await dispatch(
-        fetchCheckoutId(_.get(finalPayment, 'id'), {
+        fetchCheckoutId(_.get(finalPayment.payload, 'id'), {
           payment_type: peachPaymentType,
         }),
-      );
-      if (checkoutId !== null) {
-        result = await createTransaction();
+      ).then((checkoutId) => {
+        if (checkoutId) {
+          _createTransaction(checkoutId);
+        }
+      });
+    }
+  };
+
+  const _createTransaction = async (checkoutId) => {
+    const cardType = _.get(card, 'cardType');
+    if (!_.isNil(card)) {
+      _setIsLoading(true);
+      if (peachMobileRef) {
+        PeachMobile.createTransactionWithToken(
+          checkoutId,
+          _.get(card, 'tokenizedCard', ''),
+          cardType === 'MASTERCARD' ? 'MASTER' : cardType,
+          cvvNumber,
+        )
+          .then((transaction) => {
+            peachMobileRef.current
+              .submitTransaction(transaction)
+              .then(_finaliseTransaction)
+              .catch((error) => {
+                flashService.error(error.message);
+              })
+              .finally(() => {
+                _setIsLoading(false);
+              });
+          })
+          .catch((error) => {
+            flashService.error(error.message);
+            _setIsLoading(false);
+          });
       }
     }
-
-    return result;
   };
 
-  const createTransaction = async () => {
-    if (!_.isNil(card)) {
-      setIsLoading(true);
-      PeachMobile.createTransactionWithToken(
-        checkoutId,
-        card.tokenized_card,
-        card.card_type,
-        cvvNumber,
-      )
-        .then((transaction) => {
-          peachMobile
-            .submitTransaction(transaction, config.peachPaymentMode)
-            .then(async (response) => {
-              if (response) {
-                flashService.success('Payment Processing...');
-              } else {
-                flashService.error('Sorry, something went wrong with payment. Please try again.');
-              }
-            })
-            .catch((error) => {
-              flashService.error(error.message);
-            })
-            .finally(() => {
-              setIsLoading(false);
-            });
-        })
-        .catch((error) => {
-          flashService.error(error.message);
-          setIsLoading(false);
+  const _finaliseTransaction = (response) => {
+    if (response) {
+      const paymentId = _.get(payment, 'id');
+      return dispatch(completePayment(paymentId)).then((paymentResponse) => {
+        return dispatch(getUserTransaction(paymentId)).then((transaction) => {
+          const status = _.get(paymentResponse, 'success', false);
+          if (status) {
+            flashService.success('Payment completed successfully');
+            navigation.dispatch(StackActions.popToTop());
+            navigation.navigate(sceneToNavigateTo, { payment: transaction });
+          } else {
+            flashService.error(
+              `Payment was not successful. Please try again. Reason: ${_.get(
+                paymentResponse,
+                'reason',
+                '',
+              )}`,
+            );
+          }
         });
+      });
+    } else {
+      throw new Error('Sorry, something went wrong with payment. Please try again.');
     }
   };
 
-  const setIsLoading = (loading) => {
+  const _setIsLoading = (loading) => {
     dispatch(setPaymentsLoadingAction(loading));
   };
 
@@ -130,11 +172,11 @@ const PaymentScreen = ({ isLoading, route, retry = false, payment = {} }) => {
         <View style={Layout.alignItemsCenter}>
           <View>
             <Text style={styles.headingText}>Payment about to be made</Text>
-            <Button title="Pay" onPress={onPay} loading={isLoading} />
+            <Button title="Pay" onPress={_onPay} loading={paymentsLoading} />
           </View>
         </View>
       </View>
-      {renderPeachPayment()}
+      {_renderPeachPayment()}
     </ScreenContainer>
   );
 };
@@ -143,7 +185,6 @@ PaymentScreen.key = 'paymentScene';
 
 PaymentScreen.propTypes = {
   route: PropTypes.object.isRequired,
-  payment: PropTypes.object.isRequired,
   message: PropTypes.string,
   parcelRequest: PropTypes.object,
   totalAmount: PropTypes.number,

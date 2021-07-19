@@ -1,5 +1,6 @@
 package com.kunnek;
 
+import android.content.Intent;
 import android.os.Bundle;
 import com.zoontek.rnbootsplash.RNBootSplash;
 
@@ -14,6 +15,11 @@ public class MainActivity extends ReactActivity {
   @Override
   protected String getMainComponentName() {
     return "kunnek";
+  }
+
+  @Override
+  public void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
   }
 
   @Override

@@ -12,6 +12,9 @@ export const userTransactionModel = (_apiTransactionModel = {}) => ({
   date: _.get(_apiTransactionModel, 'created_at', false),
   job: _.get(_apiTransactionModel, 'job', false),
   reasonForFailure: _.get(_apiTransactionModel, 'reason_for_failure', true),
+  invoiceNumber: _.get(_apiTransactionModel, 'invoice_number', ''),
+  sender: _.get(_apiTransactionModel, 'sender', {}),
+  driver: _.get(_apiTransactionModel, 'driver', {}),
 });
 
 export const apiUserTransactionModel = (_appPaymentModel = {}) => ({
@@ -30,5 +33,5 @@ export const apiUserTransactionModel = (_appPaymentModel = {}) => ({
   },
 });
 
-export const constructUserTransactionModels = (apiTransactionModel) =>
-  apiTransactionModel.map((transaction) => userTransactionModel(transaction));
+export const constructUserTransactionModels = (apiTransactionModels) =>
+  apiTransactionModels.map((transaction) => userTransactionModel(transaction));

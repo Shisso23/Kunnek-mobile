@@ -16,6 +16,7 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* kunnekTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* kunnekTests.m */; };
 		3458882A0743CA16E90CEB4B /* libPods-kunnek-kunnekTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 491A35DB0A2BB6F96C18EEE5 /* libPods-kunnek-kunnekTests.a */; };
+		596270DC269C7DEB00DD4A23 /* RNPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596270DB269C7DEB00DD4A23 /* RNPlaceholder.swift */; };
 		7E2FDC6674919E230333E877 /* libPods-kunnek-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBEF2B6C02A70DDD7F5795FC /* libPods-kunnek-tvOS.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		910A547E261603DB00BAAA32 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 910A547C261603DB00BAAA32 /* Poppins-Regular.ttf */; };
@@ -59,6 +60,8 @@
 		2D02E4901E0B4A5D006451C7 /* kunnek-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "kunnek-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		491A35DB0A2BB6F96C18EEE5 /* libPods-kunnek-kunnekTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-kunnek-kunnekTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CECFCBE4F7EAE629884A2EF /* Pods-kunnek-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-kunnek-tvOS.release.xcconfig"; path = "Target Support Files/Pods-kunnek-tvOS/Pods-kunnek-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		596270DA269C7DEA00DD4A23 /* kunnek-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "kunnek-Bridging-Header.h"; sourceTree = "<group>"; };
+		596270DB269C7DEB00DD4A23 /* RNPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RNPlaceholder.swift; sourceTree = "<group>"; };
 		70250F29DB6DE9B27ABE3946 /* Pods-kunnek-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-kunnek-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-kunnek-tvOS/Pods-kunnek-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = kunnek/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		910A547C261603DB00BAAA32 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
@@ -187,6 +190,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				596270DB269C7DEB00DD4A23 /* RNPlaceholder.swift */,
 				910A547B2616037A00BAAA32 /* fonts */,
 				13B07FAE1A68108700A75B9A /* kunnek */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -194,6 +198,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				3A1F492DFD70B2186CA20286 /* Pods */,
+				596270DA269C7DEA00DD4A23 /* kunnek-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -319,7 +324,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 9DZ2KAL8RW;
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1250;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -704,6 +709,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				596270DC269C7DEB00DD4A23 /* RNPlaceholder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -744,6 +750,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FDDD2F139BA9A2D94027AE12 /* Pods-kunnek-kunnekTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -767,6 +774,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E330960B97316E33F9576F56 /* Pods-kunnek-kunnekTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = kunnekTests/Info.plist;
@@ -802,6 +810,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kunnek;
 				PRODUCT_NAME = kunnek;
+				SWIFT_OBJC_BRIDGING_HEADER = "kunnek-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -826,6 +835,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.kunnek;
 				PRODUCT_NAME = kunnek;
+				SWIFT_OBJC_BRIDGING_HEADER = "kunnek-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

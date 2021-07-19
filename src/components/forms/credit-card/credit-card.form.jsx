@@ -12,7 +12,14 @@ import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
 import { useTheme } from '../../../theme';
 
-const CreditCardForm = ({ submitForm, onSuccess, initialValues, submitText, disabled }) => {
+const CreditCardForm = ({
+  submitForm,
+  onSuccess,
+  initialValues,
+  submitText,
+  submitButtonStyle,
+  disabled,
+}) => {
   const { Layout } = useTheme();
 
   const validationSchema = Yup.object().shape({
@@ -126,6 +133,16 @@ const CreditCardForm = ({ submitForm, onSuccess, initialValues, submitText, disa
                 keyboardType="numeric"
                 disabled={disabled}
               />
+              <Input
+                containerStyle={styles.halfWidthInput}
+                label="Exp. Date"
+                value={values.expiryDate}
+                onChangeText={handleChange('expiryDate')}
+                onBlur={handleBlur('expiryDate')}
+                placeholder="Exp. Date"
+                errorMessage={error('expiryDate')}
+                keyboardType="numeric"
+              />
             </View>
             {disabled ? null : (
               <>
@@ -140,6 +157,7 @@ const CreditCardForm = ({ submitForm, onSuccess, initialValues, submitText, disa
                     onPress={handleSubmit}
                     loading={isSubmitting}
                     title={submitText ? submitText : 'Complete'}
+                    style={submitButtonStyle}
                   />
                 </SafeAreaView>
               </>
@@ -158,11 +176,13 @@ CreditCardForm.propTypes = {
   containerStyle: ViewPropTypes.style,
   submitText: PropTypes.string,
   disabled: PropTypes.bool,
+  submitButtonStyle: PropTypes.object,
 };
 
 CreditCardForm.defaultProps = {
   onSuccess: () => null,
   containerStyle: {},
+  submitButtonStyle: {},
   submitText: '',
   disabled: false,
 };
