@@ -146,7 +146,7 @@ PODS:
   - GoogleUtilities/UserDefaults (7.5.0):
     - GoogleUtilities/Logger
   - libevent (2.1.12)
-  - lottie-ios (3.1.9)
+  - lottie-ios (3.1.8)
   - lottie-react-native (4.0.2):
     - lottie-ios (~> 3.1.8)
     - React-Core
@@ -343,7 +343,7 @@ PODS:
     - React-Core
   - react-native-webview (11.4.3):
     - React-Core
-  - React-PeachMobile (1.1.6):
+  - React-PeachMobile (1.1.10):
     - React
   - React-RCTActionSheet (0.63.4):
     - React-Core/RCTActionSheetHeaders (= 0.63.4)
@@ -458,6 +458,7 @@ DEPENDENCIES:
   - FlipperKit/SKIOSNetworkPlugin (= 0.87.0)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - lottie-ios (from `../node_modules/lottie-ios`)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -523,7 +524,6 @@ SPEC REPOS:
     - GoogleMaps
     - GoogleUtilities
     - libevent
-    - lottie-ios
     - nanopb
     - OpenSSL-Universal
     - PromisesObjC
@@ -540,6 +540,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  lottie-ios:
+    :path: "../node_modules/lottie-ios"
   lottie-react-native:
     :path: "../node_modules/lottie-react-native"
   RCTRequired:
@@ -648,7 +650,7 @@ SPEC CHECKSUMS:
   GoogleMaps: 32ca02de09de357a10ac773f2c70f1986751392d
   GoogleUtilities: eea970f4a389963963bffe8d8fabe43540678b9c
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  lottie-ios: 3a3758ef5a008e762faec9c9d50a39842f26d124
+  lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   lottie-react-native: 4dff8fe8d10ddef9e7880e770080f4a56121397e
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
@@ -671,7 +673,7 @@ SPEC CHECKSUMS:
   react-native-maps: 2d405b4e8cee0282e4c02bac434d81450dfea877
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   react-native-webview: d749ba1348c17c7225391e84ac4a0c1c90c2c8ee
-  React-PeachMobile: 389abf5334e8e59fbed3b6dbb9a4573b1f434778
+  React-PeachMobile: 2bc639008e80587cf61e20eb3cb52133997b781a
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
   React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b
   React-RCTBlob: a97d378b527740cc667e03ebfa183a75231ab0f0
