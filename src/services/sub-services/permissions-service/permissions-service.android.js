@@ -7,7 +7,7 @@ const requestLocationPermission = async () => {
       {
         title: 'Get Your Location Permission',
         message:
-          'This app needs access to your location so we can show find possible delivery jobs in your area.',
+          'This app needs access to your location so we can find possible delivery jobs in your area.',
         buttonNeutral: 'Ask Me Later',
         buttonNegative: 'Cancel',
         buttonPositive: 'OK',
