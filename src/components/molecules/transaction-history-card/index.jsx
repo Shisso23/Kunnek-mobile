@@ -8,9 +8,12 @@ import PropTypes from 'prop-types';
 
 import useTheme from '../../../theme/hooks/useTheme';
 import StatusBox from '../../atoms/status-box';
+import { getTransactionTypeColour } from '../../../helpers/payment.helper';
+import { useNavigation } from '@react-navigation/core';
 
 const TransactionHistoryCard = ({ items }) => {
   const { Colors, Layout, Gutters } = useTheme();
+  const navigation = useNavigation();
 
   if (_.isEmpty(items)) {
     return null;
@@ -20,6 +23,7 @@ const TransactionHistoryCard = ({ items }) => {
     <TouchableOpacity
       key={`transaction-${_.get(item, 'id')}`}
       style={[Layout.rowCenterSpaceBetween, Gutters.smallVMargin]}
+      onPress={() => _onSelect(item)}
     >
       <View style={[Layout.rowCenterSpaceAround]}>
         <Icon name="user" size={26} color={Colors.primary} />
@@ -28,9 +32,16 @@ const TransactionHistoryCard = ({ items }) => {
           <Text>{moment(_.get(item, 'date', '')).format('D MMMM YYYY, h:mm')}</Text>
         </View>
       </View>
-      <StatusBox color={Colors.primary} status={_.startCase(_.get(item, 'status', ''))} />
+      <StatusBox
+        color={getTransactionTypeColour(item)}
+        status={_.startCase(_.get(item, 'status', ''))}
+      />
     </TouchableOpacity>
   );
+
+  const _onSelect = (item) => {
+    navigation.navigate('TransactionDetails', { payment: item });
+  };
 
   return (
     <SafeAreaView style={[Gutters.smallMargin]}>

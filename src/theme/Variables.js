@@ -27,6 +27,7 @@ export const Colors = {
   lightGrey: '#F7F7FA',
   darkerGrey: '#707070',
   green: '#70FF66',
+  darkGreen: '#2da725',
   orange: '#FFD766',
   darkTangerine: '#FBAD15',
   lynch: '#78849E',
