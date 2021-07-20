@@ -27,6 +27,8 @@ export const parcelRequestModel = (_apiParcelRequestModel = {}) => ({
   status: _.get(_apiParcelRequestModel, 'status', 'In Progress'),
   sender: senderModel(_.get(_apiParcelRequestModel, 'sender', {})),
   deliverer: delivererModel(_.get(_apiParcelRequestModel, 'collector', {})),
+  reviewedBySender: _.get(_apiParcelRequestModel, 'reviewed_by_sender', false),
+  reviewedByDeliverer: _.get(_apiParcelRequestModel, 'reviewed_by_driver', false),
 });
 
 export const apiParcelRequestModel = (_appParcelRequestModel = {}) => {

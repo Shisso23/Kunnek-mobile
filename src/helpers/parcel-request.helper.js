@@ -99,8 +99,13 @@ export const parcelStatusSender = (parcelRequest) => {
   }
   if (parcelStatusNumber === parcelStatus['completed_delivery']) {
     parcelDetailsMessages.review.title = 'Review';
-    parcelDetailsMessages.review.description = 'Review Driver';
-    parcelDetailsMessages.review.interaction = 'Review';
+
+    if (!_.get(parcelRequest, 'reviewedBySender')) {
+      parcelDetailsMessages.review.interaction = 'Review';
+      parcelDetailsMessages.review.description = 'Review Driver';
+    } else {
+      parcelDetailsMessages.review.description = 'Driver reviewed';
+    }
   }
 
   return parcelDetailsMessages;
@@ -194,8 +199,12 @@ export const parcelStatusDeliverer = (parcelRequest) => {
   }
   if (parcelStatusNumber >= parcelStatus['completed_delivery']) {
     parcelDetailsMessages.review.title = 'Review';
-    parcelDetailsMessages.review.description = 'Review Driver';
-    parcelDetailsMessages.review.interaction = 'Review';
+    if (!_.get(parcelRequest, 'reviewedByDeliverer')) {
+      parcelDetailsMessages.review.interaction = 'Review';
+      parcelDetailsMessages.review.description = 'Review Sender';
+    } else {
+      parcelDetailsMessages.review.description = 'Sender reviewed';
+    }
   }
 
   return parcelDetailsMessages;

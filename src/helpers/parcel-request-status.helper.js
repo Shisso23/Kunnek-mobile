@@ -8,10 +8,9 @@ export const parcelStatus = Object.freeze({
   pending_pickup: 4, //driver arrives and initiates pick up
   completed_pickup: 5, //sender confirms pickup
   pending_delivery: 6, //driver initiates delivery (sends OTP)
-  initiated_delivery: 7, //delivery has been initiated but the OTP is required
-  completed_delivery: 8, //driver submits OTP
-  sender_opted_out: 9, //sender cancelled
-  deliverer_opted_out: 10, //driver cancelled
+  completed_delivery: 7, //driver submits OTP
+  sender_opted_out: 8, //sender cancelled
+  deliverer_opted_out: 9, //driver cancelled
 });
 
 export const activeParcelParams = () => {
