@@ -17,6 +17,7 @@ const {
 export default {
   accessTokenKey: 'access_token',
   refreshTokenKey: 'refresh_token',
+  fcmTokenKey: 'fcm_token',
   hostUrl: HOST_URL,
   apiUrl: `${HOST_URL}${API_LOCATION}`,
   clientId: CLIENT_ID,

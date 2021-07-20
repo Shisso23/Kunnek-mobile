@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Index from '../../../components/atoms/title';
 import { useTheme } from '../../../theme';
 import { ScrollView } from 'react-native-gesture-handler';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, SafeAreaView } from 'react-native';
 import { Button, ParcelDetailsFooter, ViewParcelCard } from '../../../components';
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
 import { parcelStatus, progressPackageStatus } from '../../../helpers/parcel-request-status.helper';
@@ -65,7 +65,9 @@ const ViewParcelScreen = ({ route }) => {
       .then(dispatch(setUserParcelRequestsAction(userParcelRequests)));
   };
 
-  const _contact = () => {};
+  const _contact = () => {
+    navigation.navigate('Chat', { parcelRequest: parcelRequest });
+  };
 
   const _deliveryRequest = () => {
     const newStatus = progressPackageStatus(parcelRequest);
@@ -97,9 +99,11 @@ const ViewParcelScreen = ({ route }) => {
       return (
         <>
           <View style={[Layout.fill]} />
-          <Button style={[styles.buttonStyle]} onPress={_deliveryRequest}>
-            Request to deliver
-          </Button>
+          <SafeAreaView>
+            <Button style={[styles.buttonStyle]} onPress={_deliveryRequest}>
+              Request to deliver
+            </Button>
+          </SafeAreaView>
         </>
       );
     }
