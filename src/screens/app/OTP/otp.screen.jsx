@@ -25,7 +25,7 @@ import { progressPackageStatus } from '../../../helpers/parcel-request-status.he
 
 const OTPScreen = ({ route }) => {
   const { Layout, Gutters, Images } = useTheme();
-  const parcelRequest = route.params;
+  const { parcelRequest } = route.params;
   const [otpValue, setOTPValue] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [popUpView, setPopUpView] = useState(false);

@@ -28,14 +28,16 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
 
   const _buttonClick = () => {
     const newStatus = progressPackageStatus(parcelRequest);
-    dispatch(updateParcelStatus(parcelRequest, newStatus));
+    return dispatch(updateParcelStatus(parcelRequest, newStatus));
   };
 
   const _renderOTP = () => {
     if (_.get(parcelRequest, 'status') === 'pending_delivery') {
       navigation.navigate('OTP', parcelRequest);
     } else {
-      _buttonClick();
+      _buttonClick().then((job) => {
+        navigation.navigate('OTP', { parcelRequest: job });
+      });
     }
   };
 

@@ -4,7 +4,6 @@ export const apiReviewTheDriverModel = (_apiReviewModel = {}) => {
   const data = {
     review: {
       text: _.get(_apiReviewModel, 'comment', ''),
-      reviewer_id: _.get(_.get(_apiReviewModel, 'sender', ''), 'userId', ''),
       reviewable_id: _.get(_apiReviewModel, 'id', ''),
       reviewable_type: 'Job',
       rating_options: [
@@ -21,7 +20,7 @@ export const apiReviewTheDriverModel = (_apiReviewModel = {}) => {
           value: _.get(_apiReviewModel, 'conditionOfItem'),
         },
       ],
-      user_type: 'sender',
+      user_type: 'driver',
     },
   };
   return data;
@@ -31,7 +30,6 @@ export const apiReviewTheSenderModel = (_apiReviewModel = {}) => {
   const data = {
     review: {
       text: _.get(_apiReviewModel, 'comment', ''),
-      reviewer_id: _.get(_.get(_apiReviewModel, 'deliverer', ''), 'userId', ''),
       reviewable_id: _.get(_apiReviewModel, 'id', ''),
       reviewable_type: 'Job',
       rating_options: [
@@ -44,7 +42,7 @@ export const apiReviewTheSenderModel = (_apiReviewModel = {}) => {
           value: _.get(_apiReviewModel, 'accurateDescriptionOfParcel'),
         },
       ],
-      user_type: 'collector',
+      user_type: 'sender',
     },
   };
   return data;

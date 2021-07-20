@@ -32,17 +32,17 @@ const ReviewScreen = ({ route }) => {
     if (_isDeliverer()) {
       return {
         type: 'Sender',
-        ..._.get(parcelRequest, 'deliverer'),
+        ..._.get(parcelRequest, 'sender'),
       };
     }
     return {
       type: 'Driver',
-      ..._.get(parcelRequest, 'sender'),
+      ..._.get(parcelRequest, 'deliverer'),
     };
   };
 
   const _handleSubmitReviewForm = (currentForm) => {
-    if (_isDeliverer()) {
+    if (!_isDeliverer()) {
       return dispatch(reviewTheDriver(parcelRequest, currentForm)).then((response) => {
         if (successful(response)) {
           navigation.navigate('Home');
@@ -58,7 +58,7 @@ const ReviewScreen = ({ route }) => {
   };
 
   const _renderReviewForm = () => {
-    if (_.get(_otherUser(), 'type') === 'Driver') {
+    if (!_isDeliverer()) {
       return (
         <ReviewDriverForm
           user={_otherUser()}
