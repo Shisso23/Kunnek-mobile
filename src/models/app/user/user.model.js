@@ -55,3 +55,11 @@ export const apiUpdateUserModel = (_appUserModel = {}) => {
 
   return data;
 };
+
+export const apiUpdateUserDeviceModel = (_appDeviceModel = {}) => {
+  return {
+    user: {
+      device_registration_token: _.get(_appDeviceModel, 'deviceRegistrationToken', ''),
+    },
+  };
+};

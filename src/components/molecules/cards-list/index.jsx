@@ -25,7 +25,7 @@ const CardsList = ({ items }) => {
 
   const _renderItems = () => {
     return _.map(items, (item, index) => (
-      <TouchableOpacity onPress={() => _edit(item)} key={`account-${index}`}>
+      <TouchableOpacity onPress={() => _edit(item)} key={`card-${index}`}>
         <ListItem key={`card-${index}`}>
           {_getIcon(_.get(item, 'cardType', ''))}
           <ListItem.Content>

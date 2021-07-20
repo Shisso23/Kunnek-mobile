@@ -1,14 +1,33 @@
 import _ from 'lodash';
 
 import { flashService, paymentService } from '../../services';
-import { setCheckoutIdAction, setPaymentAction, setPaymentsLoadingAction } from './payment.reducer';
+import {
+  setCheckoutIdAction,
+  setPaymentAction,
+  setPaymentsAction,
+  setPaymentsLoadingAction,
+} from './payment.reducer';
 
-export const createPaymentAction = (data) => async (dispatch) => {
+export const createPaymentAction = (data) => (dispatch) => {
   dispatch(setPaymentsLoadingAction(true));
   return paymentService
     .create(data)
     .then((payment) => {
-      return dispatch(setPaymentAction(payment));
+      dispatch(setPaymentAction(payment));
+      return payment;
+    })
+    .finally(() => {
+      dispatch(setPaymentsLoadingAction(false));
+    });
+};
+
+export const getPayments = (params = {}) => (dispatch) => {
+  dispatch(setPaymentsLoadingAction(true));
+  return paymentService
+    .getPayments(params)
+    .then((payments) => {
+      dispatch(setPaymentsAction(payments));
+      return payments;
     })
     .finally(() => {
       dispatch(setPaymentsLoadingAction(false));

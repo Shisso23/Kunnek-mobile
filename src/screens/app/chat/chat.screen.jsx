@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Text } from 'react-native-elements';
-import { FlatList, View } from 'react-native';
+import { FlatList, View, KeyboardAvoidingView, Platform } from 'react-native';
 import _ from 'lodash';
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
 import { useTheme } from '../../../theme';
 import ProfilePicture from '../../../components/atoms/profile-picture';
-import { StyleSheet } from 'react-native';
 import { ChatBottomDrawer, ChatItem } from '../../../components/molecules';
 import { useInterval } from '../../../services';
 import { getChatAction, sendMessageAction } from '../../../reducers/chat-reducer/chat.actions';
@@ -59,7 +58,11 @@ const ChatScreen = ({ route }) => {
   };
 
   return (
-    <>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={Layout.fill}
+      keyboardVerticalOffset={90}
+    >
       <FlatList
         ListHeaderComponent={_headerComponent}
         data={messages}
@@ -67,10 +70,8 @@ const ChatScreen = ({ route }) => {
         renderItem={_message}
         keyExtractor={(message) => `message-${message.id}`}
       />
-      <View style={styles.bottomDrawer}>
-        <ChatBottomDrawer submitMessage={_sendMessage} />
-      </View>
-    </>
+      <ChatBottomDrawer submitMessage={_sendMessage} />
+    </KeyboardAvoidingView>
   );
 };
 
@@ -84,12 +85,3 @@ ChatScreen.defaultProps = {
 };
 
 export default ChatScreen;
-
-const styles = StyleSheet.create({
-  bottomDrawer: {
-    bottom: 0,
-    left: 0,
-    right: 0,
-    zIndex: 1,
-  },
-});

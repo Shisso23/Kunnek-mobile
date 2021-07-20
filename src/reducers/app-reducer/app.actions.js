@@ -1,4 +1,5 @@
 import RNBootSplash from 'react-native-bootsplash';
+import _ from 'lodash';
 import {
   setDoneLoadingAppDataAction,
   userAuthSelector,
@@ -9,9 +10,11 @@ import {
   getUserAction,
   getUserDelivererIdAction,
   getUserSenderIdAction,
+  updateDeviceTokenAction,
 } from '../user-reducer/user.actions';
-import { bankAccountService } from '../../services';
+import { bankAccountService, firebaseService, flashService } from '../../services';
 import { setBanksAction } from './app.reducer';
+import messaging from '@react-native-firebase/messaging';
 
 export const initAppAction = () => async (dispatch, getState) => {
   const { AUTHENTICATED } = AuthStates;
@@ -20,7 +23,6 @@ export const initAppAction = () => async (dispatch, getState) => {
   try {
     if (authState === AUTHENTICATED) {
       await dispatch(isAuthenticatedFlowAction());
-      dispatch(setDoneLoadingAppDataAction(true));
     }
   } finally {
     setTimeout(() => {
@@ -30,8 +32,24 @@ export const initAppAction = () => async (dispatch, getState) => {
   }
 };
 
-export const isAuthenticatedFlowAction = () => (dispatch) =>
-  dispatch(loadAppDataForSignedInUserAction());
+export const isAuthenticatedFlowAction = () => async (dispatch) => {
+  await dispatch(loadAppDataForSignedInUserAction());
+  await dispatch(setDoneLoadingAppDataAction(true));
+
+  firebaseService.requestUserPermission().then((token) => {
+    const deviceRegistrationToken = _.get(token, 'updateToken');
+    if (deviceRegistrationToken) {
+      dispatch(updateDeviceTokenAction({ deviceRegistrationToken }));
+    }
+  });
+  const foregroundPushNotification = messaging().onMessage(async (remoteMessage) => {
+    flashService.inbox(
+      _.get(remoteMessage, 'notification.title', 'Kunnek'),
+      _.get(remoteMessage, 'notification.body'),
+    );
+  });
+  return foregroundPushNotification;
+};
 
 export const loadAppDataAction = () => (dispatch) => Promise.all([dispatch(loadAuthStateAction())]);
 

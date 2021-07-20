@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList, TouchableOpacity } from 'react-native';
+import { View, FlatList, TouchableOpacity, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import _ from 'lodash';
 import { Text } from 'react-native-elements';
@@ -33,13 +33,13 @@ const TransactionHistoryCard = ({ items }) => {
   );
 
   return (
-    <View style={[Gutters.smallMargin]}>
+    <SafeAreaView style={[Gutters.smallMargin]}>
       <FlatList
         data={items}
         renderItem={_renderTransaction}
         keyExtractor={(item) => `transaction-${_.get(item, 'id')}`}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -9,6 +9,8 @@ target 'kunnek' do
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
   pod 'react-native-google-maps', :path => '../node_modules/react-native-maps'
 
+  pod 'Firebase/Messaging'
+
   use_react_native!(:path => config["reactNativePath"])
 
 

@@ -9,6 +9,7 @@ import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { signOutAction } from '../../../reducers/user-auth-reducer/user-auth.actions';
 import { useTheme } from '../../../theme';
+import { SafeAreaView } from 'react-native';
 
 const { Gutters, Layout, Images, Colors, Custom } = useTheme();
 
@@ -78,11 +79,13 @@ const DrawerContent = (props) => {
           />
         </Drawer.Section>
         <View style={Layout.fill} />
-        <DrawerItem
-          icon={() => <Image source={Images.contactUsIcon} style={styles.icon} />}
-          label="Contact Us"
-          onPress={() => navigation.navigate('ContactUs')}
-        />
+        <SafeAreaView>
+          <DrawerItem
+            icon={() => <Image source={Images.contactUsIcon} style={styles.icon} />}
+            label="Contact Us"
+            onPress={() => navigation.navigate('ContactUs')}
+          />
+        </SafeAreaView>
       </DrawerContentScrollView>
     </View>
   );

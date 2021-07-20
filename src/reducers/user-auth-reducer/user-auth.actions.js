@@ -5,6 +5,7 @@ import { userAuthService } from '../../services';
 import storageService from '../../services/sub-services/storage-service/storage.service';
 import { setAuthStateAction } from './user-auth.reducer';
 import { AuthStates } from './user-auth.enums';
+import { removeDeviceTokenAction } from '../user-reducer/user.actions';
 
 export const signInAction = (signInForm) => async (dispatch) => {
   await userAuthService.signIn(signInForm);
@@ -31,8 +32,10 @@ export const verifySignInOtpAction = ({ numeric }) => async (dispatch) => {
 };
 
 export const signOutAction = () => (dispatch) => {
-  userAuthService.signOut().then(() => {
-    dispatch(storeAuthStateAction(AuthStates.NO_TOKEN));
+  dispatch(removeDeviceTokenAction()).then(() => {
+    userAuthService.signOut().then(() => {
+      dispatch(storeAuthStateAction(AuthStates.NO_TOKEN));
+    });
   });
 };
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ViewPropTypes, View, StyleSheet, TextInput } from 'react-native';
+import { ViewPropTypes, View, StyleSheet, TextInput, SafeAreaView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -110,13 +110,15 @@ const ContactUsForm = ({ submitForm, onSuccess, containerStyle, initialValues })
                 style={[Common.viewCard, Gutters.regularHMargin, styles.inputStyle]}
               />
               <View style={Layout.fill} />
-              <Button
-                title="Submit"
-                onPress={handleSubmit}
-                titleStyle={[styles.texts, styles.buttonTitle]}
-                containerStyle={styles.submitButton}
-                loading={isSubmitting}
-              />
+              <SafeAreaView>
+                <Button
+                  title="Submit"
+                  onPress={handleSubmit}
+                  titleStyle={[styles.texts, styles.buttonTitle]}
+                  containerStyle={styles.submitButton}
+                  loading={isSubmitting}
+                />
+              </SafeAreaView>
             </>
           );
         }}

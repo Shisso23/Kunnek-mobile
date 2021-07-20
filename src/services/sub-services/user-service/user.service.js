@@ -1,5 +1,5 @@
 import authNetworkService from '../auth-network-service/auth-network.service';
-import { userModel, apiUpdateUserModel } from '../../../models';
+import { userModel, apiUpdateUserModel, apiUpdateUserDeviceModel } from '../../../models';
 import userUrls from './user.urls';
 import { objectToFormData } from '../../../helpers/data.helper';
 import _ from 'lodash';
@@ -30,6 +30,21 @@ const updateUser = (formData) => {
     });
 };
 
+const updateDeviceToken = (formData) => {
+  const url = userUrls.userUrl();
+  const apiUser = apiUpdateUserDeviceModel(formData);
+  const _createAndReturnUserModel = (apiResponse) => userModel(apiResponse.data);
+  return authNetworkService
+    .patch(url, apiUser)
+    .then(_createAndReturnUserModel)
+    .catch((error) => {
+      error.errors = userModel(error.errors);
+      // eslint-disable-next-line no-console
+      console.warn(error);
+      return Promise.reject(error);
+    });
+};
+
 const getDelivererId = async () => {
   const url = userUrls.getDelivererId();
   const { data } = await authNetworkService.post(url);
@@ -47,4 +62,5 @@ export default {
   updateUser,
   getSenderId,
   getDelivererId,
+  updateDeviceToken,
 };
