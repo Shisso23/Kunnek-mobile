@@ -84,7 +84,7 @@ export const deleteUserCreditCardAction = (id) => (dispatch, getState) => {
   });
 };
 
-export const editCreditCardAction = (data = {}) => (dispatch, getState) => {
+export const updateUserCreditCardAction = (data = {}) => (dispatch, getState) => {
   dispatch(setCreditCardsLoadingAction(true));
   const id = _.get(data, 'id');
 

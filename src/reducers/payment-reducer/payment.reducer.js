@@ -6,6 +6,9 @@ const reducerName = 'payment';
 const setPayment = CreateAction(reducerName, 'SET_PAYMENT');
 export const setPaymentAction = setPayment.action;
 
+const setPayments = CreateAction(reducerName, 'SET_PAYMENTS');
+export const setPaymentsAction = setPayments.action;
+
 const setPaymentsLoading = CreateAction(reducerName, 'SET_PAYMENTS_LOADING');
 export const setPaymentsLoadingAction = setPaymentsLoading.action;
 
@@ -16,6 +19,7 @@ export const paymentSelector = (reducers) => reducers.paymentReducer;
 
 const initialState = {
   payment: paymentModel(),
+  payments: [],
   paymentsLoading: false,
   checkoutId: undefined,
 };
@@ -26,6 +30,11 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         payment: action.payload,
+      };
+    case setPayments.actionType:
+      return {
+        ...state,
+        payments: action.payload,
       };
     case setPaymentsLoading.actionType:
       return {

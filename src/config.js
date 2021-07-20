@@ -17,6 +17,7 @@ const {
 export default {
   accessTokenKey: 'access_token',
   refreshTokenKey: 'refresh_token',
+  fcmTokenKey: 'fcm_token',
   hostUrl: HOST_URL,
   apiUrl: `${HOST_URL}${API_LOCATION}`,
   clientId: CLIENT_ID,
@@ -36,5 +37,6 @@ export default {
     pp3dEntityId: PP_3D_ENTITY_ID,
     peachPaymentMode: PEACH_PAYMENT_MODE,
     peachPaymentUrl: PEACH_PAYMENT_URL,
+    urlScheme: 'com.kunnek.payments',
   },
 };

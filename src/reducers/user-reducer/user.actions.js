@@ -45,3 +45,13 @@ export const updateUserAction = (data = {}) => (dispatch) => {
     return dispatch(setUserAction(updatedUser));
   });
 };
+
+export const updateDeviceTokenAction = (data = {}) => (dispatch) => {
+  return userService.updateDeviceToken(data).then((updatedUser) => {
+    return dispatch(setUserAction(updatedUser));
+  });
+};
+
+export const removeDeviceTokenAction = () => () => {
+  return userService.updateDeviceToken({ deviceRegistrationToken: '' });
+};

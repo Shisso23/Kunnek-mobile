@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
 import { Button, Text } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
@@ -106,10 +106,12 @@ const TransactionDetailScreen = ({ route }) => {
           />
         </View>
       </ViewCard>
-      <Button
-        title="Download Invoice"
-        containerStyle={[Layout.alignSelfCenter, Gutters.smallPadding, styles.button]}
-      />
+      <SafeAreaView>
+        <Button
+          title="Download Invoice"
+          containerStyle={[Layout.alignSelfCenter, Gutters.smallPadding, styles.button]}
+        />
+      </SafeAreaView>
     </View>
   );
 };

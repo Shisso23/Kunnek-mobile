@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
-import { View } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { TextInput } from 'react-native';
 import { useTheme } from '../../../theme';
 import { Colors } from '../../../theme/Variables';
@@ -29,7 +29,7 @@ const ChatBottomDrawer = ({ submitMessage }) => {
     >
       {({ handleChange, handleSubmit, values }) => {
         return (
-          <View style={[styles.tabContainer, Layout.row, Layout.alignItemsCenter]}>
+          <SafeAreaView style={[styles.tabContainer, Layout.row, Layout.alignItemsCenter]}>
             <TextInput
               value={values.message}
               onChangeText={handleChange('message')}
@@ -44,7 +44,7 @@ const ChatBottomDrawer = ({ submitMessage }) => {
               style={Gutters.smallMargin}
               onPress={handleSubmit}
             />
-          </View>
+          </SafeAreaView>
         );
       }}
     </Formik>

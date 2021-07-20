@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, SafeAreaView } from 'react-native';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
@@ -26,18 +26,20 @@ const ParcelDetailsFooter = (props) => {
   return (
     <>
       <View style={Layout.fill} />
-      <View
-        style={[
-          Layout.row,
-          Layout.justifyContentAround,
-          Common.viewCard,
-          Gutters.regularHMargin,
-          Gutters.largeBMargin,
-          style,
-        ]}
-      >
-        {_renderButtons}
-      </View>
+      <SafeAreaView>
+        <View
+          style={[
+            Layout.row,
+            Layout.justifyContentAround,
+            Common.viewCard,
+            Gutters.regularHMargin,
+            Gutters.largeBMargin,
+            style,
+          ]}
+        >
+          {_renderButtons}
+        </View>
+      </SafeAreaView>
     </>
   );
 };

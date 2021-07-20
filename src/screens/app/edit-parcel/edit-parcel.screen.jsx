@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect, useState } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View, SafeAreaView } from 'react-native';
 import { Button, Divider } from 'react-native-elements';
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
@@ -146,7 +146,7 @@ const EditParcelScreen = ({ route }) => {
   return (
     <FormScreenContainer>
       {_renderPagination()}
-      {_renderItem()}
+      <SafeAreaView>{_renderItem()}</SafeAreaView>
     </FormScreenContainer>
   );
 };

@@ -17,3 +17,4 @@ export { default as tripService } from './sub-services/trip-service/trip.service
 export { default as actionsService } from './sub-services/actions-service/actions.service';
 export { default as queryService } from './sub-services/query-service/query.service';
 export { default as useInterval } from './hooks/useInterval';
+export { default as firebaseService } from './sub-services/firebase-service/firebase-service';
