@@ -112,18 +112,6 @@ const CreditCardForm = ({
             <View style={[Layout.row, Layout.justifyContentAround]}>
               <Input
                 containerStyle={styles.halfWidthInput}
-                label="Exp. Date"
-                value={values.expiryDate}
-                onChangeText={handleChange('expiryDate')}
-                onBlur={handleBlur('expiryDate')}
-                placeholder="Exp. Date"
-                errorMessage={error('expiryDate')}
-                keyboardType="numeric"
-                disabled={disabled}
-              />
-
-              <Input
-                containerStyle={styles.halfWidthInput}
                 label="CVV"
                 value={values.cvv}
                 onChangeText={handleChange('cvv')}
@@ -133,8 +121,19 @@ const CreditCardForm = ({
                 keyboardType="numeric"
                 disabled={disabled}
               />
+              <Input
+                containerStyle={styles.halfWidthInput}
+                label="Exp. Date"
+                value={values.expiryDate}
+                onChangeText={handleChange('expiryDate')}
+                onBlur={handleBlur('expiryDate')}
+                placeholder="Exp. Date"
+                errorMessage={error('expiryDate')}
+                keyboardType="numeric"
+                disabled={disabled}
+              />
             </View>
-            {disabled ? null : (
+            {!disabled && (
               <>
                 <Image
                   source={require('../../../assets/images/powered-by-peach-payments.png')}

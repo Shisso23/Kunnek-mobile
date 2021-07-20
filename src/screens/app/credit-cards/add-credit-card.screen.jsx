@@ -1,52 +1,43 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet } from 'react-native';
 import { Divider } from 'react-native-elements';
-import _ from 'lodash';
-import PeachMobile from 'react-native-peach-mobile';
 
-import {
-  createUserCreditCardAction,
-  getCardRegistrationStatusAction,
-} from '../../../reducers/user-reducer/user-cards.actions';
-import { tokenizeCardModel } from '../../../models/app/credit-card/tokenize-card.model';
-import { successful } from '../../../helpers/errors.helper';
-import { createCheckoutIdAction } from '../../../reducers/user-reducer/user-cards.actions';
 import Index from '../../../components/atoms/title';
 import { FormScreenContainer } from '../../../components';
 import CreditCardForm from '../../../components/forms/credit-card/credit-card.form';
 import { userCreditCardModel } from '../../../models/app/user/user-credit-card.model';
+import PeachMobile from 'react-native-peach-mobile';
+import _ from 'lodash';
 import config from '../../../config';
-import { StyleSheet } from 'react-native';
-import { PAYMENT_TYPES } from '../../../services/sub-services/payment-service/payment.service';
-import { getCurrency } from '../../../helpers/payment.helper';
+import {
+  createCheckoutIdAction,
+  createUserCreditCardAction,
+  getCardRegistrationStatusAction,
+} from '../../../reducers/user-reducer/user-cards.actions';
 import { flashService } from '../../../services';
+import { successful } from '../../../helpers/errors.helper';
+import { getCurrency } from '../../../helpers/payment.helper';
+import { PAYMENT_TYPES } from '../../../services/sub-services/payment-service/payment.service';
+import { tokenizeCardModel } from '../../../models/app/credit-card/tokenize-card.model';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 const AddCreditCardScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const senderId = useSelector((state) => state.userReducer.senderId);
-  const [checkoutID, setCheckoutID] = useState('');
   const peachMobileRef = useRef(null);
+  const senderId = useSelector((state) => state.userReducer.senderId);
+  const [checkoutId, setCheckoutId] = useState('');
 
   useEffect(() => {
     dispatch(createCheckoutIdAction()).then((id) => {
-      setCheckoutID(id);
+      setCheckoutId(id);
     });
   }, []);
 
-  const _openVerificationPaymentScreen = (card) => {
-    navigation.navigate('Payment', {
-      message: `We will make a charge of ${getCurrency()}1.00 on your credit card to verify that your card number and details are correct. This charge will be reversed once successful.`,
-      totalAmount: 1,
-      paymentType: PAYMENT_TYPES.verification,
-      card,
-    });
-  };
-
-  const createTransaction = async (cardModel) => {
+  const _createTransaction = (cardModel) => {
     return PeachMobile.createTransaction(
-      checkoutID,
+      checkoutId,
       '',
       _.get(cardModel, 'cardHolder'),
       _.get(cardModel, 'cardNumber'),
@@ -55,15 +46,21 @@ const AddCreditCardScreen = () => {
       _.get(cardModel, 'cvv'),
     );
   };
-  const submitRegistration = (cardModel, transaction) => {
-    return PeachMobile.submitRegistration(transaction, `${config.peachPayments.peachPaymentMode}`)
-      .then(() => {
-        getCardRegistrationStatus(cardModel);
-      })
-      .catch((error) => console.warn('peach submit registration error', error.message));
+
+  const _submitRegistration = (cardModel, transaction) => {
+    return PeachMobile.submitRegistration(
+      transaction,
+      `${config.peachPayments.peachPaymentMode}`,
+    ).catch((error) => console.warn('peach submit registration error', error.message));
   };
 
-  const createUserCreditCard = (cardModel, tokenizedCard) => {
+  const _getCardRegistrationStatus = () => {
+    return dispatch(getCardRegistrationStatusAction(checkoutId)).then((cardRegStatus) =>
+      _.get(cardRegStatus, 'id', ''),
+    );
+  };
+
+  const _saveCreditCard = (cardModel, tokenizedCard) => {
     const finalData = {
       cardNumber: _.get(cardModel, 'obfuscatedCardNumber'),
       cardType: _.get(cardModel, 'paymentBrand'),
@@ -85,28 +82,40 @@ const AddCreditCardScreen = () => {
       });
   };
 
-  const getCardRegistrationStatus = (cardModel) => {
-    return dispatch(getCardRegistrationStatusAction(checkoutID))
-      .then((cardRegStatus) => {
-        const tokenizedCard = _.get(cardRegStatus, 'id', '');
-        return createUserCreditCard(cardModel, tokenizedCard);
-      })
+  const _openVerificationPaymentScreen = (card) => {
+    navigation.navigate('Payment', {
+      message: `We will make a charge of ${getCurrency()}1.00 on your credit card to verify that your card number and details are correct. This charge will be reversed once successful.`,
+      totalAmount: 1,
+      paymentType: PAYMENT_TYPES.verification,
+      card,
+      sceneToNavigateTo: 'TransactionDetails',
+    });
+  };
+
+  const _process = (cardFormValues) => {
+    const cardModel = tokenizeCardModel(cardFormValues);
+    return _createTransaction(cardModel)
+      .then((transaction) => _submitRegistration(cardModel, transaction))
+      .then(_getCardRegistrationStatus)
+      .then((tokenizedCard) => _saveCreditCard(cardModel, tokenizedCard))
       .catch((error) => {
-        return error;
+        console.warn({ error });
+        flashService.error(error.message);
       });
   };
 
+  const _renderPeachPayments = () => (
+    <>
+      <PeachMobile
+        mode={config.peachPayments.peachPaymentMode}
+        urlScheme={config.peachPayments.urlScheme}
+        ref={peachMobileRef}
+      />
+    </>
+  );
+
   const _onSubmit = async (cardFormValues) => {
-    if (peachMobileRef) {
-      const cardModel = tokenizeCardModel(cardFormValues);
-      return createTransaction(cardModel)
-        .then((transaction) => {
-          return submitRegistration(cardModel, transaction);
-        })
-        .catch((error) => {
-          console.warn({ error });
-        });
-    }
+    return _process(cardFormValues);
   };
 
   return (
@@ -118,13 +127,10 @@ const AddCreditCardScreen = () => {
           initialValues={userCreditCardModel({})}
           submitForm={_onSubmit}
           submitButtonStyle={styles.submitButtonStyle}
+          disabled={false}
         />
       </FormScreenContainer>
-      <PeachMobile
-        mode={config.peachPayments.peachPaymentMode}
-        urlScheme="com.kunnek.payments"
-        ref={peachMobileRef}
-      />
+      {_renderPeachPayments()}
     </>
   );
 };
@@ -137,8 +143,7 @@ const styles = StyleSheet.create({
   },
   submitButtonStyle: {
     alignSelf: 'center',
-    bottom: 0,
-    position: 'absolute',
+    paddingTop: 20,
     width: '95%',
   },
 });

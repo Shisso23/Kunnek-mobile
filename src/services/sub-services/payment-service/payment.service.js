@@ -7,6 +7,7 @@ import {
 import authNetworkService from '../auth-network-service/auth-network.service';
 import paymentUrls from './payment.urls';
 import { apiPaymentModel, paymentModel } from '../../../models/app/user/payment.model';
+import { getParamString } from '../../../helpers/network.helper';
 
 export const PAYMENT_TYPES = {
   verification: 'verification',
@@ -24,6 +25,13 @@ const getTransaction = (paymentId) => {
   const url = paymentUrls.paymentUrl();
   const _createAndReturnModel = (apiResponse) => userTransactionModel(apiResponse.data);
   return authNetworkService.get(`${url}/${paymentId}`).then(_createAndReturnModel);
+};
+
+const getPayments = (params = {}) => {
+  const url = paymentUrls.paymentUrl();
+  return authNetworkService.get(`${url}${getParamString(params)}`).then((apiResponse) => {
+    return constructUserTransactionModels(apiResponse.data);
+  });
 };
 
 const create = (data = {}) => {
@@ -60,6 +68,7 @@ const fetchCheckoutStatus = (paymentId) => {
 export default {
   getTransactions,
   getTransaction,
+  getPayments,
   fetchCheckoutId,
   create,
   completePayment,
