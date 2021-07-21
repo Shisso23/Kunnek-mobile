@@ -15,13 +15,28 @@ import {
   reviewTheSender,
 } from '../../../reducers/reviews-reducer/reviews.actions';
 import { successful } from '../../../helpers/errors.helper';
+import { getParcelRequestAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 const ReviewScreen = ({ route }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+  const [parcelRequest, setParcelRequest] = useState(route.params.parcelRequest);
   const { user } = useSelector(userSelector);
   const { Layout, Gutters, Fonts } = useTheme();
-  const { parcelRequest } = route.params;
+  useEffect(() => {
+    if (typeof parcelRequest === 'string') {
+      dispatch(getParcelRequestAction(parcelRequest)).then((request) => {
+        setParcelRequest(request);
+        setLoading(false);
+      });
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
   const deliverer = _.get(parcelRequest, 'deliverer');
 
   const _isDeliverer = () => {
@@ -77,7 +92,7 @@ const ReviewScreen = ({ route }) => {
     }
   };
 
-  return (
+  return loading ? null : (
     <>
       <Index title={`Review ${_.get(_otherUser(), 'type')}`} />
       <ScrollView Style={Layout.fill} contentContainerStyle={Layout.scrollCenter}>

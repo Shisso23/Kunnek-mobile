@@ -14,12 +14,16 @@ import { useDispatch } from 'react-redux';
 import { progressPackageStatus } from '../../../helpers/parcel-request-status.helper';
 import {
   cancelParcelStatus,
+  getParcelRequestAction,
   updateParcelStatus,
 } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 import { getPublicReviewsAction } from '../../../reducers/reviews-reducer/reviews.actions';
+import { userModel } from '../../../models';
 
 const OtherUserProfileScreen = ({ route }) => {
-  const { user, parcelRequest } = route.params;
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(_.get(route, 'params.user', userModel()));
+  const [parcelRequest, setParcelRequest] = useState(_.get(route, 'params.parcelRequest'));
   const { Common, Layout } = useTheme();
   const [reviews, setReviews] = useState([]);
   const vehicle = _.get(user, 'vehicle', undefined);
@@ -27,7 +31,22 @@ const OtherUserProfileScreen = ({ route }) => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    dispatch(getPublicReviewsAction(user)).then((apiResponse) => setReviews(apiResponse));
+    if (typeof parcelRequest === 'string') {
+      dispatch(getParcelRequestAction(parcelRequest)).then((parcelObject) => {
+        setParcelRequest(parcelObject);
+        const driver = _.get(parcelObject, 'deliverer');
+        setUser(driver);
+        dispatch(getPublicReviewsAction(driver)).then((apiResponse) => {
+          setReviews(apiResponse);
+          setLoading(false);
+        });
+      });
+    } else {
+      dispatch(getPublicReviewsAction(user)).then((apiResponse) => {
+        setReviews(apiResponse);
+        setLoading(false);
+      });
+    }
   }, []);
 
   const _renderApproval = () => {
@@ -60,7 +79,7 @@ const OtherUserProfileScreen = ({ route }) => {
     });
   };
 
-  return (
+  return loading ? null : (
     <ParallaxView user={user}>
       <View style={[Common.bottomDrawer]}>
         <View style={[Layout.rowCenterSpaceBetween]}>

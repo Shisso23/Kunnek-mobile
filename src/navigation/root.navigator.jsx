@@ -8,10 +8,32 @@ import AppNavigator from './app/app.navigator';
 import { isAuthenticatedSelector } from '../reducers/user-auth-reducer/user-auth.reducer';
 
 const RootStack = createStackNavigator();
+
 const AppContainer = () => {
   const isAuthenticated = useSelector(isAuthenticatedSelector);
+
+  const config = {
+    screens: {
+      APP: {
+        screens: {
+          ParcelRequests: 'my-parcels',
+          ParcelRequestsDeliveries: 'my-deliveries',
+          MyReviews: 'my-reviews',
+          Review: 'review/:parcelRequest/:ratingType',
+          UserDetails: 'accept-request-from-deliverer/:parcelRequest',
+          Chat: 'chat/:chatId',
+          ParcelDetails: 'confirm/:parcelRequest/:flowType',
+        },
+      },
+    },
+  };
+
+  const linking = {
+    prefixes: ['https://kunnekp2p.com'],
+    config,
+  };
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <RootStack.Navigator screenOptions={{ headerShown: false }}>
         {isAuthenticated ? (
           <RootStack.Screen name="APP" component={AppNavigator} />

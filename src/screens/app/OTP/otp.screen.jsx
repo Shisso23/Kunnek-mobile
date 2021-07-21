@@ -48,7 +48,7 @@ const OTPScreen = ({ route }) => {
       if (result === true) {
         const newStatus = progressPackageStatus(parcelRequest);
         dispatch(updateParcelStatus(parcelRequest, newStatus));
-        navigation.navigate('ParcelDetails', parcelRequest);
+        navigation.navigate('ParcelDetails', { parcelRequest });
       }
       setErrorMessage('please fill in the correct OTP');
     });

@@ -150,3 +150,9 @@ export const getServiceFee = (parcelRequestId) => (dispatch) => {
       dispatch(setParcelRequestLoadingAction(false));
     });
 };
+
+export const getParcelRequestAction = (parcelRequestId) => () => {
+  return parcelRequestService.get(parcelRequestId).then((response) => {
+    return response;
+  });
+};
