@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, SafeAreaView } from 'react-native';
-import { Button, Text } from 'react-native-elements';
+import { View, StyleSheet } from 'react-native';
+import { Text } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -15,7 +15,7 @@ import StatusBox from '../../../components/atoms/status-box/index';
 
 const TransactionDetailScreen = ({ route }) => {
   const { payment } = route.params;
-  const { Custom, Common, Layout, Gutters, Colors } = useTheme();
+  const { Custom, Common, Layout, Gutters } = useTheme();
   const { user } = useSelector(userSelector);
   const paymentStatus = _.get(payment, 'status', '');
 
@@ -109,12 +109,6 @@ TransactionDetailScreen.defaultProps = {};
 
 const styles = StyleSheet.create({
   amount: { fontSize: 25 },
-  button: {
-    borderRadius: 8,
-    bottom: 15,
-    position: 'absolute',
-    width: '90%',
-  },
   container: { flex: 1 },
   paymentStatus: { borderRadius: 5 },
   profilePicture: {

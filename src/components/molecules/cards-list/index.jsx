@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import _ from 'lodash';
-import { ListItem, Text } from 'react-native-elements';
+import { Badge, ListItem, Text } from 'react-native-elements';
 import PropTypes from 'prop-types';
 
 import useTheme from '../../../theme/hooks/useTheme';
@@ -24,18 +24,27 @@ const CardsList = ({ items }) => {
   };
 
   const _renderItems = () => {
-    return _.map(items, (item, index) => (
-      <TouchableOpacity onPress={() => _edit(item)} key={`card-${index}`}>
-        <ListItem key={`card-${index}`}>
-          {_getIcon(_.get(item, 'cardType', ''))}
-          <ListItem.Content>
-            <ListItem.Title>{_.get(item, 'cardNumber', '')}</ListItem.Title>
-          </ListItem.Content>
-          <ListItem.Chevron />
-        </ListItem>
-      </TouchableOpacity>
-    ));
+    return _.map(items, (item, index) => {
+      const isDefault = _.get(item, 'default');
+      return (
+        <TouchableOpacity onPress={() => _edit(item)} key={`card-${index}`}>
+          <ListItem key={`card-${index}`}>
+            {_getIcon(_.get(item, 'cardType', ''))}
+            <ListItem.Content>
+              <ListItem.Title>{_.get(item, 'cardNumber', '')}</ListItem.Title>
+            </ListItem.Content>
+            {isDefault && (
+              <ListItem.Content>
+                <Badge value="Default" />
+              </ListItem.Content>
+            )}
+            <ListItem.Chevron />
+          </ListItem>
+        </TouchableOpacity>
+      );
+    });
   };
+
   const _edit = (card) => {
     navigation.navigate('ViewCreditCard', { card });
   };

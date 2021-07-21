@@ -1,7 +1,11 @@
 import _ from 'lodash';
 import { updateObjectArray } from '../../helpers/data.helper';
 import { bankAccountService, flashService } from '../../services';
-import { setBankAccountsLoadingAction, setUserBankAccountsAction } from './user.reducer';
+import {
+  setBankAccountsLoadingAction,
+  setCreditCardsLoadingAction,
+  setUserBankAccountsAction,
+} from './user.reducer';
 
 export const getUserBankAccountsAction = () => async (dispatch) => {
   dispatch(setBankAccountsLoadingAction(true));
@@ -30,14 +34,20 @@ export const createUserBankAccountsAction = (data = {}) => (dispatch, getState) 
 };
 
 export const deleteUserBankAccountAction = (id) => (dispatch, getState) => {
-  return bankAccountService.deleteBankAccount(id).then(() => {
-    const { bankAccounts } = getState().userReducer;
+  dispatch(setBankAccountsLoadingAction(true));
+  return bankAccountService
+    .deleteBankAccount(id)
+    .then(() => {
+      const { bankAccounts } = getState().userReducer;
 
-    _.remove(bankAccounts, (account) => {
-      return _.get(account, 'id') === id;
+      _.remove(bankAccounts, (account) => {
+        return _.get(account, 'id') === id;
+      });
+      return dispatch(setUserBankAccountsAction(bankAccounts));
+    })
+    .finally(() => {
+      dispatch(setBankAccountsLoadingAction(false));
     });
-    return dispatch(setUserBankAccountsAction(bankAccounts));
-  });
 };
 
 export const editUserBankAccountsAction = (data = {}) => (dispatch, getState) => {
@@ -52,6 +62,20 @@ export const editUserBankAccountsAction = (data = {}) => (dispatch, getState) =>
       return dispatch(
         setUserBankAccountsAction(updateObjectArray(bankAccounts, changedBankAccount)),
       );
+    })
+    .finally(() => {
+      dispatch(setBankAccountsLoadingAction(false));
+    });
+};
+
+export const setDefaultBankAccountAction = (id) => (dispatch) => {
+  dispatch(setBankAccountsLoadingAction(true));
+
+  return bankAccountService
+    .setBankAccountDefault(id)
+    .then((changedBankAccount) => {
+      flashService.success('Bank account successfully set to default.');
+      return changedBankAccount;
     })
     .finally(() => {
       dispatch(setBankAccountsLoadingAction(false));
