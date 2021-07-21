@@ -8,7 +8,7 @@ import useTheme from '../../theme/hooks/useTheme';
 import { CustomDrawer } from '../../components/molecules';
 
 import SendParcelScreen from '../../screens/app/send-parcel/send-parcel.screen';
-import TransactionHistoryScreen from '../../screens/app/history/history.screen';
+import TransactionHistoryScreen from '../../screens/app/transaction-history/transaction-history.screen';
 import AddVehicleScreen from '../../screens/app/vehicles/add-vehicle.screen';
 import NotificationHistoryScreen from '../../screens/app/notifications/notifications.screen';
 import PaymentScreen from '../../screens/app/payment/payment.screen';

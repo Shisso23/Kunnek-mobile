@@ -10,7 +10,7 @@ import ViewCard from '../../../components/molecules/view-card/index';
 import useTheme from '../../../theme/hooks/useTheme';
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
 import ProfilePicture from '../../../components/atoms/profile-picture/index';
-import { getCurrency } from '../../../helpers/payment.helper';
+import { getCurrency, getTransactionTypeColour } from '../../../helpers/payment.helper';
 import StatusBox from '../../../components/atoms/status-box/index';
 
 const TransactionDetailScreen = ({ route }) => {
@@ -94,24 +94,9 @@ const TransactionDetailScreen = ({ route }) => {
           </Text>
         </View>
         <View style={[Layout.colCenter, styles.paymentStatus]}>
-          <StatusBox
-            color={
-              paymentStatus === 'paid'
-                ? Colors.primary
-                : paymentStatus === 'pending'
-                ? Colors.warning
-                : Colors.error
-            }
-            status={paymentStatus}
-          />
+          <StatusBox color={getTransactionTypeColour(payment)} status={paymentStatus} />
         </View>
       </ViewCard>
-      <SafeAreaView>
-        <Button
-          title="Download Invoice"
-          containerStyle={[Layout.alignSelfCenter, Gutters.smallPadding, styles.button]}
-        />
-      </SafeAreaView>
     </View>
   );
 };
