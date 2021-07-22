@@ -39,7 +39,7 @@ const AccountsList = ({ items }) => {
   };
 
   const _edit = (bankAccount) => {
-    navigation.navigate('EditBankAccount', { bankAccount });
+    navigation.navigate('ViewBankAccount', { bankAccount });
   };
 
   return (

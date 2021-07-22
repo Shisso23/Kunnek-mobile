@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
 import { SafeAreaView, View } from 'react-native';
-import { Button, Divider } from 'react-native-elements';
+import { Button, Divider, Text } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -160,20 +160,28 @@ const ViewCreditCardScreen = ({ route }) => {
       <View style={Layout.fill} />
       <SafeAreaView>
         {!_.get(card, 'default', false) && (
-          <Button
-            onPress={_setAsDefault}
-            title={'Set As Default'}
-            loading={creditCardsLoading}
-            containerStyle={styles.buttonStyle}
-          />
+          <>
+            <Button
+              onPress={_setAsDefault}
+              title={'Set As Default'}
+              loading={creditCardsLoading}
+              containerStyle={styles.buttonStyle}
+            />
+            <Button
+              onPress={_delete}
+              title={'Delete'}
+              loading={creditCardsLoading}
+              containerStyle={styles.buttonStyle}
+              buttonStyle={styles.deleteButtonStyle}
+            />
+          </>
         )}
-        <Button
-          onPress={_delete}
-          title={'Delete'}
-          loading={creditCardsLoading}
-          containerStyle={styles.buttonStyle}
-          buttonStyle={styles.deleteButtonStyle}
-        />
+        {_.get(card, 'default', false) && (
+          <Text>
+            Please note, you cannot delete your default Credit Card. Please create another one and
+            make that credit card your default card. You can then remove this card.
+          </Text>
+        )}
       </SafeAreaView>
       {_renderPeachPayments()}
     </FormScreenContainer>

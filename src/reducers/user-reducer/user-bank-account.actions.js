@@ -3,7 +3,6 @@ import { updateObjectArray } from '../../helpers/data.helper';
 import { bankAccountService, flashService } from '../../services';
 import {
   setBankAccountsLoadingAction,
-  setCreditCardsLoadingAction,
   setUserBankAccountsAction,
 } from './user.reducer';
 

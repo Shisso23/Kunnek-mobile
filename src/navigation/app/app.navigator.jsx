@@ -24,12 +24,12 @@ import ChatScreen from '../../screens/app/chat/chat.screen';
 import DeliverParcelScreen from '../../screens/app/deliver-parcel/deliver-parcel.screen';
 import AddBankAccountScreen from '../../screens/app/bank-accounts/add-bank-account.screen';
 import EditVehicleScreen from '../../screens/app/vehicles/edit-vehicle.screen';
-import EditBankAccountScreen from '../../screens/app/bank-accounts/edit-bank-account.screen';
+import ViewBankAccountScreen from '../../screens/app/bank-accounts/view-bank-account.screen';
 import MyReviewsScreen from '../../screens/app/my-reviews/my-reviews.screen';
 import EditProfileScreen from '../../screens/app/profile/edit-profile.screen';
 import AddCreditCardScreen from '../../screens/app/credit-cards/add-credit-card.screen';
 import ViewParcelScreen from '../../screens/app/view-parcel/view-parcel.screen';
-import ViewCreditCardScreen from '../../screens/app/credit-cards/edit-credit-card.screen';
+import ViewCreditCardScreen from '../../screens/app/credit-cards/view-credit-card.screen';
 
 const Drawer = createDrawerNavigator();
 const AppStack = createStackNavigator();
@@ -54,7 +54,7 @@ const AppNavigator = () => {
       <AppStack.Screen name="AddVehicle" component={AddVehicleScreen} />
       <AppStack.Screen name="EditVehicle" component={EditVehicleScreen} />
       <AppStack.Screen name="AddBankAccount" component={AddBankAccountScreen} />
-      <AppStack.Screen name="EditBankAccount" component={EditBankAccountScreen} />
+      <AppStack.Screen name="ViewBankAccount" component={ViewBankAccountScreen} />
       <AppStack.Screen name="AddCreditCard" component={AddCreditCardScreen} />
       <AppStack.Screen name="ViewCreditCard" component={ViewCreditCardScreen} />
       <AppStack.Screen name="Payment" component={PaymentScreen} />
