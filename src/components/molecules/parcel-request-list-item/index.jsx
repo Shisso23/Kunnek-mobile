@@ -51,7 +51,7 @@ const ParcelRequestListItem = ({ parcelRequest }) => {
         <TouchableOpacity
           style={[styles.parcelRequestListItem, Layout.row, Layout.justifyContentBetween]}
           onPress={() => {
-            navigation.navigate('ParcelDetails', parcelRequest);
+            navigation.navigate('ParcelDetails', { parcelRequest });
           }}
         >
           <ParcelPhoto parcelRequest={parcelRequest} />

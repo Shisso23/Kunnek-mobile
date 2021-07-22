@@ -7,12 +7,25 @@ import {
 import authNetworkService from '../auth-network-service/auth-network.service';
 import chatUrls from './chat.urls';
 
-const getChat = (id) => {
+const createOrGetChat = (id) => {
   const url = chatUrls.newChatUrl();
   const dataModel = apiChatModel({ id });
   const _createAndReturnModel = (apiResponse) => chatModel(apiResponse.data);
   return authNetworkService
     .post(url, dataModel)
+    .then(_createAndReturnModel)
+    .catch((error) => {
+      // eslint-disable-next-line no-console
+      console.warn(error);
+      return Promise.reject(error);
+    });
+};
+
+const getChat = (id) => {
+  const url = chatUrls.chatsUrl();
+  const _createAndReturnModel = (apiResponse) => chatModel(apiResponse.data);
+  return authNetworkService
+    .get(`${url}/${id}`)
     .then(_createAndReturnModel)
     .catch((error) => {
       // eslint-disable-next-line no-console
@@ -37,6 +50,7 @@ const sendMessage = (data = {}) => {
 };
 
 export default {
+  createOrGetChat,
   getChat,
   sendMessage,
 };

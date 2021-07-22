@@ -9,36 +9,48 @@ import { useTheme } from '../../../theme';
 import ProfilePicture from '../../../components/atoms/profile-picture';
 import { ChatBottomDrawer, ChatItem } from '../../../components/molecules';
 import { useInterval } from '../../../services';
-import { getChatAction, sendMessageAction } from '../../../reducers/chat-reducer/chat.actions';
+import {
+  createOrGetChatAction,
+  getChatAction,
+  sendMessageAction,
+} from '../../../reducers/chat-reducer/chat.actions';
 
 const ChatScreen = ({ route }) => {
-  const { parcelRequest } = route.params;
+  const { parcelRequest, chatId } = route.params;
   const chattableId = _.get(parcelRequest, 'id');
   const { user } = useSelector(userSelector);
   const { Layout, Fonts, Gutters } = useTheme();
   const [chat, setChat] = useState({});
   const [messages, setMessages] = useState([]);
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(getChatAction(chattableId)).then((response) => {
-      setChat(response);
-      setMessages(response.messages);
-    });
+    if (chatId) {
+      dispatch(getChatAction(chatId)).then((response) => {
+        setChat(response);
+        setMessages(response.messages);
+        setLoading(false);
+      });
+    } else {
+      dispatch(createOrGetChatAction(chattableId)).then((response) => {
+        setChat(response);
+        setMessages(response.messages);
+        setLoading(false);
+      });
+    }
   }, []);
 
   useInterval(() => {
-    dispatch(getChatAction(chattableId)).then((response) => {
+    dispatch(createOrGetChatAction(chattableId)).then((response) => {
       if (response.messages.length !== messages.length) setMessages(response.messages);
     });
   }, 5000);
 
   const _getOtherUser = () => {
-    if (_.get(_.get(parcelRequest, 'sender', {}), 'userId') === _.get(user, 'id')) {
-      return _.get(parcelRequest, 'deliverer', {});
-    } else {
-      return user;
-    }
+    const users = _.get(chat, 'users', []);
+    const otherUser = _.find(users, (chatUser) => _.get(chatUser, 'id') !== _.get(user, 'id'));
+    return otherUser;
   };
 
   const _headerComponent = () => (
@@ -57,7 +69,7 @@ const ChatScreen = ({ route }) => {
     });
   };
 
-  return (
+  return loading ? null : (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={Layout.fill}

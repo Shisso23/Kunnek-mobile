@@ -104,7 +104,7 @@ export const updateUserCreditCardAction = (data = {}) => (dispatch, getState) =>
     .finally(() => dispatch(setCreditCardsLoadingAction(false)));
 };
 
-export const setDefaultCreditCardAction = (id, card = {}) => (dispatch, getState) => {
+export const setDefaultCreditCardAction = (id, card = {}) => (dispatch) => {
   dispatch(setCreditCardsLoadingAction(true));
 
   return creditCardService

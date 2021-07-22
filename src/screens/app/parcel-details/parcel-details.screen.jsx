@@ -17,19 +17,36 @@ import {
 } from '../../../components';
 import { parcelStatus } from '../../../helpers/parcel-request-status.helper';
 import { userSelector } from '../../../reducers/user-reducer/user.reducer';
-import { checkParcelRequestAction } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
+import {
+  checkParcelRequestAction,
+  getParcelRequestAction,
+} from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 import { useInterval } from '../../../services';
 import { parcelRequestSelector } from '../../../reducers/parcel-request-reducer/parcel-request.reducer';
+import { useEffect } from 'react';
 
 const ParcelDetailsScreen = ({ route }) => {
   const { Layout, Images } = useTheme();
-  const parcelRequest = route.params;
+  const { parcelRequest } = route.params;
   const deliverer = _.get(parcelRequest, 'deliverer');
   const { user } = useSelector(userSelector);
   const dispatch = useDispatch();
   const [parcelRequestUpdated, updateParcelRequest] = useState(parcelRequest);
   const parcelStatusIndex = parcelStatus[_.get(parcelRequestUpdated, 'status')];
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (typeof parcelRequest === 'string') {
+      dispatch(getParcelRequestAction(parcelRequest)).then((response) => {
+        navigation.setParams({ parcelRequest: response });
+        updateParcelRequest(response);
+        setLoading(false);
+      });
+    } else {
+      setLoading(false);
+    }
+  }, []);
 
   const { userParcelRequests } = useSelector(parcelRequestSelector);
 
@@ -112,7 +129,7 @@ const ParcelDetailsScreen = ({ route }) => {
     }
   };
 
-  return (
+  return loading ? null : (
     <>
       <Index title="Parcel Details" />
       <ScrollView style={[Layout.fill]} contentContainerStyle={styles.fillScreen}>

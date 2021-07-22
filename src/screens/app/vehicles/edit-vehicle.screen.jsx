@@ -23,7 +23,7 @@ const EditVehicleScreen = ({ route }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { vehicle } = route.params;
-  const {vehiclesLoading = false} = useSelector(userSelector);
+  const { vehiclesLoading = false } = useSelector(userSelector);
 
   const _handleSubmit = (currentForm) => {
     return dispatch(editVehicleAction(currentForm))

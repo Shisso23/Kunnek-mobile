@@ -1,10 +1,7 @@
 import _ from 'lodash';
 import { updateObjectArray } from '../../helpers/data.helper';
 import { bankAccountService, flashService } from '../../services';
-import {
-  setBankAccountsLoadingAction,
-  setUserBankAccountsAction,
-} from './user.reducer';
+import { setBankAccountsLoadingAction, setUserBankAccountsAction } from './user.reducer';
 
 export const getUserBankAccountsAction = () => async (dispatch) => {
   dispatch(setBankAccountsLoadingAction(true));

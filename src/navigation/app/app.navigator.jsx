@@ -48,6 +48,7 @@ const AppNavigator = () => {
       <AppStack.Screen name="EditParcel" component={EditParcelScreen} />
       <AppStack.Screen name="ViewParcel" component={ViewParcelScreen} />
       <AppStack.Screen name="ParcelRequests" component={ParcelRequestsScreen} />
+      <AppStack.Screen name="ParcelRequestsDeliveries" component={ParcelRequestsScreen} />
       <AppStack.Screen name="ParcelDetails" component={ParcelDetailsScreen} />
       <AppStack.Screen name="TransactionHistory" component={TransactionHistoryScreen} />
       <AppStack.Screen name="NotificationHistory" component={NotificationHistoryScreen} />

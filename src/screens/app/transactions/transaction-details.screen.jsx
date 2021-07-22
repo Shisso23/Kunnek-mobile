@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-elements';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -12,17 +12,33 @@ import { userSelector } from '../../../reducers/user-reducer/user.reducer';
 import ProfilePicture from '../../../components/atoms/profile-picture/index';
 import { getCurrency, getTransactionTypeColour } from '../../../helpers/payment.helper';
 import StatusBox from '../../../components/atoms/status-box/index';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { getTransaction } from '../../../reducers/payment-reducer/payment.actions';
 
 const TransactionDetailScreen = ({ route }) => {
-  const { payment } = route.params;
+  const [payment, setPayment] = useState(_.get(route, 'params.payment'));
+  const [loading, setLoading] = useState(true);
   const { Custom, Common, Layout, Gutters } = useTheme();
   const { user } = useSelector(userSelector);
   const paymentStatus = _.get(payment, 'status', '');
+  const dispatch = useDispatch();
 
   const amount = _.get(payment, 'amount', 0);
   const displayAmount = parseInt(amount).toFixed(2);
 
-  return (
+  useEffect(() => {
+    if (typeof payment === 'string') {
+      dispatch(getTransaction(payment)).then((paymentModel) => {
+        setPayment(paymentModel);
+        setLoading(false);
+      });
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  return loading ? null : (
     <View style={[Gutters.smallHMargin, styles.container]}>
       <Text style={[Custom.headerTitle]}>Transaction Details</Text>
       <View style={[Layout.alignSelfCenter, Layout.alignItemsCenter, Gutters.regularTMargin]}>
