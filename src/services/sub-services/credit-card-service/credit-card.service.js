@@ -10,7 +10,6 @@ import creditCardUrls from './credit-card.urls';
 import paymentUrls from '../payment-service/payment.urls';
 import appConfig from '../../../config';
 import networkService from '../network-service/network.service';
-import vehicleUrls from '../vehicle-service/vehicle.urls';
 
 const getCreditCards = async () => {
   const url = creditCardUrls.cardsUrl();
@@ -71,7 +70,7 @@ const deleteCreditCard = (id) => {
 };
 
 const updateCreditCard = (id, data = {}) => {
-  const url = vehicleUrls.cardsUrl();
+  const url = creditCardUrls.cardsUrl();
   const dataModel = apiUserCreditCardModel(data);
   return authNetworkService
     .patch(`${url}/${id}`, dataModel)

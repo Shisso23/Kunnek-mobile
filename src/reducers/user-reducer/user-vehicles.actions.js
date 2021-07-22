@@ -30,15 +30,20 @@ export const createVehicleAction = (data = {}) => (dispatch, getState) => {
 };
 
 export const deleteVehicleAction = (id) => (dispatch, getState) => {
-  return vehicleService.deleteVehicle(id).then(() => {
-    const { vehicles } = getState().userReducer;
+  dispatch(setVehiclesLoadingAction(true));
 
-    _.remove(vehicles, (vehicle) => {
-      return _.get(vehicle, 'id') === id;
-    });
+  return vehicleService
+    .deleteVehicle(id)
+    .then(() => {
+      const { vehicles } = getState().userReducer;
 
-    return dispatch(setUserVehiclesAction(vehicles));
-  });
+      _.remove(vehicles, (vehicle) => {
+        return _.get(vehicle, 'id') === id;
+      });
+
+      return dispatch(setUserVehiclesAction(vehicles));
+    })
+    .finally(() => dispatch(setVehiclesLoadingAction(false)));
 };
 
 export const editVehicleAction = (data = {}) => (dispatch, getState) => {

@@ -3,11 +3,11 @@ import { PermissionsAndroid } from 'react-native';
 const requestLocationPermission = async () => {
   try {
     const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
       {
-        title: 'Get Your Location Permission',
+        title: 'Please allow access to your location',
         message:
-          'This app needs access to your location so we can find possible delivery jobs in your area.',
+          "We use your device's location to provide you with accurate delivery jobs in your area. Your device's location will only be used in the background for tracking if you give the app permission. Background location access will only be required for tracking the driver and will only be requested when it is needed.",
         buttonNeutral: 'Ask Me Later',
         buttonNegative: 'Cancel',
         buttonPositive: 'OK',

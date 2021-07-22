@@ -97,7 +97,6 @@ const CreditCardForm = ({
               errorMessage={error('cardHolder')}
               disabled={disabled}
             />
-
             <Input
               value={values.cardNumber}
               label="Card Number"
@@ -108,7 +107,6 @@ const CreditCardForm = ({
               keyboardType="number-pad"
               disabled={disabled}
             />
-
             <View style={[Layout.row, Layout.justifyContentAround]}>
               <Input
                 containerStyle={styles.halfWidthInput}
@@ -129,18 +127,16 @@ const CreditCardForm = ({
                 onBlur={handleBlur('expiryDate')}
                 placeholder="Exp. Date"
                 errorMessage={error('expiryDate')}
-                keyboardType="numeric"
                 disabled={disabled}
               />
             </View>
-            {!disabled && (
-              <>
-                <Image
-                  source={require('../../../assets/images/powered-by-peach-payments.png')}
-                  containerStyle={styles.peachPaymentsImage}
-                />
-                <View style={Layout.fill} />
-
+            <>
+              <Image
+                source={require('../../../assets/images/powered-by-peach-payments.png')}
+                containerStyle={styles.peachPaymentsImage}
+              />
+              <View style={Layout.fill} />
+              {!disabled && (
                 <SafeAreaView>
                   <Button
                     onPress={handleSubmit}
@@ -149,8 +145,8 @@ const CreditCardForm = ({
                     style={submitButtonStyle}
                   />
                 </SafeAreaView>
-              </>
-            )}
+              )}
+            </>
           </>
         );
       }}

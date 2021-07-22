@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
 import { SafeAreaView, View } from 'react-native';
-import { Button, Divider } from 'react-native-elements';
+import { Button, Divider, Text } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -13,6 +13,7 @@ import {
   createCheckoutIdAction,
   deleteUserCreditCardAction,
   getCardRegistrationStatusAction,
+  setDefaultCreditCardAction,
   updateUserCreditCardAction,
 } from '../../../reducers/user-reducer/user-cards.actions';
 import CreditCardForm from '../../../components/forms/credit-card/credit-card.form';
@@ -25,13 +26,14 @@ import { successful } from '../../../helpers/errors.helper';
 import { getCurrency } from '../../../helpers/payment.helper';
 import { PAYMENT_TYPES } from '../../../services/sub-services/payment-service/payment.service';
 import { tokenizeCardModel } from '../../../models/app/credit-card/tokenize-card.model';
+import { userSelector } from '../../../reducers/user-reducer/user.reducer';
 
 const ViewCreditCardScreen = ({ route }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { card } = route.params;
   const peachMobileRef = useRef(null);
-  const senderId = useSelector((state) => state.userReducer.senderId);
+  const { senderId, creditCardsLoading = false } = useSelector(userSelector);
   const [checkoutId, setCheckoutId] = useState('');
 
   useEffect(() => {
@@ -124,7 +126,15 @@ const ViewCreditCardScreen = ({ route }) => {
   };
 
   const _delete = () => {
-    dispatch(deleteUserCreditCardAction(_.get(card, 'id', '')));
+    dispatch(deleteUserCreditCardAction(_.get(card, 'id', ''))).then(() => {
+      navigation.goBack();
+    });
+  };
+
+  const _setAsDefault = () => {
+    dispatch(setDefaultCreditCardAction(_.get(card, 'id'), card)).then((newCreditCard) => {
+      navigation.setParams({ card: newCreditCard });
+    });
   };
 
   const _formSuccess = () => {
@@ -149,13 +159,29 @@ const ViewCreditCardScreen = ({ route }) => {
       </View>
       <View style={Layout.fill} />
       <SafeAreaView>
-        <Button
-          onPress={_delete}
-          title={'Delete'}
-          containerStyle={styles.buttonStyle}
-          buttonStyle={styles.clearButtonStyle}
-          titleStyle={[styles.clearButtonTextStyle]}
-        />
+        {!_.get(card, 'default', false) && (
+          <>
+            <Button
+              onPress={_setAsDefault}
+              title={'Set As Default'}
+              loading={creditCardsLoading}
+              containerStyle={styles.buttonStyle}
+            />
+            <Button
+              onPress={_delete}
+              title={'Delete'}
+              loading={creditCardsLoading}
+              containerStyle={styles.buttonStyle}
+              buttonStyle={styles.deleteButtonStyle}
+            />
+          </>
+        )}
+        {_.get(card, 'default', false) && (
+          <Text style={Gutters.regularPadding}>
+            Please note, you cannot delete your default Credit Card. Please create another one and
+            make that credit card your default card. You can then remove this card.
+          </Text>
+        )}
       </SafeAreaView>
       {_renderPeachPayments()}
     </FormScreenContainer>
@@ -171,12 +197,9 @@ export default ViewCreditCardScreen;
 const styles = StyleSheet.create({
   buttonStyle: {
     alignSelf: 'center',
-    width: '90%',
+    width: '95%',
   },
-  clearButtonStyle: {
-    backgroundColor: Colors.transparent,
-  },
-  clearButtonTextStyle: {
-    color: Colors.darkerGrey,
+  deleteButtonStyle: {
+    backgroundColor: Colors.error,
   },
 });
