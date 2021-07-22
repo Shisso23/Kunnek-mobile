@@ -2,7 +2,7 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import _ from 'lodash';
-import { ListItem, Text } from 'react-native-elements';
+import { Badge, ListItem, Text } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 
@@ -17,21 +17,29 @@ const AccountsList = ({ items }) => {
   }
 
   const _renderItems = () => {
-    return _.map(items, (item, index) => (
-      <TouchableOpacity onPress={() => _edit(item)} key={`account-${index}`}>
-        <ListItem>
-          <Icon name="money-check" size={26} />
-          <ListItem.Content>
-            <ListItem.Title>{_.get(item, 'accountNumber', '')}</ListItem.Title>
-          </ListItem.Content>
-          <ListItem.Chevron />
-        </ListItem>
-      </TouchableOpacity>
-    ));
+    return _.map(items, (item, index) => {
+      const isDefault = _.get(item, 'default');
+      return (
+        <TouchableOpacity onPress={() => _edit(item)} key={`account-${index}`}>
+          <ListItem>
+            <Icon name="money-check" size={26} />
+            <ListItem.Content>
+              <ListItem.Title>{_.get(item, 'accountNumber', '')}</ListItem.Title>
+            </ListItem.Content>
+            {isDefault && (
+              <ListItem.Content>
+                <Badge value="Default" />
+              </ListItem.Content>
+            )}
+            <ListItem.Chevron />
+          </ListItem>
+        </TouchableOpacity>
+      );
+    });
   };
 
   const _edit = (bankAccount) => {
-    navigation.navigate('EditBankAccount', { bankAccount });
+    navigation.navigate('ViewBankAccount', { bankAccount });
   };
 
   return (

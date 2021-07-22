@@ -15,7 +15,7 @@ import { getBankNames } from '../../../reducers/app-reducer/app.actions';
 import { DropdownSelect } from '../../molecules';
 import { useTheme } from '../../../theme';
 
-const BankAccountForm = ({ submitForm, onSuccess, initialValues, submitText }) => {
+const BankAccountForm = ({ submitForm, onSuccess, initialValues, submitText, disabled }) => {
   const { banks } = useSelector(appSelector);
   const bankValues = _.map(banks, (bank) => _.get(bank, 'name'));
   const { Gutters, Layout } = useTheme();
@@ -31,7 +31,7 @@ const BankAccountForm = ({ submitForm, onSuccess, initialValues, submitText }) =
     accountType: Yup.string()
       .oneOf(['Cheque', 'Current', 'Savings'])
       .required('Is this a cheque/current or savings account'),
-    collectorId: Yup.string(),
+    delivererId: Yup.string(),
     bankId: Yup.string().required('Bank is required'),
   });
 
@@ -91,6 +91,7 @@ const BankAccountForm = ({ submitForm, onSuccess, initialValues, submitText }) =
               placeholder="Bank account number"
               errorMessage={error('accountNumber')}
               keyboardType="number-pad"
+              disabled={disabled}
             />
 
             <Text style={Gutters.regularHMargin}>Account Type</Text>
@@ -101,6 +102,7 @@ const BankAccountForm = ({ submitForm, onSuccess, initialValues, submitText }) =
               keyExtractor={(type, index) => `${type}${index}`}
               onChange={handleChange('accountType')}
               error={error('accountType')}
+              disabled={disabled}
             />
 
             <Text style={Gutters.regularHMargin}>Bank</Text>
@@ -111,21 +113,22 @@ const BankAccountForm = ({ submitForm, onSuccess, initialValues, submitText }) =
               keyExtractor={(bank, index) => index}
               onChange={_changeBank}
               error={error('bankId')}
+              disabled={disabled}
             />
-
             <Image
               source={require('../../../assets/images/powered-by-peach-payments.png')}
               containerStyle={styles.peachPaymentsImage}
             />
             <View style={Layout.fill} />
-
-            <SafeAreaView>
-              <Button
-                onPress={handleSubmit}
-                loading={isSubmitting}
-                title={submitText ? submitText : 'Next'}
-              />
-            </SafeAreaView>
+            {!disabled && (
+              <SafeAreaView>
+                <Button
+                  onPress={handleSubmit}
+                  loading={isSubmitting}
+                  title={submitText ? submitText : 'Next'}
+                />
+              </SafeAreaView>
+            )}
           </>
         );
       }}
@@ -139,12 +142,14 @@ BankAccountForm.propTypes = {
   onSuccess: PropTypes.func,
   containerStyle: ViewPropTypes.style,
   submitText: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 BankAccountForm.defaultProps = {
   onSuccess: () => null,
   containerStyle: {},
   submitText: '',
+  disabled: false,
 };
 
 export default BankAccountForm;

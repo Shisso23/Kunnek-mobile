@@ -56,10 +56,25 @@ const updateBankAccount = (id, data = {}) => {
     });
 };
 
+const setBankAccountDefault = (id) => {
+  const url = bankAccountUrls.bankAccountsUrl();
+  return authNetworkService
+    .patch(`${url}/${id}`, { default: true })
+    .then((response) => {
+      return userBankAccountModel(response.data);
+    })
+    .catch((error) => {
+      // eslint-disable-next-line no-console
+      console.warn(error);
+      return Promise.reject(error);
+    });
+};
+
 export default {
   getBankAccounts,
   createBankAccount,
   getBanks,
   deleteBankAccount,
   updateBankAccount,
+  setBankAccountDefault,
 };

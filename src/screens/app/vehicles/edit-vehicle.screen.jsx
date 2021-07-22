@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { SafeAreaView, View } from 'react-native';
 import { Button, Divider } from 'react-native-elements';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
@@ -17,11 +17,13 @@ import {
 import { useTheme } from '../../../theme';
 import { StyleSheet } from 'react-native';
 import { Colors } from '../../../theme/Variables';
+import { userSelector } from '../../../reducers/user-reducer/user.reducer';
 
 const EditVehicleScreen = ({ route }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { vehicle } = route.params;
+  const { vehiclesLoading = false } = useSelector(userSelector);
 
   const _handleSubmit = (currentForm) => {
     return dispatch(editVehicleAction(currentForm))
@@ -63,8 +65,8 @@ const EditVehicleScreen = ({ route }) => {
           onPress={_delete}
           title={'Delete'}
           containerStyle={styles.buttonStyle}
-          buttonStyle={styles.clearButtonStyle}
-          titleStyle={[styles.clearButtonTextStyle]}
+          buttonStyle={styles.deleteButtonStyle}
+          loading={vehiclesLoading}
         />
       </SafeAreaView>
     </FormScreenContainer>
@@ -79,13 +81,10 @@ export default EditVehicleScreen;
 
 const styles = StyleSheet.create({
   buttonStyle: {
-    width: '90%',
     alignSelf: 'center',
+    width: '90%',
   },
-  clearButtonStyle: {
-    backgroundColor: Colors.transparent,
-  },
-  clearButtonTextStyle: {
-    color: Colors.darkerGrey,
+  deleteButtonStyle: {
+    backgroundColor: Colors.error,
   },
 });

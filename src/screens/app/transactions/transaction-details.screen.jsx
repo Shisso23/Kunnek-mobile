@@ -125,12 +125,6 @@ TransactionDetailScreen.defaultProps = {};
 
 const styles = StyleSheet.create({
   amount: { fontSize: 25 },
-  button: {
-    borderRadius: 8,
-    bottom: 15,
-    position: 'absolute',
-    width: '90%',
-  },
   container: { flex: 1 },
   paymentStatus: { borderRadius: 5 },
   profilePicture: {

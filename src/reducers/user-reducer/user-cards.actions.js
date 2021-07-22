@@ -73,15 +73,21 @@ export const tokenizeCard = (data) => (dispatch) => {
 };
 
 export const deleteUserCreditCardAction = (id) => (dispatch, getState) => {
-  return creditCardService.deleteCreditCard(id).then(() => {
-    const { creditCards } = getState().userReducer;
+  dispatch(setCreditCardsLoadingAction(true));
+  return creditCardService
+    .deleteCreditCard(id)
+    .then(() => {
+      const { creditCards } = getState().userReducer;
 
-    _.remove(creditCards, (card) => {
-      return _.get(card, 'id') === id;
+      _.remove(creditCards, (card) => {
+        return _.get(card, 'id') === id;
+      });
+
+      return dispatch(setUserCreditCardsAction(creditCards));
+    })
+    .finally(() => {
+      dispatch(setCreditCardsLoadingAction(false));
     });
-
-    return dispatch(setUserCreditCardsAction(creditCards));
-  });
 };
 
 export const updateUserCreditCardAction = (data = {}) => (dispatch, getState) => {
@@ -94,6 +100,18 @@ export const updateUserCreditCardAction = (data = {}) => (dispatch, getState) =>
       const { creditCards } = getState().userReducer;
 
       return dispatch(setUserCreditCardsAction(updateObjectArray(creditCards, changedCard)));
+    })
+    .finally(() => dispatch(setCreditCardsLoadingAction(false)));
+};
+
+export const setDefaultCreditCardAction = (id, card = {}) => (dispatch) => {
+  dispatch(setCreditCardsLoadingAction(true));
+
+  return creditCardService
+    .updateCreditCard(id, { ...card, default: true })
+    .then((changedCard) => {
+      flashService.success('Card successfully set to default.');
+      return changedCard;
     })
     .finally(() => dispatch(setCreditCardsLoadingAction(false)));
 };
