@@ -177,7 +177,7 @@ const ViewCreditCardScreen = ({ route }) => {
           </>
         )}
         {_.get(card, 'default', false) && (
-          <Text>
+          <Text style={Gutters.regularPadding}>
             Please note, you cannot delete your default Credit Card. Please create another one and
             make that credit card your default card. You can then remove this card.
           </Text>

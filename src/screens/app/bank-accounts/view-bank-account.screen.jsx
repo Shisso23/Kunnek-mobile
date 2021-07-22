@@ -91,7 +91,7 @@ const ViewBankAccountScreen = ({ route }) => {
           </>
         )}
         {_.get(bankAccount, 'default', false) && (
-          <Text>
+          <Text style={Gutters.regularPadding}>
             Please note, you cannot delete your default Bank Account. Please create another one and
             make that account your default account. You can then remove this account.
           </Text>
