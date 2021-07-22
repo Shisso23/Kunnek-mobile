@@ -65,8 +65,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>You can take a photo with your phone and upload it as either your profile picture or a picture of the parcel request.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>You can save captured photos to the camera roll from within the app</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>You can choose a photo from your photo library and upload it as either your profile picture or a picture of the parcel request.</string>
 	<key>UIAppFonts</key>

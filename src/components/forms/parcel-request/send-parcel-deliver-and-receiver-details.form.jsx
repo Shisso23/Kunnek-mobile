@@ -121,6 +121,7 @@ const SendParcelDeliverAndReceiverDetailsForm = ({ submitForm, onSuccess, initia
               onBlur={handleBlur('receiverMobileNumber')}
               placeholder="Receiver's Mobile Number"
               errorMessage={error('receiverMobileNumber')}
+              keyboardType="numeric"
             />
 
             <SafeAreaView>

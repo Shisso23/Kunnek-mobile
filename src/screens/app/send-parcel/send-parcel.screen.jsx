@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState, useRef } from 'react';
-import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import { Button, Divider } from 'react-native-elements';
 import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
@@ -183,7 +183,7 @@ const SendParcelScreen = () => {
     }
   };
 
-  const _renderItem = () => <ScrollView>{_.get(_.nth(formData, formIndex), 'content')}</ScrollView>;
+  const _renderItem = () => <>{_.get(_.nth(formData, formIndex), 'content')}</>;
 
   const _goToNext = () => {
     if (formIndex < formData.length - 1) {
@@ -208,9 +208,7 @@ const SendParcelScreen = () => {
   };
 
   const _renderPagination = () => (
-    <View
-      style={[Layout.row, Layout.justifyContentBetween, Gutters.regularPadding, styles.pagination]}
-    >
+    <View style={[Layout.row, Layout.justifyContentBetween, Gutters.regularPadding]}>
       {formData.map((form, index) => {
         const buttonStyles = [
           styles.carouselDotStyle,
@@ -248,7 +246,7 @@ const SendParcelScreen = () => {
           <View style={[Gutters.smallHMargin]}>
             <SendParcelDeliverAndReceiverDetailsForm
               initialValues={deliveryAndReceiverDetailsFormModel({
-                latestDeliveryDateTime: getTomorrow('YYYY-MM-DD:HH:mm'),
+                latestDeliveryDateTime: getTomorrow('YYYY-MM-DD HH:mm'),
                 ...deliverAndReceiverDetailsForm,
               })}
               submitForm={_handleSubmitDeliverAndReceiverDetailsForm}
@@ -308,7 +306,6 @@ const styles = StyleSheet.create({
   currentCarouselDotStyle: {
     backgroundColor: Colors.carouselDotsColour,
   },
-  pagination: { flex: 0.1 },
   submitButtonStyle: {
     alignSelf: 'center',
     bottom: 0,
