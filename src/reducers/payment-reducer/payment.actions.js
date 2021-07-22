@@ -34,6 +34,19 @@ export const getPayments = (params = {}) => (dispatch) => {
     });
 };
 
+export const getTransaction = (id) => (dispatch) => {
+  dispatch(setPaymentsLoadingAction(true));
+  return paymentService
+    .getTransaction(id)
+    .then((transaction) => {
+      dispatch(setPaymentsAction(transaction));
+      return transaction;
+    })
+    .finally(() => {
+      dispatch(setPaymentsLoadingAction(false));
+    });
+};
+
 export const fetchCheckoutId = (id, data) => (dispatch) => {
   dispatch(setPaymentsLoadingAction(true));
   return paymentService

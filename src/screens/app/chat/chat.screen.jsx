@@ -10,7 +10,7 @@ import ProfilePicture from '../../../components/atoms/profile-picture';
 import { ChatBottomDrawer, ChatItem } from '../../../components/molecules';
 import { useInterval } from '../../../services';
 import {
-  createorGetChatAction,
+  createOrGetChatAction,
   getChatAction,
   sendMessageAction,
 } from '../../../reducers/chat-reducer/chat.actions';
@@ -33,7 +33,7 @@ const ChatScreen = ({ route }) => {
         setLoading(false);
       });
     } else {
-      dispatch(createorGetChatAction(chattableId)).then((response) => {
+      dispatch(createOrGetChatAction(chattableId)).then((response) => {
         setChat(response);
         setMessages(response.messages);
         setLoading(false);
@@ -42,7 +42,7 @@ const ChatScreen = ({ route }) => {
   }, []);
 
   useInterval(() => {
-    dispatch(createorGetChatAction(chattableId)).then((response) => {
+    dispatch(createOrGetChatAction(chattableId)).then((response) => {
       if (response.messages.length !== messages.length) setMessages(response.messages);
     });
   }, 5000);

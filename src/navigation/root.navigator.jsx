@@ -23,6 +23,7 @@ const AppContainer = () => {
           UserDetails: 'accept-request-from-deliverer/:parcelRequest',
           Chat: 'chat/:chatId',
           ParcelDetails: 'confirm/:parcelRequest/:flowType',
+          TransactionDetails: 'payment-details/:payment',
         },
       },
     },
