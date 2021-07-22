@@ -307,9 +307,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.carouselDotsColour,
   },
   submitButtonStyle: {
-    alignSelf: 'center',
-    bottom: 0,
-    position: 'absolute',
     width: '95%',
   },
 });

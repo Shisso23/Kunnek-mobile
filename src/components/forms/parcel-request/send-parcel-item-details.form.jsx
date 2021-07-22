@@ -54,10 +54,37 @@ const SendParcelItemDetailsForm = ({ submitForm, onSuccess, initialValues }) => 
         errors,
         isSubmitting,
         handleBlur,
+        setFieldValue,
         touched,
         status,
       }) => {
         const error = (name) => getFormError(name, { touched, status, errors });
+
+        const _convertToNumber = (number) => {
+          if (number) {
+            const correctedNumber = _.replace(number, ',', '.');
+            return correctedNumber;
+          } else {
+            return number;
+          }
+        };
+
+        const _handleChangePrice = (price) => {
+          setFieldValue('price', _convertToNumber(price), true);
+        };
+        const _handleChangeHeight = (height) => {
+          setFieldValue('itemHeight', _convertToNumber(height), true);
+        };
+        const _handleChangeWidth = (width) => {
+          setFieldValue('itemWidth', _convertToNumber(width), true);
+        };
+        const _handleChangeLength = (length) => {
+          setFieldValue('itemLength', _convertToNumber(length), true);
+        };
+        const _handleChangeWeight = (weight) => {
+          setFieldValue('itemWeight', _convertToNumber(weight), true);
+        };
+
         return (
           <>
             <Input
@@ -72,7 +99,7 @@ const SendParcelItemDetailsForm = ({ submitForm, onSuccess, initialValues }) => 
             <Input
               value={values.itemHeight}
               label="Height (cms)"
-              onChangeText={handleChange('itemHeight')}
+              onChangeText={_handleChangeHeight}
               onBlur={handleBlur('itemHeight')}
               placeholder="Height (cms)"
               errorMessage={error('itemHeight')}
@@ -82,7 +109,7 @@ const SendParcelItemDetailsForm = ({ submitForm, onSuccess, initialValues }) => 
             <Input
               value={values.itemWidth}
               label="Width (cms)"
-              onChangeText={handleChange('itemWidth')}
+              onChangeText={_handleChangeWidth}
               onBlur={handleBlur('itemWidth')}
               placeholder="Width (cms)"
               errorMessage={error('itemWidth')}
@@ -92,7 +119,7 @@ const SendParcelItemDetailsForm = ({ submitForm, onSuccess, initialValues }) => 
             <Input
               value={values.itemLength}
               label="Length (cms)"
-              onChangeText={handleChange('itemLength')}
+              onChangeText={_handleChangeLength}
               onBlur={handleBlur('itemLength')}
               placeholder="Length (cms)"
               errorMessage={error('itemLength')}
@@ -102,7 +129,7 @@ const SendParcelItemDetailsForm = ({ submitForm, onSuccess, initialValues }) => 
             <Input
               value={values.itemWeight}
               label="Weight (kgs)"
-              onChangeText={handleChange('itemWeight')}
+              onChangeText={_handleChangeWeight}
               onBlur={handleBlur('itemWeight')}
               placeholder="Weight (kgs)"
               errorMessage={error('itemWeight')}
@@ -112,7 +139,7 @@ const SendParcelItemDetailsForm = ({ submitForm, onSuccess, initialValues }) => 
             <Input
               value={values.price}
               label="Offer Amount"
-              onChangeText={handleChange('price')}
+              onChangeText={_handleChangePrice}
               onBlur={handleBlur('price')}
               placeholder="Offer Amount"
               errorMessage={error('price')}
