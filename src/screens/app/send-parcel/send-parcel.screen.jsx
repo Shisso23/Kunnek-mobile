@@ -177,7 +177,7 @@ const SendParcelScreen = () => {
 
   const _handleSuccess = () => {
     if (hasCreditCards && formIndex >= formData.length - 1) {
-      navigation.navigate('ParcelRequests');
+      navigation.replace('ParcelRequests');
     } else {
       _goToNext();
     }
