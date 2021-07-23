@@ -11,6 +11,8 @@
 		<dict>
 			<key>CFBundleTypeName</key>
 			<string>MKDirectionsRequest</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.apple.maps.directionsrequest</string>
@@ -67,6 +69,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>You can take a photo with your phone and upload it as either your profile picture or a picture of the parcel request.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Your Location is used to provide an accurate list of available deliveries in your area, and when you are in transit with a package for delivery, you can be tracked by the sender of the parcel.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

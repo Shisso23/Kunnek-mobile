@@ -11,6 +11,7 @@ import { getFormError } from '../form-utils';
 import { flashService } from '../../../services';
 import AddressInput from '../../molecules/address-input';
 import DateTimeInput from '../../molecules/date-time-input';
+import { useState } from 'react';
 
 const SendParcelDeliverAndReceiverDetailsForm = ({ submitForm, onSuccess, initialValues }) => {
   const validationSchema = Yup.object().shape({
@@ -31,15 +32,18 @@ const SendParcelDeliverAndReceiverDetailsForm = ({ submitForm, onSuccess, initia
         "Receiver's Mobile Number needs to be in the following format: 0811111111",
       ),
   });
+  const [loading, setLoading] = useState(false);
 
   const _handleSubmission = (formData, actions) => {
+    setLoading(true);
     submitForm(formData)
       .then(() => {
-        actions.setSubmitting(false);
-        onSuccess();
+        onSuccess().then(() => {
+          setLoading(false);
+        });
       })
       .catch((error) => {
-        actions.setSubmitting(false);
+        setLoading(false);
         if (_.get(error, 'statusCode') === 422) {
           const apiErrors = error.errors;
           flashService.error('Form Submission Error');
@@ -56,16 +60,7 @@ const SendParcelDeliverAndReceiverDetailsForm = ({ submitForm, onSuccess, initia
       validationSchema={validationSchema}
       enableReinitialize
     >
-      {({
-        handleChange,
-        handleSubmit,
-        values,
-        errors,
-        isSubmitting,
-        handleBlur,
-        touched,
-        status,
-      }) => {
+      {({ handleChange, handleSubmit, values, errors, handleBlur, touched, status }) => {
         const error = (name) => getFormError(name, { touched, status, errors });
         return (
           <>
@@ -125,7 +120,7 @@ const SendParcelDeliverAndReceiverDetailsForm = ({ submitForm, onSuccess, initia
             />
 
             <SafeAreaView>
-              <Button onPress={handleSubmit} loading={isSubmitting} title="Next" />
+              <Button onPress={handleSubmit} loading={loading} title="Next" />
             </SafeAreaView>
           </>
         );

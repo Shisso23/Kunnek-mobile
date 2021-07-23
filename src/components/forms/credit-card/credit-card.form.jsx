@@ -82,10 +82,25 @@ const CreditCardForm = ({
         errors,
         isSubmitting,
         handleBlur,
+        setFieldValue,
         touched,
         status,
       }) => {
         const error = (name) => getFormError(name, { touched, status, errors });
+
+        const _handleChangeExpDate = (value) => {
+          if (value.length > 5) return value.substr(0, 4);
+          let number = _.replace(value, /[^\d]/g, '');
+          if (number.length > 2) {
+            return setFieldValue(
+              'expiryDate',
+              `${number.substr(0, 2)}/${number.substr(2, number.length)}`,
+              true,
+            );
+          }
+          return setFieldValue('expiryDate', value);
+        };
+
         return (
           <>
             <Input
@@ -123,11 +138,12 @@ const CreditCardForm = ({
                 containerStyle={styles.halfWidthInput}
                 label="Exp. Date"
                 value={values.expiryDate}
-                onChangeText={handleChange('expiryDate')}
+                onChangeText={_handleChangeExpDate}
                 onBlur={handleBlur('expiryDate')}
                 placeholder="Exp. Date"
                 errorMessage={error('expiryDate')}
                 disabled={disabled}
+                keyboardType="numeric"
               />
             </View>
             <>
@@ -135,7 +151,6 @@ const CreditCardForm = ({
                 source={require('../../../assets/images/powered-by-peach-payments.png')}
                 containerStyle={styles.peachPaymentsImage}
               />
-              <View style={Layout.fill} />
               {!disabled && (
                 <SafeAreaView>
                   <Button
