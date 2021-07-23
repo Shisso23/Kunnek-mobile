@@ -62,8 +62,7 @@ const SendParcelItemDetailsForm = ({ submitForm, onSuccess, initialValues }) => 
 
         const _convertToNumber = (number) => {
           if (number) {
-            const correctedNumber = _.replace(number, ',', '.');
-            return correctedNumber;
+            return _.replace(number, ',', '.');
           } else {
             return number;
           }
@@ -103,7 +102,7 @@ const SendParcelItemDetailsForm = ({ submitForm, onSuccess, initialValues }) => 
               onBlur={handleBlur('itemHeight')}
               placeholder="Height (cms)"
               errorMessage={error('itemHeight')}
-              keyboardType="number-pad"
+              keyboardType="numeric"
             />
 
             <Input
