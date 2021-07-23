@@ -107,7 +107,7 @@ const DeliverParcelScreen = ({ route }) => {
   const _handleSuccess = () => {
     if (formIndex >= formData.length - 1) {
       dispatch(getParcelRequestsAction({ is_open: true })).then(() =>
-        navigation.navigate('ParcelRequests'),
+        navigation.replace('ParcelRequests'),
       );
     } else {
       _goToNext();
