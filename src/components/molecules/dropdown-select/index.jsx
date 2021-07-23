@@ -60,7 +60,7 @@ const DropdownSelect = ({
           <TextInput
             label={value || visible ? label : placeholder}
             ref={textRef}
-            underlineColor={Colors.white}
+            underlineColor={Colors.transparent}
             style={[Common.textInput, styles.textInputExtraStyle]}
             onChangeText={() => null}
             editable={false}

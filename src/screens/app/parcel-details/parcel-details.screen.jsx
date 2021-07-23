@@ -123,9 +123,9 @@ const ParcelDetailsScreen = ({ route }) => {
           onPress: _dialReceiver,
         });
       } else {
-        icons.push({ icon: Images.mapIcon, caption: 'Track Parcel' });
+        // icons.push({ icon: Images.mapIcon, caption: 'Track Parcel' }); keeping the code to impliment this when parcel tracking as a feature needs to be implimented
       }
-      return <ParcelDetailsFooter buttons={icons} />;
+      return <ParcelDetailsFooter buttons={icons} style={[styles.footerWidth]} />;
     }
   };
 
@@ -153,5 +153,9 @@ export default ParcelDetailsScreen;
 const styles = StyleSheet.create({
   fillScreen: {
     flexGrow: 1,
+  },
+  footerWidth: {
+    alignSelf: 'center',
+    width: 150,
   },
 });
