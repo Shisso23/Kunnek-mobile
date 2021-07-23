@@ -32,11 +32,11 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  
+
   if ([FIRApp defaultApp] == nil) {
     [FIRApp configure];
   }
-  
+
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
 #endif
@@ -72,7 +72,7 @@ static void InitializeFlipper(UIApplication *application) {
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url
  options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
-  if ([url.scheme localizedCaseInsensitiveCompare:@"com.kunnek.payments"] == NSOrderedSame) {
+  if ([url.scheme localizedCaseInsensitiveCompare:@"com.kunnek.kunnekp2p.payments"] == NSOrderedSame) {
     [NSNotificationCenter.defaultCenter postNotificationName:@"AsyncPaymentCompletedNotificationKey"  object:nil];
     return true;
   }
