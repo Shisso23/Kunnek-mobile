@@ -1,12 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState, useRef } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View, KeyboardAvoidingView, Platform } from 'react-native';
 import { Button, Divider } from 'react-native-elements';
 import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { HeaderBackButton } from '@react-navigation/stack';
+import { ScrollView } from 'react-native-gesture-handler';
 
-import { FormScreenContainer } from '../../../components';
 import { useTheme } from '../../../theme';
 import { SendParcelItemDetailsForm } from '../../../components/forms';
 import Index from '../../../components/atoms/title';
@@ -183,7 +183,11 @@ const SendParcelScreen = () => {
     }
   };
 
-  const _renderItem = () => <>{_.get(_.nth(formData, formIndex), 'content')}</>;
+  const _renderItem = () => (
+    <ScrollView directionalLockEnabled={true}>
+      {_.get(_.nth(formData, formIndex), 'content')}
+    </ScrollView>
+  );
 
   const _goToNext = () => {
     if (formIndex < formData.length - 1) {
@@ -263,7 +267,7 @@ const SendParcelScreen = () => {
       id: 'creditCardForm',
       content: (
         <>
-          <View style={[Gutters.smallHMargin, styles.creditCardForm]}>
+          <View style={[Gutters.smallHMargin]}>
             <Index title="My Debit/Credit Card" />
             <Divider color="transparent" />
             <CreditCardForm
@@ -279,10 +283,14 @@ const SendParcelScreen = () => {
   }
 
   return (
-    <FormScreenContainer>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={90}
+      style={styles.wrapperView}
+    >
       {_renderPagination()}
       {_renderItem()}
-    </FormScreenContainer>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -302,11 +310,13 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
     width: 100,
   },
-  creditCardForm: { height: '97%' },
   currentCarouselDotStyle: {
     backgroundColor: Colors.carouselDotsColour,
   },
   submitButtonStyle: {
     width: '95%',
+  },
+  wrapperView: {
+    marginBottom: Platform.OS === 'ios' ? 50 : 60,
   },
 });

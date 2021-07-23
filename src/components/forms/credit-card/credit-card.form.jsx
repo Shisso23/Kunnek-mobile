@@ -151,7 +151,6 @@ const CreditCardForm = ({
                 source={require('../../../assets/images/powered-by-peach-payments.png')}
                 containerStyle={styles.peachPaymentsImage}
               />
-              <View style={Layout.fill} />
               {!disabled && (
                 <SafeAreaView>
                   <Button

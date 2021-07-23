@@ -24,7 +24,10 @@ import {
   getUserVehiclesAction,
 } from '../../../reducers/user-reducer/user-vehicles.actions';
 import { createTripAction } from '../../../reducers/trip-reducer/trip.actions';
-import { updateParcelStatus } from '../../../reducers/parcel-request-reducer/parcel-request.actions';
+import {
+  getParcelRequestsAction,
+  updateParcelStatus,
+} from '../../../reducers/parcel-request-reducer/parcel-request.actions';
 import { BankAccountForm, VehicleForm } from '../../../components/forms';
 import { createVehicleModel } from '../../../models/app/vehicle/create-vehicle.model';
 import { userBankAccountModel } from '../../../models/app/user/user-bank-account.model';
@@ -103,7 +106,9 @@ const DeliverParcelScreen = ({ route }) => {
 
   const _handleSuccess = () => {
     if (formIndex >= formData.length - 1) {
-      navigation.navigate('ParcelRequests');
+      dispatch(getParcelRequestsAction({ is_open: true })).then(() =>
+        navigation.navigate('ParcelRequests'),
+      );
     } else {
       _goToNext();
     }
