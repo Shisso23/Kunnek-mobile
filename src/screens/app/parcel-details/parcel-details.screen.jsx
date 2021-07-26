@@ -156,6 +156,5 @@ const styles = StyleSheet.create({
   },
   footerWidth: {
     alignSelf: 'center',
-    width: 150,
   },
 });

@@ -34,6 +34,7 @@ const ParcelDetailsFooter = (props) => {
             Common.viewCard,
             Gutters.regularHMargin,
             Gutters.largeBMargin,
+            buttons.length === 1 ? styles.singleButtonStyle : styles.multipleButtonsStyle,
             style,
           ]}
         >
@@ -62,5 +63,11 @@ const styles = StyleSheet.create({
     borderColor: Colors.greyShadow,
     borderLeftWidth: 1,
     height: '95%',
+  },
+  multipleButtonsStyle: {
+    flexShrink: 1,
+  },
+  singleButtonStyle: {
+    width: 150,
   },
 });
