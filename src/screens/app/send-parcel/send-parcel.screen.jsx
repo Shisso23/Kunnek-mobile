@@ -57,27 +57,13 @@ const SendParcelScreen = () => {
   }, [navigation, formIndex]);
 
   useEffect(() => {
-    dispatch(getUserCreditCardsAction());
+    dispatch(getUserCreditCardsAction()).then(() => {
+      if (hasCreditCards)
+        dispatch(createCheckoutIdAction()).then((id) => {
+          setCheckoutId(id);
+        });
+    });
   }, []);
-
-  const _createTransaction = (cardModel) => {
-    return PeachMobile.createTransaction(
-      checkoutId,
-      '',
-      _.get(cardModel, 'cardHolder'),
-      _.get(cardModel, 'cardNumber'),
-      _.get(cardModel, 'expiryMonth'),
-      _.get(cardModel, 'expiryYear', ''),
-      _.get(cardModel, 'cvv'),
-    );
-  };
-
-  const _submitRegistration = (cardModel, transaction) => {
-    return PeachMobile.submitRegistration(
-      transaction,
-      `${config.peachPayments.peachPaymentMode}`,
-    ).catch((error) => console.warn('peach submit registration error', error.message));
-  };
 
   const _getCardRegistrationStatus = () => {
     return dispatch(getCardRegistrationStatusAction(checkoutId)).then((cardRegStatus) =>
@@ -95,6 +81,7 @@ const SendParcelScreen = () => {
       senderId,
       tokenizedCard,
     };
+
     return dispatch(createUserCreditCardAction(finalData))
       .then((creditCardResponse) => {
         flashService.success('Added card successfully!');
@@ -117,13 +104,28 @@ const SendParcelScreen = () => {
     });
   };
 
+  const _createTransaction = (cardModel) => {
+    return PeachMobile.createTransaction(
+      checkoutId,
+      '',
+      _.get(cardModel, 'cardHolder'),
+      _.get(cardModel, 'cardNumber'),
+      _.get(cardModel, 'expiryMonth'),
+      _.get(cardModel, 'expiryYear', ''),
+      _.get(cardModel, 'cvv'),
+    );
+  };
+
+  const _submitRegistration = (cardModel, transaction) => {
+    return PeachMobile.submitRegistration(
+      transaction,
+      `${config.peachPayments.peachPaymentMode}`,
+    ).catch((error) => console.warn('peach submit registration error', error.message));
+  };
+
   const _process = (cardFormValues) => {
     const cardModel = tokenizeCardModel(cardFormValues);
-    return dispatch(createCheckoutIdAction())
-      .then((id) => {
-        setCheckoutId(id);
-        return _createTransaction(cardModel);
-      })
+    return _createTransaction(cardModel)
       .then((transaction) => _submitRegistration(cardModel, transaction))
       .then(_getCardRegistrationStatus)
       .then((tokenizedCard) => _saveCreditCard(cardModel, tokenizedCard))
@@ -231,7 +233,7 @@ const SendParcelScreen = () => {
         <>
           <Index title="Send Parcel" />
           <Divider />
-          <View style={[Gutters.smallHMargin]}>
+          <View style={[Gutters.smallHMargin, Layout.fill]}>
             <SendParcelItemDetailsForm
               initialValues={itemDetailsFormModel(itemDetailsForm)}
               submitForm={_handleSubmitItemDetailsForm}
@@ -247,7 +249,7 @@ const SendParcelScreen = () => {
         <>
           <Index title="Send Parcel" />
           <Divider />
-          <View style={[Gutters.smallHMargin]}>
+          <View style={[Gutters.smallHMargin, Layout.fill]}>
             <SendParcelDeliverAndReceiverDetailsForm
               initialValues={deliveryAndReceiverDetailsFormModel({
                 latestDeliveryDateTime: getTomorrow('YYYY-MM-DD HH:mm'),
@@ -270,12 +272,14 @@ const SendParcelScreen = () => {
           <View style={[Gutters.smallHMargin]}>
             <Index title="My Debit/Credit Card" />
             <Divider color="transparent" />
-            <CreditCardForm
-              initialValues={userCreditCardModel(creditCardForm)}
-              submitForm={_handleSubmitCreditCardForm}
-              submitButtonStyle={styles.submitButtonStyle}
-            />
-            {_renderPeachPayments()}
+            <View style={[Gutters.smallHMargin, Layout.fill]}>
+              <CreditCardForm
+                initialValues={userCreditCardModel(creditCardForm)}
+                submitForm={_handleSubmitCreditCardForm}
+                submitButtonStyle={styles.submitButtonStyle}
+              />
+              {_renderPeachPayments()}
+            </View>
           </View>
         </>
       ),

@@ -146,22 +146,21 @@ const CreditCardForm = ({
                 keyboardType="numeric"
               />
             </View>
-            <>
-              <Image
-                source={require('../../../assets/images/powered-by-peach-payments.png')}
-                containerStyle={styles.peachPaymentsImage}
-              />
-              {!disabled && (
-                <SafeAreaView>
-                  <Button
-                    onPress={handleSubmit}
-                    loading={isSubmitting}
-                    title={submitText ? submitText : 'Complete'}
-                    style={submitButtonStyle}
-                  />
-                </SafeAreaView>
-              )}
-            </>
+            <Image
+              source={require('../../../assets/images/powered-by-peach-payments.png')}
+              containerStyle={styles.peachPaymentsImage}
+            />
+            <View style={Layout.fill} />
+            {!disabled && (
+              <SafeAreaView>
+                <Button
+                  onPress={handleSubmit}
+                  loading={isSubmitting}
+                  title={submitText ? submitText : 'Complete'}
+                  style={submitButtonStyle}
+                />
+              </SafeAreaView>
+            )}
           </>
         );
       }}

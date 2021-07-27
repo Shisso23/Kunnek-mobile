@@ -108,6 +108,9 @@ export default () =>
       flexGrow: 1,
       justifyContent: 'space-between',
     },
+    scrollFlex: {
+      flexGrow: 1,
+    },
     selfStretch: {
       alignSelf: 'stretch',
     },

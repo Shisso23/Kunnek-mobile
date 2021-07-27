@@ -55,7 +55,7 @@ const VehicleForm = ({ submitForm, onSuccess, initialValues, containerStyle, sub
       }) => {
         const error = (name) => getFormError(name, { touched, status, errors });
         return (
-          <View style={containerStyle}>
+          <View style={[Layout.fill, containerStyle]}>
             <Input
               value={values.make}
               onChangeText={handleChange('make')}

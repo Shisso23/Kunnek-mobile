@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Divider } from 'react-native-elements';
 
 import Index from '../../../components/atoms/title';
@@ -21,6 +21,7 @@ import { PAYMENT_TYPES } from '../../../services/sub-services/payment-service/pa
 import { tokenizeCardModel } from '../../../models/app/credit-card/tokenize-card.model';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { useTheme } from '../../../theme';
 
 const AddCreditCardScreen = () => {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ const AddCreditCardScreen = () => {
   const peachMobileRef = useRef(null);
   const senderId = useSelector((state) => state.userReducer.senderId);
   const [checkoutId, setCheckoutId] = useState('');
+  const { Gutters, Layout } = useTheme();
 
   useEffect(() => {
     dispatch(createCheckoutIdAction()).then((id) => {
@@ -70,6 +72,7 @@ const AddCreditCardScreen = () => {
       senderId,
       tokenizedCard,
     };
+
     return dispatch(createUserCreditCardAction(finalData))
       .then((creditCardResponse) => {
         flashService.success('Added card successfully!');
@@ -119,28 +122,25 @@ const AddCreditCardScreen = () => {
   };
 
   return (
-    <>
-      <FormScreenContainer contentContainerStyle={styles.formContainer}>
-        <Index title="My Debit/Credit Card" />
-        <Divider />
+    <FormScreenContainer>
+      <Index title="My Debit/Credit Card" />
+      <Divider />
+      <View style={[Gutters.smallHMargin, Layout.fill]}>
         <CreditCardForm
           initialValues={userCreditCardModel({})}
           submitForm={_onSubmit}
           submitButtonStyle={styles.submitButtonStyle}
           disabled={false}
         />
-      </FormScreenContainer>
+      </View>
       {_renderPeachPayments()}
-    </>
+    </FormScreenContainer>
   );
 };
 
 export default AddCreditCardScreen;
 
 const styles = StyleSheet.create({
-  formContainer: {
-    flex: 1,
-  },
   submitButtonStyle: {
     alignSelf: 'center',
     paddingTop: 20,
