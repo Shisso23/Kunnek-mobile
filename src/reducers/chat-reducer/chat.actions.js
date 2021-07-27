@@ -6,7 +6,7 @@ export const createOrGetChatAction = (id) => () => {
   });
 };
 
-export const getChat = (id) => () => {
+export const getChatAction = (id) => () => {
   return chatService.getChat(id).then((response) => {
     return response;
   });

@@ -33,7 +33,7 @@ const ParcelStatusCardDriver = ({ parcelRequest }) => {
 
   const _renderOTP = () => {
     if (_.get(parcelRequest, 'status') === 'pending_delivery') {
-      navigation.navigate('OTP', parcelRequest);
+      navigation.navigate('OTP', { parcelRequest });
     } else {
       _buttonClick().then((job) => {
         navigation.navigate('OTP', { parcelRequest: job });

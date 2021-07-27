@@ -47,10 +47,12 @@ const OTPScreen = ({ route }) => {
     dispatch(verifyParcelDelivery(actionId, otpValue)).then((result) => {
       if (result === true) {
         const newStatus = progressPackageStatus(parcelRequest);
-        dispatch(updateParcelStatus(parcelRequest, newStatus));
-        navigation.navigate('ParcelDetails', { parcelRequest });
+        dispatch(updateParcelStatus(parcelRequest, newStatus)).then((completedParcelRequest) => {
+          navigation.navigate('ParcelDetails', { parcelRequest: completedParcelRequest });
+        });
+      } else {
+        setErrorMessage('please fill in the correct OTP');
       }
-      setErrorMessage('please fill in the correct OTP');
     });
   };
 
