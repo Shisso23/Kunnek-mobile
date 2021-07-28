@@ -27,7 +27,8 @@ const SendParcelItemDetailsForm = ({ submitForm, onSuccess, initialValues }) => 
   const _handleSubmission = (formData, actions) => {
     submitForm(formData)
       .then(() => {
-        onSuccess().then(() => actions.setSubmitting(false));
+        actions.setSubmitting(false);
+        onSuccess();
       })
       .catch((error) => {
         actions.setSubmitting(false);
