@@ -1,4 +1,5 @@
 import Config from 'react-native-config';
+import { Platform } from 'react-native';
 
 const {
   API_LOCATION,
@@ -37,6 +38,6 @@ export default {
     pp3dEntityId: PP_3D_ENTITY_ID,
     peachPaymentMode: PEACH_PAYMENT_MODE,
     peachPaymentUrl: PEACH_PAYMENT_URL,
-    urlScheme: 'com.kunnek.payments',
+    urlScheme: Platform.OS === 'ios' ? 'com.kunnek.kunnekp2p.payments' : 'com.kunnek.payments',
   },
 };

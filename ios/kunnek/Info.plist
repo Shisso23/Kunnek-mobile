@@ -39,10 +39,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.kunnek.payments</string>
+			<string>com.kunnek.kunnekp2p.payments</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.kunnek.payments</string>
+				<string>com.kunnek.kunnekp2p.payments</string>
 			</array>
 		</dict>
 	</array>

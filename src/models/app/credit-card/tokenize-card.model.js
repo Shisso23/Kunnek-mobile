@@ -15,7 +15,7 @@ export const tokenizeCardModel = (data = {}) => {
     obfuscatedCardNumber: `************${_.get(data, 'cardNumber').slice(
       _.get(data, 'cardNumber').length - 4,
     )}`,
-    cardHolder: encodeURIComponent(_.get(data, 'cardHolder')),
+    cardHolder: _.get(data, 'cardHolder'),
     expiryMonth: dayjs(expiryDate, 'MM/YY').format('MM'),
     expiryYear: dayjs(expiryDate, 'MM/YY').format('YYYY'),
     cvv: _.get(data, 'cvv'),
