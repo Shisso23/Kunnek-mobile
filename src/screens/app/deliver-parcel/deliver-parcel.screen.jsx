@@ -31,6 +31,7 @@ import {
 import { BankAccountForm, VehicleForm } from '../../../components/forms';
 import { createVehicleModel } from '../../../models/app/vehicle/create-vehicle.model';
 import { userBankAccountModel } from '../../../models/app/user/user-bank-account.model';
+import { SafeAreaView } from 'react-native';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -43,8 +44,8 @@ const DeliverParcelScreen = ({ route }) => {
   const [formIndex, setFormIndex] = useState(0);
   const defaultVehicle = _.get(_.nth(vehicles, 0), 'id', '');
 
-  const hasBankAccounts = Array.isArray(bankAccounts) ? bankAccounts.length > 0 : false;
-  const hasVehicles = Array.isArray(vehicles) ? vehicles.length > 0 : false;
+  const [hasBankAccounts] = useState(Array.isArray(bankAccounts) ? bankAccounts.length > 0 : false);
+  const [hasVehicles] = useState(Array.isArray(vehicles) ? vehicles.length > 0 : false);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -114,7 +115,7 @@ const DeliverParcelScreen = ({ route }) => {
     }
   };
 
-  const _renderItem = () => <View>{_.get(_.nth(formData, formIndex), 'content')}</View>;
+  const _renderItem = () => <>{_.get(_.nth(formData, formIndex), 'content')}</>;
 
   const _goToNext = () => {
     if (formIndex < formData.length - 1) {
@@ -166,11 +167,13 @@ const DeliverParcelScreen = ({ route }) => {
             <ViewParcelCard parcelRequest={parcelRequest} />
             <UserSummaryCard user={_getSender()} />
             <View style={Layout.fill} />
-            <Button
-              title="Request to Deliver"
-              buttonStyle={Layout.center}
-              onPress={_handleSuccess}
-            />
+            <SafeAreaView>
+              <Button
+                title="Request to Deliver"
+                buttonStyle={Layout.center}
+                onPress={_handleSuccess}
+              />
+            </SafeAreaView>
           </View>
         </>
       ),
@@ -181,7 +184,7 @@ const DeliverParcelScreen = ({ route }) => {
         <>
           <Index title="Final Amounts" />
           <Divider />
-          <View style={[Gutters.smallHMargin]}>
+          <View style={[Gutters.smallHMargin, Layout.fill]}>
             <DeliverParcelDetailsForm
               initialValues={_deliveryInitialValues()}
               submitForm={_handleSubmitDeliveryDetailsForm}
@@ -201,7 +204,7 @@ const DeliverParcelScreen = ({ route }) => {
         <>
           <Index title="Add vehicle" />
           <Divider />
-          <View style={[Gutters.smallHMargin]}>
+          <View style={[Gutters.smallHMargin, Layout.fill]}>
             <VehicleForm
               submitForm={_handleSubmitVehicleForm}
               onSuccess={_handleSuccess}
@@ -225,7 +228,7 @@ const DeliverParcelScreen = ({ route }) => {
             Before you can create a new send request, we will need your payment details.
           </Text>
           <Divider />
-          <View style={[Gutters.smallHMargin]}>
+          <View style={[Gutters.smallHMargin, Layout.fill]}>
             <BankAccountForm
               initialValues={userBankAccountModel({ delivererId: delivererId })}
               submitForm={_handleSubmitBankAccountForm}

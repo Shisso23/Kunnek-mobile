@@ -144,7 +144,7 @@ const ViewCreditCardScreen = ({ route }) => {
   const { Gutters, Layout } = useTheme();
 
   return (
-    <FormScreenContainer contentContainerStyle={Layout.fill}>
+    <FormScreenContainer>
       <Index title="My Debit/Credit Card" />
       <Divider />
       <View style={Gutters.smallHMargin}>

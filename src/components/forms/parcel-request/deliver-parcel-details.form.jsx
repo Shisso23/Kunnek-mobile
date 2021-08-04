@@ -39,7 +39,7 @@ const DeliverParcelDetailsForm = ({ submitForm, onSuccess, initialValues, parcel
   });
 
   const { user, vehicles } = useSelector(userSelector);
-  const { Gutters } = useTheme();
+  const { Gutters, Layout } = useTheme();
   const vehicleValues = _.map(vehicles, (vehicle) => `${vehicle.make} ${vehicle.model}`);
 
   const _handleSubmission = (formData, actions) => {
@@ -160,6 +160,7 @@ const DeliverParcelDetailsForm = ({ submitForm, onSuccess, initialValues, parcel
               mode="datetime"
               format="YYYY-MM-DD HH:mm"
             />
+            <View style={Layout.fill} />
 
             <SafeAreaView>
               <Button onPress={handleSubmit} loading={isSubmitting} title="Confirm" />

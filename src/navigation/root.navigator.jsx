@@ -2,15 +2,23 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import messaging from '@react-native-firebase/messaging';
+import _ from 'lodash';
 
 import AuthNavigator from './auth/auth.navigator';
 import AppNavigator from './app/app.navigator';
 import { isAuthenticatedSelector } from '../reducers/user-auth-reducer/user-auth.reducer';
+import { Linking } from 'react-native';
 
 const RootStack = createStackNavigator();
 
 const AppContainer = () => {
   const isAuthenticated = useSelector(isAuthenticatedSelector);
+
+  messaging().onNotificationOpenedApp(async (remoteMessage) => {
+    const messageUrl = _.get(remoteMessage, 'data.url', false);
+    if (messageUrl) Linking.openURL(messageUrl);
+  });
 
   const config = {
     screens: {

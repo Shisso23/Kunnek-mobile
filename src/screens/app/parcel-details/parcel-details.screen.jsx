@@ -60,7 +60,7 @@ const ParcelDetailsScreen = ({ route }) => {
         }
       });
     }
-  }, 5000);
+  }, 1000);
 
   const _isDeliverer = () => {
     return _.get(user, 'id') === _.get(deliverer, 'userId');
@@ -156,6 +156,5 @@ const styles = StyleSheet.create({
   },
   footerWidth: {
     alignSelf: 'center',
-    width: 150,
   },
 });

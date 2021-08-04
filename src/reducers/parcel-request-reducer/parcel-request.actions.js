@@ -36,12 +36,9 @@ export const getUserParcelRequestsAction = (params = {}) => (dispatch) => {
     });
 };
 
-export const checkUserParcelRequestsAction = (params = {}) => (dispatch, getState) => {
-  const { userParcelRequests } = getState().parcelRequestReducer;
+export const checkUserParcelRequestsAction = (params = {}) => (dispatch) => {
   return parcelRequestService.getAll(params).then((parcelRequests) => {
-    if (parcelRequests !== userParcelRequests) {
-      return dispatch(setUserParcelRequestsAction(parcelRequests));
-    }
+    return dispatch(setUserParcelRequestsAction(parcelRequests));
   });
 };
 
@@ -76,8 +73,8 @@ export const cancelParcelStatus = (parcelRequest) => (dispatch, getState) => {
 
   return parcelRequestService
     .cancelDeliveryRequest(_.get(parcelRequest, 'id'), parcelRequest)
-    .then((response) => {
-      dispatch(setUserParcelRequestsAction(updateObjectArray(userParcelRequests, response)));
+    .then(async (response) => {
+      await dispatch(setUserParcelRequestsAction(updateObjectArray(userParcelRequests, response)));
       return response;
     })
     .finally(() => {

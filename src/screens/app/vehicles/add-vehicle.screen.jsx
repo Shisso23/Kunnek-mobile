@@ -37,14 +37,14 @@ const AddVehicleScreen = () => {
     navigation.goBack();
   };
 
-  const { Gutters } = useTheme();
+  const { Gutters, Layout } = useTheme();
   const { delivererId } = useSelector(userSelector);
 
   return (
     <FormScreenContainer>
       <Index title="Add vehicle" />
       <Divider />
-      <View style={Gutters.smallHMargin}>
+      <View style={[Gutters.smallHMargin, Layout.fill]}>
         <VehicleForm
           submitForm={_handleSubmit}
           onSuccess={_formSuccess}

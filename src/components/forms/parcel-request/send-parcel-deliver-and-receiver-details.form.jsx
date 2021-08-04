@@ -38,9 +38,8 @@ const SendParcelDeliverAndReceiverDetailsForm = ({ submitForm, onSuccess, initia
     setLoading(true);
     submitForm(formData)
       .then(() => {
-        onSuccess().then(() => {
-          setLoading(false);
-        });
+        setLoading(false);
+        onSuccess();
       })
       .catch((error) => {
         setLoading(false);

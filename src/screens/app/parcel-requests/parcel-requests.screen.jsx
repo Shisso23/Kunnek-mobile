@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import { ButtonGroup } from 'react-native-elements';
 import PropTypes from 'prop-types';
+import { useIsFocused } from '@react-navigation/native';
 
 import Index from '../../../components/atoms/title';
 import {
@@ -21,6 +22,7 @@ const ParcelRequestScreen = () => {
   const [buttonIndex, setButtonIndex] = useState(0);
   const { userParcelRequests = [] } = useSelector((state) => state.parcelRequestReducer);
   const dispatch = useDispatch();
+  const isFocussed = useIsFocused();
 
   useEffect(() => {
     dispatch(getUserParcelRequestsAction(_requestParams()));
@@ -48,7 +50,7 @@ const ParcelRequestScreen = () => {
   };
 
   useInterval(() => {
-    dispatch(checkUserParcelRequestsAction(_requestParams()));
+    if (isFocussed) dispatch(checkUserParcelRequestsAction(_requestParams()));
   }, 5000);
 
   const _renderItem = ({ item }) => {

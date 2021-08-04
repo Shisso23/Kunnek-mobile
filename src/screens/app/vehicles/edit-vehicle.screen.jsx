@@ -45,13 +45,13 @@ const EditVehicleScreen = ({ route }) => {
     navigation.goBack();
   };
 
-  const { Gutters } = useTheme();
+  const { Gutters, Layout } = useTheme();
 
   return (
     <FormScreenContainer>
       <Index title="My Vehicle" />
       <Divider />
-      <View style={Gutters.smallHMargin}>
+      <View style={[Gutters.smallHMargin, Layout.fill]}>
         <VehicleForm
           submitForm={_handleSubmit}
           onSuccess={_formSuccess}

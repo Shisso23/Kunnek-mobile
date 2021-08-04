@@ -105,7 +105,7 @@ DropdownSelect.propTypes = {
   label: PropTypes.string,
   disabled: PropTypes.bool,
   onBlur: PropTypes.func,
-  contentStyle: PropTypes.object,
+  contentStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };
 
 DropdownSelect.defaultProps = {

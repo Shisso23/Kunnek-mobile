@@ -19,7 +19,7 @@ const BankAccountForm = ({ submitForm, onSuccess, initialValues, submitText, dis
   const { banks } = useSelector(appSelector);
   const bankValues = _.map(banks, (bank) => _.get(bank, 'name'));
   const { Gutters, Layout } = useTheme();
-  const accountTypes = ['Cheque', 'Current', 'Savings'];
+  const accountTypes = ['Current', 'Savings'];
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -29,7 +29,7 @@ const BankAccountForm = ({ submitForm, onSuccess, initialValues, submitText, dis
   const validationSchema = Yup.object().shape({
     accountNumber: Yup.string().required('Your bank account number'),
     accountType: Yup.string()
-      .oneOf(['Cheque', 'Current', 'Savings'])
+      .oneOf(accountTypes)
       .required('Is this a cheque/current or savings account'),
     delivererId: Yup.string(),
     bankId: Yup.string().required('Bank is required'),

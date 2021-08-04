@@ -56,7 +56,7 @@ const ViewBankAccountScreen = ({ route }) => {
     navigation.goBack();
   };
 
-  const { Gutters } = useTheme();
+  const { Gutters, Layout } = useTheme();
 
   return (
     <FormScreenContainer>
@@ -72,6 +72,7 @@ const ViewBankAccountScreen = ({ route }) => {
           disabled={true}
         />
       </View>
+      <View style={Layout.fill} />
       <SafeAreaView>
         {!_.get(bankAccount, 'default', false) && (
           <>
